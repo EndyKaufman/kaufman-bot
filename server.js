@@ -13,6 +13,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const bodyParser = require('body-parser');
 const apiai = require('apiai');
+const EventEmitter = require('events');
 
 // ai bot
 const ai = apiai(APIAI_CLIENT_ACCESS_TOKEN);
@@ -39,23 +40,48 @@ app.listen(PORT, () => {
     console.log(`Express server is listening on ${PORT}`);
 });
 
-// Just to ping!
+const botNames = ['kaufman', 'кауфман', 'кафман', 'endy', 'енди', 'энди'];
+
+function checkBotNameInMessage(msg) {
+    for (var i = 0; i < botNames.length; i++) {
+        if (msg.indexOf(botNames[i]) !== -1) {
+            return true;
+        }
+    }
+    return false;
+}
+function removeBotNamesFromMessage(msg) {
+    for (var i = 0; i < botNames.length; i++) {
+        msg = msg.replace(botNames[i], '');
+    }
+    return msg;
+}
+function getAiAnswer(msg, sessionId) {
+    const event = new EventEmitter();
+    const request = ai.textRequest(msg, {
+        sessionId: sessionId
+    });
+
+    request.on('response', function (response) {
+        event.emit(response.result.fulfillment.speech);
+    });
+
+    request.end();
+    return event;
+}
+
 bot.on('message', msg => {
-    if (typeof msg.text === 'string' &&
-        (msg.text.indexOf('endy') !== -1 || msg.text.indexOf('енди') !== -1 || msg.text.indexOf('энди') !== -1)
-    ) {
-        const request = ai.textRequest(msg.text, {
-            sessionId: msg.date
-        });
-
-        request.on('response', function (response) {
-            bot.sendMessage(msg.chat.id, response.result.fulfillment.speech);
-        });
-
-        request.on('error', function (error) {
-            console.log(error);
-        });
-
-        request.end();
+    if (typeof msg.text === 'string' && checkBotNameInMessage(msg.text)) {
+        getAiAnswer(msg.text, msg.date).on(function (answer) {
+            if (answer) {
+                bot.sendMessage(msg.chat.id, answer);
+            } else {
+                getAiAnswer(removeBotNamesFromMessage(msg.text), msg.date).on(function (answer) {
+                    if (answer) {
+                        bot.sendMessage(msg.chat.id, answer);
+                    }
+                })
+            }
+        })
     }
 });
