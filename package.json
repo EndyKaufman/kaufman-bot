@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node forever.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apiai": "^4.0.3",
     "body-parser": "^1.17.2",
     "console-stamp": "^0.2.5",
     "express": "^4.15.4",
+    "forever-monitor": "^1.7.1",
     "node-telegram-bot-api": "^0.27.1",
     "node-uuid": "^1.4.8",
     "request": "^2.81.0"
