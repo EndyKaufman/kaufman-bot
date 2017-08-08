@@ -63,7 +63,7 @@ function getAiAnswer(msg, sessionId) {
     });
 
     request.on('response', function (response) {
-        event.emit(response.result.fulfillment.speech);
+        event.emit('event', response.result.fulfillment.speech);
     });
 
     request.end();
@@ -72,11 +72,11 @@ function getAiAnswer(msg, sessionId) {
 
 bot.on('message', msg => {
     if (typeof msg.text === 'string' && (checkBotNameInMessage(msg.text) || msg.chat.type === 'private')) {
-        getAiAnswer(msg.text, msg.date).on(function (answer) {
+        getAiAnswer(msg.text, msg.date).on('event', function (answer) {
             if (answer) {
                 bot.sendMessage(msg.chat.id, answer);
             } else {
-                getAiAnswer(removeBotNamesFromMessage(msg.text), msg.date).on(function (answer) {
+                getAiAnswer(removeBotNamesFromMessage(msg.text), msg.date).on('event', function (answer) {
                     if (answer) {
                         bot.sendMessage(msg.chat.id, answer);
                     }
