@@ -22,7 +22,7 @@ const ai = apiai(APIAI_CLIENT_ACCESS_TOKEN);
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 // This informs the Telegram servers of the new webhook.
-//bot.setWebHook(`${TELEGRAM_HOOK_URL}/bot${TELEGRAM_TOKEN}`);
+bot.setWebHook(`${TELEGRAM_HOOK_URL}/bot${TELEGRAM_TOKEN}`);
 
 const app = express();
 
