@@ -44,7 +44,7 @@ const botNames = ['kaufman', 'кауфман', 'кафман', 'endy', 'енди
 
 function checkBotNameInMessage(msg) {
     for (var i = 0; i < botNames.length; i++) {
-        if (msg.indexOf(botNames[i]) !== -1) {
+        if (msg.toLowerCase().indexOf(botNames[i].toLowerCase()) !== -1) {
             return true;
         }
     }
@@ -52,7 +52,7 @@ function checkBotNameInMessage(msg) {
 }
 function removeBotNamesFromMessage(msg) {
     for (var i = 0; i < botNames.length; i++) {
-        msg = msg.replace(botNames[i], '');
+        msg = msg.replace(new RegExp(botNames[i], "ig"), '');
     }
     return msg;
 }
