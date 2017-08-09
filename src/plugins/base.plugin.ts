@@ -18,28 +18,26 @@ export interface IBasePlugin {
 }
 export class BasePlugin implements IBasePlugin {
     public name: string;
+    public description: string;
     public bot: TelegramBot;
     public wordsForSpy: string[];
     constructor(bot: TelegramBot) {
         this.bot = bot;
     }
-    public checkWordsForSpyInMessage(message: string): boolean {
-        for (var i = 0; i < this.wordsForSpy.length; i++) {
-            if (message.toLowerCase().indexOf(this.wordsForSpy[i].toLowerCase()) !== -1) {
-                return true;
-            }
-        }
-        return false;
+    public checkWordsForSpyInMessage(message: string, words?: string[]): boolean {
+        words = words === undefined ? this.wordsForSpy : words;
+        return words.filter(word =>
+            message.toLowerCase().indexOf(word.toLowerCase()) !== -1
+        ).length > 0;
     }
-    public removeWordsForSpyFromMessage(message: string): string {
-        for (var i = 0; i < this.wordsForSpy.length; i++) {
-            message = message.replace(new RegExp(this.wordsForSpy[i], "ig"), '');
-        }
+    public removeWordsForSpyFromMessage(message: string, words?: string[]): string {
+        words = words === undefined ? this.wordsForSpy : words;
+        words.map(word => message = message.replace(new RegExp(word, "ig"), ''))
         return message;
     }
     public process(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();
-        setTimeout(_ => event.emit('message', 'Hi!'), 700);
+        setTimeout(item => event.emit('message', 'Hi!'), 700);
         return event;
     }
 }

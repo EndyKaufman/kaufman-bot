@@ -40,7 +40,7 @@ export class Server {
             }
         }
         if (!founded) {
-            setTimeout(_ => event.emit('message', 'empty'), 700);
+            setTimeout(item => event.emit('message', 'empty'), 700);
         }
         return event;
     }

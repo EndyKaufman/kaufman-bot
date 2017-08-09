@@ -5,6 +5,7 @@ import { BasePlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
 export declare class ApiAiPlugin extends BasePlugin {
     name: string;
+    description: string;
     wordsForSpy: string[];
     private ai;
     constructor(bot: TelegramBot);

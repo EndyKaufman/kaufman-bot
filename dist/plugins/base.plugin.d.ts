@@ -19,10 +19,11 @@ export interface IBasePlugin {
 }
 export declare class BasePlugin implements IBasePlugin {
     name: string;
+    description: string;
     bot: TelegramBot;
     wordsForSpy: string[];
     constructor(bot: TelegramBot);
-    checkWordsForSpyInMessage(message: string): boolean;
-    removeWordsForSpyFromMessage(message: string): string;
+    checkWordsForSpyInMessage(message: string, words?: string[]): boolean;
+    removeWordsForSpyFromMessage(message: string, words?: string[]): string;
     process(msg: ITelegramBotMessage): EventEmitter;
 }

@@ -4,7 +4,8 @@ import { EventEmitter } from 'events';
 import apiai = require('apiai');
 
 export class ApiAiPlugin extends BasePlugin {
-    public name = 'apiai';
+    public name = 'api-ai';
+    public description = 'Simple usage https://api.ai service with default agent';
     public wordsForSpy: string[];
     private ai: any;
     constructor(bot: TelegramBot) {

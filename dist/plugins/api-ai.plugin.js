@@ -6,7 +6,8 @@ const apiai = require("apiai");
 class ApiAiPlugin extends base_plugin_1.BasePlugin {
     constructor(bot) {
         super(bot);
-        this.name = 'apiai';
+        this.name = 'api-ai';
+        this.description = 'Simple usage https://api.ai service with default agent';
         this.wordsForSpy = process.env.TELEGRAM_BOT_NAME_ALIASES.split(',');
         this.ai = apiai(process.env.APIAI_CLIENT_ACCESS_TOKEN);
     }

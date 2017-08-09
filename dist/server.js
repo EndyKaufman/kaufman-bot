@@ -34,7 +34,7 @@ class Server {
             }
         }
         if (!founded) {
-            timers_1.setTimeout(_ => event.emit('message', 'empty'), 700);
+            timers_1.setTimeout(item => event.emit('message', 'empty'), 700);
         }
         return event;
     }

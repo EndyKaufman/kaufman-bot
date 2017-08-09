@@ -5,23 +5,18 @@ class BasePlugin {
     constructor(bot) {
         this.bot = bot;
     }
-    checkWordsForSpyInMessage(message) {
-        for (var i = 0; i < this.wordsForSpy.length; i++) {
-            if (message.toLowerCase().indexOf(this.wordsForSpy[i].toLowerCase()) !== -1) {
-                return true;
-            }
-        }
-        return false;
+    checkWordsForSpyInMessage(message, words) {
+        words = words === undefined ? this.wordsForSpy : words;
+        return words.filter(word => message.toLowerCase().indexOf(word.toLowerCase()) !== -1).length > 0;
     }
-    removeWordsForSpyFromMessage(message) {
-        for (var i = 0; i < this.wordsForSpy.length; i++) {
-            message = message.replace(new RegExp(this.wordsForSpy[i], "ig"), '');
-        }
+    removeWordsForSpyFromMessage(message, words) {
+        words = words === undefined ? this.wordsForSpy : words;
+        words.map(word => message = message.replace(new RegExp(word, "ig"), ''));
         return message;
     }
     process(msg) {
         const event = new events_1.EventEmitter();
-        setTimeout(_ => event.emit('message', 'Hi!'), 700);
+        setTimeout(item => event.emit('message', 'Hi!'), 700);
         return event;
     }
 }
