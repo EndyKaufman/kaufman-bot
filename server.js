@@ -72,7 +72,7 @@ function getAiAnswer(msg, sessionId) {
 
 bot.on('message', msg => {
     if (typeof msg.text === 'string' && (checkBotNameInMessage(msg.text) || msg.chat.type === 'private')) {
-        getAiAnswer(msg.text, msg.date).on('event', function (answer) {
+        getAiAnswer(msg.text, msg.chat.id).on('event', function (answer) {
             if (answer) {
                 bot.sendMessage(msg.chat.id, answer);
             } else {
