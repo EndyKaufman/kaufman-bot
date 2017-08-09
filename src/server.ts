@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser';
 import TelegramBot = require('node-telegram-bot-api');
 import apiai = require('apiai');
 import { ApiAiPlugin } from './plugins/api-ai.plugin';
+import { WikiPlugin } from './plugins/wiki.plugin';
 
 export class Server {
     public app: any;
@@ -16,6 +17,7 @@ export class Server {
         this.app = express();
         this.botToken = process.env.TELEGRAM_TOKEN;
         this.bot = new TelegramBot(this.botToken, { polling: true });
+        this.plugins.push(new WikiPlugin(this.bot));
         this.plugins.push(new ApiAiPlugin(this.bot));
     }
     public startPlugin(message: string, pluginName: string) {
@@ -30,6 +32,7 @@ export class Server {
         let founded = false;
         for (let i = 0; i < this.plugins.length; i++) {
             if (
+                !founded &&
                 (pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
@@ -59,8 +62,13 @@ export class Server {
             this.bot.setWebHook(`${process.env.TELEGRAM_HOOK_URL}/bot${this.botToken}`);
         }
         this.bot.on('message', (msg: ITelegramBotMessage) => {
+            let founded = false;
             for (let i = 0; i < this.plugins.length; i++) {
-                if (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private') {
+                if (
+                    !founded &&
+                    (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')
+                ) {
+                    founded = true;
                     this.plugins[i].process(msg).on('message', (answer: string) => {
                         if (answer) {
                             this.bot.sendMessage(msg.chat.id, answer);

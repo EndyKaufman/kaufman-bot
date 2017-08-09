@@ -1,13 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
+const _ = require("lodash");
 class BasePlugin {
     constructor(bot) {
         this.bot = bot;
+        this.botLocale = process.env.TELEGRAM_BOT_LOCALE;
     }
     checkWordsForSpyInMessage(message, words) {
         words = words === undefined ? this.wordsForSpy : words;
-        return words.filter(word => message.toLowerCase().indexOf(word.toLowerCase()) !== -1).length > 0;
+        const messageWords = _.words((message ? message : '').toLowerCase());
+        return words.filter(word => messageWords.indexOf((word ? word : '').toLowerCase()) !== -1).length > 0;
     }
     removeWordsForSpyFromMessage(message, words) {
         words = words === undefined ? this.wordsForSpy : words;

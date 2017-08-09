@@ -6,12 +6,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const TelegramBot = require("node-telegram-bot-api");
 const api_ai_plugin_1 = require("./plugins/api-ai.plugin");
+const wiki_plugin_1 = require("./plugins/wiki.plugin");
 class Server {
     constructor() {
         this.plugins = [];
         this.app = express();
         this.botToken = process.env.TELEGRAM_TOKEN;
         this.bot = new TelegramBot(this.botToken, { polling: true });
+        this.plugins.push(new wiki_plugin_1.WikiPlugin(this.bot));
         this.plugins.push(new api_ai_plugin_1.ApiAiPlugin(this.bot));
     }
     startPlugin(message, pluginName) {
@@ -25,7 +27,8 @@ class Server {
         };
         let founded = false;
         for (let i = 0; i < this.plugins.length; i++) {
-            if ((pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
+            if (!founded &&
+                (pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)) {
                 founded = true;
                 this.plugins[i].process(msg).on('message', (answer) => {
@@ -51,8 +54,11 @@ class Server {
             this.bot.setWebHook(`${process.env.TELEGRAM_HOOK_URL}/bot${this.botToken}`);
         }
         this.bot.on('message', (msg) => {
+            let founded = false;
             for (let i = 0; i < this.plugins.length; i++) {
-                if (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private') {
+                if (!founded &&
+                    (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')) {
+                    founded = true;
                     this.plugins[i].process(msg).on('message', (answer) => {
                         if (answer) {
                             this.bot.sendMessage(msg.chat.id, answer);

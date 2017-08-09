@@ -21,6 +21,7 @@ export declare class BasePlugin implements IBasePlugin {
     name: string;
     description: string;
     bot: TelegramBot;
+    botLocale: string;
     wordsForSpy: string[];
     constructor(bot: TelegramBot);
     checkWordsForSpyInMessage(message: string, words?: string[]): boolean;
