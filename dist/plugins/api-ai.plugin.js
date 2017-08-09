@@ -29,7 +29,7 @@ class ApiAiPlugin extends base_plugin_1.BasePlugin {
                 event.emit('message', answer);
             }
             else {
-                msg.text = this.removeWordsForSpyFromMessage(msg.text);
+                msg.text = this.removeWordsFromMessage(msg.text, this.wordsForSpy);
                 this.processOne(msg).on('message', (answer) => {
                     event.emit('message', answer);
                 });

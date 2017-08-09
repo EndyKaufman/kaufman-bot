@@ -30,7 +30,7 @@ export class ApiAiPlugin extends BasePlugin {
             if (answer) {
                 event.emit('message', answer);
             } else {
-                msg.text = this.removeWordsForSpyFromMessage(msg.text);
+                msg.text = this.removeWordsFromMessage(msg.text, this.wordsForSpy);
                 this.processOne(msg).on('message', (answer: string) => {
                     event.emit('message', answer);
                 })

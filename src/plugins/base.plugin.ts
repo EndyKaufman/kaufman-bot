@@ -13,8 +13,8 @@ export interface ITelegramBotMessage {
 export interface IBasePlugin {
     name: string;
     wordsForSpy: string[];
-    checkWordsForSpyInMessage(message: string): boolean;
-    removeWordsForSpyFromMessage(message: string): string;
+    checkWordsInMessage(message: string, words: string[]): boolean;
+    removeWordsFromMessage(message: string, words: string[]): string;
     process(msg: ITelegramBotMessage): EventEmitter;
 }
 export class BasePlugin implements IBasePlugin {
@@ -27,14 +27,14 @@ export class BasePlugin implements IBasePlugin {
         this.bot = bot;
         this.botLocale = process.env.TELEGRAM_BOT_LOCALE;
     }
-    public checkWordsForSpyInMessage(message: string, words?: string[]): boolean {
+    public checkWordsInMessage(message: string, words: string[]): boolean {
         words = words === undefined ? this.wordsForSpy : words;
         const messageWords = _.words((message ? message : '').toLowerCase());
         return words.filter(word =>
             messageWords.indexOf((word ? word : '').toLowerCase()) !== -1
         ).length > 0;
     }
-    public removeWordsForSpyFromMessage(message: string, words?: string[]): string {
+    public removeWordsFromMessage(message: string, words: string[]): string {
         words = words === undefined ? this.wordsForSpy : words;
         words.map(word => message = message.replace(new RegExp(word, "ig"), ''))
         return message;

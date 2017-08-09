@@ -13,8 +13,8 @@ export interface ITelegramBotMessage {
 export interface IBasePlugin {
     name: string;
     wordsForSpy: string[];
-    checkWordsForSpyInMessage(message: string): boolean;
-    removeWordsForSpyFromMessage(message: string): string;
+    checkWordsInMessage(message: string, words: string[]): boolean;
+    removeWordsFromMessage(message: string, words: string[]): string;
     process(msg: ITelegramBotMessage): EventEmitter;
 }
 export declare class BasePlugin implements IBasePlugin {
@@ -24,7 +24,7 @@ export declare class BasePlugin implements IBasePlugin {
     botLocale: string;
     wordsForSpy: string[];
     constructor(bot: TelegramBot);
-    checkWordsForSpyInMessage(message: string, words?: string[]): boolean;
-    removeWordsForSpyFromMessage(message: string, words?: string[]): string;
+    checkWordsInMessage(message: string, words: string[]): boolean;
+    removeWordsFromMessage(message: string, words: string[]): string;
     process(msg: ITelegramBotMessage): EventEmitter;
 }

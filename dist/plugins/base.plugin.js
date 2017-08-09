@@ -7,12 +7,12 @@ class BasePlugin {
         this.bot = bot;
         this.botLocale = process.env.TELEGRAM_BOT_LOCALE;
     }
-    checkWordsForSpyInMessage(message, words) {
+    checkWordsInMessage(message, words) {
         words = words === undefined ? this.wordsForSpy : words;
         const messageWords = _.words((message ? message : '').toLowerCase());
         return words.filter(word => messageWords.indexOf((word ? word : '').toLowerCase()) !== -1).length > 0;
     }
-    removeWordsForSpyFromMessage(message, words) {
+    removeWordsFromMessage(message, words) {
         words = words === undefined ? this.wordsForSpy : words;
         words.map(word => message = message.replace(new RegExp(word, "ig"), ''));
         return message;

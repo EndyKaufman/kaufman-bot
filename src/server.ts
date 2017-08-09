@@ -33,7 +33,7 @@ export class Server {
         for (let i = 0; i < this.plugins.length; i++) {
             if (
                 !founded &&
-                (pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
+                (pluginName === null && this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
@@ -67,7 +67,7 @@ export class Server {
             for (let i = 0; i < this.plugins.length; i++) {
                 if (
                     !founded &&
-                    (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')
+                    (this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')
                 ) {
                     founded = true;
                     setTimeout(item =>

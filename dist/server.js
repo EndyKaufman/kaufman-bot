@@ -28,7 +28,7 @@ class Server {
         let founded = false;
         for (let i = 0; i < this.plugins.length; i++) {
             if (!founded &&
-                (pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
+                (pluginName === null && this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)) {
                 founded = true;
                 timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
@@ -57,7 +57,7 @@ class Server {
             let founded = false;
             for (let i = 0; i < this.plugins.length; i++) {
                 if (!founded &&
-                    (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')) {
+                    (this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')) {
                     founded = true;
                     timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
                         if (answer) {
