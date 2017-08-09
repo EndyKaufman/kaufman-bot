@@ -26,35 +26,10 @@ export class WikiPlugin extends BasePlugin {
                     let pageName = data.results[0];
                     pageName = pageName.replace(new RegExp(' ', "ig"), '_');
                     this.wtfWikipedia.from_api(pageName, this.botLocale, (markup: any) => {
-                        let text = '';
-                        if (markup) {
-                            text = this.wtfWikipedia.plaintext(markup).substring(0, 1000)
-                                + (markup ? '...\n\n' : '')
-                                + `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                            event.emit('message', text);
-                        } else {
-                            this.wiki.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
-                                .page(pageName).then((page: any) => page.html()).then((markup: any) => {
-                                    text = this.htmlToText.fromString(markup, {
-                                        wordwrap: 130,
-                                        format: {
-                                            image: () => '',
-                                            //lineBreak: () => '',
-                                            //paragraph: () => '',
-                                            anchor: () => '',
-                                            //heading: () => '',
-                                            table: () => '',
-                                            orderedList: () => '',
-                                            unorderedList: () => '',
-                                            listItem: () => '',
-                                            horizontalLine: () => ''
-                                        }
-                                    }).substring(0, 1000)
-                                        + (markup ? '...\n\n' : '')
-                                        + `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                                    event.emit('message', text);
-                                });
-                        }
+                        let text = this.wtfWikipedia.plaintext(markup).substring(0, 1000)
+                            + (markup ? '...\n\n' : '')
+                            + `https://${locale}.wikipedia.org/wiki/${pageName}`;
+                        event.emit('message', text);
                     });
                 } else {
                     event.emit('message', false);
