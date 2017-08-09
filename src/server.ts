@@ -37,9 +37,10 @@ export class Server {
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
-                this.plugins[i].process(msg).on('message', (answer: string) => {
-                    event.emit('message', answer);
-                })
+                setTimeout(item =>
+                    this.plugins[i].process(msg).on('message', (answer: string) => {
+                        event.emit('message', answer);
+                    }), 700);
             }
         }
         if (!founded) {
@@ -69,11 +70,13 @@ export class Server {
                     (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')
                 ) {
                     founded = true;
-                    this.plugins[i].process(msg).on('message', (answer: string) => {
-                        if (answer) {
-                            this.bot.sendMessage(msg.chat.id, answer);
-                        }
-                    })
+                    setTimeout(item =>
+                        this.plugins[i].process(msg).on('message', (answer: string) => {
+                            if (answer) {
+                                this.bot.sendMessage(msg.chat.id, answer);
+                            }
+                        }), 700);
+
                 }
             }
         });

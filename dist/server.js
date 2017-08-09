@@ -31,9 +31,9 @@ class Server {
                 (pluginName === null && this.plugins[i].checkWordsForSpyInMessage(msg.text)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)) {
                 founded = true;
-                this.plugins[i].process(msg).on('message', (answer) => {
+                timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
                     event.emit('message', answer);
-                });
+                }), 700);
             }
         }
         if (!founded) {
@@ -59,11 +59,11 @@ class Server {
                 if (!founded &&
                     (this.plugins[i].checkWordsForSpyInMessage(msg.text) || msg.chat.type === 'private')) {
                     founded = true;
-                    this.plugins[i].process(msg).on('message', (answer) => {
+                    timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
                         if (answer) {
                             this.bot.sendMessage(msg.chat.id, answer);
                         }
-                    });
+                    }), 700);
                 }
             }
         });
