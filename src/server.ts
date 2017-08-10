@@ -7,6 +7,7 @@ import TelegramBot = require('node-telegram-bot-api');
 import apiai = require('apiai');
 import { ApiAiPlugin } from './plugins/api-ai.plugin';
 import { WikiPlugin } from './plugins/wiki.plugin';
+import { checkWordsInMessage } from './utils';
 
 export class Server {
     public app: any;
@@ -33,7 +34,7 @@ export class Server {
         for (let i = 0; i < this.plugins.length; i++) {
             if (
                 !founded &&
-                (pluginName === null && this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
+                (pluginName === null && checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
@@ -67,7 +68,7 @@ export class Server {
             for (let i = 0; i < this.plugins.length; i++) {
                 if (
                     !founded &&
-                    (this.plugins[i].checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')
+                    (checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')
                 ) {
                     founded = true;
                     setTimeout(item =>

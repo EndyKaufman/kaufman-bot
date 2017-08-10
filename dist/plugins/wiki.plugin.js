@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const base_plugin_1 = require("./base.plugin");
 const events_1 = require("events");
 const _ = require("lodash");
+const utils_1 = require("../utils");
 class WikiPlugin extends base_plugin_1.BasePlugin {
     constructor(bot) {
         super(bot);
@@ -23,10 +24,9 @@ class WikiPlugin extends base_plugin_1.BasePlugin {
                 let pageName = data.results[0];
                 pageName = pageName.replace(new RegExp(' ', "ig"), '_');
                 this.wtfWikipedia.from_api(pageName, this.botLocale, (markup) => {
-                    let text = this.wtfWikipedia.plaintext(markup).substring(0, 1000)
-                        + (markup ? '...\n\n' : '')
-                        + `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                    event.emit('message', text);
+                    let text = this.wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                    let url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
+                    event.emit('message', text, url);
                 });
             }
             else {
@@ -37,17 +37,27 @@ class WikiPlugin extends base_plugin_1.BasePlugin {
     }
     process(msg) {
         const event = new events_1.EventEmitter();
-        if (this.checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
-            let text = this.removeWordsFromMessage(msg.text, this.wordsForSpy);
-            text = this.removeWordsFromMessage(text, this.botNames).trim();
-            this.searchOnWiki(msg.text).on('message', (answer) => {
-                if (!answer || this.checkWordsInMessage(answer, _.words(text))) {
-                    this.searchOnWiki(text, 'en').on('message', (answer) => {
-                        event.emit('message', answer);
+        if (utils_1.checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
+            let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
+            text = utils_1.removeWordsFromMessage(text, this.botNames).trim();
+            this.searchOnWiki(text).on('message', (answer, url) => {
+                if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
+                    this.searchOnWiki(text, 'en').on('message', (answer, url) => {
+                        if (answer) {
+                            event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                        }
+                        else {
+                            event.emit('message', url);
+                        }
                     });
                 }
                 else {
-                    event.emit('message', answer);
+                    if (answer) {
+                        event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                    }
+                    else {
+                        event.emit('message', url);
+                    }
                 }
             });
         }

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_plugin_1 = require("./base.plugin");
 const events_1 = require("events");
+const utils_1 = require("../utils");
 const apiai = require("apiai");
 class ApiAiPlugin extends base_plugin_1.BasePlugin {
     constructor(bot) {
@@ -29,7 +30,7 @@ class ApiAiPlugin extends base_plugin_1.BasePlugin {
                 event.emit('message', answer);
             }
             else {
-                msg.text = this.removeWordsFromMessage(msg.text, this.wordsForSpy);
+                msg.text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
                 this.processOne(msg).on('message', (answer) => {
                     event.emit('message', answer);
                 });

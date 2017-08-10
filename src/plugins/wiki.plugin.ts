@@ -2,6 +2,7 @@ import TelegramBot = require('node-telegram-bot-api');
 import { BasePlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
+import { checkWordsInMessage, removeWordsFromMessage } from '../utils';
 
 export class WikiPlugin extends BasePlugin {
     public name = 'wiki';
@@ -26,10 +27,9 @@ export class WikiPlugin extends BasePlugin {
                     let pageName = data.results[0];
                     pageName = pageName.replace(new RegExp(' ', "ig"), '_');
                     this.wtfWikipedia.from_api(pageName, this.botLocale, (markup: any) => {
-                        let text = this.wtfWikipedia.plaintext(markup).substring(0, 1000)
-                            + (markup ? '...\n\n' : '')
-                            + `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                        event.emit('message', text);
+                        let text = this.wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                        let url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
+                        event.emit('message', text, url);
                     });
                 } else {
                     event.emit('message', false);
@@ -39,16 +39,24 @@ export class WikiPlugin extends BasePlugin {
     }
     public process(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();
-        if (this.checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
-            let text = this.removeWordsFromMessage(msg.text, this.wordsForSpy);
-            text = this.removeWordsFromMessage(text, this.botNames).trim();
-            this.searchOnWiki(msg.text).on('message', (answer: string) => {
-                if (!answer || this.checkWordsInMessage(answer, _.words(text))) {
-                    this.searchOnWiki(text, 'en').on('message', (answer: string) => {
-                        event.emit('message', answer);
+        if (checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
+            let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
+            text = removeWordsFromMessage(text, this.botNames).trim();
+            this.searchOnWiki(text).on('message', (answer: string, url: string) => {
+                if (!answer || !checkWordsInMessage(answer, _.words(text))) {
+                    this.searchOnWiki(text, 'en').on('message', (answer: string, url: string) => {
+                        if (answer) {
+                            event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                        } else {
+                            event.emit('message', url);
+                        }
                     });
                 } else {
-                    event.emit('message', answer);
+                    if (answer) {
+                        event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                    } else {
+                        event.emit('message', url);
+                    }
                 }
             });
         } else {
