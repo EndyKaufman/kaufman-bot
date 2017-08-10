@@ -16,9 +16,11 @@ class WikiPlugin extends base_plugin_1.BasePlugin {
         this.wordsForSpy = process.env.WIKIPEDIA_SPY_WORDS.split(',');
     }
     check(msg) {
-        let text = (msg.chat.type === 'private') ? utils_1.removeWordsFromMessage(msg.text, this.botNames) : msg.text;
-        return utils_1.checkWordsInMessage(text, this.botNames) ||
-            (utils_1.checkWordsInMessage(text, this.wordsForSpy) && msg.chat.type === 'private');
+        return (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
+            msg.chat.type === 'private') ||
+            (utils_1.checkWordsInMessage(msg.text, this.botNames) &&
+                utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
+                msg.chat.type !== 'private');
     }
     searchOnWiki(text, locale) {
         const event = new events_1.EventEmitter();
@@ -42,33 +44,28 @@ class WikiPlugin extends base_plugin_1.BasePlugin {
     }
     process(msg) {
         const event = new events_1.EventEmitter();
-        if (utils_1.checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
-            let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
-            text = (msg.chat.type === 'private') ? utils_1.removeWordsFromMessage(text, this.botNames) : text;
-            this.searchOnWiki(text).on('message', (answer, url) => {
-                if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
-                    this.searchOnWiki(text, 'en').on('message', (answer, url) => {
-                        if (answer) {
-                            event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
-                        }
-                        else {
-                            event.emit('message', url);
-                        }
-                    });
-                }
-                else {
+        let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
+        text = utils_1.removeWordsFromMessage(text, this.botNames);
+        this.searchOnWiki(text).on('message', (answer, url) => {
+            if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
+                this.searchOnWiki(text, 'en').on('message', (answer, url) => {
                     if (answer) {
                         event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
                     }
                     else {
                         event.emit('message', url);
                     }
+                });
+            }
+            else {
+                if (answer) {
+                    event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
                 }
-            });
-        }
-        else {
-            event.emit('message', false);
-        }
+                else {
+                    event.emit('message', url);
+                }
+            }
+        });
         return event;
     }
 }
