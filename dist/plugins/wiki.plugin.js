@@ -3,16 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const _ = require("lodash");
 const utils_1 = require("../lib/utils");
+const wikijs = require('wikijs');
+const wtfWikipedia = require("wtf_wikipedia");
 class WikiPlugin {
-    constructor(bot, telegramBotLocale, telegramBotNameAliases, wikipediaSpyWords) {
+    constructor(bot, telegramBotLocale, telegramBotNameAliases, wikipediaContentLength, wikipediaSpyWords) {
         this.bot = bot;
         this.telegramBotLocale = telegramBotLocale;
         this.telegramBotNameAliases = telegramBotNameAliases;
+        this.wikipediaContentLength = wikipediaContentLength;
         this.wikipediaSpyWords = wikipediaSpyWords;
         this.name = 'wiki';
         this.description = 'Get basic information of word from wikipedia';
-        this.wiki = require('wikijs');
-        this.wtfWikipedia = require("wtf_wikipedia");
         this.wordsForSpy = wikipediaSpyWords;
     }
     check(msg) {
@@ -25,21 +26,24 @@ class WikiPlugin {
     searchOnWiki(text, locale) {
         const event = new events_1.EventEmitter();
         locale = locale === undefined ? this.telegramBotLocale : locale;
-        this.wiki.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
+        wikijs.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
             .search(text, 1).then((data) => {
             if (data.results.length > 0) {
                 let pageName = data.results[0];
                 pageName = pageName.replace(new RegExp(' ', "ig"), '_');
-                this.wtfWikipedia.from_api(pageName, this.telegramBotLocale, (markup) => {
-                    let text = this.wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                wtfWikipedia.from_api(pageName, this.telegramBotLocale, (markup) => {
+                    let answer = '';
+                    if (markup) {
+                        answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                    }
                     let url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                    event.emit('message', text, url);
+                    event.emit('message', answer, url);
                 });
             }
             else {
                 event.emit('message', false, false);
             }
-        }, (error) => event.emit('message', false));
+        }, (error) => event.emit('message', false, false));
         return event;
     }
     process(msg) {
@@ -50,10 +54,15 @@ class WikiPlugin {
             if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
                 this.searchOnWiki(text, 'en').on('message', (answer, url) => {
                     if (answer) {
-                        event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                        event.emit('message', answer.substring(0, this.wikipediaContentLength) + '...\n\n' + url);
                     }
                     else {
-                        event.emit('message', url);
+                        if (url) {
+                            event.emit('message', url);
+                        }
+                        else {
+                            event.emit('message', false);
+                        }
                     }
                 });
             }
@@ -62,7 +71,12 @@ class WikiPlugin {
                     event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
                 }
                 else {
-                    event.emit('message', url);
+                    if (url) {
+                        event.emit('message', url);
+                    }
+                    else {
+                        event.emit('message', false);
+                    }
                 }
             }
         });

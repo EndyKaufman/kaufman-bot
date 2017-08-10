@@ -1,8 +1,10 @@
 import TelegramBot = require('node-telegram-bot-api');
-import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
+import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { removeWordsFromMessage, checkWordsInMessage } from '../lib/utils';
-import apiai = require('apiai');
+
+
+const apiai = require('apiai');
 
 export class ApiAiPlugin implements IPlugin {
     public name = 'api-ai';

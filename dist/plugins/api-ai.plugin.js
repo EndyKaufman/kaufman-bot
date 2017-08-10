@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const utils_1 = require("../lib/utils");
-const apiai = require("apiai");
+const apiai = require('apiai');
 class ApiAiPlugin {
     constructor(bot, telegramBotNameAliases, apiaiClientAccessToken) {
         this.bot = bot;

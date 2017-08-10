@@ -29,21 +29,28 @@ export class BaseBot implements IBot {
             }
         };
         let founded = false;
-        for (let i = 0; i < this.plugins.length; i++) {
+        let i = 0, len = this.plugins.length;
+        for (i = 0; i < len; i++) {
             if (
                 !founded &&
                 (pluginName === null && this.plugins[i].check(msg)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
-                setTimeout(() =>
-                    this.plugins[i].process(msg).on('message', (answer: string) => {
+                this.plugins[i].process(msg).on('message', (answer: string) => {
+                    if (answer) {
                         event.emit('message', answer);
-                    }), 700);
+                    } else {
+                        this.notFound(msg).on('message', (answer: string) => {
+                            event.emit('message', answer);
+                        })
+                    }
+                });
+                break;
             }
         }
         if (!founded) {
-            setTimeout(() => event.emit('message', 'empty'), 700);
+            event.emit('message', 'bot.empty');
         }
         return event;
     }
@@ -57,18 +64,45 @@ export class BaseBot implements IBot {
         }
         this.bot.on('message', (msg: ITelegramBotMessage) => {
             let founded = false;
-            for (let i = 0; i < this.plugins.length; i++) {
+            let i = 0, len = this.plugins.length;
+            for (i = 0; i < len; i++) {
                 if (!founded && this.plugins[i].check(msg)) {
                     founded = true;
-                    setTimeout(item =>
+                    setTimeout(() =>
                         this.plugins[i].process(msg).on('message', (answer: string) => {
                             if (answer) {
                                 this.bot.sendMessage(msg.chat.id, answer);
+                            } else {
+                                this.notFound(msg).on('message', (answer: string) => {
+                                    this.bot.sendMessage(msg.chat.id, answer);
+                                });
                             }
-                        }), 700);
-
+                        })
+                        , 700);
+                    break;
                 }
             }
         });
+    }
+    protected notFound(msg: ITelegramBotMessage) {
+        const event = new EventEmitter();
+        setTimeout(() => {
+            let founded = false;
+            let j = 0, len = this.plugins.length;
+            for (j = 0; j < len; j++) {
+                if (!founded && this.plugins[j]['name'] === 'api-ai') {
+                    founded = true;
+                    msg.text = 'bot.not_found';
+                    this.plugins[j].process(msg).on('message', (answer: string) => {
+                        event.emit('message', answer);
+                    });
+                    break;
+                }
+            }
+            if (!founded) {
+                event.emit('message', 'bot.empty');
+            }
+        }, 700);
+        return event;
     }
 }

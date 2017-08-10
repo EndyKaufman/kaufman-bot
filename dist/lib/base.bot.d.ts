@@ -3,7 +3,7 @@
 import { IServer } from './base.server';
 import { EventEmitter } from 'events';
 import TelegramBot = require('node-telegram-bot-api');
-import { IPlugin } from '../plugins/base.plugin';
+import { IPlugin, ITelegramBotMessage } from '../plugins/base.plugin';
 export interface IBot {
     startPlugin(message: string, pluginName: string): any;
     startEndpoint(server: IServer): any;
@@ -18,4 +18,5 @@ export declare class BaseBot implements IBot {
     protected readonly namePrefix: string;
     startPlugin(message: string, pluginName: string): EventEmitter;
     startEndpoint(server: IServer): void;
+    protected notFound(msg: ITelegramBotMessage): EventEmitter;
 }
