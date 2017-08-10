@@ -7,7 +7,6 @@ import TelegramBot = require('node-telegram-bot-api');
 import apiai = require('apiai');
 import { ApiAiPlugin } from './plugins/api-ai.plugin';
 import { WikiPlugin } from './plugins/wiki.plugin';
-import { checkWordsInMessage } from './utils';
 
 export class Server {
     public app: any;
@@ -18,6 +17,7 @@ export class Server {
         this.app = express();
         this.botToken = process.env.TELEGRAM_TOKEN;
         this.bot = new TelegramBot(this.botToken, { polling: true });
+        // Include plugins
         this.plugins.push(new WikiPlugin(this.bot));
         this.plugins.push(new ApiAiPlugin(this.bot));
     }
@@ -34,18 +34,18 @@ export class Server {
         for (let i = 0; i < this.plugins.length; i++) {
             if (
                 !founded &&
-                (pluginName === null && checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
+                (pluginName === null && this.plugins[i].check(msg)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
-                setTimeout(item =>
+                setTimeout(() =>
                     this.plugins[i].process(msg).on('message', (answer: string) => {
                         event.emit('message', answer);
                     }), 700);
             }
         }
         if (!founded) {
-            setTimeout(item => event.emit('message', 'empty'), 700);
+            setTimeout(() => event.emit('message', 'empty'), 700);
         }
         return event;
     }
@@ -59,17 +59,14 @@ export class Server {
         this.app.listen(process.env.PORT, () => {
             console.log(`Express server is listening on ${process.env.PORT}`);
         });
-        //Init telegram bot
+        // Init telegram bot
         if (process.env.TELEGRAM_HOOK_URL) {
             this.bot.setWebHook(`${process.env.TELEGRAM_HOOK_URL}/bot${this.botToken}`);
         }
         this.bot.on('message', (msg: ITelegramBotMessage) => {
             let founded = false;
             for (let i = 0; i < this.plugins.length; i++) {
-                if (
-                    !founded &&
-                    (checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')
-                ) {
+                if (!founded && this.plugins[i].check(msg)) {
                     founded = true;
                     setTimeout(item =>
                         this.plugins[i].process(msg).on('message', (answer: string) => {

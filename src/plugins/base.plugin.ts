@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import TelegramBot = require('node-telegram-bot-api');
 import * as _ from 'lodash';
+import { checkWordsInMessage } from '../utils';
 
 export interface ITelegramBotMessageChat {
     id: string;
@@ -13,6 +14,7 @@ export interface ITelegramBotMessage {
 export interface IBasePlugin {
     name: string;
     wordsForSpy: string[];
+    check(msg: ITelegramBotMessage): boolean;
     process(msg: ITelegramBotMessage): EventEmitter;
 }
 export class BasePlugin implements IBasePlugin {
@@ -24,6 +26,9 @@ export class BasePlugin implements IBasePlugin {
     constructor(bot: TelegramBot) {
         this.bot = bot;
         this.botLocale = process.env.TELEGRAM_BOT_LOCALE;
+    }
+    public check(msg: ITelegramBotMessage): boolean {
+        return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
     public process(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();

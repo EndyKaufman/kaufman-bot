@@ -13,6 +13,7 @@ export interface ITelegramBotMessage {
 export interface IBasePlugin {
     name: string;
     wordsForSpy: string[];
+    check(msg: ITelegramBotMessage): boolean;
     process(msg: ITelegramBotMessage): EventEmitter;
 }
 export declare class BasePlugin implements IBasePlugin {
@@ -22,5 +23,6 @@ export declare class BasePlugin implements IBasePlugin {
     botLocale: string;
     wordsForSpy: string[];
     constructor(bot: TelegramBot);
+    check(msg: ITelegramBotMessage): boolean;
     process(msg: ITelegramBotMessage): EventEmitter;
 }

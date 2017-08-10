@@ -12,6 +12,9 @@ class ApiAiPlugin extends base_plugin_1.BasePlugin {
         this.wordsForSpy = process.env.TELEGRAM_BOT_NAME_ALIASES.split(',');
         this.ai = apiai(process.env.APIAI_CLIENT_ACCESS_TOKEN);
     }
+    check(msg) {
+        return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
+    }
     processOne(msg) {
         const event = new events_1.EventEmitter();
         const request = this.ai.textRequest(msg.text, {

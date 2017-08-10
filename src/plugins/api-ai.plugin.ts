@@ -1,7 +1,7 @@
 import TelegramBot = require('node-telegram-bot-api');
 import { BasePlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
-import { removeWordsFromMessage } from '../utils';
+import { removeWordsFromMessage, checkWordsInMessage } from '../utils';
 import apiai = require('apiai');
 
 export class ApiAiPlugin extends BasePlugin {
@@ -13,6 +13,9 @@ export class ApiAiPlugin extends BasePlugin {
         super(bot);
         this.wordsForSpy = process.env.TELEGRAM_BOT_NAME_ALIASES.split(',');
         this.ai = apiai(process.env.APIAI_CLIENT_ACCESS_TOKEN);
+    }
+    public check(msg: ITelegramBotMessage): boolean {
+        return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
     private processOne(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();

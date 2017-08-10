@@ -18,6 +18,11 @@ export class WikiPlugin extends BasePlugin {
         this.botNames = process.env.TELEGRAM_BOT_NAME_ALIASES.split(',');
         this.wordsForSpy = process.env.WIKIPEDIA_SPY_WORDS.split(',');
     }
+    public check(msg: ITelegramBotMessage): boolean {
+        let text = (msg.chat.type === 'private') ? removeWordsFromMessage(msg.text, this.botNames) : msg.text;
+        return checkWordsInMessage(text, this.botNames) ||
+            (checkWordsInMessage(text, this.wordsForSpy) && msg.chat.type === 'private');
+    }
     private searchOnWiki(text: string, locale?: string) {
         const event = new EventEmitter();
         locale = locale === undefined ? this.botLocale : locale;
@@ -32,7 +37,7 @@ export class WikiPlugin extends BasePlugin {
                         event.emit('message', text, url);
                     });
                 } else {
-                    event.emit('message', false);
+                    event.emit('message', false, false);
                 }
             }, (error: any) => event.emit('message', false));
         return event;
@@ -41,7 +46,7 @@ export class WikiPlugin extends BasePlugin {
         const event = new EventEmitter();
         if (checkWordsInMessage(msg.text, this.botNames) || msg.chat.type === 'private') {
             let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-            text = removeWordsFromMessage(text, this.botNames).trim();
+            text = (msg.chat.type === 'private') ? removeWordsFromMessage(text, this.botNames) : text;
             this.searchOnWiki(text).on('message', (answer: string, url: string) => {
                 if (!answer || !checkWordsInMessage(answer, _.words(text))) {
                     this.searchOnWiki(text, 'en').on('message', (answer: string, url: string) => {

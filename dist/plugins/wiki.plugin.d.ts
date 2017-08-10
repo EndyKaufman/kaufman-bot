@@ -12,6 +12,7 @@ export declare class WikiPlugin extends BasePlugin {
     private wtfWikipedia;
     private htmlToText;
     constructor(bot: TelegramBot);
+    check(msg: ITelegramBotMessage): boolean;
     private searchOnWiki(text, locale?);
     process(msg: ITelegramBotMessage): EventEmitter;
 }

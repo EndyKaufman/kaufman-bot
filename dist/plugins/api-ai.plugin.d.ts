@@ -9,6 +9,7 @@ export declare class ApiAiPlugin extends BasePlugin {
     wordsForSpy: string[];
     private ai;
     constructor(bot: TelegramBot);
+    check(msg: ITelegramBotMessage): boolean;
     private processOne(msg);
     process(msg: ITelegramBotMessage): EventEmitter;
 }

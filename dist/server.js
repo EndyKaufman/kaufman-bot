@@ -7,7 +7,6 @@ const bodyParser = require("body-parser");
 const TelegramBot = require("node-telegram-bot-api");
 const api_ai_plugin_1 = require("./plugins/api-ai.plugin");
 const wiki_plugin_1 = require("./plugins/wiki.plugin");
-const utils_1 = require("./utils");
 class Server {
     constructor() {
         this.plugins = [];
@@ -29,16 +28,16 @@ class Server {
         let founded = false;
         for (let i = 0; i < this.plugins.length; i++) {
             if (!founded &&
-                (pluginName === null && utils_1.checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy)) ||
+                (pluginName === null && this.plugins[i].check(msg)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)) {
                 founded = true;
-                timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
+                timers_1.setTimeout(() => this.plugins[i].process(msg).on('message', (answer) => {
                     event.emit('message', answer);
                 }), 700);
             }
         }
         if (!founded) {
-            timers_1.setTimeout(item => event.emit('message', 'empty'), 700);
+            timers_1.setTimeout(() => event.emit('message', 'empty'), 700);
         }
         return event;
     }
@@ -57,8 +56,7 @@ class Server {
         this.bot.on('message', (msg) => {
             let founded = false;
             for (let i = 0; i < this.plugins.length; i++) {
-                if (!founded &&
-                    (utils_1.checkWordsInMessage(msg.text, this.plugins[i].wordsForSpy) || msg.chat.type === 'private')) {
+                if (!founded && this.plugins[i].check(msg)) {
                     founded = true;
                     timers_1.setTimeout(item => this.plugins[i].process(msg).on('message', (answer) => {
                         if (answer) {
