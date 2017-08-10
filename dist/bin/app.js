@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const commander = require("commander");
 const dotenv_1 = require("dotenv");
 const server_1 = require("../server");
+const bot_1 = require("../bot");
 class App {
     constructor() {
         dotenv_1.config();
         this.program = commander;
         this.package = require('../../package.json');
-        this.server = new server_1.Server();
     }
     initialize() {
         this.program
@@ -17,20 +17,25 @@ class App {
             .option('-p, --plugin [plugin]', 'plugin name for start')
             .option('-m, --message [message]', 'input message for plugin')
             .parse(process.argv);
-        if (this.program.plugin) {
-            this.server.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
+        let selected = false;
+        if (!selected && this.program.plugin) {
+            selected = true;
+            const bot = new bot_1.Bot();
+            bot.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
                 .on('message', (answer) => {
                 console.log(answer);
                 process.exit(0);
             });
         }
-        else {
-            if (this.program.start) {
-                this.server.start();
-            }
-            else {
-                this.program.help();
-            }
+        if (!selected && this.program.start) {
+            selected = true;
+            const server = new server_1.Server();
+            const bot = new bot_1.Bot();
+            bot.startEndpoint(server);
+        }
+        if (!selected) {
+            selected = true;
+            this.program.help();
         }
     }
 }
