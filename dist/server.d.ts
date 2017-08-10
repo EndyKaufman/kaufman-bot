@@ -1,7 +1,5 @@
-export declare class Server {
-    private name;
-    app: any;
-    private port;
+import { BaseServer } from './lib/base.server';
+export declare class Server extends BaseServer {
+    protected name: string;
     constructor(name?: string);
-    private readonly namePrefix;
 }

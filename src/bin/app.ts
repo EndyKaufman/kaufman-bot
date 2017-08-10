@@ -4,8 +4,8 @@ import { Server } from '../server';
 import { Bot } from '../bot';
 
 export class App {
-    private program: commander.CommanderStatic;
-    private package: any;
+    protected program: commander.CommanderStatic;
+    protected package: any;
     constructor() {
         config();
         this.program = commander;

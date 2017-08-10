@@ -1,6 +1,8 @@
+/// <reference types="commander" />
+import * as commander from 'commander';
 export declare class App {
-    private program;
-    private package;
+    protected program: commander.CommanderStatic;
+    protected package: any;
     constructor();
     initialize(): void;
 }

@@ -1,21 +1,21 @@
 import TelegramBot = require('node-telegram-bot-api');
-import { IBasePlugin, ITelegramBotMessage } from './base.plugin';
+import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
-import { checkWordsInMessage, removeWordsFromMessage } from '../utils';
+import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
 
-export class WikiPlugin implements IBasePlugin {
+export class WikiPlugin implements IPlugin {
     public name = 'wiki';
     public description = 'Get basic information of word from wikipedia';
-    private wordsForSpy: string[];
-    private wiki = require('wikijs');
-    private wtfWikipedia = require("wtf_wikipedia");
+    protected wordsForSpy: string[];
+    protected wiki = require('wikijs');
+    protected wtfWikipedia = require("wtf_wikipedia");
 
     constructor(
-        private bot: TelegramBot,
-        private telegramBotLocale: string,
-        private telegramBotNameAliases: string[],
-        private wikipediaSpyWords: string[]
+        protected bot: TelegramBot,
+        protected telegramBotLocale: string,
+        protected telegramBotNameAliases: string[],
+        protected wikipediaSpyWords: string[]
     ) {
         this.wordsForSpy = wikipediaSpyWords;
     }
@@ -30,7 +30,7 @@ export class WikiPlugin implements IBasePlugin {
                 msg.chat.type !== 'private'
             );
     }
-    private searchOnWiki(text: string, locale?: string) {
+    protected searchOnWiki(text: string, locale?: string) {
         const event = new EventEmitter();
         locale = locale === undefined ? this.telegramBotLocale : locale;
         this.wiki.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })

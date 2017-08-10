@@ -8,7 +8,7 @@ export interface ITelegramBotMessage {
     text: string;
     chat: ITelegramBotMessageChat;
 }
-export interface IBasePlugin {
+export interface IPlugin {
     name: string;
     description: string;
     check(msg: ITelegramBotMessage): boolean;

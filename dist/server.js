@@ -1,19 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const bodyParser = require("body-parser");
-class Server {
+const base_server_1 = require("./lib/base.server");
+class Server extends base_server_1.BaseServer {
     constructor(name) {
+        super(name);
         this.name = name;
-        this.port = process.env[this.namePrefix + 'PORT'];
-        this.app = express();
-        this.app.use(bodyParser.json());
-        this.app.listen(this.port, () => {
-            console.log(`Express server is listening on ${this.port}`);
-        });
-    }
-    get namePrefix() {
-        return this.name === undefined ? '' : this.name.toUpperCase() + '_';
     }
 }
 exports.Server = Server;

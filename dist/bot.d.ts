@@ -1,14 +1,5 @@
-/// <reference types="node" />
-import { Server } from './server';
-import { EventEmitter } from 'events';
-export declare class Bot {
-    private name;
-    private bot;
-    private botToken;
-    private botHookUrl;
-    private plugins;
+import { BaseBot } from './lib/base.bot';
+export declare class Bot extends BaseBot {
+    protected name: string;
     constructor(name?: string);
-    private readonly namePrefix;
-    startPlugin(message: string, pluginName: string): EventEmitter;
-    startEndpoint(server: Server): void;
 }

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const _ = require("lodash");
-const utils_1 = require("../utils");
+const utils_1 = require("../lib/utils");
 class WikiPlugin {
     constructor(bot, telegramBotLocale, telegramBotNameAliases, wikipediaSpyWords) {
         this.bot = bot;

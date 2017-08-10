@@ -1,18 +1,18 @@
 import TelegramBot = require('node-telegram-bot-api');
-import { IBasePlugin, ITelegramBotMessage } from './base.plugin';
+import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
-import { removeWordsFromMessage, checkWordsInMessage } from '../utils';
+import { removeWordsFromMessage, checkWordsInMessage } from '../lib/utils';
 import apiai = require('apiai');
 
-export class ApiAiPlugin implements IBasePlugin {
+export class ApiAiPlugin implements IPlugin {
     public name = 'api-ai';
     public description = 'Simple usage https://api.ai service with default agent';
-    private wordsForSpy: string[];
-    private ai: any;
+    protected wordsForSpy: string[];
+    protected ai: any;
     constructor(
-        private bot: TelegramBot,
-        private telegramBotNameAliases: string[],
-        private apiaiClientAccessToken: string
+        protected bot: TelegramBot,
+        protected telegramBotNameAliases: string[],
+        protected apiaiClientAccessToken: string
     ) {
         this.wordsForSpy = telegramBotNameAliases;
         this.ai = apiai(apiaiClientAccessToken);
@@ -20,7 +20,7 @@ export class ApiAiPlugin implements IBasePlugin {
     public check(msg: ITelegramBotMessage): boolean {
         return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
-    private processOne(msg: ITelegramBotMessage): EventEmitter {
+    protected processOne(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();
         const request = this.ai.textRequest(msg.text, {
             sessionId: msg.chat.id
