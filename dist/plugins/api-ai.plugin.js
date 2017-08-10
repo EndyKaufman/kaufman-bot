@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const base_plugin_1 = require("./base.plugin");
 const events_1 = require("events");
 const utils_1 = require("../utils");
 const apiai = require("apiai");
-class ApiAiPlugin extends base_plugin_1.BasePlugin {
-    constructor(bot) {
-        super(bot);
+class ApiAiPlugin {
+    constructor(bot, telegramBotNameAliases, apiaiClientAccessToken) {
+        this.bot = bot;
+        this.telegramBotNameAliases = telegramBotNameAliases;
+        this.apiaiClientAccessToken = apiaiClientAccessToken;
         this.name = 'api-ai';
         this.description = 'Simple usage https://api.ai service with default agent';
-        this.wordsForSpy = process.env.TELEGRAM_BOT_NAME_ALIASES.split(',');
-        this.ai = apiai(process.env.APIAI_CLIENT_ACCESS_TOKEN);
+        this.wordsForSpy = telegramBotNameAliases;
+        this.ai = apiai(apiaiClientAccessToken);
     }
     check(msg) {
         return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';

@@ -1,14 +1,17 @@
 /// <reference types="node-telegram-bot-api" />
 /// <reference types="node" />
 import TelegramBot = require('node-telegram-bot-api');
-import { BasePlugin, ITelegramBotMessage } from './base.plugin';
+import { IBasePlugin, ITelegramBotMessage } from './base.plugin';
 import { EventEmitter } from 'events';
-export declare class ApiAiPlugin extends BasePlugin {
+export declare class ApiAiPlugin implements IBasePlugin {
+    private bot;
+    private telegramBotNameAliases;
+    private apiaiClientAccessToken;
     name: string;
     description: string;
-    wordsForSpy: string[];
+    private wordsForSpy;
     private ai;
-    constructor(bot: TelegramBot);
+    constructor(bot: TelegramBot, telegramBotNameAliases: string[], apiaiClientAccessToken: string);
     check(msg: ITelegramBotMessage): boolean;
     private processOne(msg);
     process(msg: ITelegramBotMessage): EventEmitter;

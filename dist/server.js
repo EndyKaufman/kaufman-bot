@@ -13,8 +13,8 @@ class Server {
         this.app = express();
         this.botToken = process.env.TELEGRAM_TOKEN;
         this.bot = new TelegramBot(this.botToken, { polling: true });
-        this.plugins.push(new wiki_plugin_1.WikiPlugin(this.bot));
-        this.plugins.push(new api_ai_plugin_1.ApiAiPlugin(this.bot));
+        this.plugins.push(new wiki_plugin_1.WikiPlugin(this.bot, process.env.TELEGRAM_BOT_LOCALE, process.env.TELEGRAM_BOT_NAME_ALIASES.split(','), process.env.WIKIPEDIA_SPY_WORDS.split(',')));
+        this.plugins.push(new api_ai_plugin_1.ApiAiPlugin(this.bot, process.env.TELEGRAM_BOT_NAME_ALIASES.split(','), process.env.APIAI_CLIENT_ACCESS_TOKEN));
     }
     startPlugin(message, pluginName) {
         const event = new events_1.EventEmitter();

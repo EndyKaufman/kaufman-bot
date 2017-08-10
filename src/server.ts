@@ -18,8 +18,17 @@ export class Server {
         this.botToken = process.env.TELEGRAM_TOKEN;
         this.bot = new TelegramBot(this.botToken, { polling: true });
         // Include plugins
-        this.plugins.push(new WikiPlugin(this.bot));
-        this.plugins.push(new ApiAiPlugin(this.bot));
+        this.plugins.push(new WikiPlugin(
+            this.bot,
+            process.env.TELEGRAM_BOT_LOCALE,
+            process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
+            process.env.WIKIPEDIA_SPY_WORDS.split(',')
+        ));
+        this.plugins.push(new ApiAiPlugin(
+            this.bot,
+            process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
+            process.env.APIAI_CLIENT_ACCESS_TOKEN
+        ));
     }
     public startPlugin(message: string, pluginName: string) {
         const event = new EventEmitter();
