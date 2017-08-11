@@ -17,7 +17,7 @@ export class ScraperPlugin implements IPlugin {
         protected bot: TelegramBot,
         protected telegramBotNameAliases: string[],
         protected scraperUri: string,
-        protected scraperTimeout: string,
+        protected scraperTimeout: number,
         protected scraperContentSelector: string,
         protected scraperContentLength: number,
         protected scraperSpyWords: string[]
@@ -37,15 +37,14 @@ export class ScraperPlugin implements IPlugin {
     }
     protected scrap(text: string) {
         const event = new EventEmitter();
-        const url = this.scraperUri.replace(new RegExp('{text}', "ig"), encodeURIComponent(text.trim()));
+        const url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
         request.get(url, { timeout: this.scraperTimeout }, (error: any, response: any, body: any) => {
             if (error) {
                 event.emit('message', false, false);
             } else {
                 const $ = cheerio.load(body);
                 const content = $(this.scraperContentSelector).html();
-                var text = htmlToText.fromString(content);
-                event.emit('message', text, url);
+                event.emit('message', htmlToText.fromString(content), url);
             }
         });
         return event;

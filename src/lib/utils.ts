@@ -6,6 +6,6 @@ export function checkWordsInMessage(message: string, words: string[]): boolean {
     ).length > 0;
 }
 export function removeWordsFromMessage(message: string, words: string[]): string {
-    words.map(word => message = message.replace(new RegExp(word, "ig"), ''))
+    words.map(word => message = message.replace(new RegExp(word, 'ig'), ''))
     return message;
 }

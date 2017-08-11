@@ -28,7 +28,7 @@ export class BaseBot implements IBot {
     }
     public startPlugin(message: string, pluginName: string) {
         const event = new EventEmitter();
-        let msg: ITelegramBotMessage = {
+        const msg: ITelegramBotMessage = {
             text: message,
             chat: {
                 id: 'random',
@@ -36,7 +36,8 @@ export class BaseBot implements IBot {
             }
         };
         let founded = false;
-        let i = 0, len = this.plugins.length;
+        let i = 0;
+        const len = this.plugins.length;
         for (i = 0; i < len; i++) {
             if (
                 !founded &&
@@ -48,8 +49,8 @@ export class BaseBot implements IBot {
                     if (answer) {
                         event.emit('message', answer);
                     } else {
-                        this.notFound(msg).on('message', (answer: string) => {
-                            event.emit('message', answer);
+                        this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                            event.emit('message', notFoundAnswer);
                         })
                     }
                 });
@@ -71,7 +72,8 @@ export class BaseBot implements IBot {
         }
         this.bot.on('message', (msg: ITelegramBotMessage) => {
             let founded = false;
-            let i = 0, len = this.plugins.length;
+            let i = 0;
+            const len = this.plugins.length;
             for (i = 0; i < len; i++) {
                 if (!founded && this.plugins[i].check(msg)) {
                     founded = true;
@@ -80,8 +82,8 @@ export class BaseBot implements IBot {
                             if (answer) {
                                 this.bot.sendMessage(msg.chat.id, answer);
                             } else {
-                                this.notFound(msg).on('message', (answer: string) => {
-                                    this.bot.sendMessage(msg.chat.id, answer);
+                                this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                    this.bot.sendMessage(msg.chat.id, notFoundAnswer);
                                 });
                             }
                         })
@@ -95,7 +97,8 @@ export class BaseBot implements IBot {
         const event = new EventEmitter();
         setTimeout(() => {
             let founded = false;
-            let j = 0, len = this.plugins.length;
+            let j = 0;
+            const len = this.plugins.length;
             for (j = 0; j < len; j++) {
                 if (!founded && this.plugins[j]['name'] === 'api-ai') {
                     founded = true;

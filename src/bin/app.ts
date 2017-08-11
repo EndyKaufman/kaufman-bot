@@ -41,5 +41,5 @@ export class App {
         }
     }
 }
-let app = new App();
+const app = new App();
 app.initialize();

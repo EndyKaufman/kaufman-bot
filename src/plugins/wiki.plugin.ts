@@ -5,7 +5,7 @@ import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
 
 const wikijs = require('wikijs');
-const wtfWikipedia = require("wtf_wikipedia");
+const wtfWikipedia = require('wtf_wikipedia');
 
 export class WikiPlugin implements IPlugin {
     public name = 'wiki';
@@ -39,23 +39,23 @@ export class WikiPlugin implements IPlugin {
             .search(text, 1).then((data: any) => {
                 if (data.results.length > 0) {
                     let pageName = data.results[0];
-                    pageName = pageName.replace(new RegExp(' ', "ig"), '_');
+                    pageName = pageName.replace(new RegExp(' ', 'ig'), '_');
                     wtfWikipedia.from_api(pageName, this.telegramBotLocale, (markup: any) => {
                         let answer = '';
                         if (markup) {
-                            let parsed_markup = wtfWikipedia.parse(markup) || null;
-                            if (parsed_markup.pages && parsed_markup.pages.length > 0) {
-                                let arr = markup.split('\n');
+                            const parsedMarkup = wtfWikipedia.parse(markup) || null;
+                            if (parsedMarkup.pages && parsedMarkup.pages.length > 0) {
+                                const arr = markup.split('\n');
                                 if (arr.length > 0) {
-                                    answer = parsed_markup.pages.join('\n\n');
+                                    answer = parsedMarkup.pages.join('\n\n');
                                 } else {
                                     answer = '';
                                 }
                             } else {
-                                answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                                answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', 'ig'), '\n');
                             }
                         }
-                        let url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
+                        const url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
                         event.emit('message', answer, url);
                     });
                 } else {
@@ -72,12 +72,12 @@ export class WikiPlugin implements IPlugin {
         text = removeWordsFromMessage(text, this.telegramBotNameAliases);
         this.searchOnWiki(text).on('message', (answer: string, url: string) => {
             if (!answer || !checkWordsInMessage(answer, _.words(text))) {
-                this.searchOnWiki(text, 'en').on('message', (answer: string, url: string) => {
-                    if (answer) {
-                        event.emit('message', answer.substring(0, this.wikipediaContentLength) + '...\n\n' + url);
+                this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
+                    if (answerTwo) {
+                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength) + '...\n\n' + urlTwo);
                     } else {
-                        if (url) {
-                            event.emit('message', url);
+                        if (urlTwo) {
+                            event.emit('message', urlTwo);
                         } else {
                             event.emit('message', false);
                         }

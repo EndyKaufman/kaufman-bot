@@ -22,10 +22,10 @@ export class ApiAiPlugin implements IPlugin {
     public check(msg: ITelegramBotMessage): boolean {
         return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
-    protected processOne(msg: ITelegramBotMessage): EventEmitter {
+    protected askAi(message: string, sessionId: string): EventEmitter {
         const event = new EventEmitter();
-        const request = this.ai.textRequest(msg.text, {
-            sessionId: msg.chat.id
+        const request = this.ai.textRequest(message, {
+            sessionId: sessionId
         });
         request.on('response', function (response: any) {
             event.emit('message', response.result.fulfillment.speech);
@@ -35,13 +35,13 @@ export class ApiAiPlugin implements IPlugin {
     }
     public process(msg: ITelegramBotMessage): EventEmitter {
         const event = new EventEmitter();
-        this.processOne(msg).on('message', (answer: string) => {
+        this.askAi(msg.text, msg.chat.id).on('message', (answer: string) => {
             if (answer) {
                 event.emit('message', answer);
             } else {
                 msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-                this.processOne(msg).on('message', (answer: string) => {
-                    event.emit('message', answer);
+                this.askAi(msg.text, msg.chat.id).on('message', (answerTwo: string) => {
+                    event.emit('message', answerTwo);
                 })
             }
         });
