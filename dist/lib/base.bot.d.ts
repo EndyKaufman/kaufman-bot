@@ -10,7 +10,7 @@ export interface IBot {
 }
 export declare class BaseBot implements IBot {
     protected name: string;
-    protected bot: TelegramBot;
+    protected bot: any | TelegramBot;
     protected botToken: string;
     protected botHookUrl: string;
     protected plugins: IPlugin[];

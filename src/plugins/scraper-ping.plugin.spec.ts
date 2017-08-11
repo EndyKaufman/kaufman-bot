@@ -14,7 +14,7 @@ describe('ScraperPlugin: ping', () => {
             plugin = new ScraperPlugin(
                 null,
                 process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
-                process.env.SCRAPER_PING_URI,
+                'http://2whois.ru/?t=ping&data={text}',
                 +process.env.SCRAPER_PING_TIMEOUT,
                 process.env.SCRAPER_PING_CONTENT_SELECTOR,
                 +process.env.SCRAPER_PING_CONTENT_LENGTH,
