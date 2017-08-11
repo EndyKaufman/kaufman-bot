@@ -7,7 +7,7 @@ function checkWordsInMessage(message, words) {
 }
 exports.checkWordsInMessage = checkWordsInMessage;
 function removeWordsFromMessage(message, words) {
-    words.map(word => message = message.replace(new RegExp(word, "ig"), ''));
+    words.map(word => message = message.replace(new RegExp(word, 'ig'), ''));
     return message;
 }
 exports.removeWordsFromMessage = removeWordsFromMessage;

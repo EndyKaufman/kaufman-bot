@@ -20,7 +20,7 @@ class BaseBot {
     }
     startPlugin(message, pluginName) {
         const event = new events_1.EventEmitter();
-        let msg = {
+        const msg = {
             text: message,
             chat: {
                 id: 'random',
@@ -28,7 +28,8 @@ class BaseBot {
             }
         };
         let founded = false;
-        let i = 0, len = this.plugins.length;
+        let i = 0;
+        const len = this.plugins.length;
         for (i = 0; i < len; i++) {
             if (!founded &&
                 (pluginName === null && this.plugins[i].check(msg)) ||
@@ -39,8 +40,8 @@ class BaseBot {
                         event.emit('message', answer);
                     }
                     else {
-                        this.notFound(msg).on('message', (answer) => {
-                            event.emit('message', answer);
+                        this.notFound(msg).on('message', (notFoundAnswer) => {
+                            event.emit('message', notFoundAnswer);
                         });
                     }
                 });
@@ -62,7 +63,8 @@ class BaseBot {
         }
         this.bot.on('message', (msg) => {
             let founded = false;
-            let i = 0, len = this.plugins.length;
+            let i = 0;
+            const len = this.plugins.length;
             for (i = 0; i < len; i++) {
                 if (!founded && this.plugins[i].check(msg)) {
                     founded = true;
@@ -71,8 +73,8 @@ class BaseBot {
                             this.bot.sendMessage(msg.chat.id, answer);
                         }
                         else {
-                            this.notFound(msg).on('message', (answer) => {
-                                this.bot.sendMessage(msg.chat.id, answer);
+                            this.notFound(msg).on('message', (notFoundAnswer) => {
+                                this.bot.sendMessage(msg.chat.id, notFoundAnswer);
                             });
                         }
                     }), 700);
@@ -85,7 +87,8 @@ class BaseBot {
         const event = new events_1.EventEmitter();
         timers_1.setTimeout(() => {
             let founded = false;
-            let j = 0, len = this.plugins.length;
+            let j = 0;
+            const len = this.plugins.length;
             for (j = 0; j < len; j++) {
                 if (!founded && this.plugins[j]['name'] === 'api-ai') {
                     founded = true;

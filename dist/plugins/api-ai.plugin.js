@@ -16,10 +16,10 @@ class ApiAiPlugin {
     check(msg) {
         return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
-    processOne(msg) {
+    askAi(message, sessionId) {
         const event = new events_1.EventEmitter();
-        const request = this.ai.textRequest(msg.text, {
-            sessionId: msg.chat.id
+        const request = this.ai.textRequest(message, {
+            sessionId: sessionId
         });
         request.on('response', function (response) {
             event.emit('message', response.result.fulfillment.speech);
@@ -29,14 +29,14 @@ class ApiAiPlugin {
     }
     process(msg) {
         const event = new events_1.EventEmitter();
-        this.processOne(msg).on('message', (answer) => {
+        this.askAi(msg.text, msg.chat.id).on('message', (answer) => {
             if (answer) {
                 event.emit('message', answer);
             }
             else {
                 msg.text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
-                this.processOne(msg).on('message', (answer) => {
-                    event.emit('message', answer);
+                this.askAi(msg.text, msg.chat.id).on('message', (answerTwo) => {
+                    event.emit('message', answerTwo);
                 });
             }
         });

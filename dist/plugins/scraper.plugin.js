@@ -27,7 +27,7 @@ class ScraperPlugin {
     }
     scrap(text) {
         const event = new events_1.EventEmitter();
-        const url = this.scraperUri.replace(new RegExp('{text}', "ig"), encodeURIComponent(text.trim()));
+        const url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
         request.get(url, { timeout: this.scraperTimeout }, (error, response, body) => {
             if (error) {
                 event.emit('message', false, false);
@@ -35,8 +35,7 @@ class ScraperPlugin {
             else {
                 const $ = cheerio.load(body);
                 const content = $(this.scraperContentSelector).html();
-                var text = htmlToText.fromString(content);
-                event.emit('message', text, url);
+                event.emit('message', htmlToText.fromString(content), url);
             }
         });
         return event;

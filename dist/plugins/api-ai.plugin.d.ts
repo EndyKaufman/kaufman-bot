@@ -13,6 +13,6 @@ export declare class ApiAiPlugin implements IPlugin {
     protected ai: any;
     constructor(bot: TelegramBot, telegramBotNameAliases: string[], apiaiClientAccessToken: string);
     check(msg: ITelegramBotMessage): boolean;
-    protected processOne(msg: ITelegramBotMessage): EventEmitter;
+    protected askAi(message: string, sessionId: string): EventEmitter;
     process(msg: ITelegramBotMessage): EventEmitter;
 }
