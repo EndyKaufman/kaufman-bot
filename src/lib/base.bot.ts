@@ -19,6 +19,13 @@ export class BaseBot implements IBot {
     protected get namePrefix() {
         return this.name === undefined ? '' : this.name.toUpperCase() + '_';
     }
+    protected env(name: string, defaultValue: any = '') {
+        if (process.env[this.namePrefix + name]) {
+            return process.env[this.namePrefix + name]
+        } else {
+            return defaultValue;
+        }
+    }
     public startPlugin(message: string, pluginName: string) {
         const event = new EventEmitter();
         let msg: ITelegramBotMessage = {

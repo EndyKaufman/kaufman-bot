@@ -10,6 +10,14 @@ class BaseBot {
     get namePrefix() {
         return this.name === undefined ? '' : this.name.toUpperCase() + '_';
     }
+    env(name, defaultValue = '') {
+        if (process.env[this.namePrefix + name]) {
+            return process.env[this.namePrefix + name];
+        }
+        else {
+            return defaultValue;
+        }
+    }
     startPlugin(message, pluginName) {
         const event = new events_1.EventEmitter();
         let msg = {

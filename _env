@@ -1,13 +1,13 @@
 PORT=1105
 TELEGRAM_TOKEN=
 TELEGRAM_HOOK_URL=
-TELEGRAM_BOT_NAME_ALIASES=kaufman,endy
+TELEGRAM_BOT_NAME_ALIASES="kaufman,endy"
 TELEGRAM_BOT_LOCALE=en
 APIAI_CLIENT_ACCESS_TOKEN=
-WIKIPEDIA_SPY_WORDS=wiki,wikipedia
+WIKIPEDIA_SPY_WORDS="wiki,wikipedia"
 WIKIPEDIA_CONTENT_LENGTH=500
-SCRAPER_PING_URI=http://2whois.ru/?t=ping&data={text}
+SCRAPER_PING_URI="http://2whois.ru/?t=ping&data={text}"
 SCRAPER_PING_TIMEOUT=10000
-SCRAPER_PING_CONTENT_SELECTOR=body > div.wrapper > div.container.content > div.row.margin-bottom-30 > div > div > div > div > div > div.col-md-9 > div > pre
+SCRAPER_PING_CONTENT_SELECTOR="body > div.wrapper > div.container.content > div.row.margin-bottom-30 > div > div > div > div > div > div.col-md-9 > div > pre"
 SCRAPER_PING_CONTENT_LENGTH=1000
-SCRAPER_PING_SPY_WORDS=ping,пинг,пинганика
+SCRAPER_PING_SPY_WORDS="ping,пинг,пинганика"

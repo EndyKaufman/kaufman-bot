@@ -16,6 +16,7 @@ export declare class BaseBot implements IBot {
     protected plugins: IPlugin[];
     constructor(name?: string);
     protected readonly namePrefix: string;
+    protected env(name: string, defaultValue?: any): any;
     startPlugin(message: string, pluginName: string): EventEmitter;
     startEndpoint(server: IServer): void;
     protected notFound(msg: ITelegramBotMessage): EventEmitter;
