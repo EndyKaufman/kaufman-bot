@@ -5,15 +5,15 @@ import { ApiAiPlugin } from './api-ai.plugin';
 import { ITelegramBotMessage } from './base.plugin';
 
 const assert = chai.assert;
-let plugin: ApiAiPlugin;
 
 describe('ApiAiPlugin', () => {
     describe('without telegram', () => {
+        let plugin: ApiAiPlugin;
         before(function () {
             config();
             plugin = new ApiAiPlugin(
                 null,
-                process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
+                ['bot'],
                 process.env.APIAI_CLIENT_ACCESS_TOKEN
             );
         });

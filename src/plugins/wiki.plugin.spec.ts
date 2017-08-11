@@ -5,18 +5,18 @@ import { ITelegramBotMessage } from './base.plugin';
 import { WikiPlugin } from './wiki.plugin';
 
 const assert = chai.assert;
-let plugin: WikiPlugin;
 
 describe('WikiPlugin', () => {
     describe('without telegram', () => {
+        let plugin: WikiPlugin;
         before(function () {
             config();
             plugin = new WikiPlugin(
                 null,
-                process.env.TELEGRAM_BOT_LOCALE,
-                process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
-                +process.env.WIKIPEDIA_CONTENT_LENGTH,
-                process.env.WIKIPEDIA_SPY_WORDS.split(',')
+                'en',
+                ['bot'],
+                100,
+                ['wiki']
             );
         });
         it('should response include a message "Microsoft Corporation"', (done) => {

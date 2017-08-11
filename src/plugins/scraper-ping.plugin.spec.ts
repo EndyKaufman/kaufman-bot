@@ -1,36 +1,47 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
+import * as express from 'express';
 import { ITelegramBotMessage } from './base.plugin';
 import { ScraperPlugin } from './scraper.plugin';
 
 const assert = chai.assert;
-let plugin: ScraperPlugin;
 
 describe('ScraperPlugin', () => {
+    const app = express();
+    const server = app.listen(0);
+    const port = server.address().port;
+
     describe('without telegram', () => {
+        let plugin: ScraperPlugin;
         before(function () {
             config();
             plugin = new ScraperPlugin(
                 null,
-                process.env.TELEGRAM_BOT_NAME_ALIASES.split(','),
-                process.env.SCRAPER_PING_URI,
-                +process.env.SCRAPER_PING_TIMEOUT,
-                process.env.SCRAPER_PING_CONTENT_SELECTOR,
-                +process.env.SCRAPER_PING_CONTENT_LENGTH,
-                process.env.SCRAPER_PING_SPY_WORDS.split(',')
+                ['bot'],
+                `http://localhost:${port}/{text}`,
+                1500,
+                'title',
+                100,
+                ['ping']
             );
         });
-        it('should response include a message "--- ya.ru ping statistics ---"', (done) => {
+        after(function () {
+            server.close();
+        });
+        it('should response include a message "Hello, World!"', (done) => {
             const msg: ITelegramBotMessage = {
-                text: 'ping ya.ru',
+                text: 'action',
                 chat: {
                     id: 'random',
                     type: 'private'
                 }
             };
+            app.get('/action', function (req, res) {
+                res.send('<title>Hello, World!<title>');
+            });
             plugin.process(msg).on('message', (answer: string) => {
-                assert(answer.indexOf('--- ya.ru ping statistics ---') !== -1);
+                assert(answer.indexOf('Hello, World!') !== -1);
                 done();
             })
         });
