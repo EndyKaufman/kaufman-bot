@@ -34,7 +34,19 @@ class WikiPlugin {
                 wtfWikipedia.from_api(pageName, this.telegramBotLocale, (markup) => {
                     let answer = '';
                     if (markup) {
-                        answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                        let parsed_markup = wtfWikipedia.parse(markup) || null;
+                        if (parsed_markup.pages && parsed_markup.pages.length > 0) {
+                            let arr = markup.split('\n');
+                            if (arr.length > 0) {
+                                answer = parsed_markup.pages.join('\n\n');
+                            }
+                            else {
+                                answer = '';
+                            }
+                        }
+                        else {
+                            answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', "ig"), '\n');
+                        }
                     }
                     let url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
                     event.emit('message', answer, url);
@@ -43,7 +55,9 @@ class WikiPlugin {
             else {
                 event.emit('message', false, false);
             }
-        }, (error) => event.emit('message', false, false));
+        }, (error) => {
+            event.emit('message', false, false);
+        });
         return event;
     }
     process(msg) {
