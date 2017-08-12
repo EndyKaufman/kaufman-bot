@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const bodyParser = require("body-parser");
-class BaseServer {
+class BaseWebServer {
     constructor(name) {
         this.name = name;
         this.port = process.env[this.namePrefix + 'PORT'];
@@ -16,4 +16,4 @@ class BaseServer {
         return this.name === undefined ? '' : this.name.toUpperCase() + '_';
     }
 }
-exports.BaseServer = BaseServer;
+exports.BaseWebServer = BaseWebServer;

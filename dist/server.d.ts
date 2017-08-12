@@ -1,5 +1,5 @@
-import { BaseServer } from './lib/base.server';
-export declare class Server extends BaseServer {
+import { BaseWebServer } from './lib/base.web-server';
+export declare class WebServer extends BaseWebServer {
     protected name: string;
     constructor(name?: string);
 }

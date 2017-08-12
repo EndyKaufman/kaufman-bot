@@ -1,7 +1,5 @@
-export interface IServer {
-    app: any;
-}
-export declare class BaseServer implements IServer {
+import { IWebServer } from './interfaces';
+export declare class BaseWebServer implements IWebServer {
     protected name: string;
     app: any;
     protected port: string;

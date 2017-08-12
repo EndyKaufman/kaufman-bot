@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const timers_1 = require("timers");
 const events_1 = require("events");
-class BaseBot {
+class BaseBotServer {
     constructor(name) {
         this.name = name;
-        this.plugins = [];
+        if (this.plugins === undefined) {
+            this.plugins = [];
+        }
     }
     get namePrefix() {
         return this.name === undefined ? '' : this.name.toUpperCase() + '_';
@@ -32,10 +34,10 @@ class BaseBot {
         const len = this.plugins.length;
         for (i = 0; i < len; i++) {
             if (!founded &&
-                (pluginName === null && this.plugins[i].check(msg)) ||
+                (pluginName === null && this.plugins[i].check(this.bot, msg)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)) {
                 founded = true;
-                this.plugins[i].process(msg).on('message', (answer) => {
+                this.plugins[i].process(this.bot, msg).on('message', (answer) => {
                     if (answer) {
                         event.emit('message', answer);
                     }
@@ -66,9 +68,9 @@ class BaseBot {
             let i = 0;
             const len = this.plugins.length;
             for (i = 0; i < len; i++) {
-                if (!founded && this.plugins[i].check(msg)) {
+                if (!founded && this.plugins[i].check(this.bot, msg)) {
                     founded = true;
-                    timers_1.setTimeout(() => this.plugins[i].process(msg).on('message', (answer) => {
+                    timers_1.setTimeout(() => this.plugins[i].process(this.bot, msg).on('message', (answer) => {
                         if (answer) {
                             this.bot.sendMessage(msg.chat.id, answer);
                         }
@@ -93,7 +95,7 @@ class BaseBot {
                 if (!founded && this.plugins[j]['name'] === 'api-ai') {
                     founded = true;
                     msg.text = 'bot.not_found';
-                    this.plugins[j].process(msg).on('message', (answer) => {
+                    this.plugins[j].process(this.bot, msg).on('message', (answer) => {
                         event.emit('message', answer);
                     });
                     break;
@@ -106,4 +108,4 @@ class BaseBot {
         return event;
     }
 }
-exports.BaseBot = BaseBot;
+exports.BaseBotServer = BaseBotServer;

@@ -5,9 +5,8 @@ const _ = require("lodash");
 const utils_1 = require("../lib/utils");
 const wikijs = require('wikijs');
 const wtfWikipedia = require('wtf_wikipedia');
-class WikiPlugin {
-    constructor(bot, telegramBotLocale, telegramBotNameAliases, wikipediaContentLength, wikipediaSpyWords) {
-        this.bot = bot;
+class WikIBotPlugin {
+    constructor(telegramBotLocale, telegramBotNameAliases, wikipediaContentLength, wikipediaSpyWords) {
         this.telegramBotLocale = telegramBotLocale;
         this.telegramBotNameAliases = telegramBotNameAliases;
         this.wikipediaContentLength = wikipediaContentLength;
@@ -16,7 +15,7 @@ class WikiPlugin {
         this.description = 'Get basic information of word from wikipedia';
         this.wordsForSpy = wikipediaSpyWords;
     }
-    check(msg) {
+    check(bot, msg) {
         return (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
             msg.chat.type === 'private') ||
             (utils_1.checkWordsInMessage(msg.text, this.telegramBotNameAliases) &&
@@ -60,7 +59,7 @@ class WikiPlugin {
         });
         return event;
     }
-    process(msg) {
+    process(bot, msg) {
         const event = new events_1.EventEmitter();
         let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
         text = utils_1.removeWordsFromMessage(text, this.telegramBotNameAliases);
@@ -97,4 +96,4 @@ class WikiPlugin {
         return event;
     }
 }
-exports.WikiPlugin = WikiPlugin;
+exports.WikIBotPlugin = WikIBotPlugin;

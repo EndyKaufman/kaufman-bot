@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const utils_1 = require("../lib/utils");
 const apiai = require('apiai');
-class ApiAiPlugin {
-    constructor(bot, telegramBotNameAliases, apiaiClientAccessToken) {
-        this.bot = bot;
+class ApiAIBotPlugin {
+    constructor(telegramBotNameAliases, apiaiClientAccessToken) {
         this.telegramBotNameAliases = telegramBotNameAliases;
         this.apiaiClientAccessToken = apiaiClientAccessToken;
         this.name = 'api-ai';
@@ -13,7 +12,7 @@ class ApiAiPlugin {
         this.wordsForSpy = telegramBotNameAliases;
         this.ai = apiai(apiaiClientAccessToken);
     }
-    check(msg) {
+    check(bot, msg) {
         return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
     askAi(message, sessionId) {
@@ -27,7 +26,7 @@ class ApiAiPlugin {
         request.end();
         return event;
     }
-    process(msg) {
+    process(bot, msg) {
         const event = new events_1.EventEmitter();
         this.askAi(msg.text, msg.chat.id).on('message', (answer) => {
             if (answer) {
@@ -43,4 +42,4 @@ class ApiAiPlugin {
         return event;
     }
 }
-exports.ApiAiPlugin = ApiAiPlugin;
+exports.ApiAIBotPlugin = ApiAIBotPlugin;

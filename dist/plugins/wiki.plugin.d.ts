@@ -1,10 +1,7 @@
-/// <reference types="node-telegram-bot-api" />
 /// <reference types="node" />
-import TelegramBot = require('node-telegram-bot-api');
 import { EventEmitter } from 'events';
-import { IPlugin, ITelegramBotMessage } from './base.plugin';
-export declare class WikiPlugin implements IPlugin {
-    protected bot: TelegramBot;
+import { IBot, IBotPlugin, IBotMessage } from '../lib/interfaces';
+export declare class WikIBotPlugin implements IBotPlugin {
     protected telegramBotLocale: string;
     protected telegramBotNameAliases: string[];
     protected wikipediaContentLength: number;
@@ -12,8 +9,8 @@ export declare class WikiPlugin implements IPlugin {
     name: string;
     description: string;
     protected wordsForSpy: string[];
-    constructor(bot: TelegramBot, telegramBotLocale: string, telegramBotNameAliases: string[], wikipediaContentLength: number, wikipediaSpyWords: string[]);
-    check(msg: ITelegramBotMessage): boolean;
+    constructor(telegramBotLocale: string, telegramBotNameAliases: string[], wikipediaContentLength: number, wikipediaSpyWords: string[]);
+    check(bot: IBot, msg: IBotMessage): boolean;
     protected searchOnWiki(text: string, locale?: string): EventEmitter;
-    process(msg: ITelegramBotMessage): EventEmitter;
+    process(bot: IBot, msg: IBotMessage): EventEmitter;
 }

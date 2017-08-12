@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const commander = require("commander");
 const dotenv_1 = require("dotenv");
 const server_1 = require("../server");
-const bot_1 = require("../bot");
+const telegram_bot_server_1 = require("../bots/telegram.bot-server");
 class App {
     constructor() {
         dotenv_1.config();
@@ -20,8 +20,8 @@ class App {
         let selected = false;
         if (!selected && this.program.plugin) {
             selected = true;
-            const bot = new bot_1.Bot();
-            bot.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
+            const telegramBotServer = new telegram_bot_server_1.TelegramBotServer();
+            telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
                 .on('message', (answer) => {
                 console.log(answer);
                 process.exit(0);
@@ -29,9 +29,9 @@ class App {
         }
         if (!selected && this.program.start) {
             selected = true;
-            const server = new server_1.Server();
-            const bot = new bot_1.Bot();
-            bot.startEndpoint(server);
+            const webServer = new server_1.WebServer();
+            const telegramBotServer = new telegram_bot_server_1.TelegramBotServer();
+            telegramBotServer.startEndpoint(webServer);
         }
         if (!selected) {
             selected = true;
