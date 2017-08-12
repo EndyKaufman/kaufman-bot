@@ -2,7 +2,7 @@
 import { EventEmitter } from 'events';
 import { IBotPlugin, IBot, IBotMessage } from '../lib/interfaces';
 export declare class ScraperPlugin implements IBotPlugin {
-    protected telegramBotNameAliases: string[];
+    protected botNameAliases: string[];
     protected scraperUri: string;
     protected scraperTimeout: number;
     protected scraperContentSelector: string;
@@ -11,7 +11,7 @@ export declare class ScraperPlugin implements IBotPlugin {
     name: string;
     description: string;
     protected wordsForSpy: string[];
-    constructor(telegramBotNameAliases: string[], scraperUri: string, scraperTimeout: number, scraperContentSelector: string, scraperContentLength: number, scraperSpyWords: string[]);
+    constructor(botNameAliases: string[], scraperUri: string, scraperTimeout: number, scraperContentSelector: string, scraperContentLength: number, scraperSpyWords: string[]);
     check(bot: IBot, msg: IBotMessage): boolean;
     protected scrap(text: string): EventEmitter;
     process(bot: IBot, msg: IBotMessage): EventEmitter;

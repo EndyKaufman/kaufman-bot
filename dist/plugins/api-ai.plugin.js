@@ -4,12 +4,12 @@ const events_1 = require("events");
 const utils_1 = require("../lib/utils");
 const apiai = require('apiai');
 class ApiAIBotPlugin {
-    constructor(telegramBotNameAliases, apiaiClientAccessToken) {
-        this.telegramBotNameAliases = telegramBotNameAliases;
+    constructor(botNameAliases, apiaiClientAccessToken) {
+        this.botNameAliases = botNameAliases;
         this.apiaiClientAccessToken = apiaiClientAccessToken;
         this.name = 'api-ai';
         this.description = 'Simple usage https://api.ai service with default agent';
-        this.wordsForSpy = telegramBotNameAliases;
+        this.wordsForSpy = botNameAliases;
         this.ai = apiai(apiaiClientAccessToken);
     }
     check(bot, msg) {

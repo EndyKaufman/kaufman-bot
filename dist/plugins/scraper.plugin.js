@@ -6,8 +6,8 @@ const request = require('request');
 const cheerio = require('cheerio');
 const htmlToText = require('html-to-text');
 class ScraperPlugin {
-    constructor(telegramBotNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords) {
-        this.telegramBotNameAliases = telegramBotNameAliases;
+    constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords) {
+        this.botNameAliases = botNameAliases;
         this.scraperUri = scraperUri;
         this.scraperTimeout = scraperTimeout;
         this.scraperContentSelector = scraperContentSelector;
@@ -20,7 +20,7 @@ class ScraperPlugin {
     check(bot, msg) {
         return (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
             msg.chat.type === 'private') ||
-            (utils_1.checkWordsInMessage(msg.text, this.telegramBotNameAliases) &&
+            (utils_1.checkWordsInMessage(msg.text, this.botNameAliases) &&
                 utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private');
     }
@@ -42,7 +42,7 @@ class ScraperPlugin {
     process(bot, msg) {
         const event = new events_1.EventEmitter();
         let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = utils_1.removeWordsFromMessage(text, this.telegramBotNameAliases);
+        text = utils_1.removeWordsFromMessage(text, this.botNameAliases);
         this.scrap(text).on('message', (answer, url) => {
             if (answer) {
                 event.emit('message', answer.substring(0, this.scraperContentLength) + '...\n\n' + url);
