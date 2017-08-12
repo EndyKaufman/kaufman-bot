@@ -2,8 +2,8 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
 import * as express from 'express';
-import { ITelegramBotMessage } from './base.plugin';
 import { ScraperPlugin } from './scraper.plugin';
+import { IBotMessage } from '../lib/interfaces';
 
 const assert = chai.assert;
 
@@ -17,7 +17,6 @@ describe('ScraperPlugin', () => {
         before(function () {
             config();
             plugin = new ScraperPlugin(
-                null,
                 ['bot'],
                 `http://localhost:${port}/{text}`,
                 1500,
@@ -30,7 +29,7 @@ describe('ScraperPlugin', () => {
             server.close();
         });
         it('should response include a message "Hello, World!"', (done) => {
-            const msg: ITelegramBotMessage = {
+            const msg: IBotMessage = {
                 text: 'action',
                 chat: {
                     id: 'random',
@@ -40,7 +39,7 @@ describe('ScraperPlugin', () => {
             app.get('/action', function (req, res) {
                 res.send('<title>Hello, World!<title>');
             });
-            plugin.process(msg).on('message', (answer: string) => {
+            plugin.process(null, msg).on('message', (answer: string) => {
                 assert(answer.indexOf('Hello, World!') !== -1);
                 done();
             })

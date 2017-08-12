@@ -1,19 +1,17 @@
-import TelegramBot = require('node-telegram-bot-api');
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
-import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
+import { IBot, IBotPlugin, IBotMessage } from '../lib/interfaces';
 
 const wikijs = require('wikijs');
 const wtfWikipedia = require('wtf_wikipedia');
 
-export class WikiPlugin implements IPlugin {
+export class WikIBotPlugin implements IBotPlugin {
     public name = 'wiki';
     public description = 'Get basic information of word from wikipedia';
     protected wordsForSpy: string[];
 
     constructor(
-        protected bot: TelegramBot,
         protected telegramBotLocale: string,
         protected telegramBotNameAliases: string[],
         protected wikipediaContentLength: number,
@@ -21,7 +19,7 @@ export class WikiPlugin implements IPlugin {
     ) {
         this.wordsForSpy = wikipediaSpyWords;
     }
-    public check(msg: ITelegramBotMessage): boolean {
+    public check(bot: IBot, msg: IBotMessage): boolean {
         return (
             checkWordsInMessage(msg.text, this.wordsForSpy) &&
             msg.chat.type === 'private'
@@ -66,7 +64,7 @@ export class WikiPlugin implements IPlugin {
             });
         return event;
     }
-    public process(msg: ITelegramBotMessage): EventEmitter {
+    public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
         let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
         text = removeWordsFromMessage(text, this.telegramBotNameAliases);

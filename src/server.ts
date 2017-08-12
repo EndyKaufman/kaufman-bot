@@ -1,9 +1,7 @@
 import * as express from 'express';
-import * as bodyParser from 'body-parser';
-import { Bot } from './bot';
-import { BaseServer } from './lib/base.server';
+import { BaseWebServer } from './lib/base.web-server';
 
-export class Server extends BaseServer {
+export class WebServer extends BaseWebServer {
     constructor(protected name?: string) {
         super(name);
     }

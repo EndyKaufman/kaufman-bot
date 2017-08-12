@@ -1,7 +1,7 @@
 import * as commander from 'commander';
 import { config } from 'dotenv';
-import { Server } from '../server';
-import { Bot } from '../bot';
+import { WebServer } from '../server';
+import { TelegramBotServer } from '../bots/telegram.bot-server';
 
 export class App {
     protected program: commander.CommanderStatic;
@@ -21,8 +21,8 @@ export class App {
         let selected = false;
         if (!selected && this.program.plugin) {
             selected = true;
-            const bot = new Bot();
-            bot.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
+            const telegramBotServer = new TelegramBotServer();
+            telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
                 .on('message', (answer: string) => {
                     console.log(answer);
                     process.exit(0);
@@ -30,9 +30,9 @@ export class App {
         }
         if (!selected && this.program.start) {
             selected = true;
-            const server = new Server();
-            const bot = new Bot();
-            bot.startEndpoint(server);
+            const webServer = new WebServer();
+            const telegramBotServer = new TelegramBotServer();
+            telegramBotServer.startEndpoint(webServer);
         }
 
         if (!selected) {

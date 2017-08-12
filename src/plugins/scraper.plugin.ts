@@ -1,20 +1,18 @@
-import TelegramBot = require('node-telegram-bot-api');
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
-import { IPlugin, ITelegramBotMessage } from './base.plugin';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
+import { IBotPlugin, IBot, IBotMessage } from '../lib/interfaces';
 
 const request = require('request');
 const cheerio = require('cheerio');
 const htmlToText = require('html-to-text');
 
-export class ScraperPlugin implements IPlugin {
+export class ScraperPlugin implements IBotPlugin {
     public name = 'scraper';
     public description = 'Scraping content segment as jquery selector from remote site';
     protected wordsForSpy: string[];
 
     constructor(
-        protected bot: TelegramBot,
         protected telegramBotNameAliases: string[],
         protected scraperUri: string,
         protected scraperTimeout: number,
@@ -24,7 +22,7 @@ export class ScraperPlugin implements IPlugin {
     ) {
         this.wordsForSpy = scraperSpyWords;
     }
-    public check(msg: ITelegramBotMessage): boolean {
+    public check(bot: IBot, msg: IBotMessage): boolean {
         return (
             checkWordsInMessage(msg.text, this.wordsForSpy) &&
             msg.chat.type === 'private'
@@ -49,7 +47,7 @@ export class ScraperPlugin implements IPlugin {
         });
         return event;
     }
-    public process(msg: ITelegramBotMessage): EventEmitter {
+    public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
         let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
         text = removeWordsFromMessage(text, this.telegramBotNameAliases);

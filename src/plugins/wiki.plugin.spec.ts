@@ -1,18 +1,17 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
-import { ITelegramBotMessage } from './base.plugin';
-import { WikiPlugin } from './wiki.plugin';
+import { WikIBotPlugin } from './wiki.plugin';
+import { IBotMessage } from '../lib/interfaces';
 
 const assert = chai.assert;
 
-describe('WikiPlugin', () => {
+describe('WikIBotPlugin', () => {
     describe('without telegram', () => {
-        let plugin: WikiPlugin;
+        let plugin: WikIBotPlugin;
         before(function () {
             config();
-            plugin = new WikiPlugin(
-                null,
+            plugin = new WikIBotPlugin(
                 'en',
                 ['bot'],
                 100,
@@ -20,14 +19,14 @@ describe('WikiPlugin', () => {
             );
         });
         it('should response include a message "Microsoft Corporation"', (done) => {
-            const msg: ITelegramBotMessage = {
+            const msg: IBotMessage = {
                 text: 'wiki microsoft',
                 chat: {
                     id: 'random',
                     type: 'private'
                 }
             };
-            plugin.process(msg).on('message', (answer: string) => {
+            plugin.process(null, msg).on('message', (answer: string) => {
                 assert(answer.indexOf('Microsoft Corporation') !== -1);
                 done();
             })

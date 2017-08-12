@@ -1,11 +1,8 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import { IWebServer } from './interfaces';
 
-export interface IServer {
-    app: any;
-}
-
-export class BaseServer implements IServer {
+export class BaseWebServer implements IWebServer {
     public app: any;
     protected port: string;
     constructor(protected name?: string) {

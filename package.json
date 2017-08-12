@@ -40,7 +40,6 @@
 		"@types/request": "^2.0.0",
 		"@types/sinon": "^2.3.3",
 		"chai": "^4.1.1",
-		"codelyzer": "^3.1.2",
 		"mocha": "^3.5.0",
 		"rimraf": "^2.6.1",
 		"sinon": "^3.2.0",
@@ -51,6 +50,7 @@
 	"dependencies": {
 		"apiai": "^4.0.3",
 		"body-parser": "^1.17.2",
+		"botbuilder": "^3.9.0",
 		"cheerio": "^1.0.0-rc.2",
 		"commander": "^2.11.0",
 		"console-stamp": "^0.2.5",

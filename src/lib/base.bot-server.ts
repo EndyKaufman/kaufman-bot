@@ -1,20 +1,16 @@
-import { IServer } from './base.server';
 import { setTimeout } from 'timers';
 import { EventEmitter } from 'events';
-import TelegramBot = require('node-telegram-bot-api');
-import { IPlugin, ITelegramBotMessage } from '../plugins/base.plugin';
+import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
 
-export interface IBot {
-    startPlugin(message: string, pluginName: string): any;
-    startEndpoint(server: IServer): any;
-}
-
-export class BaseBot implements IBot {
-    protected bot: any | TelegramBot;
+export class BaseBotServer implements IBotServer {
+    protected bot: IBot;
     protected botToken: string;
     protected botHookUrl: string;
-    protected plugins: IPlugin[] = [];
+    protected plugins: IBotPlugin[];
     constructor(protected name?: string) {
+        if (this.plugins === undefined) {
+            this.plugins = [];
+        }
     }
     protected get namePrefix() {
         return this.name === undefined ? '' : this.name.toUpperCase() + '_';
@@ -28,7 +24,7 @@ export class BaseBot implements IBot {
     }
     public startPlugin(message: string, pluginName: string) {
         const event = new EventEmitter();
-        const msg: ITelegramBotMessage = {
+        const msg: IBotMessage = {
             text: message,
             chat: {
                 id: 'random',
@@ -41,11 +37,11 @@ export class BaseBot implements IBot {
         for (i = 0; i < len; i++) {
             if (
                 !founded &&
-                (pluginName === null && this.plugins[i].check(msg)) ||
+                (pluginName === null && this.plugins[i].check(this.bot, msg)) ||
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
-                this.plugins[i].process(msg).on('message', (answer: string) => {
+                this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                     if (answer) {
                         event.emit('message', answer);
                     } else {
@@ -62,7 +58,7 @@ export class BaseBot implements IBot {
         }
         return event;
     }
-    public startEndpoint(server: IServer) {
+    public startEndpoint(server: IWebServer) {
         server.app.post(`/bot${this.botToken}`, (req: any, res: any) => {
             this.bot.processUpdate(req.body);
             res.sendStatus(200);
@@ -70,15 +66,15 @@ export class BaseBot implements IBot {
         if (this.botHookUrl) {
             this.bot.setWebHook(`${this.botHookUrl}/bot${this.botToken}`);
         }
-        this.bot.on('message', (msg: ITelegramBotMessage) => {
+        this.bot.on('message', (msg: IBotMessage) => {
             let founded = false;
             let i = 0;
             const len = this.plugins.length;
             for (i = 0; i < len; i++) {
-                if (!founded && this.plugins[i].check(msg)) {
+                if (!founded && this.plugins[i].check(this.bot, msg)) {
                     founded = true;
                     setTimeout(() =>
-                        this.plugins[i].process(msg).on('message', (answer: string) => {
+                        this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                             if (answer) {
                                 this.bot.sendMessage(msg.chat.id, answer);
                             } else {
@@ -93,7 +89,7 @@ export class BaseBot implements IBot {
             }
         });
     }
-    protected notFound(msg: ITelegramBotMessage) {
+    protected notFound(msg: IBotMessage) {
         const event = new EventEmitter();
         setTimeout(() => {
             let founded = false;
@@ -103,7 +99,7 @@ export class BaseBot implements IBot {
                 if (!founded && this.plugins[j]['name'] === 'api-ai') {
                     founded = true;
                     msg.text = 'bot.not_found';
-                    this.plugins[j].process(msg).on('message', (answer: string) => {
+                    this.plugins[j].process(this.bot, msg).on('message', (answer: string) => {
                         event.emit('message', answer);
                     });
                     break;
