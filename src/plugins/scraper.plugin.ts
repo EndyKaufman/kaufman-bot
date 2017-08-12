@@ -13,7 +13,7 @@ export class ScraperPlugin implements IBotPlugin {
     protected wordsForSpy: string[];
 
     constructor(
-        protected telegramBotNameAliases: string[],
+        protected botNameAliases: string[],
         protected scraperUri: string,
         protected scraperTimeout: number,
         protected scraperContentSelector: string,
@@ -28,7 +28,7 @@ export class ScraperPlugin implements IBotPlugin {
             msg.chat.type === 'private'
         ) ||
             (
-                checkWordsInMessage(msg.text, this.telegramBotNameAliases) &&
+                checkWordsInMessage(msg.text, this.botNameAliases) &&
                 checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private'
             );
@@ -50,7 +50,7 @@ export class ScraperPlugin implements IBotPlugin {
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
         let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = removeWordsFromMessage(text, this.telegramBotNameAliases);
+        text = removeWordsFromMessage(text, this.botNameAliases);
         this.scrap(text).on('message', (answer: string, url: string) => {
             if (answer) {
                 event.emit('message', answer.substring(0, this.scraperContentLength) + '...\n\n' + url);

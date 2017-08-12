@@ -7,7 +7,7 @@ import { IBotMessage } from '../lib/interfaces';
 const assert = chai.assert;
 
 describe('WikIBotPlugin', () => {
-    describe('without telegram', () => {
+    describe('without bot', () => {
         let plugin: WikIBotPlugin;
         before(function () {
             config();

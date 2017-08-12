@@ -12,8 +12,8 @@ export class WikIBotPlugin implements IBotPlugin {
     protected wordsForSpy: string[];
 
     constructor(
-        protected telegramBotLocale: string,
-        protected telegramBotNameAliases: string[],
+        protected botLocale: string,
+        protected botNameAliases: string[],
         protected wikipediaContentLength: number,
         protected wikipediaSpyWords: string[]
     ) {
@@ -25,20 +25,20 @@ export class WikIBotPlugin implements IBotPlugin {
             msg.chat.type === 'private'
         ) ||
             (
-                checkWordsInMessage(msg.text, this.telegramBotNameAliases) &&
+                checkWordsInMessage(msg.text, this.botNameAliases) &&
                 checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private'
             );
     }
     protected searchOnWiki(text: string, locale?: string) {
         const event = new EventEmitter();
-        locale = locale === undefined ? this.telegramBotLocale : locale;
+        locale = locale === undefined ? this.botLocale : locale;
         wikijs.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
             .search(text, 1).then((data: any) => {
                 if (data.results.length > 0) {
                     let pageName = data.results[0];
                     pageName = pageName.replace(new RegExp(' ', 'ig'), '_');
-                    wtfWikipedia.from_api(pageName, this.telegramBotLocale, (markup: any) => {
+                    wtfWikipedia.from_api(pageName, this.botLocale, (markup: any) => {
                         let answer = '';
                         if (markup) {
                             const parsedMarkup = wtfWikipedia.parse(markup) || null;
@@ -67,7 +67,7 @@ export class WikIBotPlugin implements IBotPlugin {
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
         let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = removeWordsFromMessage(text, this.telegramBotNameAliases);
+        text = removeWordsFromMessage(text, this.botNameAliases);
         this.searchOnWiki(text).on('message', (answer: string, url: string) => {
             if (!answer || !checkWordsInMessage(answer, _.words(text))) {
                 this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {

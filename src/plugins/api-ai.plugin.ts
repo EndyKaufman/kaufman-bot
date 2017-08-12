@@ -11,10 +11,10 @@ export class ApiAIBotPlugin implements IBotPlugin {
     protected wordsForSpy: string[];
     protected ai: any;
     constructor(
-        protected telegramBotNameAliases: string[],
+        protected botNameAliases: string[],
         protected apiaiClientAccessToken: string
     ) {
-        this.wordsForSpy = telegramBotNameAliases;
+        this.wordsForSpy = botNameAliases;
         this.ai = apiai(apiaiClientAccessToken);
     }
     public check(bot: IBot, msg: IBotMessage): boolean {

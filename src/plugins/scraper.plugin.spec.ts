@@ -12,7 +12,7 @@ describe('ScraperPlugin', () => {
     const server = app.listen(0);
     const port = server.address().port;
 
-    describe('without telegram', () => {
+    describe('without bot', () => {
         let plugin: ScraperPlugin;
         before(function () {
             config();

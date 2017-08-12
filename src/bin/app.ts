@@ -1,3 +1,4 @@
+import { MicrosoftBotServer } from '../bots/microsoft.bot-server';
 import * as commander from 'commander';
 import { config } from 'dotenv';
 import { WebServer } from '../server';
