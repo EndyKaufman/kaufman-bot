@@ -10,7 +10,7 @@ class BaseBotServer {
         }
     }
     get namePrefix() {
-        return this.name === undefined ? '' : this.name.toUpperCase() + '_';
+        return !this.name ? '' : this.name.toUpperCase() + '_';
     }
     env(name, defaultValue = '') {
         if (process.env[this.namePrefix + name]) {
@@ -56,13 +56,26 @@ class BaseBotServer {
         return event;
     }
     startEndpoint(server) {
-        server.app.post(`/bot${this.botToken}`, (req, res) => {
+        this.webServer = server;
+        this.processUpdate();
+        this.processHook();
+        this.processMessages();
+    }
+    get actionUrl() {
+        return `/bot${this.botToken}`;
+    }
+    processHook() {
+        if (this.botHookUrl) {
+            this.bot.setWebHook(this.botHookUrl + this.actionUrl);
+        }
+    }
+    processUpdate() {
+        this.webServer.app.post(this.actionUrl, (req, res) => {
             this.bot.processUpdate(req.body);
             res.sendStatus(200);
         });
-        if (this.botHookUrl) {
-            this.bot.setWebHook(`${this.botHookUrl}/bot${this.botToken}`);
-        }
+    }
+    processMessages() {
         this.bot.on('message', (msg) => {
             let founded = false;
             let i = 0;
@@ -72,7 +85,7 @@ class BaseBotServer {
                     founded = true;
                     timers_1.setTimeout(() => this.plugins[i].process(this.bot, msg).on('message', (answer) => {
                         if (answer) {
-                            this.bot.sendMessage(msg.chat.id, answer);
+                            this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
                         }
                         else {
                             this.notFound(msg).on('message', (notFoundAnswer) => {

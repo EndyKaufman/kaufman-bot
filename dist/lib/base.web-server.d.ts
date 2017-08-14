@@ -5,4 +5,5 @@ export declare class BaseWebServer implements IWebServer {
     protected port: string;
     constructor(name?: string);
     protected readonly namePrefix: string;
+    protected env(name: string, defaultValue?: any): any;
 }

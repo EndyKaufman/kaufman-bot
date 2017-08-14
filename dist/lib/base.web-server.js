@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 class BaseWebServer {
     constructor(name) {
         this.name = name;
-        this.port = process.env[this.namePrefix + 'PORT'];
+        this.port = this.env('PORT');
         this.app = express();
         this.app.use(bodyParser.json());
         this.app.listen(this.port, () => {
@@ -13,7 +13,15 @@ class BaseWebServer {
         });
     }
     get namePrefix() {
-        return this.name === undefined ? '' : this.name.toUpperCase() + '_';
+        return !this.name ? '' : this.name.toUpperCase() + '_';
+    }
+    env(name, defaultValue = '') {
+        if (process.env[this.namePrefix + name]) {
+            return process.env[this.namePrefix + name];
+        }
+        else {
+            return defaultValue;
+        }
     }
 }
 exports.BaseWebServer = BaseWebServer;

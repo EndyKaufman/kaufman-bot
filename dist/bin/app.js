@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const microsoft_bot_server_1 = require("../bots/microsoft.bot-server");
 const commander = require("commander");
 const dotenv_1 = require("dotenv");
 const server_1 = require("../server");
@@ -21,17 +22,23 @@ class App {
         if (!selected && this.program.plugin) {
             selected = true;
             const telegramBotServer = new telegram_bot_server_1.TelegramBotServer();
+            const microsoftBotServer = new microsoft_bot_server_1.MicrosoftBotServer();
             telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
                 .on('message', (answer) => {
-                console.log(answer);
-                process.exit(0);
+                console.log('TelegramBotServer: ' + answer);
+            });
+            microsoftBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
+                .on('message', (answer) => {
+                console.log('MicrosoftBotServer: ' + answer);
             });
         }
         if (!selected && this.program.start) {
             selected = true;
             const webServer = new server_1.WebServer();
             const telegramBotServer = new telegram_bot_server_1.TelegramBotServer();
+            const microsoftBotServer = new microsoft_bot_server_1.MicrosoftBotServer();
             telegramBotServer.startEndpoint(webServer);
+            microsoftBotServer.startEndpoint(webServer);
         }
         if (!selected) {
             selected = true;
