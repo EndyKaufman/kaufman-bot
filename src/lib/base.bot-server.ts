@@ -4,6 +4,7 @@ import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfa
 
 export class BaseBotServer implements IBotServer {
     protected bot: IBot;
+    protected webServer: IWebServer
     protected botToken: string;
     protected botHookUrl: string;
     protected plugins: IBotPlugin[];
@@ -13,7 +14,7 @@ export class BaseBotServer implements IBotServer {
         }
     }
     protected get namePrefix() {
-        return this.name === undefined ? '' : this.name.toUpperCase() + '_';
+        return !this.name ? '' : this.name.toUpperCase() + '_';
     }
     protected env(name: string, defaultValue: any = '') {
         if (process.env[this.namePrefix + name]) {
@@ -59,13 +60,26 @@ export class BaseBotServer implements IBotServer {
         return event;
     }
     public startEndpoint(server: IWebServer) {
-        server.app.post(`/bot${this.botToken}`, (req: any, res: any) => {
+        this.webServer = server;
+        this.processUpdate();
+        this.processHook();
+        this.processMessages();
+    }
+    protected get actionUrl() {
+        return `/bot${this.botToken}`;
+    }
+    protected processHook() {
+        if (this.botHookUrl) {
+            this.bot.setWebHook(this.botHookUrl + this.actionUrl);
+        }
+    }
+    protected processUpdate() {
+        this.webServer.app.post(this.actionUrl, (req: any, res: any) => {
             this.bot.processUpdate(req.body);
             res.sendStatus(200);
         });
-        if (this.botHookUrl) {
-            this.bot.setWebHook(`${this.botHookUrl}/bot${this.botToken}`);
-        }
+    }
+    protected processMessages() {
         this.bot.on('message', (msg: IBotMessage) => {
             let founded = false;
             let i = 0;
@@ -76,7 +90,7 @@ export class BaseBotServer implements IBotServer {
                     setTimeout(() =>
                         this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                             if (answer) {
-                                this.bot.sendMessage(msg.chat.id, answer);
+                                this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
                             } else {
                                 this.notFound(msg).on('message', (notFoundAnswer: string) => {
                                     this.bot.sendMessage(msg.chat.id, notFoundAnswer);

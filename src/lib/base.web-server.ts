@@ -6,7 +6,7 @@ export class BaseWebServer implements IWebServer {
     public app: any;
     protected port: string;
     constructor(protected name?: string) {
-        this.port = process.env[this.namePrefix + 'PORT'];
+        this.port = this.env('PORT');
         this.app = express();
         this.app.use(bodyParser.json());
         this.app.listen(this.port, () => {
@@ -14,7 +14,14 @@ export class BaseWebServer implements IWebServer {
         });
     }
     protected get namePrefix() {
-        return this.name === undefined ? '' : this.name.toUpperCase() + '_';
+        return !this.name ? '' : this.name.toUpperCase() + '_';
+    }
+    protected env(name: string, defaultValue: any = '') {
+        if (process.env[this.namePrefix + name]) {
+            return process.env[this.namePrefix + name]
+        } else {
+            return defaultValue;
+        }
     }
 
 }

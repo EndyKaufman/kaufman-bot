@@ -23,17 +23,23 @@ export class App {
         if (!selected && this.program.plugin) {
             selected = true;
             const telegramBotServer = new TelegramBotServer();
+            const microsoftBotServer = new MicrosoftBotServer();
             telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
                 .on('message', (answer: string) => {
-                    console.log(answer);
-                    process.exit(0);
+                    console.log('TelegramBotServer: ' + answer);
+                })
+            microsoftBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
+                .on('message', (answer: string) => {
+                    console.log('MicrosoftBotServer: ' + answer);
                 })
         }
         if (!selected && this.program.start) {
             selected = true;
             const webServer = new WebServer();
             const telegramBotServer = new TelegramBotServer();
+            const microsoftBotServer = new MicrosoftBotServer();
             telegramBotServer.startEndpoint(webServer);
+            microsoftBotServer.startEndpoint(webServer);
         }
 
         if (!selected) {
