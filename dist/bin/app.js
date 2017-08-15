@@ -17,18 +17,17 @@ class App {
             .option('-s, --start', 'start express server')
             .option('-p, --plugin [plugin]', 'plugin name for start')
             .option('-m, --message [message]', 'input message for plugin')
+            .option('-l, --locale [message]', 'set bot language')
             .parse(process.argv);
         let selected = false;
         if (!selected && this.program.plugin) {
             selected = true;
             const telegramBotServer = new telegram_bot_server_1.TelegramBotServer();
             const microsoftBotServer = new microsoft_bot_server_1.MicrosoftBotServer();
-            telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
-                .on('message', (answer) => {
+            telegramBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin, this.program.locale ? this.program.locale : process.env.BOT_LOCALE).on('message', (answer) => {
                 console.log('TelegramBotServer: ' + answer);
             });
-            microsoftBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin)
-                .on('message', (answer) => {
+            microsoftBotServer.startPlugin(this.program.message, this.program.plugin === true ? null : this.program.plugin, this.program.locale ? this.program.locale : process.env.BOT_LOCALE).on('message', (answer) => {
                 console.log('MicrosoftBotServer: ' + answer);
             });
         }

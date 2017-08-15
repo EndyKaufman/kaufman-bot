@@ -13,6 +13,10 @@ class WikIBotPlugin {
         this.wikipediaSpyWords = wikipediaSpyWords;
         this.name = 'wiki';
         this.description = 'Get basic information of word from wikipedia';
+        this.whatCanIdo = {
+            'en': 'I know how to search for information on wikipedia, for example: `wiki micrososft`',
+            'ru': 'Умею искать информацию в википедии, пример: `вики пушкин`'
+        };
         this.wordsForSpy = wikipediaSpyWords;
     }
     check(bot, msg) {
@@ -21,6 +25,12 @@ class WikIBotPlugin {
             (utils_1.checkWordsInMessage(msg.text, this.botNameAliases) &&
                 utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private');
+    }
+    answerWhatCanIdo(bot, msg) {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
     }
     searchOnWiki(text, locale) {
         const event = new events_1.EventEmitter();
@@ -67,7 +77,9 @@ class WikIBotPlugin {
             if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
                 this.searchOnWiki(text, 'en').on('message', (answerTwo, urlTwo) => {
                     if (answerTwo) {
-                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength) + '...\n\n' + urlTwo);
+                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength)
+                            + (answer.length > this.wikipediaContentLength ? '...' : '')
+                            + urlTwo);
                     }
                     else {
                         if (urlTwo) {
@@ -81,7 +93,9 @@ class WikIBotPlugin {
             }
             else {
                 if (answer) {
-                    event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                    event.emit('message', answer.substring(0, this.wikipediaContentLength)
+                        + (answer.length > this.wikipediaContentLength ? '...' : '')
+                        + url);
                 }
                 else {
                     if (url) {

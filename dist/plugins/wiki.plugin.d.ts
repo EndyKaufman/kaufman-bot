@@ -8,9 +8,14 @@ export declare class WikIBotPlugin implements IBotPlugin {
     protected wikipediaSpyWords: string[];
     name: string;
     description: string;
+    whatCanIdo: {
+        'en': string;
+        'ru': string;
+    };
     protected wordsForSpy: string[];
     constructor(botLocale: string, botNameAliases: string[], wikipediaContentLength: number, wikipediaSpyWords: string[]);
     check(bot: IBot, msg: IBotMessage): boolean;
+    answerWhatCanIdo(bot: IBot, msg: IBotMessage): string;
     protected searchOnWiki(text: string, locale?: string): EventEmitter;
     process(bot: IBot, msg: IBotMessage): EventEmitter;
 }

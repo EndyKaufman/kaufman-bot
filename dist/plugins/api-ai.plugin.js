@@ -9,11 +9,21 @@ class ApiAIBotPlugin {
         this.apiaiClientAccessToken = apiaiClientAccessToken;
         this.name = 'api-ai';
         this.description = 'Simple usage https://api.ai service with default agent';
+        this.whatCanIdo = {
+            'en': 'I am able to answer simple questions, an example: `How are you?`',
+            'ru': 'Умею отвечать на простые выпросы, пример: `Как дела?`'
+        };
         this.wordsForSpy = botNameAliases;
         this.ai = apiai(apiaiClientAccessToken);
     }
     check(bot, msg) {
         return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
+    }
+    answerWhatCanIdo(bot, msg) {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
     }
     askAi(message, sessionId) {
         const event = new events_1.EventEmitter();

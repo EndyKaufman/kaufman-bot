@@ -6,16 +6,28 @@ const request = require('request');
 const cheerio = require('cheerio');
 const htmlToText = require('html-to-text');
 class ScraperPlugin {
-    constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords) {
+    constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords, whatCanIdoEn, whatCanIdoRu) {
         this.botNameAliases = botNameAliases;
         this.scraperUri = scraperUri;
         this.scraperTimeout = scraperTimeout;
         this.scraperContentSelector = scraperContentSelector;
         this.scraperContentLength = scraperContentLength;
         this.scraperSpyWords = scraperSpyWords;
+        this.whatCanIdoEn = whatCanIdoEn;
+        this.whatCanIdoRu = whatCanIdoRu;
         this.name = 'scraper';
         this.description = 'Scraping content segment as jquery selector from remote site';
+        this.whatCanIdo = {
+            'en': 'I know how to parse a page of sites and show a certain area',
+            'ru': 'Умею парсить страницу сайтов и показывать определенный участок'
+        };
         this.wordsForSpy = scraperSpyWords;
+        if (whatCanIdoRu !== undefined) {
+            this.whatCanIdo['ru'] = whatCanIdoRu;
+        }
+        if (whatCanIdoEn !== undefined) {
+            this.whatCanIdo['en'] = whatCanIdoEn;
+        }
     }
     check(bot, msg) {
         return (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
@@ -23,6 +35,12 @@ class ScraperPlugin {
             (utils_1.checkWordsInMessage(msg.text, this.botNameAliases) &&
                 utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private');
+    }
+    answerWhatCanIdo(bot, msg) {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
     }
     scrap(text) {
         const event = new events_1.EventEmitter();
@@ -33,8 +51,8 @@ class ScraperPlugin {
             }
             else {
                 const $ = cheerio.load(body);
-                const content = $(this.scraperContentSelector).html();
-                event.emit('message', htmlToText.fromString(content), url);
+                const content = this.scraperContentSelector.split(',').map((selector) => htmlToText.fromString($(selector).html())).join('\n\n');
+                event.emit('message', '`' + content + '`', url);
             }
         });
         return event;
@@ -45,7 +63,9 @@ class ScraperPlugin {
         text = utils_1.removeWordsFromMessage(text, this.botNameAliases);
         this.scrap(text).on('message', (answer, url) => {
             if (answer) {
-                event.emit('message', answer.substring(0, this.scraperContentLength) + '...\n\n' + url);
+                event.emit('message', answer.substring(0, this.scraperContentLength)
+                    + (answer.length > this.scraperContentLength ? '...' : '')
+                    + '\n\n' + url);
             }
             else {
                 event.emit('message', false);
