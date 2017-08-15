@@ -10,6 +10,10 @@ const htmlToText = require('html-to-text');
 export class ScraperPlugin implements IBotPlugin {
     public name = 'scraper';
     public description = 'Scraping content segment as jquery selector from remote site';
+    public whatCanIdo = {
+        'en': 'I know how to parse a page of sites and show a certain area',
+        'ru': 'Умею парсить страницу сайтов и показывать определенный участок'
+    };
     protected wordsForSpy: string[];
 
     constructor(
@@ -18,9 +22,17 @@ export class ScraperPlugin implements IBotPlugin {
         protected scraperTimeout: number,
         protected scraperContentSelector: string,
         protected scraperContentLength: number,
-        protected scraperSpyWords: string[]
+        protected scraperSpyWords: string[],
+        protected whatCanIdoEn?: string,
+        protected whatCanIdoRu?: string
     ) {
         this.wordsForSpy = scraperSpyWords;
+        if (whatCanIdoRu !== undefined) {
+            this.whatCanIdo['ru'] = whatCanIdoRu;
+        }
+        if (whatCanIdoEn !== undefined) {
+            this.whatCanIdo['en'] = whatCanIdoEn;
+        }
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
         return (
@@ -33,6 +45,12 @@ export class ScraperPlugin implements IBotPlugin {
                 msg.chat.type !== 'private'
             );
     }
+    public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
+    }
     protected scrap(text: string) {
         const event = new EventEmitter();
         const url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
@@ -41,8 +59,10 @@ export class ScraperPlugin implements IBotPlugin {
                 event.emit('message', false, false);
             } else {
                 const $ = cheerio.load(body);
-                const content = $(this.scraperContentSelector).html();
-                event.emit('message', htmlToText.fromString(content), url);
+                const content = this.scraperContentSelector.split(',').map((selector: string) =>
+                    htmlToText.fromString($(selector).html())
+                ).join('\n\n');
+                event.emit('message', '`' + content + '`', url);
             }
         });
         return event;
@@ -53,7 +73,9 @@ export class ScraperPlugin implements IBotPlugin {
         text = removeWordsFromMessage(text, this.botNameAliases);
         this.scrap(text).on('message', (answer: string, url: string) => {
             if (answer) {
-                event.emit('message', answer.substring(0, this.scraperContentLength) + '...\n\n' + url);
+                event.emit('message', answer.substring(0, this.scraperContentLength)
+                    + (answer.length > this.scraperContentLength ? '...' : '')
+                    + '\n\n' + url);
             } else {
                 event.emit('message', false);
             }

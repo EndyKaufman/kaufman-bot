@@ -16,3 +16,5 @@ SCRAPER_PING_TIMEOUT=10000
 SCRAPER_PING_CONTENT_SELECTOR="body > div.wrapper > div.container.content > div.row.margin-bottom-30 > div > div > div > div > div > div.col-md-9 > div > pre"
 SCRAPER_PING_CONTENT_LENGTH=1000
 SCRAPER_PING_SPY_WORDS="ping,пинг,пинганика"
+SCRAPER_PING_WHAT_CAN_I_DO_EN="I know how to ping sites, for example: `ping google.com`"
+SCRAPER_PING_WHAT_CAN_I_DO_RU="Умею пинговать сайты, пример: `пинг ya.ru`"

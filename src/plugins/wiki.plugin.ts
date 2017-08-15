@@ -9,6 +9,10 @@ const wtfWikipedia = require('wtf_wikipedia');
 export class WikIBotPlugin implements IBotPlugin {
     public name = 'wiki';
     public description = 'Get basic information of word from wikipedia';
+    public whatCanIdo = {
+        'en': 'I know how to search for information on wikipedia, for example: `wiki micrososft`',
+        'ru': 'Умею искать информацию в википедии, пример: `вики пушкин`'
+    };
     protected wordsForSpy: string[];
 
     constructor(
@@ -29,6 +33,12 @@ export class WikIBotPlugin implements IBotPlugin {
                 checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private'
             );
+    }
+    public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
     }
     protected searchOnWiki(text: string, locale?: string) {
         const event = new EventEmitter();
@@ -72,7 +82,9 @@ export class WikIBotPlugin implements IBotPlugin {
             if (!answer || !checkWordsInMessage(answer, _.words(text))) {
                 this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
                     if (answerTwo) {
-                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength) + '...\n\n' + urlTwo);
+                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength)
+                            + (answer.length > this.wikipediaContentLength ? '...' : '')
+                            + urlTwo);
                     } else {
                         if (urlTwo) {
                             event.emit('message', urlTwo);
@@ -83,7 +95,9 @@ export class WikIBotPlugin implements IBotPlugin {
                 });
             } else {
                 if (answer) {
-                    event.emit('message', answer.substring(0, 1000) + '...\n\n' + url);
+                    event.emit('message', answer.substring(0, this.wikipediaContentLength)
+                        + (answer.length > this.wikipediaContentLength ? '...' : '')
+                        + url);
                 } else {
                     if (url) {
                         event.emit('message', url);

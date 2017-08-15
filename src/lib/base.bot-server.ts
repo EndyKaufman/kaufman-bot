@@ -23,14 +23,17 @@ export class BaseBotServer implements IBotServer {
             return defaultValue;
         }
     }
-    public startPlugin(message: string, pluginName: string) {
+    public startPlugin(message: string, pluginName: string, locale: string) {
         const event = new EventEmitter();
         const msg: IBotMessage = {
             text: message,
             chat: {
                 id: 'random',
                 type: 'private'
-            }
+            },
+            from: {
+                language_code: locale
+            },
         };
         let founded = false;
         let i = 0;
@@ -44,7 +47,12 @@ export class BaseBotServer implements IBotServer {
                 founded = true;
                 this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                     if (answer) {
-                        event.emit('message', answer);
+                        this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer: string) => {
+                            if (hardBotAnswer) {
+                                answer = hardBotAnswer;
+                            }
+                            event.emit('message', answer);
+                        });
                     } else {
                         this.notFound(msg).on('message', (notFoundAnswer: string) => {
                             event.emit('message', notFoundAnswer);
@@ -90,7 +98,12 @@ export class BaseBotServer implements IBotServer {
                     setTimeout(() =>
                         this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                             if (answer) {
-                                this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
+                                this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer: string) => {
+                                    if (hardBotAnswer) {
+                                        answer = hardBotAnswer;
+                                    }
+                                    this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
+                                });
                             } else {
                                 this.notFound(msg).on('message', (notFoundAnswer: string) => {
                                     this.bot.sendMessage(msg.chat.id, notFoundAnswer);
@@ -103,6 +116,27 @@ export class BaseBotServer implements IBotServer {
             }
         });
     }
+    protected checkHardBotAnswers(msg: IBotMessage, answer: string) {
+        const event = new EventEmitter();
+        const methodName: string = answer.replace('bot.request:', '');
+        setTimeout(() => {
+            let founded = false;
+            if (methodName !== answer) {
+                let j = 0;
+                const len = this.plugins.length;
+                for (j = 0; j < len; j++) {
+                    if (methodName === 'answerWhatCanIdo') {
+                        founded = true;
+                        event.emit('message', this.plugins[j].answerWhatCanIdo(this.bot, msg));
+                    }
+                }
+            }
+            if (!founded) {
+                event.emit('message', false);
+            }
+        }, 300);
+        return event;
+    }
     protected notFound(msg: IBotMessage) {
         const event = new EventEmitter();
         setTimeout(() => {
@@ -112,7 +146,7 @@ export class BaseBotServer implements IBotServer {
             for (j = 0; j < len; j++) {
                 if (!founded && this.plugins[j]['name'] === 'api-ai') {
                     founded = true;
-                    msg.text = 'bot.not_found';
+                    msg.text = 'bot.response:notFound';
                     this.plugins[j].process(this.bot, msg).on('message', (answer: string) => {
                         event.emit('message', answer);
                     });
@@ -120,9 +154,9 @@ export class BaseBotServer implements IBotServer {
                 }
             }
             if (!founded) {
-                event.emit('message', 'bot.empty');
+                event.emit('message', 'Error! ApiAiPlugin not founded :(');
             }
-        }, 700);
+        }, 300);
         return event;
     }
 }

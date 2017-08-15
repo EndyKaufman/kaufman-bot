@@ -8,6 +8,10 @@ const apiai = require('apiai');
 export class ApiAIBotPlugin implements IBotPlugin {
     public name = 'api-ai';
     public description = 'Simple usage https://api.ai service with default agent';
+    public whatCanIdo = {
+        'en': 'I am able to answer simple questions, an example: `How are you?`',
+        'ru': 'Умею отвечать на простые выпросы, пример: `Как дела?`'
+    };
     protected wordsForSpy: string[];
     protected ai: any;
     constructor(
@@ -19,6 +23,12 @@ export class ApiAIBotPlugin implements IBotPlugin {
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
         return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
+    }
+    public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
+        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+            return this.whatCanIdo['ru'];
+        }
+        return this.whatCanIdo['en'];
     }
     protected askAi(message: string, sessionId: string): EventEmitter {
         const event = new EventEmitter();

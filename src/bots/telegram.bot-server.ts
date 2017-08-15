@@ -18,7 +18,9 @@ export class TelegramBotServer extends BaseBotServer {
             this.env('SCRAPER_PING_TIMEOUT', 10000),
             this.env('SCRAPER_PING_CONTENT_SELECTOR'),
             this.env('SCRAPER_PING_CONTENT_LENGTH', 1000),
-            this.env('SCRAPER_PING_SPY_WORDS', 'ping').split(',')
+            this.env('SCRAPER_PING_SPY_WORDS', 'ping').split(','),
+            this.env('SCRAPER_PING_WHAT_CAN_I_DO_EN'),
+            this.env('SCRAPER_PING_WHAT_CAN_I_DO_RU')
         ));
         this.plugins.push(new WikIBotPlugin(
             this.env('BOT_LOCALE'),
