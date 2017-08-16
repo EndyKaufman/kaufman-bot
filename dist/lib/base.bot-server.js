@@ -115,7 +115,7 @@ class BaseBotServer {
         const len = this.plugins.length;
         for (j = 0; j < len; j++) {
             if (answer.indexOf('answerWhatCanIdo') !== -1) {
-                answers.push('test');
+                answers.push('test>' + this.plugins[j].answerWhatCanIdo(this.bot, msg) + ' <test');
             }
         }
         if (answers.length > 0) {

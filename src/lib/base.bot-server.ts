@@ -121,7 +121,7 @@ export class BaseBotServer implements IBotServer {
         const len = this.plugins.length;
         for (j = 0; j < len; j++) {
             if (answer.indexOf('answerWhatCanIdo') !== -1) {
-                answers.push('test'); // this.plugins[j].answerWhatCanIdo(this.bot, msg));
+                answers.push('test>' + this.plugins[j].answerWhatCanIdo(this.bot, msg) + ' <test');
             }
         }
         if (answers.length > 0) {
