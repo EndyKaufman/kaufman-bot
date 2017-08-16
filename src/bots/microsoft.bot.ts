@@ -40,7 +40,7 @@ export class MicrosoftBot implements IBot {
         return true;
     }
     sendMessage(chatId: number | string, text: string, options?: any): any {
-        this.onSendMessage.emit('message', chatId, text, options);
+        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 700);
         return true;
     }
     setWebHook(url: string, options?: any): any {

@@ -35,7 +35,7 @@ class MicrosoftBot {
         return true;
     }
     sendMessage(chatId, text, options) {
-        this.onSendMessage.emit('message', chatId, text, options);
+        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 700);
         return true;
     }
     setWebHook(url, options) {
