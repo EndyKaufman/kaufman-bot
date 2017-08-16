@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
 export declare class BaseBotServer implements IBotServer {
     protected name: string;
+    protected debug: boolean;
     protected bot: IBot;
     protected webServer: IWebServer;
     protected botToken: string;

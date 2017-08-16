@@ -2,6 +2,7 @@
 import { IBot } from '../lib/interfaces';
 import { EventEmitter } from 'events';
 export declare class MicrosoftBot implements IBot {
+    protected debug: boolean;
     protected onEvent: EventEmitter;
     originalConnector: any;
     originalBot: any;

@@ -6,6 +6,7 @@ const utils_1 = require("./utils");
 class BaseBotServer {
     constructor(name) {
         this.name = name;
+        this.debug = false;
         if (this.plugins === undefined) {
             this.plugins = [];
         }
@@ -95,7 +96,7 @@ class BaseBotServer {
                     timers_1.setTimeout(() => this.plugins[i].process(this.bot, msg).on('message', (answer) => {
                         if (answer) {
                             this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer) => {
-                                if (hardBotAnswer) {
+                                if (!this.debug && hardBotAnswer) {
                                     answer = hardBotAnswer;
                                 }
                                 this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });

@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 import builder = require('botbuilder');
 
 export class MicrosoftBot implements IBot {
+    protected debug = true;
     protected onEvent: EventEmitter;
     public originalConnector: any;
     public originalBot: any;
@@ -33,8 +34,8 @@ export class MicrosoftBot implements IBot {
         return true;
     }
     sendMessage(chatId: number | string, text: string, options?: any): any {
-        text = text.replace(new RegExp('\n', 'ig'), ' ');
-        text = text.replace(new RegExp('`', 'ig'), ' ');
+        text = text.replace(new RegExp('\n', 'ig'), '\n\n');
+        text = text.replace(new RegExp('`', 'ig'), '```');
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send(text);
         }

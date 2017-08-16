@@ -4,6 +4,7 @@ import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfa
 import { checkWordsInMessage } from './utils';
 
 export class BaseBotServer implements IBotServer {
+    protected debug = false;
     protected bot: IBot;
     protected webServer: IWebServer
     protected botToken: string;
@@ -100,7 +101,7 @@ export class BaseBotServer implements IBotServer {
                         this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                             if (answer) {
                                 this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer: string) => {
-                                    if (hardBotAnswer) {
+                                    if (!this.debug && hardBotAnswer) {
                                         answer = hardBotAnswer;
                                     }
                                     this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
