@@ -34,7 +34,11 @@ class MicrosoftBot {
         text = text.replace(new RegExp('`', 'ig'), '```');
         text = text + '\n';
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
-            options.originalMessage.originalData.send(text);
+            options.originalMessage.originalData.send({
+                type: 'message',
+                text: text,
+                textFormat: 'markdown'
+            });
         }
         return true;
     }
