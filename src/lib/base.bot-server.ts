@@ -49,12 +49,11 @@ export class BaseBotServer implements IBotServer {
                 founded = true;
                 this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                     if (answer) {
-                        this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer: string) => {
-                            if (hardBotAnswer) {
-                                answer = hardBotAnswer;
-                            }
-                            event.emit('message', answer);
-                        });
+                        const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                        if (hardBotAnswer) {
+                            answer = hardBotAnswer;
+                        }
+                        event.emit('message', answer);
                     } else {
                         this.notFound(msg).on('message', (notFoundAnswer: string) => {
                             event.emit('message', answer);
@@ -100,12 +99,11 @@ export class BaseBotServer implements IBotServer {
                     setTimeout(() =>
                         this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
                             if (answer) {
-                                this.checkHardBotAnswers(msg, answer).on('message', (hardBotAnswer: string) => {
-                                    if (!this.debug && hardBotAnswer) {
-                                        answer = hardBotAnswer;
-                                    }
-                                    this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
-                                });
+                                const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                                if (hardBotAnswer) {
+                                    answer = hardBotAnswer;
+                                }
+                                this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
                             } else {
                                 this.notFound(msg).on('message', (notFoundAnswer: string) => {
                                     this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
@@ -118,29 +116,26 @@ export class BaseBotServer implements IBotServer {
             }
         });
     }
-    protected checkHardBotAnswers(msg: IBotMessage, answer: string) {
-        const event = new EventEmitter();
+    protected getHardBotAnswers(msg: IBotMessage, answer: string): string {
         const methodName: string = answer.replace('bot.request:', '');
         const answers: string[] = [];
-        setTimeout(() => {
-            let founded = false;
-            if (methodName !== answer) {
-                let j = 0;
-                const len = this.plugins.length;
-                for (j = 0; j < len; j++) {
-                    if (checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
-                        founded = true;
-                        answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
-                    }
+
+        let founded = false;
+        if (methodName !== answer) {
+            let j = 0;
+            const len = this.plugins.length;
+            for (j = 0; j < len; j++) {
+                if (checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
+                    founded = true;
+                    answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
                 }
             }
-            if (founded) {
-                event.emit('message', answers.join('\n'));
-            } else {
-                event.emit('message', false);
-            }
-        }, 100);
-        return event;
+        }
+        if (founded) {
+            return answers.join('\n');
+        } else {
+            return '';
+        }
     }
     protected notFound(msg: IBotMessage) {
         const event = new EventEmitter();

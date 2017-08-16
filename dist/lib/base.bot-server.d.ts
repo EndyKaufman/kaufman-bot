@@ -18,6 +18,6 @@ export declare class BaseBotServer implements IBotServer {
     protected processHook(): void;
     protected processUpdate(): void;
     protected processMessages(): void;
-    protected checkHardBotAnswers(msg: IBotMessage, answer: string): EventEmitter;
+    protected getHardBotAnswers(msg: IBotMessage, answer: string): string;
     protected notFound(msg: IBotMessage): EventEmitter;
 }

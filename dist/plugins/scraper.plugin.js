@@ -59,7 +59,7 @@ class ScraperPlugin {
                 if (enc !== 'utf8') {
                     content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc).toString('utf8');
                 }
-                event.emit('message', '`' + content + '`', url);
+                event.emit('message', '`\n' + content + '\n`', url);
             }
         });
         return event;
