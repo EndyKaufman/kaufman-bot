@@ -30,9 +30,9 @@ class MicrosoftBot {
         return true;
     }
     sendMessage(chatId, text, options) {
-        text = text.replace(new RegExp('\n', 'ig'), ' ');
+        text = text.replace(new RegExp('\n', 'ig'), '\n\n');
         text = text.replace(new RegExp('`', 'ig'), '```');
-        text = 'Умею, шутить, и, рассказывать, анекдоты, пример, шутка, Умею, пинговать, сайты, пример, пинг, ya, ru, Умею, искать, информацию, в, википедии, пример, вики, пушкин, Умею, отвечать, на, простые, выпросы, пример, Как, дела';
+        text = text + '\n';
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send(text);
         }

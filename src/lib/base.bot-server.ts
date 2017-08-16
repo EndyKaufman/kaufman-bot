@@ -102,9 +102,17 @@ export class BaseBotServer implements IBotServer {
                             if (hardBotAnswer) {
                                 answer = hardBotAnswer;
                             }
+                            if (this.env('DEBUG') === 'true') {
+                                const b = new Buffer(answer);
+                                answer = answer + '\nbase64:\n' + b.toString('base64');
+                            }
                             this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
                         } else {
                             this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                if (this.env('DEBUG') === 'true') {
+                                    const b = new Buffer(notFoundAnswer);
+                                    notFoundAnswer = notFoundAnswer + '\nbase64:\n' + b.toString('base64');
+                                }
                                 this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
                             });
                         }
