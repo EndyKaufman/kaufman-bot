@@ -123,7 +123,7 @@ export class BaseBotServer implements IBotServer {
             if (answer.indexOf('answerWhatCanIdo') !== -1) {
                 let message = this.plugins[j].answerWhatCanIdo(this.bot, msg);
                 message = message.replace(new RegExp('`', 'ig'), '"');
-                answers.push();
+                answers.push(message);
             }
         }
         if (answers.length > 0) {
