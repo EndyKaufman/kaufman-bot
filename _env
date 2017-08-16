@@ -1,4 +1,7 @@
+DEBUG=true
 PORT=1105
+# Create project on https://rollbar.com
+ROLLBAR_SERVER_ACCESS_TOKEN=
 BOT_NAME_ALIASES="kaufman,endy"
 BOT_LOCALE=en
 # Create bot on https://telegram.me/botfather
