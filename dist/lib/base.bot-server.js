@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const timers_1 = require("timers");
 const events_1 = require("events");
 const utils_1 = require("./utils");
 class BaseBotServer {
@@ -92,7 +91,7 @@ class BaseBotServer {
             for (i = 0; i < len; i++) {
                 if (!founded && this.plugins[i].check(this.bot, msg)) {
                     founded = true;
-                    timers_1.setTimeout(() => this.plugins[i].process(this.bot, msg).on('message', (answer) => {
+                    this.plugins[i].process(this.bot, msg).on('message', (answer) => {
                         if (answer) {
                             const hardBotAnswer = this.getHardBotAnswers(msg, answer);
                             if (hardBotAnswer) {
@@ -105,27 +104,22 @@ class BaseBotServer {
                                 this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
                             });
                         }
-                    }), 100);
+                    });
                     break;
                 }
             }
         });
     }
     getHardBotAnswers(msg, answer) {
-        const methodName = answer.replace('bot.request:', '');
         const answers = [];
-        let founded = false;
-        if (methodName !== answer) {
-            let j = 0;
-            const len = this.plugins.length;
-            for (j = 0; j < len; j++) {
-                if (utils_1.checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
-                    founded = true;
-                    answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
-                }
+        let j = 0;
+        const len = this.plugins.length;
+        for (j = 0; j < len; j++) {
+            if (utils_1.checkWordsInMessage(answer, ['answerWhatCanIdo'])) {
+                answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
             }
         }
-        if (founded) {
+        if (answers.length > 0) {
             return answers.join('\n');
         }
         else {
@@ -134,24 +128,22 @@ class BaseBotServer {
     }
     notFound(msg) {
         const event = new events_1.EventEmitter();
-        timers_1.setTimeout(() => {
-            let founded = false;
-            let j = 0;
-            const len = this.plugins.length;
-            for (j = 0; j < len; j++) {
-                if (!founded && this.plugins[j]['name'] === 'api-ai') {
-                    founded = true;
-                    msg.text = 'bot.response:notFound';
-                    this.plugins[j].process(this.bot, msg).on('message', (answer) => {
-                        event.emit('message', answer);
-                    });
-                    break;
-                }
+        let founded = false;
+        let j = 0;
+        const len = this.plugins.length;
+        for (j = 0; j < len; j++) {
+            if (!founded && this.plugins[j]['name'] === 'api-ai') {
+                founded = true;
+                msg.text = 'bot.response:notFound';
+                this.plugins[j].process(this.bot, msg).on('message', (answer) => {
+                    event.emit('message', answer);
+                });
+                break;
             }
-            if (!founded) {
-                event.emit('message', 'Error! ApiAiPlugin not founded :(');
-            }
-        }, 100);
+        }
+        if (!founded) {
+            event.emit('message', 'Error! ApiAiPlugin not founded :(');
+        }
         return event;
     }
 }

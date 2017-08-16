@@ -96,42 +96,35 @@ export class BaseBotServer implements IBotServer {
             for (i = 0; i < len; i++) {
                 if (!founded && this.plugins[i].check(this.bot, msg)) {
                     founded = true;
-                    setTimeout(() =>
-                        this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
-                            if (answer) {
-                                const hardBotAnswer = this.getHardBotAnswers(msg, answer);
-                                if (hardBotAnswer) {
-                                    answer = hardBotAnswer;
-                                }
-                                this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
-                            } else {
-                                this.notFound(msg).on('message', (notFoundAnswer: string) => {
-                                    this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
-                                });
+                    this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
+                        if (answer) {
+                            const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                            if (hardBotAnswer) {
+                                answer = hardBotAnswer;
                             }
-                        })
-                        , 100);
+                            this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
+                        } else {
+                            this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
+                            });
+                        }
+                    });
                     break;
                 }
             }
         });
     }
     protected getHardBotAnswers(msg: IBotMessage, answer: string): string {
-        const methodName: string = answer.replace('bot.request:', '');
         const answers: string[] = [];
 
-        let founded = false;
-        if (methodName !== answer) {
-            let j = 0;
-            const len = this.plugins.length;
-            for (j = 0; j < len; j++) {
-                if (checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
-                    founded = true;
-                    answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
-                }
+        let j = 0;
+        const len = this.plugins.length;
+        for (j = 0; j < len; j++) {
+            if (checkWordsInMessage(answer, ['answerWhatCanIdo'])) {
+                answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
             }
         }
-        if (founded) {
+        if (answers.length > 0) {
             return answers.join('\n');
         } else {
             return '';
@@ -139,24 +132,22 @@ export class BaseBotServer implements IBotServer {
     }
     protected notFound(msg: IBotMessage) {
         const event = new EventEmitter();
-        setTimeout(() => {
-            let founded = false;
-            let j = 0;
-            const len = this.plugins.length;
-            for (j = 0; j < len; j++) {
-                if (!founded && this.plugins[j]['name'] === 'api-ai') {
-                    founded = true;
-                    msg.text = 'bot.response:notFound';
-                    this.plugins[j].process(this.bot, msg).on('message', (answer: string) => {
-                        event.emit('message', answer);
-                    });
-                    break;
-                }
+        let founded = false;
+        let j = 0;
+        const len = this.plugins.length;
+        for (j = 0; j < len; j++) {
+            if (!founded && this.plugins[j]['name'] === 'api-ai') {
+                founded = true;
+                msg.text = 'bot.response:notFound';
+                this.plugins[j].process(this.bot, msg).on('message', (answer: string) => {
+                    event.emit('message', answer);
+                });
+                break;
             }
-            if (!founded) {
-                event.emit('message', 'Error! ApiAiPlugin not founded :(');
-            }
-        }, 100);
+        }
+        if (!founded) {
+            event.emit('message', 'Error! ApiAiPlugin not founded :(');
+        }
         return event;
     }
 }
