@@ -82,8 +82,10 @@ export class WikIBotPlugin implements IBotPlugin {
             if (!answer || !checkWordsInMessage(answer, _.words(text))) {
                 this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
                     if (answerTwo) {
-                        event.emit('message', answerTwo.substring(0, this.wikipediaContentLength)
+                        event.emit('message',
+                            '`' + answerTwo.substring(0, this.wikipediaContentLength)
                             + (answer.length > this.wikipediaContentLength ? '...' : '')
+                            + '`\n\n'
                             + urlTwo);
                     } else {
                         if (urlTwo) {
@@ -95,8 +97,10 @@ export class WikIBotPlugin implements IBotPlugin {
                 });
             } else {
                 if (answer) {
-                    event.emit('message', answer.substring(0, this.wikipediaContentLength)
+                    event.emit('message',
+                        '`' + answer.substring(0, this.wikipediaContentLength)
                         + (answer.length > this.wikipediaContentLength ? '...' : '')
+                        + '`\n\n'
                         + url);
                 } else {
                     if (url) {

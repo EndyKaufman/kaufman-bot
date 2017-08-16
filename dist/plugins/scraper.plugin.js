@@ -59,7 +59,7 @@ class ScraperPlugin {
                 if (enc !== 'utf8') {
                     content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc).toString('utf8');
                 }
-                event.emit('message', '`\n' + content + '\n`', url);
+                event.emit('message', content, url);
             }
         });
         return event;
@@ -70,9 +70,10 @@ class ScraperPlugin {
         text = utils_1.removeWordsFromMessage(text, this.botNameAliases);
         this.scrap(text).on('message', (answer, url) => {
             if (answer) {
-                event.emit('message', answer.substring(0, this.scraperContentLength)
+                event.emit('message', '`' + answer.substring(0, this.scraperContentLength)
                     + (answer.length > this.scraperContentLength ? '...' : '')
-                    + '\n\n' + url);
+                    + '`\n\n'
+                    + url);
             }
             else {
                 event.emit('message', false);
