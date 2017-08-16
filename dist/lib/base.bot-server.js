@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
-const utils_1 = require("./utils");
 class BaseBotServer {
     constructor(name) {
         this.name = name;
@@ -115,7 +114,7 @@ class BaseBotServer {
         let j = 0;
         const len = this.plugins.length;
         for (j = 0; j < len; j++) {
-            if (utils_1.checkWordsInMessage(answer, ['answerWhatCanIdo'])) {
+            if (answer.indexOf('answerWhatCanIdo') !== -1) {
                 answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
             }
         }
