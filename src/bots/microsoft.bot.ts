@@ -40,7 +40,8 @@ export class MicrosoftBot implements IBot {
         return true;
     }
     sendMessage(chatId: number | string, text: string, options?: any): any {
-        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 700);
+        text = text.replace(new RegExp('\n', 'ig'), '\n\n');
+        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 500);
         return true;
     }
     setWebHook(url: string, options?: any): any {

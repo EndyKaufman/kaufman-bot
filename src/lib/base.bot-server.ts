@@ -55,7 +55,7 @@ export class BaseBotServer implements IBotServer {
                         });
                     } else {
                         this.notFound(msg).on('message', (notFoundAnswer: string) => {
-                            event.emit('message', notFoundAnswer);
+                            event.emit('message', answer);
                         })
                     }
                 });
@@ -119,6 +119,7 @@ export class BaseBotServer implements IBotServer {
     protected checkHardBotAnswers(msg: IBotMessage, answer: string) {
         const event = new EventEmitter();
         const methodName: string = answer.replace('bot.request:', '');
+        const answers: string[] = [];
         setTimeout(() => {
             let founded = false;
             if (methodName !== answer) {
@@ -127,11 +128,13 @@ export class BaseBotServer implements IBotServer {
                 for (j = 0; j < len; j++) {
                     if (methodName === 'answerWhatCanIdo') {
                         founded = true;
-                        event.emit('message', this.plugins[j].answerWhatCanIdo(this.bot, msg));
+                        answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
                     }
                 }
             }
-            if (!founded) {
+            if (founded) {
+                event.emit('message', answers.join('\n'));
+            } else {
                 event.emit('message', false);
             }
         }, 100);
