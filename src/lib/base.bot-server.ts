@@ -1,6 +1,7 @@
 import { setTimeout } from 'timers';
 import { EventEmitter } from 'events';
 import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
+import { checkWordsInMessage } from './utils';
 
 export class BaseBotServer implements IBotServer {
     protected bot: IBot;
@@ -126,7 +127,7 @@ export class BaseBotServer implements IBotServer {
                 let j = 0;
                 const len = this.plugins.length;
                 for (j = 0; j < len; j++) {
-                    if (methodName === 'answerWhatCanIdo') {
+                    if (checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
                         founded = true;
                         answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
                     }
