@@ -51,7 +51,7 @@ class BaseBotServer {
                     }
                     else {
                         this.notFound(msg).on('message', (notFoundAnswer) => {
-                            event.emit('message', notFoundAnswer);
+                            event.emit('message', answer);
                         });
                     }
                 });
@@ -114,6 +114,7 @@ class BaseBotServer {
     checkHardBotAnswers(msg, answer) {
         const event = new events_1.EventEmitter();
         const methodName = answer.replace('bot.request:', '');
+        const answers = [];
         timers_1.setTimeout(() => {
             let founded = false;
             if (methodName !== answer) {
@@ -122,11 +123,14 @@ class BaseBotServer {
                 for (j = 0; j < len; j++) {
                     if (methodName === 'answerWhatCanIdo') {
                         founded = true;
-                        event.emit('message', this.plugins[j].answerWhatCanIdo(this.bot, msg));
+                        answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
                     }
                 }
             }
-            if (!founded) {
+            if (founded) {
+                event.emit('message', answers.join('\n'));
+            }
+            else {
                 event.emit('message', false);
             }
         }, 100);

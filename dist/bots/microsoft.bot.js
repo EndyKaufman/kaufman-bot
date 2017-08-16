@@ -35,7 +35,8 @@ class MicrosoftBot {
         return true;
     }
     sendMessage(chatId, text, options) {
-        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 700);
+        text = text.replace(new RegExp('\n', 'ig'), '\n\n');
+        setTimeout(() => this.onSendMessage.emit('message', chatId, text, options), 500);
         return true;
     }
     setWebHook(url, options) {
