@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const bodyParser = require("body-parser");
-const rollbar = require('rollbar');
+const Rollbar = require('rollbar');
 class BaseWebServer {
     constructor(name) {
         this.name = name;
         this.port = this.env('PORT');
         this.app = express();
-        this.app.use(bodyParser.json());
         if (this.env('DEBUG') !== 'true') {
-            this.app.use(rollbar.errorHandler(this.env('ROLLBAR_SERVER_ACCESS_TOKEN')));
+            this.rollbar = new Rollbar('ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN');
+            this.app.use(this.rollbar.errorHandler());
         }
+        this.app.use(bodyParser.json());
         this.app.listen(this.port, () => {
             console.log(`Express server is listening on ${this.port}`);
         });
