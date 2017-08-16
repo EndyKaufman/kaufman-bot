@@ -105,7 +105,7 @@ class BaseBotServer {
                                 this.bot.sendMessage(msg.chat.id, notFoundAnswer);
                             });
                         }
-                    }), 700);
+                    }), 100);
                     break;
                 }
             }
@@ -129,7 +129,7 @@ class BaseBotServer {
             if (!founded) {
                 event.emit('message', false);
             }
-        }, 300);
+        }, 100);
         return event;
     }
     notFound(msg) {
@@ -151,7 +151,7 @@ class BaseBotServer {
             if (!founded) {
                 event.emit('message', 'Error! ApiAiPlugin not founded :(');
             }
-        }, 300);
+        }, 100);
         return event;
     }
 }

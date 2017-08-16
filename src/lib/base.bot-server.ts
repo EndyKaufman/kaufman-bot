@@ -110,7 +110,7 @@ export class BaseBotServer implements IBotServer {
                                 });
                             }
                         })
-                        , 700);
+                        , 100);
                     break;
                 }
             }
@@ -134,7 +134,7 @@ export class BaseBotServer implements IBotServer {
             if (!founded) {
                 event.emit('message', false);
             }
-        }, 300);
+        }, 100);
         return event;
     }
     protected notFound(msg: IBotMessage) {
@@ -156,7 +156,7 @@ export class BaseBotServer implements IBotServer {
             if (!founded) {
                 event.emit('message', 'Error! ApiAiPlugin not founded :(');
             }
-        }, 300);
+        }, 100);
         return event;
     }
 }
