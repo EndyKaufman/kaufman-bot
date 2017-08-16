@@ -47,7 +47,7 @@ class WikIBotPlugin {
                         if (parsedMarkup.pages && parsedMarkup.pages.length > 0) {
                             const arr = markup.split('\n');
                             if (arr.length > 0) {
-                                answer = parsedMarkup.pages.join('\n\n');
+                                answer = parsedMarkup.pages.join('\n');
                             }
                             else {
                                 answer = '';

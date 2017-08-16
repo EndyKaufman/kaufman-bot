@@ -69,7 +69,7 @@ export class ScraperPlugin implements IBotPlugin {
                 if (enc !== 'utf8') {
                     content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc).toString('utf8');
                 }
-                event.emit('message', '`\n' + content + '\n`', url);
+                event.emit('message', '`' + content + '\n`', url);
             }
         });
         return event;
