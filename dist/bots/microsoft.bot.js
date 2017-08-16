@@ -30,6 +30,7 @@ class MicrosoftBot {
         return true;
     }
     sendMessage(chatId, text, options) {
+        text = text.replace(new RegExp('\n\n', 'ig'), '\n');
         text = text.replace(new RegExp('\n', 'ig'), '\n\n');
         text = text.replace(new RegExp('`', 'ig'), '```');
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
