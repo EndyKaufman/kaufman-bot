@@ -120,7 +120,7 @@ export class BaseBotServer implements IBotServer {
         let j = 0;
         const len = this.plugins.length;
         for (j = 0; j < len; j++) {
-            if (checkWordsInMessage(answer, ['answerWhatCanIdo'])) {
+            if (answer.indexOf('answerWhatCanIdo') !== -1) {
                 answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
             }
         }
