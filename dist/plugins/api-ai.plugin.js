@@ -11,7 +11,7 @@ class ApiAIBotPlugin {
         this.description = 'Simple usage https://api.ai service with default agent';
         this.whatCanIdo = {
             'en': 'I am able to answer simple questions, an example: `How are you?`',
-            'ru': 'Умею отвечать на простые выпросы, пример: `Как дела?`'
+            'ru': 'Умею отвечать на простые вопросы, пример: `Как дела?`'
         };
         this.wordsForSpy = botNameAliases;
         this.ai = apiai(apiaiClientAccessToken);

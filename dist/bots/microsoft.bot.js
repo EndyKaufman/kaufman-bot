@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
-const _ = require("lodash");
 const builder = require("botbuilder");
 class MicrosoftBot {
     constructor(appId, appPassword) {
@@ -33,7 +32,7 @@ class MicrosoftBot {
     sendMessage(chatId, text, options) {
         text = text.replace(new RegExp('\n', 'ig'), ' ');
         text = text.replace(new RegExp('`', 'ig'), '```');
-        text = _.words(text).join(', ');
+        text = 'Умею, шутить, и, рассказывать, анекдоты, пример, шутка, Умею, пинговать, сайты, пример, пинг, ya, ru, Умею, искать, информацию, в, википедии, пример, вики, пушкин, Умею, отвечать, на, простые, выпросы, пример, Как, дела';
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send(text);
         }

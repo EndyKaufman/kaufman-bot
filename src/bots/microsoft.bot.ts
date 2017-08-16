@@ -37,7 +37,7 @@ export class MicrosoftBot implements IBot {
     sendMessage(chatId: number | string, text: string, options?: any): any {
         text = text.replace(new RegExp('\n', 'ig'), ' ');
         text = text.replace(new RegExp('`', 'ig'), '```');
-        text = _.words(text).join(', ');
+        text = 'Умею, шутить, и, рассказывать, анекдоты, пример, шутка, Умею, пинговать, сайты, пример, пинг, ya, ru, Умею, искать, информацию, в, википедии, пример, вики, пушкин, Умею, отвечать, на, простые, выпросы, пример, Как, дела';
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send(text);
         }

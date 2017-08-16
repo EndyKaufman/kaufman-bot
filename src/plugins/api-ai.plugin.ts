@@ -10,7 +10,7 @@ export class ApiAIBotPlugin implements IBotPlugin {
     public description = 'Simple usage https://api.ai service with default agent';
     public whatCanIdo = {
         'en': 'I am able to answer simple questions, an example: `How are you?`',
-        'ru': 'Умею отвечать на простые выпросы, пример: `Как дела?`'
+        'ru': 'Умею отвечать на простые вопросы, пример: `Как дела?`'
     };
     protected wordsForSpy: string[];
     protected ai: any;
