@@ -5,6 +5,9 @@ const utils_1 = require("../lib/utils");
 const request = require('request');
 const cheerio = require('cheerio');
 const htmlToText = require('html-to-text');
+const jschardet = require('jschardet');
+const encoding = require('encoding');
+const charset = require('charset');
 class ScraperPlugin {
     constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords, whatCanIdoEn, whatCanIdoRu) {
         this.botNameAliases = botNameAliases;
@@ -45,13 +48,17 @@ class ScraperPlugin {
     scrap(text) {
         const event = new events_1.EventEmitter();
         const url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
-        request.get(url, { timeout: this.scraperTimeout }, (error, response, body) => {
+        request.get(url, { timeout: this.scraperTimeout, encoding: 'binary' }, (error, response, body) => {
             if (error) {
                 event.emit('message', false, false);
             }
             else {
                 const $ = cheerio.load(body);
-                const content = this.scraperContentSelector.split(',').map((selector) => htmlToText.fromString($(selector).html())).join('\n\n');
+                let content = this.scraperContentSelector.split(',').map((selector) => htmlToText.fromString($(selector).html())).join('\n\n');
+                const enc = charset(response.headers, body) || jschardet.detect(body).encoding.toLowerCase();
+                if (enc !== 'utf8') {
+                    content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc).toString('utf8');
+                }
                 event.emit('message', '`' + content + '`', url);
             }
         });
