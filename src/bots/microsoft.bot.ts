@@ -1,5 +1,6 @@
 import { IBot, IBotMessage } from '../lib/interfaces';
 import { EventEmitter } from 'events';
+import * as _ from 'lodash';
 
 import builder = require('botbuilder');
 
@@ -36,6 +37,7 @@ export class MicrosoftBot implements IBot {
     sendMessage(chatId: number | string, text: string, options?: any): any {
         text = text.replace(new RegExp('\n', 'ig'), ' ');
         text = text.replace(new RegExp('`', 'ig'), '```');
+        text = _.words(text).join(', ');
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send(text);
         }
