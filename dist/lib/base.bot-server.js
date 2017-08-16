@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const timers_1 = require("timers");
 const events_1 = require("events");
+const utils_1 = require("./utils");
 class BaseBotServer {
     constructor(name) {
         this.name = name;
@@ -102,7 +103,7 @@ class BaseBotServer {
                         }
                         else {
                             this.notFound(msg).on('message', (notFoundAnswer) => {
-                                this.bot.sendMessage(msg.chat.id, notFoundAnswer);
+                                this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
                             });
                         }
                     }), 100);
@@ -121,7 +122,7 @@ class BaseBotServer {
                 let j = 0;
                 const len = this.plugins.length;
                 for (j = 0; j < len; j++) {
-                    if (methodName === 'answerWhatCanIdo') {
+                    if (utils_1.checkWordsInMessage(methodName, ['answerWhatCanIdo'])) {
                         founded = true;
                         answers.push(this.plugins[j].answerWhatCanIdo(this.bot, msg));
                     }

@@ -3,7 +3,6 @@ import { IBot } from '../lib/interfaces';
 import { EventEmitter } from 'events';
 export declare class MicrosoftBot implements IBot {
     protected onEvent: EventEmitter;
-    protected onSendMessage: EventEmitter;
     originalConnector: any;
     originalBot: any;
     constructor(appId: string, appPassword: string);

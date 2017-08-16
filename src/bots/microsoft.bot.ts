@@ -5,12 +5,10 @@ import builder = require('botbuilder');
 
 export class MicrosoftBot implements IBot {
     protected onEvent: EventEmitter;
-    protected onSendMessage: EventEmitter;
     public originalConnector: any;
     public originalBot: any;
     constructor(appId: string, appPassword: string) {
         this.onEvent = new EventEmitter();
-        this.onSendMessage = new EventEmitter();
         this.originalConnector = new builder.ChatConnector({
             appId: appId,
             appPassword: appPassword
@@ -25,14 +23,9 @@ export class MicrosoftBot implements IBot {
                 from: {
                     language_code: session.message.textLocale
                 },
-                originalData: session.message,
+                originalData: session,
                 provider: 'microsoft'
             };
-            this.onSendMessage.on('message', (chatId: number | string, text: string, options?: any) => {
-                if (chatId === session.message.address.id) {
-                    session.send(text);
-                }
-            });
             this.onEvent.emit('message', msg);
         });
     }
@@ -41,8 +34,11 @@ export class MicrosoftBot implements IBot {
     }
     sendMessage(chatId: number | string, text: string, options?: any): any {
         text = text.replace(new RegExp('\n', 'ig'), '\n\n');
-        text = text.replace(new RegExp('`', 'ig'), '');
-        this.onSendMessage.emit('message', chatId, text, options);
+        text = text.replace(new RegExp('`', 'ig'), '```');
+        console.log(options);
+        if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
+            options.originalMessage.originalData.send(text);
+        }
         return true;
     }
     setWebHook(url: string, options?: any): any {
