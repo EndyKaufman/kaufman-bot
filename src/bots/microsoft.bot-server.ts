@@ -2,62 +2,10 @@ import { BaseBotServer } from '../lib/base.bot-server';
 import { ScraperPlugin } from '../plugins/scraper.plugin';
 import { WikIBotPlugin } from '../plugins/wiki.plugin';
 import { ApiAIBotPlugin } from '../plugins/api-ai.plugin';
-import { IBotPlugin, IBot, IBotMessage } from '../lib/interfaces';
-import { EventEmitter } from 'events';
+import { IBotPlugin, IBot } from '../lib/interfaces';
 import { IWebServer } from '../lib/interfaces';
+import { MicrosoftBot } from './microsoft.bot';
 
-import builder = require('botbuilder');
-
-export class MicrosoftBot implements IBot {
-    protected onEvent: EventEmitter;
-    protected onSendMessage: EventEmitter;
-    public originalConnector: any;
-    public originalBot: any;
-    constructor(appId: string, appPassword: string) {
-        this.onEvent = new EventEmitter();
-        this.onSendMessage = new EventEmitter();
-        this.originalConnector = new builder.ChatConnector({
-            appId: appId,
-            appPassword: appPassword
-        });
-        this.originalBot = new builder.UniversalBot(this.originalConnector, (session: any) => {
-            const msg: IBotMessage = {
-                text: session.message.text,
-                chat: {
-                    id: session.message.address.id,
-                    type: 'private'
-                },
-                from: {
-                    language_code: session.message.textLocale
-                },
-                originalData: session.message,
-                provider: 'microsoft'
-            };
-            this.onSendMessage.on('message', (chatId: number | string, text: string, options?: any) => {
-                if (chatId === session.message.address.id) {
-                    session.send(text);
-                }
-            });
-            this.onEvent.emit('message', msg);
-        });
-    }
-    processUpdate(update: any) {
-        return true;
-    }
-    sendMessage(chatId: number | string, text: string, options?: any): any {
-        this.onSendMessage.emit('message', chatId, text, options);
-        return true;
-    }
-    setWebHook(url: string, options?: any): any {
-        return true;
-    }
-    on(event: string | symbol, listener: (...args: any[]) => void): any {
-        return this.onEvent.on(event, listener);
-    }
-    emit(event: string | symbol, ...args: any[]): boolean {
-        return this.onEvent.emit(event, ...args);
-    }
-}
 export class MicrosoftBotServer extends BaseBotServer {
     protected bot: MicrosoftBot;
     protected botPassword: string;
@@ -73,6 +21,16 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.botPassword
         );
         // Include plugins
+        this.plugins.push(new ScraperPlugin(
+            this.env('BOT_NAME_ALIASES', 'bot').split(','),
+            this.env('SCRAPER_BASHORG_URI'),
+            this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
+            this.env('SCRAPER_BASHORG_CONTENT_SELECTOR'),
+            this.env('SCRAPER_BASHORG_CONTENT_LENGTH', 1000),
+            this.env('SCRAPER_BASHORG_SPY_WORDS', 'bashorg').split(','),
+            this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_EN'),
+            this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
+        ));
         this.plugins.push(new ScraperPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_PING_URI'),

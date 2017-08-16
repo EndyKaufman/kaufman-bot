@@ -14,6 +14,16 @@ export class TelegramBotServer extends BaseBotServer {
         // Include plugins
         this.plugins.push(new ScraperPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
+            this.env('SCRAPER_BASHORG_URI'),
+            this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
+            this.env('SCRAPER_BASHORG_CONTENT_SELECTOR'),
+            this.env('SCRAPER_BASHORG_CONTENT_LENGTH', 1000),
+            this.env('SCRAPER_BASHORG_SPY_WORDS', 'bashorg').split(','),
+            this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_EN'),
+            this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
+        ));
+        this.plugins.push(new ScraperPlugin(
+            this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_PING_URI'),
             this.env('SCRAPER_PING_TIMEOUT', 10000),
             this.env('SCRAPER_PING_CONTENT_SELECTOR'),

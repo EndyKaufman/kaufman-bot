@@ -20,6 +20,7 @@ describe('ScraperPlugin', () => {
                 ['bot'],
                 `http://localhost:${port}/{text}`,
                 1500,
+                'UTF-8',
                 'title',
                 100,
                 ['ping']
