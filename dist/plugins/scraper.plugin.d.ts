@@ -20,6 +20,6 @@ export declare class ScraperPlugin implements IBotPlugin {
     constructor(botNameAliases: string[], scraperUri: string, scraperTimeout: number, scraperContentSelector: string, scraperContentLength: number, scraperSpyWords: string[], whatCanIdoEn?: string, whatCanIdoRu?: string);
     check(bot: IBot, msg: IBotMessage): boolean;
     answerWhatCanIdo(bot: IBot, msg: IBotMessage): string;
-    protected scrap(text: string): EventEmitter;
+    protected scrap(text: string, msg?: IBotMessage): EventEmitter;
     process(bot: IBot, msg: IBotMessage): EventEmitter;
 }
