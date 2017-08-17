@@ -31,7 +31,7 @@ SCRAPER_BASHORG_WHAT_CAN_I_DO_RU="Умею шутить и рассказыва�
 SCRAPER_FORISMATIC_URI="https://api.forismatic.com/api/1.0/?method=getQuote&format=html&lang={lang}"
 SCRAPER_FORISMATIC_TIMEOUT=10000
 SCRAPER_FORISMATIC_CONTENT_SELECTOR="body > blockquote > strong > cite,body > blockquote > small"
-SCRAPER_FORISMATIC_CONTENT_LENGTH=1000
+SCRAPER_FORISMATIC_CONTENT_LENGTH=4000
 SCRAPER_FORISMATIC_SPY_WORDS="quote,quotes,цитата,цитаты,цитируй,умная мысль,цита,мудрость,залечи"
-SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN="I know how to give random quotes, for example: `joke`"
+SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN="I know how to give random quotes, for example: `quotes`"
 SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU="Умею выдавать случайные цитаты, пример: `цитаты`"
