@@ -28,3 +28,10 @@ SCRAPER_BASHORG_CONTENT_LENGTH=1000
 SCRAPER_BASHORG_SPY_WORDS="bash,joke,jokes,баш,шутка,шутки,пошути,рассмеши,анекдот,смешинки,смешинка,гыгы,haha"
 SCRAPER_BASHORG_WHAT_CAN_I_DO_EN="I can joke and tell jokes, for example: `joke`"
 SCRAPER_BASHORG_WHAT_CAN_I_DO_RU="Умею шутить и рассказывать анекдоты, пример: `шутка`"
+SCRAPER_FORISMATIC_URI="https://api.forismatic.com/api/1.0/?method=getQuote&format=html&lang={lang}"
+SCRAPER_FORISMATIC_TIMEOUT=10000
+SCRAPER_FORISMATIC_CONTENT_SELECTOR="body > blockquote > strong > cite,body > blockquote > small"
+SCRAPER_FORISMATIC_CONTENT_LENGTH=1000
+SCRAPER_FORISMATIC_SPY_WORDS="quote,quotes,цитата,цитаты,цитируй,умная мысль,цита,мудрость,залечи"
+SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN="I know how to give random quotes, for example: `joke`"
+SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU="Умею выдавать случайные цитаты, пример: `цитаты`"
