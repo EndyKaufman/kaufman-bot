@@ -59,6 +59,7 @@
 		"express": "^4.15.4",
 		"forever-monitor": "^1.7.1",
 		"html-to-text": "^3.3.0",
+		"iconv-lite": "^0.4.18",
 		"jschardet": "^1.5.1",
 		"lodash": "^4.17.4",
 		"node-telegram-bot-api": "^0.27.1",

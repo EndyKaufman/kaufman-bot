@@ -54,10 +54,17 @@ export class ScraperPlugin implements IBotPlugin {
         }
         return this.whatCanIdo['en'];
     }
-    protected scrap(text: string) {
+    protected scrap(text: string, msg?: IBotMessage) {
         const event = new EventEmitter();
-        const url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
-        request.get(url, { timeout: this.scraperTimeout, encoding: 'binary' }, (error: any, response: any, body: any) => {
+        let url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
+        if (msg) {
+            let lang = 'en';
+            if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+                lang = 'ru';
+            }
+            url = url.replace(new RegExp('{lang}', 'ig'), lang);
+        }
+        request.get(url, { timeout: this.scraperTimeout }, (error: any, response: any, body: any) => {
             if (error) {
                 event.emit('message', false, false);
             } else {
@@ -67,7 +74,7 @@ export class ScraperPlugin implements IBotPlugin {
                 ).join('\n\n');
                 const enc = charset(response.headers, body) || jschardet.detect(body).encoding.toLowerCase();
                 if (enc !== 'utf8') {
-                    content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc).toString('utf8');
+                    content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc, true).toString('utf8');
                 }
                 event.emit('message', content, url);
             }
@@ -78,13 +85,14 @@ export class ScraperPlugin implements IBotPlugin {
         const event = new EventEmitter();
         let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
         text = removeWordsFromMessage(text, this.botNameAliases);
-        this.scrap(text).on('message', (answer: string, url: string) => {
+        this.scrap(text, msg).on('message', (answer: string, url: string) => {
             if (answer) {
-                event.emit('message',
+                const message =
                     '`' + answer.substring(0, this.scraperContentLength)
                     + (answer.length > this.scraperContentLength ? '...' : '')
                     + '`\n\n'
-                    + url);
+                    + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
+                event.emit('message', message);
             } else {
                 event.emit('message', false);
             }
