@@ -5,7 +5,7 @@ const _ = require("lodash");
 const utils_1 = require("../lib/utils");
 const wikijs = require('wikijs');
 const wtfWikipedia = require('wtf_wikipedia');
-class WikIBotPlugin {
+class WikiBotPlugin {
     constructor(botLocale, botNameAliases, wikipediaContentLength, wikipediaSpyWords) {
         this.botLocale = botLocale;
         this.botNameAliases = botNameAliases;
@@ -27,7 +27,7 @@ class WikIBotPlugin {
                 msg.chat.type !== 'private');
     }
     answerWhatCanIdo(bot, msg) {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];
@@ -112,4 +112,4 @@ class WikIBotPlugin {
         return event;
     }
 }
-exports.WikIBotPlugin = WikIBotPlugin;
+exports.WikiBotPlugin = WikiBotPlugin;

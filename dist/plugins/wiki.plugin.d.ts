@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { IBot, IBotPlugin, IBotMessage } from '../lib/interfaces';
-export declare class WikIBotPlugin implements IBotPlugin {
+export declare class WikiBotPlugin implements IBotPlugin {
     protected botLocale: string;
     protected botNameAliases: string[];
     protected wikipediaContentLength: number;

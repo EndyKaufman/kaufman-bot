@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const utils_1 = require("../lib/utils");
 const apiai = require('apiai');
-class ApiAIBotPlugin {
+class ApiAiBotPlugin {
     constructor(botNameAliases, apiaiClientAccessToken) {
         this.botNameAliases = botNameAliases;
         this.apiaiClientAccessToken = apiaiClientAccessToken;
@@ -20,7 +20,7 @@ class ApiAIBotPlugin {
         return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
     answerWhatCanIdo(bot, msg) {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];
@@ -52,4 +52,4 @@ class ApiAIBotPlugin {
         return event;
     }
 }
-exports.ApiAIBotPlugin = ApiAIBotPlugin;
+exports.ApiAiBotPlugin = ApiAiBotPlugin;

@@ -8,7 +8,7 @@ const htmlToText = require('html-to-text');
 const jschardet = require('jschardet');
 const encoding = require('encoding');
 const charset = require('charset');
-class ScraperPlugin {
+class ScraperBotPlugin {
     constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperContentCodepage, scraperSpyWords, whatCanIdoEn, whatCanIdoRu) {
         this.botNameAliases = botNameAliases;
         this.scraperUri = scraperUri;
@@ -41,7 +41,7 @@ class ScraperPlugin {
                 msg.chat.type !== 'private');
     }
     answerWhatCanIdo(bot, msg) {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];
@@ -95,4 +95,4 @@ class ScraperPlugin {
         return event;
     }
 }
-exports.ScraperPlugin = ScraperPlugin;
+exports.ScraperBotPlugin = ScraperBotPlugin;

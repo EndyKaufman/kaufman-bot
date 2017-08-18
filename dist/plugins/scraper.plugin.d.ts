@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { IBotPlugin, IBot, IBotMessage } from '../lib/interfaces';
-export declare class ScraperPlugin implements IBotPlugin {
+export declare class ScraperBotPlugin implements IBotPlugin {
     protected botNameAliases: string[];
     protected scraperUri: string;
     protected scraperTimeout: number;

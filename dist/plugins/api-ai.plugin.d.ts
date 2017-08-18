@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { IBotPlugin, IBotMessage, IBot } from '../lib/interfaces';
-export declare class ApiAIBotPlugin implements IBotPlugin {
+export declare class ApiAiBotPlugin implements IBotPlugin {
     protected botNameAliases: string[];
     protected apiaiClientAccessToken: string;
     name: string;
