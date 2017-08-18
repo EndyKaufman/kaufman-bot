@@ -2,6 +2,9 @@ import { setTimeout } from 'timers';
 import { EventEmitter } from 'events';
 import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
 import { checkWordsInMessage } from './utils';
+import * as _ from 'lodash';
+
+const stringify = require('json-stringify-safe');
 
 export class BaseBotServer implements IBotServer {
     protected bot: IBot;
@@ -92,7 +95,11 @@ export class BaseBotServer implements IBotServer {
             if (data) {
                 let text = data;
                 if (stop) {
-                    text = '`' + JSON.stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                    const newData = data;
+                    if (newData.msg.originalData) {
+                        delete newData.msg.originalData;
+                    }
+                    text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }

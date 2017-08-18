@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
+const stringify = require('json-stringify-safe');
 class BaseBotServer {
     constructor(name) {
         this.name = name;
@@ -84,7 +85,11 @@ class BaseBotServer {
             if (data) {
                 let text = data;
                 if (stop) {
-                    text = '`' + JSON.stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                    const newData = data;
+                    if (newData.msg.originalData) {
+                        delete newData.msg.originalData;
+                    }
+                    text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }
