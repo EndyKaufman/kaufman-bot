@@ -34,39 +34,44 @@ class WikiBotPlugin {
     }
     searchOnWiki(text, locale) {
         const event = new events_1.EventEmitter();
-        locale = locale === undefined ? this.botLocale : locale;
-        wikijs.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
-            .search(text, 1).then((data) => {
-            if (data.results.length > 0) {
-                let pageName = data.results[0];
-                pageName = pageName.replace(new RegExp(' ', 'ig'), '_');
-                wtfWikipedia.from_api(pageName, this.botLocale, (markup) => {
-                    let answer = '';
-                    if (markup) {
-                        const parsedMarkup = wtfWikipedia.parse(markup) || null;
-                        if (parsedMarkup.pages && parsedMarkup.pages.length > 0) {
-                            const arr = markup.split('\n');
-                            if (arr.length > 0) {
-                                answer = parsedMarkup.pages.join('\n\n');
+        try {
+            locale = locale === undefined ? this.botLocale : locale;
+            wikijs.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
+                .search(text, 1).then((data) => {
+                if (data.results.length > 0) {
+                    let pageName = data.results[0];
+                    pageName = pageName.replace(new RegExp(' ', 'ig'), '_');
+                    wtfWikipedia.from_api(pageName, this.botLocale, (markup) => {
+                        let answer = '';
+                        if (markup) {
+                            const parsedMarkup = wtfWikipedia.parse(markup) || null;
+                            if (parsedMarkup.pages && parsedMarkup.pages.length > 0) {
+                                const arr = markup.split('\n');
+                                if (arr.length > 0) {
+                                    answer = parsedMarkup.pages.join('\n\n');
+                                }
+                                else {
+                                    answer = '';
+                                }
                             }
                             else {
-                                answer = '';
+                                answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', 'ig'), '\n');
                             }
                         }
-                        else {
-                            answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', 'ig'), '\n');
-                        }
-                    }
-                    const url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
-                    event.emit('message', answer, url);
-                });
-            }
-            else {
+                        const url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
+                        event.emit('message', answer, url);
+                    });
+                }
+                else {
+                    event.emit('message', false, false);
+                }
+            }, (error) => {
                 event.emit('message', false, false);
-            }
-        }, (error) => {
-            event.emit('message', false, false);
-        });
+            });
+        }
+        catch (error) {
+            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+        }
         return event;
     }
     process(bot, msg) {

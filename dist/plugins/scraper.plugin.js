@@ -48,32 +48,37 @@ class ScraperBotPlugin {
     }
     scrap(text, msg) {
         const event = new events_1.EventEmitter();
-        let url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
-        if (msg) {
-            let lang = 'en';
-            if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
-                lang = 'ru';
-            }
-            url = url.replace(new RegExp('{lang}', 'ig'), lang);
-        }
-        const options = { timeout: this.scraperTimeout };
-        if (!this.scraperContentCodepage) {
-            options['encoding'] = 'binary';
-        }
-        request.get(url, options, (error, response, body) => {
-            if (error) {
-                event.emit('message', false, false);
-            }
-            else {
-                const $ = cheerio.load(body);
-                let content = this.scraperContentSelector.split(',').map((selector) => htmlToText.fromString($(selector).html())).join('\n\n');
-                const enc = charset(response.headers, body) || jschardet.detect(body).encoding.toLowerCase();
-                if (enc !== 'utf8') {
-                    content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc, true).toString('utf8');
+        try {
+            let url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
+            if (msg) {
+                let lang = 'en';
+                if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+                    lang = 'ru';
                 }
-                event.emit('message', content, url);
+                url = url.replace(new RegExp('{lang}', 'ig'), lang);
             }
-        });
+            const options = { timeout: this.scraperTimeout };
+            if (!this.scraperContentCodepage) {
+                options['encoding'] = 'binary';
+            }
+            request.get(url, options, (error, response, body) => {
+                if (error) {
+                    event.emit('message', false, false);
+                }
+                else {
+                    const $ = cheerio.load(body);
+                    let content = this.scraperContentSelector.split(',').map((selector) => htmlToText.fromString($(selector).html())).join('\n\n');
+                    const enc = charset(response.headers, body) || jschardet.detect(body).encoding.toLowerCase();
+                    if (enc !== 'utf8') {
+                        content = encoding.convert(new Buffer(content, 'binary'), 'utf8', enc, true).toString('utf8');
+                    }
+                    event.emit('message', content, url);
+                }
+            });
+        }
+        catch (error) {
+            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+        }
         return event;
     }
     process(bot, msg) {

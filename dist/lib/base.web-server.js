@@ -8,10 +8,6 @@ class BaseWebServer {
         this.name = name;
         this.port = this.env('PORT');
         this.app = express();
-        if (this.env('DEBUG') !== 'true') {
-            this.rollbar = new Rollbar('ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN');
-            this.app.use(this.rollbar.errorHandler());
-        }
         this.app.use(bodyParser.json());
         this.app.listen(this.port, () => {
             console.log(`Express server is listening on ${this.port}`);

@@ -27,13 +27,18 @@ class ApiAiBotPlugin {
     }
     askAi(message, sessionId) {
         const event = new events_1.EventEmitter();
-        const request = this.ai.textRequest(message, {
-            sessionId: sessionId
-        });
-        request.on('response', function (response) {
-            event.emit('message', response.result.fulfillment.speech);
-        });
-        request.end();
+        try {
+            const request = this.ai.textRequest(message, {
+                sessionId: sessionId
+            });
+            request.on('response', function (response) {
+                event.emit('message', response.result.fulfillment.speech);
+            });
+            request.end();
+        }
+        catch (error) {
+            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+        }
         return event;
     }
     process(bot, msg) {

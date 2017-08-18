@@ -4,6 +4,8 @@ export interface IWebServer {
     app: any;
 }
 export interface IBotServer {
+    events: EventEmitter;
+    env(name: string, defaultValue?: any): any;
     startPlugin(message: string, pluginName: string, locale: string): any;
     startEndpoint(server: IWebServer): any;
 }

@@ -38,6 +38,20 @@ class App {
             const microsoftBotServer = new microsoft_bot_server_1.MicrosoftBotServer();
             telegramBotServer.startEndpoint(webServer);
             microsoftBotServer.startEndpoint(webServer);
+            telegramBotServer.events.on('error', (msg, error, stop = false) => {
+                const originalMsg = msg;
+                msg.chat.id = telegramBotServer.env('BOT_ADMIN_TELEGRAM_ID');
+                if (!stop) {
+                    telegramBotServer.events.emit('message', msg, JSON.stringify({ msg: msg, error: `Error ${error.name}: ${error.message}\n${error.stack}` }), true);
+                }
+            });
+            telegramBotServer.events.on('message', (msg, message, stop = false) => {
+                const originalMsg = msg;
+                msg.chat.id = telegramBotServer.env('BOT_ADMIN_TELEGRAM_ID');
+                if (!stop) {
+                    telegramBotServer.events.emit('message', msg, JSON.stringify({ msg: msg, answer: message }), true);
+                }
+            });
         }
         if (!selected) {
             selected = true;
