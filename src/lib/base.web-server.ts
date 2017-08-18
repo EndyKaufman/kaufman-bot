@@ -7,18 +7,8 @@ const Rollbar = require('rollbar');
 export class BaseWebServer implements IWebServer {
     public app: any;
     public rollbar: any;
-    protected port: string;
     constructor(protected name?: string) {
-        this.port = this.env('PORT');
         this.app = express();
-        /*if (this.env('DEBUG') === 'true') {
-            this.rollbar = new Rollbar('ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN');
-            this.app.use(this.rollbar.errorHandler());
-        }*/
-        this.app.use(bodyParser.json());
-        this.app.listen(this.port, () => {
-            console.log(`Express server is listening on ${this.port}`);
-        });
     }
     protected get namePrefix() {
         return !this.name ? '' : this.name.toUpperCase() + '_';
@@ -29,6 +19,16 @@ export class BaseWebServer implements IWebServer {
         } else {
             return defaultValue;
         }
+    }
+    public start(port: string, rollbarPostServerItemAccessToken?: string) {
+        if (rollbarPostServerItemAccessToken) {
+            this.rollbar = new Rollbar(rollbarPostServerItemAccessToken);
+            this.app.use(this.rollbar.errorHandler());
+        }
+        this.app.use(bodyParser.json());
+        this.app.listen(port, () => {
+            console.log(`Express server is listening on ${port}`);
+        });
     }
 
 }

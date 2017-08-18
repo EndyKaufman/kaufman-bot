@@ -4,7 +4,6 @@ import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfa
 import { checkWordsInMessage } from './utils';
 
 export class BaseBotServer implements IBotServer {
-    protected debug = false;
     protected bot: IBot;
     protected webServer: IWebServer
     protected botToken: string;
@@ -29,6 +28,9 @@ export class BaseBotServer implements IBotServer {
         } else {
             return defaultValue;
         }
+    }
+    public sendMessageToAdmin() {
+
     }
     public startPlugin(message: string, pluginName: string, locale: string) {
         const event = new EventEmitter();
@@ -86,8 +88,14 @@ export class BaseBotServer implements IBotServer {
         if (this.botHookUrl) {
             this.bot.setWebHook(this.botHookUrl + this.actionUrl);
         }
-        this.events.on('message', (msg: IBotMessage, text: string) => {
-            this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
+        this.events.on('message', (msg: IBotMessage, data: any, stop: boolean) => {
+            if (data) {
+                let text = data;
+                if (stop) {
+                    text = '`' + JSON.stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                }
+                this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
+            }
         });
         this.events.on('error', (msg: IBotMessage, error: any) => {
             this.bot.sendMessage(msg.chat.id, `Error ${error.name}: ${error.message}\n${error.stack}`, { originalMessage: msg, parse_mode: 'Markdown' });
@@ -101,6 +109,7 @@ export class BaseBotServer implements IBotServer {
     }
     protected processMessages() {
         this.bot.on('message', (msg: IBotMessage) => {
+            this.events.emit('message', msg, false, false);
             try {
                 if (this.env('BOT_LOCALE')) {
                     msg.from.language_code = this.env('BOT_LOCALE');
@@ -117,25 +126,9 @@ export class BaseBotServer implements IBotServer {
                                 if (hardBotAnswer) {
                                     answer = hardBotAnswer;
                                 }
-                                if (this.env('DEBUG') === 'true') {
-                                    const b = new Buffer(answer);
-                                    answer = answer + '\nbase64:\n' + b.toString('base64');
-                                }
-                                if (msg.text.indexOf('base64Answer') !== -1) {
-                                    const b2 = new Buffer(answer);
-                                    answer = b2.toString('base64');
-                                }
                                 this.events.emit('message', msg, answer);
                             } else {
                                 this.notFound(msg).on('message', (notFoundAnswer: string) => {
-                                    if (this.env('DEBUG') === 'true') {
-                                        const b = new Buffer(notFoundAnswer);
-                                        notFoundAnswer = notFoundAnswer + '\nbase64:\n' + b.toString('base64');
-                                    }
-                                    if (msg.text.indexOf('base64Answer') !== -1) {
-                                        const b2 = new Buffer(notFoundAnswer);
-                                        notFoundAnswer = b2.toString('base64');
-                                    }
                                     this.events.emit('message', msg, notFoundAnswer);
                                 });
                             }

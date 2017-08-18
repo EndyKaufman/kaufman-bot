@@ -4,7 +4,6 @@ import { EventEmitter } from 'events';
 import builder = require('botbuilder');
 
 export class MicrosoftBot implements IBot {
-    protected debug = true;
     protected onEvent: EventEmitter;
     public originalConnector: any;
     public originalBot: any;
