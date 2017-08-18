@@ -34,7 +34,7 @@ export class MicrosoftBot implements IBot {
     }
     sendMessage(chatId: number | string, text: string, options?: any): any {
         text = text.replace(new RegExp('\n', 'ig'), '\n\n');
-        text = text.replace(new RegExp('`', 'ig'), '```');
+        text = text.replace(new RegExp('`', 'ig'), '```\n');
         text = text + '\n';
         if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
             options.originalMessage.originalData.send({

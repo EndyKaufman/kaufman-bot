@@ -91,6 +91,11 @@ class BaseBotServer {
                     }
                     text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
+                const r = /\\u([\d\w]{4})/gi;
+                text = text.replace(r, function (match, grp) {
+                    return String.fromCharCode(parseInt(grp, 16));
+                });
+                text = unescape(text);
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }
         });

@@ -4,6 +4,9 @@ import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfa
 import { checkWordsInMessage } from './utils';
 import * as _ from 'lodash';
 
+declare function unescape(s: string): string;
+declare function escape(s: string): string;
+
 const stringify = require('json-stringify-safe');
 
 export class BaseBotServer implements IBotServer {
@@ -101,6 +104,11 @@ export class BaseBotServer implements IBotServer {
                     }
                     text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
+                const r = /\\u([\d\w]{4})/gi;
+                text = text.replace(r, function (match: any, grp: any) {
+                    return String.fromCharCode(parseInt(grp, 16));
+                });
+                text = unescape(text);
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }
         });
