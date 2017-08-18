@@ -3,6 +3,7 @@ import * as commander from 'commander';
 import { config } from 'dotenv';
 import { WebServer } from '../server';
 import { TelegramBotServer } from '../bots/telegram.bot-server';
+import { IBotMessage } from '../lib/interfaces';
 
 export class App {
     protected program: commander.CommanderStatic;
@@ -47,8 +48,21 @@ export class App {
             const microsoftBotServer = new MicrosoftBotServer();
             telegramBotServer.startEndpoint(webServer);
             microsoftBotServer.startEndpoint(webServer);
+            telegramBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
+                const originalMsg: IBotMessage = msg;
+                msg.chat.id = telegramBotServer.env('BOT_ADMIN_TELEGRAM_ID');
+                if (!stop) {
+                    telegramBotServer.events.emit('message', msg, JSON.stringify({ msg: msg, error: `Error ${error.name}: ${error.message}\n${error.stack}` }), true);
+                }
+            });
+            telegramBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
+                const originalMsg: IBotMessage = msg;
+                msg.chat.id = telegramBotServer.env('BOT_ADMIN_TELEGRAM_ID');
+                if (!stop) {
+                    telegramBotServer.events.emit('message', msg, JSON.stringify({ msg: msg, answer: message }), true);
+                }
+            });
         }
-
         if (!selected) {
             selected = true;
             this.program.help();

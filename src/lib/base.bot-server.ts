@@ -10,7 +10,9 @@ export class BaseBotServer implements IBotServer {
     protected botToken: string;
     protected botHookUrl: string;
     protected plugins: IBotPlugin[];
+    public events: EventEmitter;
     constructor(protected name?: string) {
+        this.events = new EventEmitter();
         if (this.plugins === undefined) {
             this.plugins = [];
         }
@@ -18,7 +20,10 @@ export class BaseBotServer implements IBotServer {
     protected get namePrefix() {
         return !this.name ? '' : this.name.toUpperCase() + '_';
     }
-    protected env(name: string, defaultValue: any = '') {
+    public env(name: string, defaultValue?: any): any {
+        if (defaultValue === undefined) {
+            defaultValue = null;
+        }
         if (process.env[this.namePrefix + name]) {
             return process.env[this.namePrefix + name]
         } else {
@@ -81,6 +86,12 @@ export class BaseBotServer implements IBotServer {
         if (this.botHookUrl) {
             this.bot.setWebHook(this.botHookUrl + this.actionUrl);
         }
+        this.events.on('message', (msg: IBotMessage, text: string) => {
+            this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
+        });
+        this.events.on('error', (msg: IBotMessage, error: any) => {
+            this.bot.sendMessage(msg.chat.id, `Error ${error.name}: ${error.message}\n${error.stack}`, { originalMessage: msg, parse_mode: 'Markdown' });
+        });
     }
     protected processUpdate() {
         this.webServer.app.post(this.actionUrl, (req: any, res: any) => {
@@ -90,46 +101,50 @@ export class BaseBotServer implements IBotServer {
     }
     protected processMessages() {
         this.bot.on('message', (msg: IBotMessage) => {
-            if (this.env('BOT_LOCALE')) {
-                msg.from.language_code = this.env('BOT_LOCALE');
-            }
-            let founded = false;
-            let i = 0;
-            const len = this.plugins.length;
-            for (i = 0; i < len; i++) {
-                if (!founded && this.plugins[i].check(this.bot, msg)) {
-                    founded = true;
-                    this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
-                        if (answer) {
-                            const hardBotAnswer = this.getHardBotAnswers(msg, answer);
-                            if (hardBotAnswer) {
-                                answer = hardBotAnswer;
-                            }
-                            if (this.env('DEBUG') === 'true') {
-                                const b = new Buffer(answer);
-                                answer = answer + '\nbase64:\n' + b.toString('base64');
-                            }
-                            if (msg.text.indexOf('base64Answer') !== -1) {
-                                const b2 = new Buffer(answer);
-                                answer = b2.toString('base64');
-                            }
-                            this.bot.sendMessage(msg.chat.id, answer, { originalMessage: msg, parse_mode: 'Markdown' });
-                        } else {
-                            this.notFound(msg).on('message', (notFoundAnswer: string) => {
+            try {
+                if (this.env('BOT_LOCALE')) {
+                    msg.from.language_code = this.env('BOT_LOCALE');
+                }
+                let founded = false;
+                let i = 0;
+                const len = this.plugins.length;
+                for (i = 0; i < len; i++) {
+                    if (!founded && this.plugins[i].check(this.bot, msg)) {
+                        founded = true;
+                        this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
+                            if (answer) {
+                                const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                                if (hardBotAnswer) {
+                                    answer = hardBotAnswer;
+                                }
                                 if (this.env('DEBUG') === 'true') {
-                                    const b = new Buffer(notFoundAnswer);
-                                    notFoundAnswer = notFoundAnswer + '\nbase64:\n' + b.toString('base64');
+                                    const b = new Buffer(answer);
+                                    answer = answer + '\nbase64:\n' + b.toString('base64');
                                 }
                                 if (msg.text.indexOf('base64Answer') !== -1) {
-                                    const b2 = new Buffer(notFoundAnswer);
-                                    notFoundAnswer = b2.toString('base64');
+                                    const b2 = new Buffer(answer);
+                                    answer = b2.toString('base64');
                                 }
-                                this.bot.sendMessage(msg.chat.id, notFoundAnswer, { originalMessage: msg, parse_mode: 'Markdown' });
-                            });
-                        }
-                    });
-                    break;
+                                this.events.emit('message', msg, answer);
+                            } else {
+                                this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                    if (this.env('DEBUG') === 'true') {
+                                        const b = new Buffer(notFoundAnswer);
+                                        notFoundAnswer = notFoundAnswer + '\nbase64:\n' + b.toString('base64');
+                                    }
+                                    if (msg.text.indexOf('base64Answer') !== -1) {
+                                        const b2 = new Buffer(notFoundAnswer);
+                                        notFoundAnswer = b2.toString('base64');
+                                    }
+                                    this.events.emit('message', msg, notFoundAnswer);
+                                });
+                            }
+                        });
+                        break;
+                    }
                 }
+            } catch (error) {
+                this.events.emit('error', msg, error);
             }
         });
     }

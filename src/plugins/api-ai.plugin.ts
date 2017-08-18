@@ -32,13 +32,17 @@ export class ApiAiBotPlugin implements IBotPlugin {
     }
     protected askAi(message: string, sessionId: string): EventEmitter {
         const event = new EventEmitter();
-        const request = this.ai.textRequest(message, {
-            sessionId: sessionId
-        });
-        request.on('response', function (response: any) {
-            event.emit('message', response.result.fulfillment.speech);
-        });
-        request.end();
+        try {
+            const request = this.ai.textRequest(message, {
+                sessionId: sessionId
+            });
+            request.on('response', function (response: any) {
+                event.emit('message', response.result.fulfillment.speech);
+            });
+            request.end();
+        } catch (error) {
+            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+        }
         return event;
     }
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
