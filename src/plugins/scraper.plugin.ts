@@ -25,6 +25,7 @@ export class ScraperPlugin implements IBotPlugin {
         protected scraperTimeout: number,
         protected scraperContentSelector: string,
         protected scraperContentLength: number,
+        protected scraperContentCodepage: string,
         protected scraperSpyWords: string[],
         protected whatCanIdoEn?: string,
         protected whatCanIdoRu?: string
@@ -64,7 +65,11 @@ export class ScraperPlugin implements IBotPlugin {
             }
             url = url.replace(new RegExp('{lang}', 'ig'), lang);
         }
-        request.get(url, { timeout: this.scraperTimeout }, (error: any, response: any, body: any) => {
+        const options: any = { timeout: this.scraperTimeout };
+        if (!this.scraperContentCodepage) {
+            options['encoding'] = 'binary';
+        }
+        request.get(url, options, (error: any, response: any, body: any) => {
             if (error) {
                 event.emit('message', false, false);
             } else {

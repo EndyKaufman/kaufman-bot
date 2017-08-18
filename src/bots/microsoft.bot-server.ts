@@ -27,6 +27,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_FORISMATIC_TIMEOUT', 10000),
             this.env('SCRAPER_FORISMATIC_CONTENT_SELECTOR'),
             this.env('SCRAPER_FORISMATIC_CONTENT_LENGTH', 1000),
+            'windows-1251',
             this.env('SCRAPER_FORISMATIC_SPY_WORDS', 'quote').split(','),
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU')
@@ -37,6 +38,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
             this.env('SCRAPER_BASHORG_CONTENT_SELECTOR'),
             this.env('SCRAPER_BASHORG_CONTENT_LENGTH', 1000),
+            null,
             this.env('SCRAPER_BASHORG_SPY_WORDS', 'bashorg').split(','),
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
@@ -47,6 +49,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_PING_TIMEOUT', 10000),
             this.env('SCRAPER_PING_CONTENT_SELECTOR'),
             this.env('SCRAPER_PING_CONTENT_LENGTH', 1000),
+            null,
             this.env('SCRAPER_PING_SPY_WORDS', 'ping').split(','),
             this.env('SCRAPER_PING_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_PING_WHAT_CAN_I_DO_RU')

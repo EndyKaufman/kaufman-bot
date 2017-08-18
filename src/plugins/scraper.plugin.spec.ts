@@ -22,6 +22,7 @@ describe('ScraperPlugin', () => {
                 1500,
                 'title',
                 100,
+                null,
                 ['ping']
             );
         });
@@ -34,6 +35,9 @@ describe('ScraperPlugin', () => {
                 chat: {
                     id: 'random',
                     type: 'private'
+                },
+                from: {
+                    language_code: 'en'
                 }
             };
             app.get('/action', function (req, res) {
