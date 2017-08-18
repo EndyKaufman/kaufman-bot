@@ -9,12 +9,13 @@ const jschardet = require('jschardet');
 const encoding = require('encoding');
 const charset = require('charset');
 class ScraperPlugin {
-    constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperSpyWords, whatCanIdoEn, whatCanIdoRu) {
+    constructor(botNameAliases, scraperUri, scraperTimeout, scraperContentSelector, scraperContentLength, scraperContentCodepage, scraperSpyWords, whatCanIdoEn, whatCanIdoRu) {
         this.botNameAliases = botNameAliases;
         this.scraperUri = scraperUri;
         this.scraperTimeout = scraperTimeout;
         this.scraperContentSelector = scraperContentSelector;
         this.scraperContentLength = scraperContentLength;
+        this.scraperContentCodepage = scraperContentCodepage;
         this.scraperSpyWords = scraperSpyWords;
         this.whatCanIdoEn = whatCanIdoEn;
         this.whatCanIdoRu = whatCanIdoRu;
@@ -55,7 +56,11 @@ class ScraperPlugin {
             }
             url = url.replace(new RegExp('{lang}', 'ig'), lang);
         }
-        request.get(url, { timeout: this.scraperTimeout }, (error, response, body) => {
+        const options = { timeout: this.scraperTimeout };
+        if (!this.scraperContentCodepage) {
+            options['encoding'] = 'binary';
+        }
+        request.get(url, options, (error, response, body) => {
             if (error) {
                 event.emit('message', false, false);
             }

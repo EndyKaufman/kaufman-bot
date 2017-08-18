@@ -25,7 +25,7 @@ SCRAPER_BASHORG_URI="http://bash.im/random"
 SCRAPER_BASHORG_TIMEOUT=10000
 SCRAPER_BASHORG_CONTENT_SELECTOR="#body > div:nth-child(3) > div.text"
 SCRAPER_BASHORG_CONTENT_LENGTH=1000
-SCRAPER_BASHORG_SPY_WORDS="bash,joke,jokes,баш,шутка,шутки,пошути,рассмеши,анекдот,смешинки,смешинка,гыгы,haha"
+SCRAPER_BASHORG_SPY_WORDS="bash,joke,jokes,баш,шутка,шутки,пошути,шути,шутка,рассмеши,анекдот,смешинки,смешинка,гыгы,haha"
 SCRAPER_BASHORG_WHAT_CAN_I_DO_EN="I can joke and tell jokes, for example: `joke`"
 SCRAPER_BASHORG_WHAT_CAN_I_DO_RU="Умею шутить и рассказывать анекдоты, пример: `шутка`"
 SCRAPER_FORISMATIC_URI="https://api.forismatic.com/api/1.0/?method=getQuote&format=html&lang={lang}"
