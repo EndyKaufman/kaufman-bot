@@ -6,7 +6,7 @@ import { IBot, IBotPlugin, IBotMessage } from '../lib/interfaces';
 const wikijs = require('wikijs');
 const wtfWikipedia = require('wtf_wikipedia');
 
-export class WikIBotPlugin implements IBotPlugin {
+export class WikiBotPlugin implements IBotPlugin {
     public name = 'wiki';
     public description = 'Get basic information of word from wikipedia';
     public whatCanIdo = {
@@ -35,7 +35,7 @@ export class WikIBotPlugin implements IBotPlugin {
             );
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];

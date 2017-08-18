@@ -2,21 +2,21 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
 import * as express from 'express';
-import { ScraperPlugin } from './scraper.plugin';
+import { ScraperBotPlugin } from './scraper.plugin';
 import { IBotMessage } from '../lib/interfaces';
 
 const assert = chai.assert;
 
-describe('ScraperPlugin', () => {
+describe('ScraperBotPlugin', () => {
     const app = express();
     const server = app.listen(0);
     const port = server.address().port;
 
     describe('without bot', () => {
-        let plugin: ScraperPlugin;
+        let plugin: ScraperBotPlugin;
         before(function () {
             config();
-            plugin = new ScraperPlugin(
+            plugin = new ScraperBotPlugin(
                 ['bot'],
                 `http://localhost:${port}/{text}`,
                 1500,

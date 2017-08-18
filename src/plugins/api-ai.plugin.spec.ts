@@ -1,17 +1,17 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
-import { ApiAIBotPlugin } from './api-ai.plugin';
+import { ApiAiBotPlugin } from './api-ai.plugin';
 import { IBotMessage } from '../lib/interfaces';
 
 const assert = chai.assert;
 
-describe('ApiAIBotPlugin', () => {
+describe('ApiAiBotPlugin', () => {
     describe('without bot', () => {
-        let plugin: ApiAIBotPlugin;
+        let plugin: ApiAiBotPlugin;
         before(function () {
             config();
-            plugin = new ApiAIBotPlugin(
+            plugin = new ApiAiBotPlugin(
                 ['bot'],
                 process.env.APIAI_CLIENT_ACCESS_TOKEN
             );

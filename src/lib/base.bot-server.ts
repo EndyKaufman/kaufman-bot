@@ -90,6 +90,9 @@ export class BaseBotServer implements IBotServer {
     }
     protected processMessages() {
         this.bot.on('message', (msg: IBotMessage) => {
+            if (this.env('BOT_LOCALE')) {
+                msg.from.language_code = this.env('BOT_LOCALE');
+            }
             let founded = false;
             let i = 0;
             const len = this.plugins.length;

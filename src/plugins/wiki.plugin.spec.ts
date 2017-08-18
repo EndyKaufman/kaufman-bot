@@ -1,17 +1,17 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { config } from 'dotenv';
-import { WikIBotPlugin } from './wiki.plugin';
+import { WikiBotPlugin } from './wiki.plugin';
 import { IBotMessage } from '../lib/interfaces';
 
 const assert = chai.assert;
 
-describe('WikIBotPlugin', () => {
+describe('WikiBotPlugin', () => {
     describe('without bot', () => {
-        let plugin: WikIBotPlugin;
+        let plugin: WikiBotPlugin;
         before(function () {
             config();
-            plugin = new WikIBotPlugin(
+            plugin = new WikiBotPlugin(
                 'en',
                 ['bot'],
                 100,

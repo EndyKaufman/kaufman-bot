@@ -5,7 +5,7 @@ import { IBotPlugin, IBotMessage, IBot } from '../lib/interfaces';
 
 const apiai = require('apiai');
 
-export class ApiAIBotPlugin implements IBotPlugin {
+export class ApiAiBotPlugin implements IBotPlugin {
     public name = 'api-ai';
     public description = 'Simple usage https://api.ai service with default agent';
     public whatCanIdo = {
@@ -25,7 +25,7 @@ export class ApiAIBotPlugin implements IBotPlugin {
         return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];

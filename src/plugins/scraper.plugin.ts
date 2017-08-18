@@ -10,7 +10,7 @@ const jschardet = require('jschardet');
 const encoding = require('encoding');
 const charset = require('charset');
 
-export class ScraperPlugin implements IBotPlugin {
+export class ScraperBotPlugin implements IBotPlugin {
     public name = 'scraper';
     public description = 'Scraping content segment as jquery selector from remote site';
     public whatCanIdo = {
@@ -50,7 +50,7 @@ export class ScraperPlugin implements IBotPlugin {
             );
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
-        if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
+        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
             return this.whatCanIdo['ru'];
         }
         return this.whatCanIdo['en'];

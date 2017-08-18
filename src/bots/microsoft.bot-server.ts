@@ -1,7 +1,7 @@
 import { BaseBotServer } from '../lib/base.bot-server';
-import { ScraperPlugin } from '../plugins/scraper.plugin';
-import { WikIBotPlugin } from '../plugins/wiki.plugin';
-import { ApiAIBotPlugin } from '../plugins/api-ai.plugin';
+import { ScraperBotPlugin } from '../plugins/scraper.plugin';
+import { WikiBotPlugin } from '../plugins/wiki.plugin';
+import { ApiAiBotPlugin } from '../plugins/api-ai.plugin';
 import { IBotPlugin, IBot } from '../lib/interfaces';
 import { IWebServer } from '../lib/interfaces';
 import { MicrosoftBot } from './microsoft.bot';
@@ -21,7 +21,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.botPassword
         );
         // Include plugins
-        this.plugins.push(new ScraperPlugin(
+        this.plugins.push(new ScraperBotPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_FORISMATIC_URI'),
             this.env('SCRAPER_FORISMATIC_TIMEOUT', 10000),
@@ -32,7 +32,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU')
         ));
-        this.plugins.push(new ScraperPlugin(
+        this.plugins.push(new ScraperBotPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_BASHORG_URI'),
             this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
@@ -43,7 +43,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
         ));
-        this.plugins.push(new ScraperPlugin(
+        this.plugins.push(new ScraperBotPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_PING_URI'),
             this.env('SCRAPER_PING_TIMEOUT', 10000),
@@ -54,13 +54,13 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_PING_WHAT_CAN_I_DO_EN'),
             this.env('SCRAPER_PING_WHAT_CAN_I_DO_RU')
         ));
-        this.plugins.push(new WikIBotPlugin(
+        this.plugins.push(new WikiBotPlugin(
             this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('WIKIPEDIA_CONTENT_LENGTH', 1000),
             this.env('WIKIPEDIA_SPY_WORDS', 'wiki').split(',')
         ));
-        this.plugins.push(new ApiAIBotPlugin(
+        this.plugins.push(new ApiAiBotPlugin(
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('APIAI_CLIENT_ACCESS_TOKEN')
         ));
