@@ -49,6 +49,7 @@ class WikiBotPlugin {
                                 const arr = markup.split('\n');
                                 if (arr.length > 0) {
                                     answer = parsedMarkup.pages.join('\n\n');
+                                    answer = answer.replace(new RegExp('`', 'ig'), '');
                                 }
                                 else {
                                     answer = '';
@@ -56,6 +57,7 @@ class WikiBotPlugin {
                             }
                             else {
                                 answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', 'ig'), '\n');
+                                answer = answer.replace(new RegExp('`', 'ig'), '');
                             }
                         }
                         const url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
