@@ -4,7 +4,6 @@ const events_1 = require("events");
 const builder = require("botbuilder");
 class MicrosoftBot {
     constructor(appId, appPassword) {
-        this.debug = true;
         this.onEvent = new events_1.EventEmitter();
         this.originalConnector = new builder.ChatConnector({
             appId: appId,

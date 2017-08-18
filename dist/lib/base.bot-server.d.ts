@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
 export declare class BaseBotServer implements IBotServer {
     protected name: string;
-    protected debug: boolean;
     protected bot: IBot;
     protected webServer: IWebServer;
     protected botToken: string;
@@ -13,6 +12,7 @@ export declare class BaseBotServer implements IBotServer {
     constructor(name?: string);
     protected readonly namePrefix: string;
     env(name: string, defaultValue?: any): any;
+    sendMessageToAdmin(): void;
     startPlugin(message: string, pluginName: string, locale: string): EventEmitter;
     startEndpoint(server: IWebServer): void;
     protected readonly actionUrl: string;

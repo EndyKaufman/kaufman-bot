@@ -4,7 +4,6 @@ const events_1 = require("events");
 class BaseBotServer {
     constructor(name) {
         this.name = name;
-        this.debug = false;
         this.events = new events_1.EventEmitter();
         if (this.plugins === undefined) {
             this.plugins = [];
@@ -23,6 +22,8 @@ class BaseBotServer {
         else {
             return defaultValue;
         }
+    }
+    sendMessageToAdmin() {
     }
     startPlugin(message, pluginName, locale) {
         const event = new events_1.EventEmitter();
@@ -79,8 +80,14 @@ class BaseBotServer {
         if (this.botHookUrl) {
             this.bot.setWebHook(this.botHookUrl + this.actionUrl);
         }
-        this.events.on('message', (msg, text) => {
-            this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
+        this.events.on('message', (msg, data, stop) => {
+            if (data) {
+                let text = data;
+                if (stop) {
+                    text = '`' + JSON.stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                }
+                this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
+            }
         });
         this.events.on('error', (msg, error) => {
             this.bot.sendMessage(msg.chat.id, `Error ${error.name}: ${error.message}\n${error.stack}`, { originalMessage: msg, parse_mode: 'Markdown' });
@@ -94,6 +101,7 @@ class BaseBotServer {
     }
     processMessages() {
         this.bot.on('message', (msg) => {
+            this.events.emit('message', msg, false, false);
             try {
                 if (this.env('BOT_LOCALE')) {
                     msg.from.language_code = this.env('BOT_LOCALE');
@@ -110,26 +118,10 @@ class BaseBotServer {
                                 if (hardBotAnswer) {
                                     answer = hardBotAnswer;
                                 }
-                                if (this.env('DEBUG') === 'true') {
-                                    const b = new Buffer(answer);
-                                    answer = answer + '\nbase64:\n' + b.toString('base64');
-                                }
-                                if (msg.text.indexOf('base64Answer') !== -1) {
-                                    const b2 = new Buffer(answer);
-                                    answer = b2.toString('base64');
-                                }
                                 this.events.emit('message', msg, answer);
                             }
                             else {
                                 this.notFound(msg).on('message', (notFoundAnswer) => {
-                                    if (this.env('DEBUG') === 'true') {
-                                        const b = new Buffer(notFoundAnswer);
-                                        notFoundAnswer = notFoundAnswer + '\nbase64:\n' + b.toString('base64');
-                                    }
-                                    if (msg.text.indexOf('base64Answer') !== -1) {
-                                        const b2 = new Buffer(notFoundAnswer);
-                                        notFoundAnswer = b2.toString('base64');
-                                    }
                                     this.events.emit('message', msg, notFoundAnswer);
                                 });
                             }

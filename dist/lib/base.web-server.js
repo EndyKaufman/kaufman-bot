@@ -6,12 +6,7 @@ const Rollbar = require('rollbar');
 class BaseWebServer {
     constructor(name) {
         this.name = name;
-        this.port = this.env('PORT');
         this.app = express();
-        this.app.use(bodyParser.json());
-        this.app.listen(this.port, () => {
-            console.log(`Express server is listening on ${this.port}`);
-        });
     }
     get namePrefix() {
         return !this.name ? '' : this.name.toUpperCase() + '_';
@@ -23,6 +18,16 @@ class BaseWebServer {
         else {
             return defaultValue;
         }
+    }
+    start(port, rollbarPostServerItemAccessToken) {
+        if (rollbarPostServerItemAccessToken) {
+            this.rollbar = new Rollbar(rollbarPostServerItemAccessToken);
+            this.app.use(this.rollbar.errorHandler());
+        }
+        this.app.use(bodyParser.json());
+        this.app.listen(port, () => {
+            console.log(`Express server is listening on ${port}`);
+        });
     }
 }
 exports.BaseWebServer = BaseWebServer;
