@@ -1,7 +1,7 @@
 {
 	"name": "kaufman-bot",
 	"version": "0.2.0",
-	"description": "Simple bot",
+	"description": "A simple bot for Telegram and Skype",
 	"repository": "https://github.com/EndyKaufman/kaufman-bot.git",
 	"license": "MIT",
 	"scripts": {
@@ -49,6 +49,7 @@
 	},
 	"dependencies": {
 		"apiai": "^4.0.3",
+		"bcrypt": "^1.0.2",
 		"body-parser": "^1.17.2",
 		"botbuilder": "^3.9.0",
 		"charset": "^1.0.0",
