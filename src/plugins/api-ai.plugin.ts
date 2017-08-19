@@ -24,7 +24,7 @@ export class ApiAiBotPlugin implements IBotPlugin {
     public check(bot: IBot, msg: IBotMessage): boolean {
         return msg.text &&
             (
-                checkWordsInMessage(msg.text, this.wordsForSpy) || 
+                checkWordsInMessage(msg.text, this.wordsForSpy) ||
                 msg.chat.type === 'private'
             );
     }
@@ -37,7 +37,7 @@ export class ApiAiBotPlugin implements IBotPlugin {
     protected askAi(message: string, sessionId: string): EventEmitter {
         const event = new EventEmitter();
         try {
-            const request = this.ai.textRequest(message, {
+            const request = this.ai.textRequest(message.substring(0, 255), {
                 sessionId: sessionId
             });
             request.on('response', function (response: any) {

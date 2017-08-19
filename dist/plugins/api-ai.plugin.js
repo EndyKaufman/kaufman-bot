@@ -30,7 +30,7 @@ class ApiAiBotPlugin {
     askAi(message, sessionId) {
         const event = new events_1.EventEmitter();
         try {
-            const request = this.ai.textRequest(message, {
+            const request = this.ai.textRequest(message.substring(0, 255), {
                 sessionId: sessionId
             });
             request.on('response', function (response) {
