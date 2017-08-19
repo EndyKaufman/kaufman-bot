@@ -20,11 +20,11 @@ class WikiBotPlugin {
         this.wordsForSpy = wikipediaSpyWords;
     }
     check(bot, msg) {
-        return (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
+        return msg.text && ((utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
             msg.chat.type === 'private') ||
             (utils_1.checkWordsInMessage(msg.text, this.botNameAliases) &&
                 utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) &&
-                msg.chat.type !== 'private');
+                msg.chat.type !== 'private'));
     }
     answerWhatCanIdo(bot, msg) {
         if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
@@ -78,44 +78,46 @@ class WikiBotPlugin {
     }
     process(bot, msg) {
         const event = new events_1.EventEmitter();
-        let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = utils_1.removeWordsFromMessage(text, this.botNameAliases);
-        this.searchOnWiki(text).on('message', (answer, url) => {
-            if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
-                this.searchOnWiki(text, 'en').on('message', (answerTwo, urlTwo) => {
-                    if (answerTwo) {
-                        event.emit('message', '`' + answerTwo.substring(0, this.wikipediaContentLength)
+        if (msg.text) {
+            let text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
+            text = utils_1.removeWordsFromMessage(text, this.botNameAliases);
+            this.searchOnWiki(text).on('message', (answer, url) => {
+                if (!answer || !utils_1.checkWordsInMessage(answer, _.words(text))) {
+                    this.searchOnWiki(text, 'en').on('message', (answerTwo, urlTwo) => {
+                        if (answerTwo) {
+                            event.emit('message', '`' + answerTwo.substring(0, this.wikipediaContentLength)
+                                + (answer.length > this.wikipediaContentLength ? '...' : '')
+                                + '`\n\n'
+                                + urlTwo);
+                        }
+                        else {
+                            if (urlTwo) {
+                                event.emit('message', urlTwo);
+                            }
+                            else {
+                                event.emit('message', false);
+                            }
+                        }
+                    });
+                }
+                else {
+                    if (answer) {
+                        event.emit('message', '`' + answer.substring(0, this.wikipediaContentLength)
                             + (answer.length > this.wikipediaContentLength ? '...' : '')
                             + '`\n\n'
-                            + urlTwo);
+                            + url);
                     }
                     else {
-                        if (urlTwo) {
-                            event.emit('message', urlTwo);
+                        if (url) {
+                            event.emit('message', url);
                         }
                         else {
                             event.emit('message', false);
                         }
                     }
-                });
-            }
-            else {
-                if (answer) {
-                    event.emit('message', '`' + answer.substring(0, this.wikipediaContentLength)
-                        + (answer.length > this.wikipediaContentLength ? '...' : '')
-                        + '`\n\n'
-                        + url);
                 }
-                else {
-                    if (url) {
-                        event.emit('message', url);
-                    }
-                    else {
-                        event.emit('message', false);
-                    }
-                }
-            }
-        });
+            });
+        }
         return event;
     }
 }

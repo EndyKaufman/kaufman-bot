@@ -24,8 +24,6 @@ class BaseBotServer {
             return defaultValue;
         }
     }
-    sendMessageToAdmin() {
-    }
     startPlugin(message, pluginName, locale) {
         const event = new events_1.EventEmitter();
         const msg = {
@@ -85,11 +83,7 @@ class BaseBotServer {
             if (data) {
                 let text = data;
                 if (stop) {
-                    const newData = data;
-                    if (newData.msg.originalData) {
-                        delete newData.msg.originalData;
-                    }
-                    text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                    text = '`' + stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
                 const r = /\\u([\d\w]{4})/gi;
                 text = text.replace(r, function (match, grp) {
@@ -98,9 +92,6 @@ class BaseBotServer {
                 text = unescape(text);
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }
-        });
-        this.events.on('error', (msg, error) => {
-            this.bot.sendMessage(msg.chat.id, `Error ${error.name}: ${error.message}\n${error.stack}`, { originalMessage: msg, parse_mode: 'Markdown' });
         });
     }
     processUpdate() {

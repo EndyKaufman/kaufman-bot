@@ -17,7 +17,9 @@ class ApiAiBotPlugin {
         this.ai = apiai(apiaiClientAccessToken);
     }
     check(bot, msg) {
-        return utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
+        return msg.text &&
+            (utils_1.checkWordsInMessage(msg.text, this.wordsForSpy) ||
+                msg.chat.type === 'private');
     }
     answerWhatCanIdo(bot, msg) {
         if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
@@ -43,17 +45,19 @@ class ApiAiBotPlugin {
     }
     process(bot, msg) {
         const event = new events_1.EventEmitter();
-        this.askAi(msg.text, msg.chat.id).on('message', (answer) => {
-            if (answer) {
-                event.emit('message', answer);
-            }
-            else {
-                msg.text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
-                this.askAi(msg.text, msg.chat.id).on('message', (answerTwo) => {
-                    event.emit('message', answerTwo);
-                });
-            }
-        });
+        if (msg.text) {
+            this.askAi(msg.text, msg.chat.id).on('message', (answer) => {
+                if (answer) {
+                    event.emit('message', answer);
+                }
+                else {
+                    msg.text = utils_1.removeWordsFromMessage(msg.text, this.wordsForSpy);
+                    this.askAi(msg.text, msg.chat.id).on('message', (answerTwo) => {
+                        event.emit('message', answerTwo);
+                    });
+                }
+            });
+        }
         return event;
     }
 }

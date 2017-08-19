@@ -12,7 +12,6 @@ export declare class BaseBotServer implements IBotServer {
     constructor(name?: string);
     protected readonly namePrefix: string;
     env(name: string, defaultValue?: any): any;
-    sendMessageToAdmin(): void;
     startPlugin(message: string, pluginName: string, locale: string): EventEmitter;
     startEndpoint(server: IWebServer): void;
     protected readonly actionUrl: string;

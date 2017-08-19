@@ -6,6 +6,7 @@ const dotenv_1 = require("dotenv");
 const server_1 = require("../server");
 const telegram_bot_server_1 = require("../bots/telegram.bot-server");
 const _ = require("lodash");
+const stringify = require('json-stringify-safe');
 class App {
     constructor() {
         dotenv_1.config();
@@ -57,26 +58,34 @@ class App {
             microsoftBotServer.startEndpoint(webServer);
             telegramBotServer.events.on('error', (msg, error, stop = false) => {
                 if (!stop) {
+                    if (msg.originalData) {
+                        delete msg.originalData;
+                    }
+                    msg = JSON.parse(stringify(msg));
                     const originalMsg = msg;
                     msg.chat.id = this.adminTelegramUserId;
                     telegramBotServer.events.emit('message', msg, {
                         name: 'TelegramBotServer1',
-                        msg: msg,
+                        data: originalMsg,
                         error: `Error ${error.name}: ${error.message}\n${error.stack}`
                     }, true);
                 }
             });
             telegramBotServer.events.on('message', (msg, message, stop = false) => {
                 if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text.toLowerCase().indexOf('debug') !== -1) {
+                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
                         this.debug = !this.debug;
                     }
                     if (this.debug) {
+                        if (msg.originalData) {
+                            delete msg.originalData;
+                        }
+                        msg = JSON.parse(stringify(msg));
                         const originalMsg = msg;
                         msg.chat.id = this.adminTelegramUserId;
                         telegramBotServer.events.emit('message', msg, {
                             name: 'TelegramBotServer1',
-                            msg: msg,
+                            data: originalMsg,
                             answer: message
                         }, true);
                     }
@@ -84,26 +93,34 @@ class App {
             });
             microsoftBotServer.events.on('error', (msg, error, stop = false) => {
                 if (!stop) {
+                    if (msg.originalData) {
+                        delete msg.originalData;
+                    }
+                    msg = JSON.parse(stringify(msg));
                     const originalMsg = msg;
                     msg.chat.id = this.adminTelegramUserId;
                     telegramBotServer.events.emit('message', msg, {
                         name: 'MicrosoftBotServer1',
-                        msg: msg,
+                        data: originalMsg,
                         error: `Error ${error.name}: ${error.message}\n${error.stack}`
                     }, true);
                 }
             });
             microsoftBotServer.events.on('message', (msg, message, stop = false) => {
                 if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text.toLowerCase().indexOf('debug') !== -1) {
+                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
                         this.debug = !this.debug;
                     }
                     if (this.debug && message) {
+                        if (msg.originalData) {
+                            delete msg.originalData;
+                        }
+                        msg = JSON.parse(stringify(msg));
                         const originalMsg = msg;
                         msg.chat.id = this.adminTelegramUserId;
                         telegramBotServer.events.emit('message', msg, {
                             name: 'MicrosoftBotServer1',
-                            msg: msg,
+                            data: originalMsg,
                             answer: message
                         }, true);
                     }
