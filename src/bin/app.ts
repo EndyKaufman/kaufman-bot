@@ -6,6 +6,8 @@ import { TelegramBotServer } from '../bots/telegram.bot-server';
 import { IBotMessage, IBotServer } from '../lib/interfaces';
 import * as _ from 'lodash';
 
+const stringify = require('json-stringify-safe');
+
 export class App {
     protected program: commander.CommanderStatic;
     protected package: any;
@@ -70,26 +72,34 @@ export class App {
             microsoftBotServer.startEndpoint(webServer);
             telegramBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
                 if (!stop) {
+                    if (msg.originalData) {
+                        delete msg.originalData;
+                    }
+                    msg = JSON.parse(stringify(msg));
                     const originalMsg: IBotMessage = msg;
                     msg.chat.id = this.adminTelegramUserId;
                     telegramBotServer.events.emit('message', msg, {
                         name: 'TelegramBotServer1',
-                        msg: msg,
+                        data: originalMsg,
                         error: `Error ${error.name}: ${error.message}\n${error.stack}`
                     }, true);
                 }
             });
             telegramBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
                 if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text.toLowerCase().indexOf('debug') !== -1) {
+                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
                         this.debug = !this.debug;
                     }
                     if (this.debug) {
+                        if (msg.originalData) {
+                            delete msg.originalData;
+                        }
+                        msg = JSON.parse(stringify(msg));
                         const originalMsg: IBotMessage = msg;
                         msg.chat.id = this.adminTelegramUserId;
                         telegramBotServer.events.emit('message', msg, {
                             name: 'TelegramBotServer1',
-                            msg: msg,
+                            data: originalMsg,
                             answer: message
                         }, true);
                     }
@@ -97,26 +107,34 @@ export class App {
             });
             microsoftBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
                 if (!stop) {
+                    if (msg.originalData) {
+                        delete msg.originalData;
+                    }
+                    msg = JSON.parse(stringify(msg));
                     const originalMsg: IBotMessage = msg;
                     msg.chat.id = this.adminTelegramUserId;
                     telegramBotServer.events.emit('message', msg, {
                         name: 'MicrosoftBotServer1',
-                        msg: msg,
+                        data: originalMsg,
                         error: `Error ${error.name}: ${error.message}\n${error.stack}`
                     }, true);
                 }
             });
             microsoftBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
                 if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text.toLowerCase().indexOf('debug') !== -1) {
+                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
                         this.debug = !this.debug;
                     }
                     if (this.debug && message) {
+                        if (msg.originalData) {
+                            delete msg.originalData;
+                        }
+                        msg = JSON.parse(stringify(msg));
                         const originalMsg: IBotMessage = msg;
                         msg.chat.id = this.adminTelegramUserId;
                         telegramBotServer.events.emit('message', msg, {
                             name: 'MicrosoftBotServer1',
-                            msg: msg,
+                            data: originalMsg,
                             answer: message
                         }, true);
                     }

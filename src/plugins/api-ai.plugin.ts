@@ -22,7 +22,11 @@ export class ApiAiBotPlugin implements IBotPlugin {
         this.ai = apiai(apiaiClientAccessToken);
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
-        return checkWordsInMessage(msg.text, this.wordsForSpy) || msg.chat.type === 'private';
+        return msg.text &&
+            (
+                checkWordsInMessage(msg.text, this.wordsForSpy) || 
+                msg.chat.type === 'private'
+            );
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
         if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
@@ -47,16 +51,18 @@ export class ApiAiBotPlugin implements IBotPlugin {
     }
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
-        this.askAi(msg.text, msg.chat.id).on('message', (answer: string) => {
-            if (answer) {
-                event.emit('message', answer);
-            } else {
-                msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-                this.askAi(msg.text, msg.chat.id).on('message', (answerTwo: string) => {
-                    event.emit('message', answerTwo);
-                })
-            }
-        });
+        if (msg.text) {
+            this.askAi(msg.text, msg.chat.id).on('message', (answer: string) => {
+                if (answer) {
+                    event.emit('message', answer);
+                } else {
+                    msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
+                    this.askAi(msg.text, msg.chat.id).on('message', (answerTwo: string) => {
+                        event.emit('message', answerTwo);
+                    })
+                }
+            });
+        }
         return event;
     }
 }

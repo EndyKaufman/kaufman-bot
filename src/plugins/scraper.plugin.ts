@@ -39,14 +39,17 @@ export class ScraperBotPlugin implements IBotPlugin {
         }
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
-        return (
-            checkWordsInMessage(msg.text, this.wordsForSpy) &&
-            msg.chat.type === 'private'
-        ) ||
+        return msg.text &&
             (
-                checkWordsInMessage(msg.text, this.botNameAliases) &&
-                checkWordsInMessage(msg.text, this.wordsForSpy) &&
-                msg.chat.type !== 'private'
+                (
+                    checkWordsInMessage(msg.text, this.wordsForSpy) &&
+                    msg.chat.type === 'private'
+                ) ||
+                (
+                    checkWordsInMessage(msg.text, this.botNameAliases) &&
+                    checkWordsInMessage(msg.text, this.wordsForSpy) &&
+                    msg.chat.type !== 'private'
+                )
             );
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
@@ -93,20 +96,22 @@ export class ScraperBotPlugin implements IBotPlugin {
     }
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
-        let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = removeWordsFromMessage(text, this.botNameAliases);
-        this.scrap(text, msg).on('message', (answer: string, url: string) => {
-            if (answer) {
-                const message =
-                    '`' + answer.substring(0, this.scraperContentLength)
-                    + (answer.length > this.scraperContentLength ? '...' : '')
-                    + '`\n\n'
-                    + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
-                event.emit('message', message);
-            } else {
-                event.emit('message', false);
-            }
-        });
+        if (msg.text) {
+            let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
+            text = removeWordsFromMessage(text, this.botNameAliases);
+            this.scrap(text, msg).on('message', (answer: string, url: string) => {
+                if (answer) {
+                    const message =
+                        '`' + answer.substring(0, this.scraperContentLength)
+                        + (answer.length > this.scraperContentLength ? '...' : '')
+                        + '`\n\n'
+                        + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
+                    event.emit('message', message);
+                } else {
+                    event.emit('message', false);
+                }
+            });
+        }
         return event;
     }
 }

@@ -24,15 +24,17 @@ export class WikiBotPlugin implements IBotPlugin {
         this.wordsForSpy = wikipediaSpyWords;
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
-        return (
-            checkWordsInMessage(msg.text, this.wordsForSpy) &&
-            msg.chat.type === 'private'
-        ) ||
+        return msg.text && (
+            (
+                checkWordsInMessage(msg.text, this.wordsForSpy) &&
+                msg.chat.type === 'private'
+            ) ||
             (
                 checkWordsInMessage(msg.text, this.botNameAliases) &&
                 checkWordsInMessage(msg.text, this.wordsForSpy) &&
                 msg.chat.type !== 'private'
-            );
+            )
+        );
     }
     public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
         if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
@@ -82,41 +84,43 @@ export class WikiBotPlugin implements IBotPlugin {
     }
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
-        let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-        text = removeWordsFromMessage(text, this.botNameAliases);
-        this.searchOnWiki(text).on('message', (answer: string, url: string) => {
-            if (!answer || !checkWordsInMessage(answer, _.words(text))) {
-                this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
-                    if (answerTwo) {
+        if (msg.text) {
+            let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
+            text = removeWordsFromMessage(text, this.botNameAliases);
+            this.searchOnWiki(text).on('message', (answer: string, url: string) => {
+                if (!answer || !checkWordsInMessage(answer, _.words(text))) {
+                    this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
+                        if (answerTwo) {
+                            event.emit('message',
+                                '`' + answerTwo.substring(0, this.wikipediaContentLength)
+                                + (answer.length > this.wikipediaContentLength ? '...' : '')
+                                + '`\n\n'
+                                + urlTwo);
+                        } else {
+                            if (urlTwo) {
+                                event.emit('message', urlTwo);
+                            } else {
+                                event.emit('message', false);
+                            }
+                        }
+                    });
+                } else {
+                    if (answer) {
                         event.emit('message',
-                            '`' + answerTwo.substring(0, this.wikipediaContentLength)
+                            '`' + answer.substring(0, this.wikipediaContentLength)
                             + (answer.length > this.wikipediaContentLength ? '...' : '')
                             + '`\n\n'
-                            + urlTwo);
+                            + url);
                     } else {
-                        if (urlTwo) {
-                            event.emit('message', urlTwo);
+                        if (url) {
+                            event.emit('message', url);
                         } else {
                             event.emit('message', false);
                         }
                     }
-                });
-            } else {
-                if (answer) {
-                    event.emit('message',
-                        '`' + answer.substring(0, this.wikipediaContentLength)
-                        + (answer.length > this.wikipediaContentLength ? '...' : '')
-                        + '`\n\n'
-                        + url);
-                } else {
-                    if (url) {
-                        event.emit('message', url);
-                    } else {
-                        event.emit('message', false);
-                    }
                 }
-            }
-        });
+            });
+        }
         return event;
     }
 }

@@ -35,9 +35,6 @@ export class BaseBotServer implements IBotServer {
             return defaultValue;
         }
     }
-    public sendMessageToAdmin() {
-
-    }
     public startPlugin(message: string, pluginName: string, locale: string) {
         const event = new EventEmitter();
         const msg: IBotMessage = {
@@ -98,11 +95,7 @@ export class BaseBotServer implements IBotServer {
             if (data) {
                 let text = data;
                 if (stop) {
-                    const newData = data;
-                    if (newData.msg.originalData) {
-                        delete newData.msg.originalData;
-                    }
-                    text = '`' + stringify(newData, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
+                    text = '`' + stringify(data, null, 2).replace(new RegExp('`', 'ig'), '') + '`';
                 }
                 const r = /\\u([\d\w]{4})/gi;
                 text = text.replace(r, function (match: any, grp: any) {
@@ -111,9 +104,6 @@ export class BaseBotServer implements IBotServer {
                 text = unescape(text);
                 this.bot.sendMessage(msg.chat.id, text, { originalMessage: msg, parse_mode: 'Markdown' });
             }
-        });
-        this.events.on('error', (msg: IBotMessage, error: any) => {
-            this.bot.sendMessage(msg.chat.id, `Error ${error.name}: ${error.message}\n${error.stack}`, { originalMessage: msg, parse_mode: 'Markdown' });
         });
     }
     protected processUpdate() {
