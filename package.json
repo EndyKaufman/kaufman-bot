@@ -1,73 +1,76 @@
 {
-	"name": "kaufman-bot",
-	"version": "0.2.0",
-	"description": "A simple bot for Telegram and Skype",
-	"repository": "https://github.com/EndyKaufman/kaufman-bot.git",
-	"license": "MIT",
-	"scripts": {
-		"start": "node ./bin/kaufman-bot -s",
-		"lint": "tslint -c tslint.json 'src/**/*.ts'",
-		"clean": "rimraf dist",
-		"build": "npm run clean && tsc --pretty",
-		"test": "npm run lint && npm run build && mocha --timeout 15000 --compilers ts:ts-node/register --recursive src/**/*.spec.ts",
-		"watch": "npm run build -- --watch",
-		"watch:test": "npm run test -- --watch"
-	},
-	"author": {
-		"name": "EndyKaufman",
-		"email": "admin@site15.ru"
-	},
-	"main": "dist/bin/app.js",
-	"typings": "dist/bin/app.d.ts",
-	"bin": {
-		"kaufman-bot": "bin/kaufman-bot"
-	},
-	"files": [
-		"bin",
-		"dist"
-	],
-	"devDependencies": {
-		"@types/body-parser": "^1.16.4",
-		"@types/chai": "^4.0.3",
-		"@types/cheerio": "^0.22.2",
-		"@types/commander": "^2.9.1",
-		"@types/dotenv": "^4.0.0",
-		"@types/express": "^4.0.36",
-		"@types/lodash": "^4.14.72",
-		"@types/mocha": "^2.2.41",
-		"@types/node": "^8.0.20",
-		"@types/request": "^2.0.0",
-		"@types/sinon": "^2.3.3",
-		"chai": "^4.1.1",
-		"json-stringify-safe": "^5.0.1",
-		"mocha": "^3.5.0",
-		"rimraf": "^2.6.1",
-		"sinon": "^3.2.0",
-		"ts-node": "^3.3.0",
-		"tslint": "^5.6.0",
-		"typescript": "^2.4.2"
-	},
-	"dependencies": {
-		"apiai": "^4.0.3",
-		"bcrypt": "^1.0.2",
-		"body-parser": "^1.17.2",
-		"botbuilder": "^3.9.0",
-		"charset": "^1.0.0",
-		"cheerio": "^1.0.0-rc.2",
-		"commander": "^2.11.0",
-		"console-stamp": "^0.2.5",
-		"dotenv": "^4.0.0",
-		"encoding": "^0.1.12",
-		"express": "^4.15.4",
-		"forever-monitor": "^1.7.1",
-		"html-to-text": "^3.3.0",
-		"iconv-lite": "^0.4.18",
-		"jschardet": "^1.5.1",
-		"lodash": "^4.17.4",
-		"node-telegram-bot-api": "^0.27.1",
-		"request": "^2.81.0",
-		"rollbar": "^2.2.0",
-		"wikijs": "^3.2.0",
-		"wtf_wikipedia": "^1.0.1"
-	}
+  "name": "kaufman-bot",
+  "version": "0.0.0-development",
+  "description": "A simple bot for Telegram and Skype",
+  "repository": "https://github.com/EndyKaufman/kaufman-bot.git",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./bin/kaufman-bot -s",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc --pretty",
+    "test": "npm run lint && npm run build && mocha --timeout 15000 --compilers ts:ts-node/register --recursive src/**/*.spec.ts",
+    "watch": "npm run build -- --watch",
+    "watch:test": "npm run test -- --watch",
+    "semantic-release": "semantic-release pre && semantic-release post"
+  },
+  "author": {
+    "name": "EndyKaufman",
+    "email": "admin@site15.ru"
+  },
+  "main": "dist/bin/app.js",
+  "typings": "dist/bin/app.d.ts",
+  "bin": {
+    "kaufman-bot": "bin/kaufman-bot"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/body-parser": "^1.16.4",
+    "@types/chai": "^4.0.3",
+    "@types/cheerio": "^0.22.2",
+    "@types/commander": "^2.9.1",
+    "@types/dotenv": "^4.0.0",
+    "@types/express": "^4.0.36",
+    "@types/lodash": "^4.14.72",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.20",
+    "@types/request": "^2.0.0",
+    "@types/sinon": "^2.3.3",
+    "chai": "^4.1.1",
+    "json-stringify-safe": "^5.0.1",
+    "mocha": "^3.5.0",
+    "rimraf": "^2.6.1",
+    "semantic-release-cli": "^3.0.3",
+    "sinon": "^3.2.0",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.6.0",
+    "typescript": "^2.4.2",
+    "semantic-release": "^7.0.2"
+  },
+  "dependencies": {
+    "apiai": "^4.0.3",
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "botbuilder": "^3.9.0",
+    "charset": "^1.0.0",
+    "cheerio": "^1.0.0-rc.2",
+    "commander": "^2.11.0",
+    "console-stamp": "^0.2.5",
+    "dotenv": "^4.0.0",
+    "encoding": "^0.1.12",
+    "express": "^4.15.4",
+    "forever-monitor": "^1.7.1",
+    "html-to-text": "^3.3.0",
+    "iconv-lite": "^0.4.18",
+    "jschardet": "^1.5.1",
+    "lodash": "^4.17.4",
+    "node-telegram-bot-api": "^0.27.1",
+    "request": "^2.81.0",
+    "rollbar": "^2.2.0",
+    "wikijs": "^3.2.0",
+    "wtf_wikipedia": "^1.0.1"
+  }
 }
