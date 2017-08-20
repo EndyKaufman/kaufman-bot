@@ -6,9 +6,11 @@ export interface IWebServer {
 
 export interface IBotServer {
     events: EventEmitter;
+    getName(): string;
     env(name: string, defaultValue?: any): any
-    startPlugin(message: string, pluginName: string, locale: string): any;
-    startEndpoint(server: IWebServer): any;
+    sendCustomMessage(originalMsg: IBotMessage, message: string, userId: string): void;
+    startPlugin(message: string, pluginName: string, locale: string): EventEmitter;
+    startEndpoint(server: IWebServer): void;
 }
 
 export interface IBot {

@@ -5,6 +5,9 @@ import { ApiAiBotPlugin } from '../plugins/api-ai.plugin';
 import { IBotPlugin, IBot } from '../lib/interfaces';
 import { IWebServer } from '../lib/interfaces';
 import { MicrosoftBot } from './microsoft.bot';
+import { IBotMessage } from '../lib/interfaces';
+
+const stringify = require('json-stringify-safe');
 
 export class MicrosoftBotServer extends BaseBotServer {
     protected bot: MicrosoftBot;
@@ -12,8 +15,8 @@ export class MicrosoftBotServer extends BaseBotServer {
     protected processUpdate() {
         this.webServer.app.post(this.actionUrl, this.bot.originalConnector.listen());
     }
-    constructor(protected name?: string, protected server?: IWebServer) {
-        super(name);
+    constructor(protected name: string, protected envName?: string) {
+        super(name, envName);
         this.botToken = this.env('MICROSOFT_APP_ID');
         this.botPassword = this.env('MICROSOFT_APP_PASSWORD');
         this.bot = new MicrosoftBot(

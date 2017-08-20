@@ -6,8 +6,8 @@ import { IBotPlugin } from '../lib/interfaces';
 const TelegramBot = require('node-telegram-bot-api');
 
 export class TelegramBotServer extends BaseBotServer {
-    constructor(protected name?: string) {
-        super(name);
+    constructor(protected name: string, protected envName?: string) {
+        super(name, envName);
         this.botToken = this.env('TELEGRAM_TOKEN');
         this.botHookUrl = this.env('TELEGRAM_HOOK_URL');
         this.bot = new TelegramBot(this.botToken, { polling: true });
