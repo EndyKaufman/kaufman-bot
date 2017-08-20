@@ -5,7 +5,8 @@
 	"repository": "https://github.com/EndyKaufman/kaufman-bot.git",
 	"license": "MIT",
 	"scripts": {
-		"start": "node ./bin/kaufman-bot -s",
+		"start": "npm run build && npm run serve",
+		"serve": "node ./bin/kaufman-bot -s",
 		"lint": "tslint -c tslint.json 'src/**/*.ts'",
 		"clean": "rimraf dist",
 		"build": "npm run clean && tsc --pretty",
