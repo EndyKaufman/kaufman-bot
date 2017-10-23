@@ -16,26 +16,38 @@ export class BaseBotServer implements IBotServer {
     protected botHookUrl: string;
     protected plugins: IBotPlugin[];
     public events: EventEmitter;
-    constructor(protected name?: string) {
+    constructor(protected name: string, protected envName?: string) {
         this.events = new EventEmitter();
         if (this.plugins === undefined) {
             this.plugins = [];
         }
     }
-    protected get namePrefix() {
-        return !this.name ? '' : this.name.toUpperCase() + '_';
+    protected get envNamePrefix() {
+        return !this.envName ? '' : this.envName.toUpperCase() + '_';
     }
-    public env(name: string, defaultValue?: any): any {
-        if (defaultValue === undefined) {
-            defaultValue = null;
-        }
-        if (process.env[this.namePrefix + name]) {
-            return process.env[this.namePrefix + name]
+    public env(key: string, defaultValue: any = '') {
+        if (process.env[this.envNamePrefix + key]) {
+            return process.env[this.envNamePrefix + key]
         } else {
             return defaultValue;
         }
     }
-    public startPlugin(message: string, pluginName: string, locale: string) {
+    public getName(): string {
+        return this.name;
+    }
+    public sendCustomMessage(originalMsg: IBotMessage, message: string, userId: string, name?: string) {
+        const newMsg: IBotMessage = JSON.parse(stringify(originalMsg));
+        if (newMsg.originalData) {
+            delete newMsg.originalData;
+        }
+        newMsg.chat.id = userId;
+        this.events.emit('message', newMsg, {
+            name: name || this.name,
+            data: newMsg,
+            message: message
+        }, true)
+    }
+    public startPlugin(message: string, pluginName: string, locale: string): EventEmitter {
         const event = new EventEmitter();
         const msg: IBotMessage = {
             text: message,

@@ -17,6 +17,7 @@ describe('ScraperBotPlugin', () => {
         before(function () {
             config();
             plugin = new ScraperBotPlugin(
+                'en',
                 ['bot'],
                 `http://localhost:${port}/{text}`,
                 1500,

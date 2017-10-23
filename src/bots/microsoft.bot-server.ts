@@ -5,6 +5,9 @@ import { ApiAiBotPlugin } from '../plugins/api-ai.plugin';
 import { IBotPlugin, IBot } from '../lib/interfaces';
 import { IWebServer } from '../lib/interfaces';
 import { MicrosoftBot } from './microsoft.bot';
+import { IBotMessage } from '../lib/interfaces';
+
+const stringify = require('json-stringify-safe');
 
 export class MicrosoftBotServer extends BaseBotServer {
     protected bot: MicrosoftBot;
@@ -12,8 +15,8 @@ export class MicrosoftBotServer extends BaseBotServer {
     protected processUpdate() {
         this.webServer.app.post(this.actionUrl, this.bot.originalConnector.listen());
     }
-    constructor(protected name?: string, protected server?: IWebServer) {
-        super(name);
+    constructor(protected name: string, protected envName?: string) {
+        super(name, envName);
         this.botToken = this.env('MICROSOFT_APP_ID');
         this.botPassword = this.env('MICROSOFT_APP_PASSWORD');
         this.bot = new MicrosoftBot(
@@ -22,6 +25,7 @@ export class MicrosoftBotServer extends BaseBotServer {
         );
         // Include plugins
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_FORISMATIC_URI'),
             this.env('SCRAPER_FORISMATIC_TIMEOUT', 10000),
@@ -33,6 +37,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU')
         ));
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_BASHORG_URI'),
             this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
@@ -44,6 +49,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
         ));
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_PING_URI'),
             this.env('SCRAPER_PING_TIMEOUT', 10000),
@@ -61,6 +67,7 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.env('WIKIPEDIA_SPY_WORDS', 'wiki').split(',')
         ));
         this.plugins.push(new ApiAiBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('APIAI_CLIENT_ACCESS_TOKEN')
         ));

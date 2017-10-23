@@ -7,15 +7,15 @@ const Rollbar = require('rollbar');
 export class BaseWebServer implements IWebServer {
     public app: any;
     public rollbar: any;
-    constructor(protected name?: string) {
+    constructor(protected name: string, protected envName?: string) {
         this.app = express();
     }
-    protected get namePrefix() {
-        return !this.name ? '' : this.name.toUpperCase() + '_';
+    protected get envNamePrefix() {
+        return !this.envName ? '' : this.envName.toUpperCase() + '_';
     }
-    protected env(name: string, defaultValue: any = '') {
-        if (process.env[this.namePrefix + name]) {
-            return process.env[this.namePrefix + name]
+    protected env(key: string, defaultValue: any = '') {
+        if (process.env[this.envNamePrefix + key]) {
+            return process.env[this.envNamePrefix + key]
         } else {
             return defaultValue;
         }

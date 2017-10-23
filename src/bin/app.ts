@@ -1,3 +1,4 @@
+import { setTimeout } from 'timers';
 import { MicrosoftBotServer } from '../bots/microsoft.bot-server';
 import * as commander from 'commander';
 import { config } from 'dotenv';
@@ -24,15 +25,19 @@ export class App {
         this.program = commander;
         this.package = require('../../package.json');
     }
-    public env(name: string, defaultValue?: any): any {
-        if (defaultValue === undefined) {
-            defaultValue = null;
-        }
-        if (process.env[name]) {
-            return process.env[name]
+    public env(key: string, defaultValue: any = '') {
+        if (process.env[key]) {
+            return process.env[key]
         } else {
             return defaultValue;
         }
+    }
+    public isDebug(msg: IBotMessage): boolean {
+        if (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId) &&
+            msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
+            this.debug = !this.debug;
+        }
+        return this.debug;
     }
     public initialize() {
         this.program
@@ -45,28 +50,28 @@ export class App {
         let selected = false;
         if (!selected && this.program.plugin) {
             selected = true;
-            const telegramBotServer = new TelegramBotServer();
-            const microsoftBotServer = new MicrosoftBotServer();
+            const telegramBotServer = new TelegramBotServer('TelegramBotServer1');
+            const microsoftBotServer = new MicrosoftBotServer('MicrosoftBotServer1');
             telegramBotServer.startPlugin(
                 this.program.message,
                 this.program.plugin === true ? null : this.program.plugin,
                 this.program.locale ? this.program.locale : process.env.BOT_LOCALE
             ).on('message', (answer: string) => {
-                console.log('TelegramBotServer1: ' + answer);
+                console.log(telegramBotServer.getName() + ': ' + answer);
             })
             microsoftBotServer.startPlugin(
                 this.program.message,
                 this.program.plugin === true ? null : this.program.plugin,
                 this.program.locale ? this.program.locale : process.env.BOT_LOCALE
             ).on('message', (answer: string) => {
-                console.log('MicrosoftBotServer1: ' + answer);
+                console.log(microsoftBotServer.getName() + ': ' + answer);
             })
         }
         if (!selected && this.program.start) {
             selected = true;
-            const webServer = new WebServer();
-            const telegramBotServer = new TelegramBotServer();
-            const microsoftBotServer = new MicrosoftBotServer();
+            const webServer = new WebServer('WebServer1');
+            const telegramBotServer = new TelegramBotServer('TelegramBotServer1');
+            const microsoftBotServer = new MicrosoftBotServer('MicrosoftBotServer1');
             webServer.start(this.port, this.rollbarPostServerItemAccessToken);
             telegramBotServer.startEndpoint(webServer);
             microsoftBotServer.startEndpoint(webServer);
@@ -75,69 +80,40 @@ export class App {
                     if (msg.originalData) {
                         delete msg.originalData;
                     }
-                    msg = JSON.parse(stringify(msg));
-                    const originalMsg: IBotMessage = msg;
-                    msg.chat.id = this.adminTelegramUserId;
-                    telegramBotServer.events.emit('message', msg, {
-                        name: 'TelegramBotServer1',
-                        data: originalMsg,
-                        error: `Error ${error.name}: ${error.message}\n${error.stack}`
-                    }, true);
+                    telegramBotServer.sendCustomMessage(
+                        msg,
+                        `Error ${error.name}: ${error.message}\n${error.stack}`,
+                        this.adminTelegramUserId
+                    );
                 }
             });
             telegramBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
-                if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
-                        this.debug = !this.debug;
-                    }
-                    if (this.debug) {
-                        if (msg.originalData) {
-                            delete msg.originalData;
-                        }
-                        msg = JSON.parse(stringify(msg));
-                        const originalMsg: IBotMessage = msg;
-                        msg.chat.id = this.adminTelegramUserId;
-                        telegramBotServer.events.emit('message', msg, {
-                            name: 'TelegramBotServer1',
-                            data: originalMsg,
-                            answer: message
-                        }, true);
-                    }
+                if (!stop && this.isDebug(msg)) {
+                    telegramBotServer.sendCustomMessage(
+                        msg,
+                        message,
+                        this.adminTelegramUserId
+                    );
                 }
             });
             microsoftBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
                 if (!stop) {
-                    if (msg.originalData) {
-                        delete msg.originalData;
-                    }
-                    msg = JSON.parse(stringify(msg));
-                    const originalMsg: IBotMessage = msg;
-                    msg.chat.id = this.adminTelegramUserId;
-                    telegramBotServer.events.emit('message', msg, {
-                        name: 'MicrosoftBotServer1',
-                        data: originalMsg,
-                        error: `Error ${error.name}: ${error.message}\n${error.stack}`
-                    }, true);
+                    telegramBotServer.sendCustomMessage(
+                        msg,
+                        `Error ${error.name}: ${error.message}\n${error.stack}`,
+                        this.adminTelegramUserId,
+                        microsoftBotServer.getName()
+                    );
                 }
             });
             microsoftBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
-                if (!stop) {
-                    if (message && (_.toString(msg.chat.id) === _.toString(this.adminTelegramUserId)) && msg.text && msg.text.toLowerCase().indexOf('debug') !== -1) {
-                        this.debug = !this.debug;
-                    }
-                    if (this.debug && message) {
-                        if (msg.originalData) {
-                            delete msg.originalData;
-                        }
-                        msg = JSON.parse(stringify(msg));
-                        const originalMsg: IBotMessage = msg;
-                        msg.chat.id = this.adminTelegramUserId;
-                        telegramBotServer.events.emit('message', msg, {
-                            name: 'MicrosoftBotServer1',
-                            data: originalMsg,
-                            answer: message
-                        }, true);
-                    }
+                if (!stop && this.isDebug(msg)) {
+                    telegramBotServer.sendCustomMessage(
+                        msg,
+                        message,
+                        this.adminTelegramUserId,
+                        microsoftBotServer.getName()
+                    );
                 }
             });
         }

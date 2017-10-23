@@ -1,12 +1,14 @@
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
+
+import { BaseBotPlugin } from '../lib/base.bot-plugin';
+import { IBot, IBotMessage } from '../lib/interfaces';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
-import { IBot, IBotPlugin, IBotMessage } from '../lib/interfaces';
 
 const wikijs = require('wikijs');
 const wtfWikipedia = require('wtf_wikipedia');
 
-export class WikiBotPlugin implements IBotPlugin {
+export class WikiBotPlugin extends BaseBotPlugin {
     public name = 'wiki';
     public description = 'Get basic information of word from wikipedia';
     public whatCanIdo = {
@@ -21,6 +23,7 @@ export class WikiBotPlugin implements IBotPlugin {
         protected wikipediaContentLength: number,
         protected wikipediaSpyWords: string[]
     ) {
+        super(botLocale, botNameAliases);
         this.wordsForSpy = wikipediaSpyWords;
     }
     public check(bot: IBot, msg: IBotMessage): boolean {
@@ -36,16 +39,9 @@ export class WikiBotPlugin implements IBotPlugin {
             )
         );
     }
-    public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
-        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
-            return this.whatCanIdo['ru'];
-        }
-        return this.whatCanIdo['en'];
-    }
-    protected searchOnWiki(text: string, locale?: string) {
+    protected searchOnWiki(text: string, locale: string) {
         const event = new EventEmitter();
         try {
-            locale = locale === undefined ? this.botLocale : locale;
             wikijs.default({ apiUrl: `http://${locale}.wikipedia.org/w/api.php` })
                 .search(text, 1).then((data: any) => {
                     if (data.results.length > 0) {
@@ -87,7 +83,7 @@ export class WikiBotPlugin implements IBotPlugin {
         if (msg.text) {
             let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
             text = removeWordsFromMessage(text, this.botNameAliases);
-            this.searchOnWiki(text).on('message', (answer: string, url: string) => {
+            this.searchOnWiki(text, this.getLocaleCode(msg)).on('message', (answer: string, url: string) => {
                 if (!answer || !checkWordsInMessage(answer, _.words(text))) {
                     this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
                         if (answerTwo) {
