@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-ls
+npm config get production
 npm i -g typescript
