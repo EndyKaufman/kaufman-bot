@@ -1,2 +1,2 @@
 #!/bin/bash
-npm i -g typescript
+sudo npm i -g typescript
