@@ -9,7 +9,7 @@
 		"serve": "node ./dist/bin/app -s",
 		"lint": "tslint -c tslint.json 'src/**/*.ts'",
 		"clean": "rimraf dist",
-		"build": "npm run clean && tsc --pretty",
+		"build": "npm run clean && ./node_modules/.bin/tsc --pretty",
 		"test": "npm run lint && npm run build && mocha --timeout 15000 --compilers ts:ts-node/register --recursive src/**/*.spec.ts",
 		"watch": "npm run build -- --watch",
 		"watch:test": "npm run test -- --watch"
