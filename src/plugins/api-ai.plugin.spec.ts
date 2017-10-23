@@ -12,6 +12,7 @@ describe('ApiAiBotPlugin', () => {
         before(function () {
             config();
             plugin = new ApiAiBotPlugin(
+                'en',
                 ['bot'],
                 process.env.APIAI_CLIENT_ACCESS_TOKEN
             );

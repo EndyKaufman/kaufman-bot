@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import * as _ from 'lodash';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
 import { IBotPlugin, IBot, IBotMessage } from '../lib/interfaces';
+import { BaseBotPlugin } from '../lib/base.bot-plugin';
 
 const request = require('request');
 const cheerio = require('cheerio');
@@ -10,7 +11,7 @@ const jschardet = require('jschardet');
 const encoding = require('encoding');
 const charset = require('charset');
 
-export class ScraperBotPlugin implements IBotPlugin {
+export class ScraperBotPlugin extends BaseBotPlugin {
     public name = 'scraper';
     public description = 'Scraping content segment as jquery selector from remote site';
     public whatCanIdo = {
@@ -20,6 +21,7 @@ export class ScraperBotPlugin implements IBotPlugin {
     protected wordsForSpy: string[];
 
     constructor(
+        protected botLocale: string,
         protected botNameAliases: string[],
         protected scraperUri: string,
         protected scraperTimeout: number,
@@ -30,6 +32,7 @@ export class ScraperBotPlugin implements IBotPlugin {
         protected whatCanIdoEn?: string,
         protected whatCanIdoRu?: string
     ) {
+        super(botLocale, botNameAliases);
         this.wordsForSpy = scraperSpyWords;
         if (whatCanIdoRu !== undefined) {
             this.whatCanIdo['ru'] = whatCanIdoRu;
@@ -52,22 +55,12 @@ export class ScraperBotPlugin implements IBotPlugin {
                 )
             );
     }
-    public answerWhatCanIdo(bot: IBot, msg: IBotMessage): string {
-        if (msg.from && msg.from.language_code && msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
-            return this.whatCanIdo['ru'];
-        }
-        return this.whatCanIdo['en'];
-    }
     protected scrap(text: string, msg?: IBotMessage) {
         const event = new EventEmitter();
         try {
             let url = this.scraperUri.replace(new RegExp('{text}', 'ig'), encodeURIComponent(text.trim()));
             if (msg) {
-                let lang = 'en';
-                if (msg.from.language_code.toLowerCase().indexOf('ru') !== -1) {
-                    lang = 'ru';
-                }
-                url = url.replace(new RegExp('{lang}', 'ig'), lang);
+                url = url.replace(new RegExp('{lang}', 'ig'), this.getLocaleCode(msg));
             }
             const options: any = { timeout: this.scraperTimeout };
             if (!this.scraperContentCodepage) {

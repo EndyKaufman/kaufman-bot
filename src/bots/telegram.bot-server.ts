@@ -13,6 +13,7 @@ export class TelegramBotServer extends BaseBotServer {
         this.bot = new TelegramBot(this.botToken, { polling: true });
         // Include plugins
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_FORISMATIC_URI'),
             this.env('SCRAPER_FORISMATIC_TIMEOUT', 10000),
@@ -24,6 +25,7 @@ export class TelegramBotServer extends BaseBotServer {
             this.env('SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU')
         ));
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_BASHORG_URI'),
             this.env('SCRAPER_BASHORG_TIMEOUT', 10000),
@@ -35,6 +37,7 @@ export class TelegramBotServer extends BaseBotServer {
             this.env('SCRAPER_BASHORG_WHAT_CAN_I_DO_RU')
         ));
         this.plugins.push(new ScraperBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('SCRAPER_PING_URI'),
             this.env('SCRAPER_PING_TIMEOUT', 10000),
@@ -52,6 +55,7 @@ export class TelegramBotServer extends BaseBotServer {
             this.env('WIKIPEDIA_SPY_WORDS', 'wiki').split(',')
         ));
         this.plugins.push(new ApiAiBotPlugin(
+            this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
             this.env('APIAI_CLIENT_ACCESS_TOKEN')
         ));
