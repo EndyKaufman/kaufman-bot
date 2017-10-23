@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "npm run build && npm run serve",
-		"serve": "node ./bin/kaufman-bot -s",
+		"serve": "node ./dist/bin/app -s",
 		"lint": "tslint -c tslint.json 'src/**/*.ts'",
 		"clean": "rimraf dist",
 		"build": "npm run clean && tsc --pretty",
