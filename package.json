@@ -1,12 +1,12 @@
 {
 	"name": "kaufman-bot",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "A simple bot for Telegram and Skype",
 	"repository": "https://github.com/EndyKaufman/kaufman-bot.git",
 	"license": "MIT",
 	"scripts": {
 		"start": "npm run build && npm run serve",
-		"serve": "node ./bin/kaufman-bot -s",
+		"serve": "node ./dist/bin/app -s",
 		"lint": "tslint -c tslint.json 'src/**/*.ts'",
 		"clean": "rimraf dist",
 		"build": "npm run clean && tsc --pretty",
