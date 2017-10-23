@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/EndyKaufman/kaufman-bot/compare/1.2.0...1.2.1) (2017-10-23)
+
+
+### Bug Fixes
+
+* **scripts:** Update start script ([050d805](https://github.com/EndyKaufman/kaufman-bot/commit/050d805))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/EndyKaufman/kaufman-bot/compare/1.0.1...1.2.0) (2017-10-23)
 
