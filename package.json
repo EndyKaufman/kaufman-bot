@@ -64,6 +64,7 @@
 		"encoding": "^0.1.12",
 		"express": "^4.16.2",
 		"forever-monitor": "^1.7.1",
+		"googleapis": "^22.2.0",
 		"html-to-text": "^3.3.0",
 		"iconv-lite": "^0.4.19",
 		"jschardet": "^1.5.1",

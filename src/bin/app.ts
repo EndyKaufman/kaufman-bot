@@ -75,20 +75,20 @@ export class App {
             webServer.start(this.port, this.rollbarPostServerItemAccessToken);
             telegramBotServer.startEndpoint(webServer);
             microsoftBotServer.startEndpoint(webServer);
-            telegramBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
+            telegramBotServer.events.on('customError', (msg: IBotMessage, error: any, stop: boolean = false) => {
                 if (!stop) {
                     if (msg.originalData) {
                         delete msg.originalData;
                     }
                     telegramBotServer.sendCustomMessage(
                         msg,
-                        `Error ${error.name}: ${error.message}\n${error.stack}`,
+                        error,
                         this.adminTelegramUserId
                     );
                 }
             });
             telegramBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
-                if (!stop && this.isDebug(msg)) {
+                if (!stop && message && this.isDebug(msg)) {
                     telegramBotServer.sendCustomMessage(
                         msg,
                         message,
@@ -96,18 +96,18 @@ export class App {
                     );
                 }
             });
-            microsoftBotServer.events.on('error', (msg: IBotMessage, error: any, stop: boolean = false) => {
+            microsoftBotServer.events.on('customError', (msg: IBotMessage, error: any, stop: boolean = false) => {
                 if (!stop) {
                     telegramBotServer.sendCustomMessage(
                         msg,
-                        `Error ${error.name}: ${error.message}\n${error.stack}`,
+                        error,
                         this.adminTelegramUserId,
                         microsoftBotServer.getName()
                     );
                 }
             });
             microsoftBotServer.events.on('message', (msg: IBotMessage, message: string, stop: boolean = false) => {
-                if (!stop && this.isDebug(msg)) {
+                if (!stop && this.debug) {
                     telegramBotServer.sendCustomMessage(
                         msg,
                         message,

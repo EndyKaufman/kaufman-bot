@@ -42,23 +42,27 @@ export class ApiAiBotPlugin extends BaseBotPlugin {
             });
             request.end();
         } catch (error) {
-            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+            event.emit('customError', `Error\n${JSON.stringify(error)}`);
         }
         return event;
     }
     public process(bot: IBot, msg: IBotMessage): EventEmitter {
         const event = new EventEmitter();
         if (msg.text) {
-            this.askAi(msg.text, msg.chat.id, this.getLocaleCode(msg)).on('message', (answer: string) => {
-                if (answer) {
-                    event.emit('message', answer);
-                } else {
-                    msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
-                    this.askAi(msg.text, msg.chat.id, this.getLocaleCode(msg)).on('message', (answerTwo: string) => {
-                        event.emit('message', answerTwo);
-                    })
-                }
-            });
+            this.askAi(msg.text, msg.chat.id, this.getLocaleCode(msg))
+                .on('message', (answer: string) => {
+                    if (answer) {
+                        event.emit('message', answer);
+                    } else {
+                        msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
+                        this.askAi(msg.text, msg.chat.id, this.getLocaleCode(msg)).on('message', (answerTwo: string) => {
+                            event.emit('message', answerTwo);
+                        })
+                    }
+                })
+                .on('customError', (message: string) =>
+                    event.emit('customError', message)
+                );
         }
         return event;
     }

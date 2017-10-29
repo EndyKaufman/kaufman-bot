@@ -6,6 +6,7 @@ import { IBotPlugin, IBot } from '../lib/interfaces';
 import { IWebServer } from '../lib/interfaces';
 import { MicrosoftBot } from './microsoft.bot';
 import { IBotMessage } from '../lib/interfaces';
+import { GoogleApisBotPlugin } from '../plugins/google-apis.plugin';
 
 const stringify = require('json-stringify-safe');
 
@@ -24,6 +25,16 @@ export class MicrosoftBotServer extends BaseBotServer {
             this.botPassword
         );
         // Include plugins
+        this.plugins.push(new GoogleApisBotPlugin(
+            this.env('BOT_LOCALE'),
+            this.env('BOT_NAME_ALIASES', 'bot').split(','),
+            this.env('GOOGLE_APIS_API_KEY'),
+            this.env('GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID'),
+            this.env('GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX'),
+            this.env('GOOGLE_APIS_HABR_SEARCH_SPY_WORDS', 'search').split(','),
+            this.env('GOOGLE_APIS_HABR_WHAT_CAN_I_DO_EN'),
+            this.env('GOOGLE_APIS_HABR_WHAT_CAN_I_DO_RU')
+        ));
         this.plugins.push(new ScraperBotPlugin(
             this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),
