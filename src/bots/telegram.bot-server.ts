@@ -3,6 +3,7 @@ import { ScraperBotPlugin } from '../plugins/scraper.plugin';
 import { WikiBotPlugin } from '../plugins/wiki.plugin';
 import { ApiAiBotPlugin } from '../plugins/api-ai.plugin';
 import { IBotPlugin } from '../lib/interfaces';
+import { GoogleApisBotPlugin } from '../plugins/google-apis.plugin';
 const TelegramBot = require('node-telegram-bot-api');
 
 export class TelegramBotServer extends BaseBotServer {
@@ -12,6 +13,16 @@ export class TelegramBotServer extends BaseBotServer {
         this.botHookUrl = this.env('TELEGRAM_HOOK_URL');
         this.bot = new TelegramBot(this.botToken, { polling: true });
         // Include plugins
+        this.plugins.push(new GoogleApisBotPlugin(
+            this.env('BOT_LOCALE'),
+            this.env('BOT_NAME_ALIASES', 'bot').split(','),
+            this.env('GOOGLE_APIS_API_KEY'),
+            this.env('GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID'),
+            this.env('GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX'),
+            this.env('GOOGLE_APIS_HABR_SEARCH_SPY_WORDS', 'search').split(','),
+            this.env('GOOGLE_APIS_HABR_WHAT_CAN_I_DO_EN'),
+            this.env('GOOGLE_APIS_HABR_WHAT_CAN_I_DO_RU')
+        ));
         this.plugins.push(new ScraperBotPlugin(
             this.env('BOT_LOCALE'),
             this.env('BOT_NAME_ALIASES', 'bot').split(','),

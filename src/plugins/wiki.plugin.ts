@@ -74,7 +74,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                     event.emit('message', false, false);
                 });
         } catch (error) {
-            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+            event.emit('customError', `Error\n${JSON.stringify(error)}`);
         }
         return event;
     }
@@ -83,39 +83,47 @@ export class WikiBotPlugin extends BaseBotPlugin {
         if (msg.text) {
             let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
             text = removeWordsFromMessage(text, this.botNameAliases);
-            this.searchOnWiki(text, this.getLocaleCode(msg)).on('message', (answer: string, url: string) => {
-                if (!answer || !checkWordsInMessage(answer, _.words(text))) {
-                    this.searchOnWiki(text, 'en').on('message', (answerTwo: string, urlTwo: string) => {
-                        if (answerTwo) {
+            this.searchOnWiki(text, this.getLocaleCode(msg))
+                .on('message', (answer: string, url: string) => {
+                    if (!answer || !checkWordsInMessage(answer, _.words(text))) {
+                        this.searchOnWiki(text, 'en')
+                            .on('message', (answerTwo: string, urlTwo: string) => {
+                                if (answerTwo) {
+                                    event.emit('message',
+                                        '`' + answerTwo.substring(0, this.wikipediaContentLength)
+                                        + (answer.length > this.wikipediaContentLength ? '...' : '')
+                                        + '`\n\n'
+                                        + urlTwo);
+                                } else {
+                                    if (urlTwo) {
+                                        event.emit('message', urlTwo);
+                                    } else {
+                                        event.emit('message', false);
+                                    }
+                                }
+                            })
+                            .on('customError', (message: string) =>
+                                event.emit('customError', message)
+                            );
+                    } else {
+                        if (answer) {
                             event.emit('message',
-                                '`' + answerTwo.substring(0, this.wikipediaContentLength)
+                                '`' + answer.substring(0, this.wikipediaContentLength)
                                 + (answer.length > this.wikipediaContentLength ? '...' : '')
                                 + '`\n\n'
-                                + urlTwo);
+                                + url);
                         } else {
-                            if (urlTwo) {
-                                event.emit('message', urlTwo);
+                            if (url) {
+                                event.emit('message', url);
                             } else {
                                 event.emit('message', false);
                             }
                         }
-                    });
-                } else {
-                    if (answer) {
-                        event.emit('message',
-                            '`' + answer.substring(0, this.wikipediaContentLength)
-                            + (answer.length > this.wikipediaContentLength ? '...' : '')
-                            + '`\n\n'
-                            + url);
-                    } else {
-                        if (url) {
-                            event.emit('message', url);
-                        } else {
-                            event.emit('message', false);
-                        }
                     }
-                }
-            });
+                })
+                .on('customError', (message: string) =>
+                    event.emit('customError', message)
+                );
         }
         return event;
     }

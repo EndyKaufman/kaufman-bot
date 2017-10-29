@@ -83,7 +83,7 @@ export class ScraperBotPlugin extends BaseBotPlugin {
                 }
             });
         } catch (error) {
-            event.emit('error', `Error ${error.name}: ${error.message}\n${error.stack}`);
+            event.emit('customError', `Error\n${JSON.stringify(error)}`);
         }
         return event;
     }
@@ -92,18 +92,22 @@ export class ScraperBotPlugin extends BaseBotPlugin {
         if (msg.text) {
             let text = removeWordsFromMessage(msg.text, this.wordsForSpy);
             text = removeWordsFromMessage(text, this.botNameAliases);
-            this.scrap(text, msg).on('message', (answer: string, url: string) => {
-                if (answer) {
-                    const message =
-                        '`' + answer.substring(0, this.scraperContentLength)
-                        + (answer.length > this.scraperContentLength ? '...' : '')
-                        + '`\n\n'
-                        + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
-                    event.emit('message', message);
-                } else {
-                    event.emit('message', false);
-                }
-            });
+            this.scrap(text, msg)
+                .on('message', (answer: string, url: string) => {
+                    if (answer) {
+                        const message =
+                            '`' + answer.substring(0, this.scraperContentLength)
+                            + (answer.length > this.scraperContentLength ? '...' : '')
+                            + '`\n\n'
+                            + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
+                        event.emit('message', message);
+                    } else {
+                        event.emit('message', false);
+                    }
+                })
+                .on('customError', (message: string) =>
+                    event.emit('customError', message)
+                );
         }
         return event;
     }

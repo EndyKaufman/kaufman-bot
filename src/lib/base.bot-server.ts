@@ -1,8 +1,6 @@
-import { setTimeout } from 'timers';
 import { EventEmitter } from 'events';
-import { IBotPlugin, IBotMessage, IBotServer, IBot, IWebServer } from './interfaces';
-import { checkWordsInMessage } from './utils';
-import * as _ from 'lodash';
+
+import { IBot, IBotMessage, IBotPlugin, IBotServer, IWebServer } from './interfaces';
 
 declare function unescape(s: string): string;
 declare function escape(s: string): string;
@@ -69,19 +67,23 @@ export class BaseBotServer implements IBotServer {
                 (pluginName !== null && this.plugins[i].name === pluginName)
             ) {
                 founded = true;
-                this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
-                    if (answer) {
-                        const hardBotAnswer = this.getHardBotAnswers(msg, answer);
-                        if (hardBotAnswer) {
-                            answer = hardBotAnswer;
-                        }
-                        event.emit('message', answer);
-                    } else {
-                        this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                this.plugins[i].process(this.bot, msg)
+                    .on('message', (answer: string) => {
+                        if (answer) {
+                            const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                            if (hardBotAnswer) {
+                                answer = hardBotAnswer;
+                            }
                             event.emit('message', answer);
-                        })
-                    }
-                });
+                        } else {
+                            this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                event.emit('message', answer);
+                            })
+                        }
+                    })
+                    .on('customError', (answer: string) => {
+                        event.emit('customError', answer);
+                    });
                 break;
             }
         }
@@ -137,24 +139,28 @@ export class BaseBotServer implements IBotServer {
                 for (i = 0; i < len; i++) {
                     if (!founded && this.plugins[i].check(this.bot, msg)) {
                         founded = true;
-                        this.plugins[i].process(this.bot, msg).on('message', (answer: string) => {
-                            if (answer) {
-                                const hardBotAnswer = this.getHardBotAnswers(msg, answer);
-                                if (hardBotAnswer) {
-                                    answer = hardBotAnswer;
+                        this.plugins[i].process(this.bot, msg)
+                            .on('message', (answer: string) => {
+                                if (answer) {
+                                    const hardBotAnswer = this.getHardBotAnswers(msg, answer);
+                                    if (hardBotAnswer) {
+                                        answer = hardBotAnswer;
+                                    }
+                                    this.events.emit('message', msg, answer);
+                                } else {
+                                    this.notFound(msg).on('message', (notFoundAnswer: string) => {
+                                        this.events.emit('message', msg, notFoundAnswer);
+                                    });
                                 }
-                                this.events.emit('message', msg, answer);
-                            } else {
-                                this.notFound(msg).on('message', (notFoundAnswer: string) => {
-                                    this.events.emit('message', msg, notFoundAnswer);
-                                });
-                            }
-                        });
+                            })
+                            .on('customError', (answer: string) => {
+                                this.events.emit('customError', msg, answer);
+                            });
                         break;
                     }
                 }
             } catch (error) {
-                this.events.emit('error', msg, error);
+                this.events.emit('customError', msg, error);
             }
         });
     }
