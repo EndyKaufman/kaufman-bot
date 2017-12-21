@@ -73,7 +73,7 @@
 		"iconv-lite": "^0.4.19",
 		"jschardet": "^1.6.0",
 		"lodash": "^4.17.4",
-		"node-telegram-bot-api": "^0.29.0",
+		"node-telegram-bot-api": "^0.30.0",
 		"request": "^2.83.0",
 		"rollbar": "^2.2.10",
 		"wikijs": "^4.3.4",
