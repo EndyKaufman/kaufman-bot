@@ -72,6 +72,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                     }
                 }, (error: any) => {
                     event.emit('message', false, false);
+                    event.emit('customError', `Error\n${JSON.stringify(error)}`);
                 });
         } catch (error) {
             event.emit('customError', `Error\n${JSON.stringify(error)}`);
@@ -89,6 +90,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                         this.searchOnWiki(text, 'en')
                             .on('message', (answerTwo: string, urlTwo: string) => {
                                 if (answerTwo) {
+                                    answerTwo = answerTwo.replace(new RegExp('«', 'ig'), '"').replace(new RegExp('»', 'ig'), '"');
                                     event.emit('message',
                                         '`' + answerTwo.substring(0, this.wikipediaContentLength)
                                         + (answer.length > this.wikipediaContentLength ? '...' : '')
@@ -107,6 +109,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                             );
                     } else {
                         if (answer) {
+                            answer = answer.replace(new RegExp('«', 'ig'), '"').replace(new RegExp('»', 'ig'), '"');
                             event.emit('message',
                                 '`' + answer.substring(0, this.wikipediaContentLength)
                                 + (answer.length > this.wikipediaContentLength ? '...' : '')
