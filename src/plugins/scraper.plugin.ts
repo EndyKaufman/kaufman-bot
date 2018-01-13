@@ -69,6 +69,7 @@ export class ScraperBotPlugin extends BaseBotPlugin {
             request.get(url, options, (error: any, response: any, body: any) => {
                 if (error) {
                     event.emit('message', false, false);
+                    event.emit('customError', `Error\n${JSON.stringify(error)}`);
                 } else {
                     const $ = cheerio.load(body);
                     let content = this.scraperContentSelector.split(',').map((selector: string) =>

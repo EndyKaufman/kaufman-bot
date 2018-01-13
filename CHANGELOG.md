@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/EndyKaufman/kaufman-bot/compare/1.3.0...1.3.1) (2018-01-13)
+
+
+### Bug Fixes
+
+* **errors:** Fix small errors ([590ed8e](https://github.com/EndyKaufman/kaufman-bot/commit/590ed8e))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/EndyKaufman/kaufman-bot/compare/1.2.1...1.3.0) (2017-10-29)
 
