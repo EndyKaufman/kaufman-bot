@@ -64,7 +64,7 @@
 		"cheerio": "^1.0.0-rc.2",
 		"commander": "^2.13.0",
 		"console-stamp": "^0.2.6",
-		"dotenv": "^4.0.0",
+		"dotenv": "^5.0.0",
 		"encoding": "^0.1.12",
 		"express": "^4.16.2",
 		"forever-monitor": "^1.7.1",
