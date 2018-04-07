@@ -57,7 +57,7 @@
 	},
 	"dependencies": {
 		"apiai": "^4.0.3",
-		"bcrypt": "^1.0.3",
+		"bcrypt": "^2.0.0",
 		"body-parser": "^1.18.2",
 		"botbuilder": "^3.13.1",
 		"charset": "^1.0.1",
