@@ -46,7 +46,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                 .search(text, 1).then((data: any) => {
                     if (data.results.length > 0) {
                         let pageName = data.results[0];
-                        pageName = pageName.replace(new RegExp(' ', 'ig'), '__');
+                        pageName = pageName.replace(new RegExp(' ', 'ig'), '___');
                         wtfWikipedia.fetch(pageName, this.botLocale, (err: any, doc: any) => {
                             let answer = '';
                             if (doc) {
