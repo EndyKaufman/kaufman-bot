@@ -103,7 +103,7 @@ export class BaseBotServer implements IBotServer {
     }
     protected processHook() {
         if (this.botHookUrl) {
-            this.bot.setWebHook(this.botHookUrl + this.actionUrl);
+           this.bot.setWebHook(this.botHookUrl + this.actionUrl);
         }
         this.events.on('message', (msg: IBotMessage, data: any, stop: boolean) => {
             if (data) {

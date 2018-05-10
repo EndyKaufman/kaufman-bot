@@ -4,8 +4,8 @@ import { BaseBotPlugin } from '../lib/base.bot-plugin';
 import { IBot, IBotMessage } from '../lib/interfaces';
 import { checkWordsInMessage, removeWordsFromMessage } from '../lib/utils';
 import * as _ from 'lodash';
+import { google } from 'googleapis';
 
-const google = require('googleapis');
 const customsearch = google.customsearch('v1');
 
 export class GoogleApisBotPlugin extends BaseBotPlugin {
@@ -60,16 +60,16 @@ export class GoogleApisBotPlugin extends BaseBotPlugin {
             num: resultsCount ? resultsCount : 10
         };
         try {
-            customsearch.cse.list(options, function (error: any, resp: any) {
+            customsearch.cse.list(options, (error: any, resp: any) => {
                 if (error) {
                     if (error.errors && error.errors[0] && error.errors[0].message) {
                         event.emit('message', 'Error: ' + error.errors[0].reason, error.errors[0].message, '');
                     }
                     event.emit('customError', `Error\n${JSON.stringify(error)}`);
                 } else {
-                    if (resp.items && resp.items.length > 0) {
-                        const index: number = _.random(Math.min(options.num, resp.items.length));
-                        const item = resp.items[index];
+                    if (resp.data.items && resp.data.items.length > 0) {
+                        const index: number = _.random(Math.min(options.num, resp.data.items.length));
+                        const item = resp.data.items[index];
                         if (item) {
                             event.emit('message', item.title, item.snippet, item.link);
                         } else {
@@ -97,7 +97,7 @@ export class GoogleApisBotPlugin extends BaseBotPlugin {
                             title + '\n`' +
                             snippet +
                             '`\n' +
-                            link;
+                            `${link}`;
                         event.emit('message', message);
                     } else {
                         event.emit('message', false);

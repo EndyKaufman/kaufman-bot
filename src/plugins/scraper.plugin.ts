@@ -100,7 +100,7 @@ export class ScraperBotPlugin extends BaseBotPlugin {
                             '`' + answer.substring(0, this.scraperContentLength)
                             + (answer.length > this.scraperContentLength ? '...' : '')
                             + '`\n\n'
-                            + ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
+                            +  ((url.toLowerCase().indexOf('api.') === -1 || url.toLowerCase().indexOf('/api') === -1) ? url : '');
                         event.emit('message', message);
                     } else {
                         event.emit('message', false);

@@ -4,13 +4,14 @@ import { config } from 'dotenv';
 import * as express from 'express';
 import { ScraperBotPlugin } from './scraper.plugin';
 import { IBotMessage } from '../lib/interfaces';
+import { AddressInfo } from 'net';
 
 const assert = chai.assert;
 
 describe('ScraperBotPlugin', () => {
     const app = express();
     const server = app.listen(0);
-    const port = server.address().port;
+    const port = (server.address() as AddressInfo).port;
 
     describe('without bot', () => {
         let plugin: ScraperBotPlugin;
