@@ -18,7 +18,7 @@ describe('WikiBotPlugin', () => {
                 ['wiki']
             );
         });
-        it('should response include a message "Corporation"', (done) => {
+        it('should response include a message "Corporation" or "Microsoft"', (done) => {
             const msg: IBotMessage = {
                 text: 'wiki microsoft',
                 chat: {
@@ -27,7 +27,7 @@ describe('WikiBotPlugin', () => {
                 }
             };
             plugin.process(null, msg).on('message', (answer: string) => {
-                assert(answer.indexOf('Corporation') !== -1);
+                assert(answer.indexOf('Corporation') !== -1 || answer.indexOf('Microsoft') !== -1, answer);
                 done();
             })
         });

@@ -46,7 +46,7 @@ describe('ScraperBotPlugin', () => {
                 res.send('<title>Hello, World!<title>');
             });
             plugin.process(null, msg).on('message', (answer: string) => {
-                assert(answer.indexOf('Hello, World!') !== -1);
+                assert(answer.indexOf('Hello, World!') !== -1, answer);
                 done();
             })
         });

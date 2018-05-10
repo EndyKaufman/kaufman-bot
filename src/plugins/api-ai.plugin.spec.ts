@@ -26,7 +26,7 @@ describe('ApiAiBotPlugin', () => {
                 }
             };
             plugin.process(null, msg).on('message', (answer: string) => {
-                assert(answer === 'hi bro!');
+                assert(answer === 'hi bro!', answer);
                 done();
             })
         });
