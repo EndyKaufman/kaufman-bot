@@ -30,7 +30,7 @@ describe('GoogleApisBotPlugin', () => {
             };
             plugin.process(null, msg)
                 .on('message', (answer: any) => {
-                    assert(answer.indexOf('Angular') !== -1 || answer.indexOf('dailyLimitExceeded') !== -1);
+                    assert(answer.indexOf('Angular') !== -1 || answer.indexOf('dailyLimitExceeded') !== -1, answer);
                     done();
                 });
         });

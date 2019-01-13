@@ -103,7 +103,7 @@ export class BaseBotServer implements IBotServer {
     }
     protected processHook() {
         if (this.botHookUrl) {
-            this.bot.setWebHook(this.botHookUrl + this.actionUrl);
+           this.bot.setWebHook(this.botHookUrl + this.actionUrl);
         }
         this.events.on('message', (msg: IBotMessage, data: any, stop: boolean) => {
             if (data) {
@@ -146,6 +146,7 @@ export class BaseBotServer implements IBotServer {
                                     if (hardBotAnswer) {
                                         answer = hardBotAnswer;
                                     }
+                                    answer = answer.replace(new RegExp('«', 'ig'), '"').replace(new RegExp('»', 'ig'), '"');
                                     this.events.emit('message', msg, answer);
                                 } else {
                                     this.notFound(msg).on('message', (notFoundAnswer: string) => {

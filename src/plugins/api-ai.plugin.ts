@@ -30,15 +30,29 @@ export class ApiAiBotPlugin extends BaseBotPlugin {
         this.ai['en'] = apiai(apiaiClientAccessToken, { language: 'en' });
         this.ai['ru'] = apiai(apiaiClientAccessToken, { language: 'ru' });
     }
-    protected askAi(message: string, sessionId: string, locale: string): EventEmitter {
+    protected askAi(message: string, sessionId: string, locale: string, asResult = false): EventEmitter {
         const event = new EventEmitter();
         try {
             const request = this.ai[locale].textRequest(message.substring(0, 255), {
                 sessionId: sessionId,
                 lang: locale
             });
-            request.on('response', function (response: any) {
-                event.emit('message', response.result.fulfillment.speech);
+            request.on('response', (response: any) => {
+                if (response.result.action === 'input.unknown' && locale !== 'en') {
+                    this.askAi(message, sessionId, 'en', true).on('message', (result: any) => {
+                        if (result.action === 'input.unknown') {
+                            event.emit('message', response.result.fulfillment.speech);
+                        } else {
+                            event.emit('message', result.fulfillment.speech);
+                        }
+                    });
+                } else {
+                    if (asResult) {
+                        event.emit('message', response.result);
+                    } else {
+                        event.emit('message', response.result.fulfillment.speech);
+                    }
+                }
             });
             request.end();
         } catch (error) {

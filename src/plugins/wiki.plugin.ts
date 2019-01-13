@@ -46,23 +46,13 @@ export class WikiBotPlugin extends BaseBotPlugin {
                 .search(text, 1).then((data: any) => {
                     if (data.results.length > 0) {
                         let pageName = data.results[0];
-                        pageName = pageName.replace(new RegExp(' ', 'ig'), '_');
-                        wtfWikipedia.from_api(pageName, this.botLocale, (markup: any) => {
+                        pageName = pageName.replace(new RegExp(' ', 'ig'), '___');
+                        wtfWikipedia.fetch(pageName, this.botLocale, (err: any, doc: any) => {
                             let answer = '';
-                            if (markup) {
-                                const parsedMarkup = wtfWikipedia.parse(markup) || null;
-                                if (parsedMarkup.pages && parsedMarkup.pages.length > 0) {
-                                    const arr = markup.split('\n');
-                                    if (arr.length > 0) {
-                                        answer = parsedMarkup.pages.join('\n\n');
-                                        answer = answer.replace(new RegExp('`', 'ig'), '');
-                                    } else {
-                                        answer = '';
-                                    }
-                                } else {
-                                    answer = wtfWikipedia.plaintext(markup).replace(new RegExp('\n\n', 'ig'), '\n');
-                                    answer = answer.replace(new RegExp('`', 'ig'), '');
-                                }
+                            if (doc) {
+                                const markup = doc.markdown();
+                                answer = markup.replace(new RegExp('\n\n', 'ig'), '\n');
+                                answer = answer.replace(new RegExp('`', 'ig'), '');
                             }
                             const url = `https://${locale}.wikipedia.org/wiki/${pageName}`;
                             event.emit('message', answer, url);
@@ -72,6 +62,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                     }
                 }, (error: any) => {
                     event.emit('message', false, false);
+                    event.emit('customError', `Error\n${JSON.stringify(error)}`);
                 });
         } catch (error) {
             event.emit('customError', `Error\n${JSON.stringify(error)}`);
@@ -89,14 +80,15 @@ export class WikiBotPlugin extends BaseBotPlugin {
                         this.searchOnWiki(text, 'en')
                             .on('message', (answerTwo: string, urlTwo: string) => {
                                 if (answerTwo) {
+                                    answerTwo = answerTwo.replace(new RegExp('«', 'ig'), '"').replace(new RegExp('»', 'ig'), '"');
                                     event.emit('message',
                                         '`' + answerTwo.substring(0, this.wikipediaContentLength)
                                         + (answer.length > this.wikipediaContentLength ? '...' : '')
                                         + '`\n\n'
-                                        + urlTwo);
+                                        + `${urlTwo}`);
                                 } else {
                                     if (urlTwo) {
-                                        event.emit('message', urlTwo);
+                                        event.emit('message', `${urlTwo}`);
                                     } else {
                                         event.emit('message', false);
                                     }
@@ -107,6 +99,7 @@ export class WikiBotPlugin extends BaseBotPlugin {
                             );
                     } else {
                         if (answer) {
+                            answer = answer.replace(new RegExp('«', 'ig'), '"').replace(new RegExp('»', 'ig'), '"');
                             event.emit('message',
                                 '`' + answer.substring(0, this.wikipediaContentLength)
                                 + (answer.length > this.wikipediaContentLength ? '...' : '')
