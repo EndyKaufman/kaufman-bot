@@ -77,7 +77,7 @@
 		"node-telegram-bot-api": "^0.30.0",
 		"request": "^2.85.0",
 		"rollbar": "^2.3.9",
-		"wikijs": "^4.7.0",
+		"wikijs": "^5.1.0",
 		"wtf_wikipedia": "^3.1.1"
 	}
 }
