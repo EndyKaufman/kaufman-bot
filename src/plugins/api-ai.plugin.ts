@@ -18,7 +18,7 @@ export class ApiAiBotPlugin extends BaseBotPlugin {
     protected ai: any = {
         'en': null,
         'ru': null
-    }
+    };
     protected ai_ru: any;
     constructor(
         protected botLocale: string,
@@ -71,7 +71,7 @@ export class ApiAiBotPlugin extends BaseBotPlugin {
                         msg.text = removeWordsFromMessage(msg.text, this.wordsForSpy);
                         this.askAi(msg.text, msg.chat.id, this.getLocaleCode(msg)).on('message', (answerTwo: string) => {
                             event.emit('message', answerTwo);
-                        })
+                        });
                     }
                 })
                 .on('customError', (message: string) =>

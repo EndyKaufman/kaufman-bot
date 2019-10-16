@@ -29,7 +29,7 @@ describe('WikiBotPlugin', () => {
             plugin.process(null, msg).on('message', (answer: string) => {
                 assert(answer.indexOf('Corporation') !== -1 || answer.indexOf('Microsoft') !== -1, answer);
                 done();
-            })
+            });
         });
     });
 });

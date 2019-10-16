@@ -9,7 +9,7 @@ const stringify = require('json-stringify-safe');
 
 export class BaseBotServer implements IBotServer {
     protected bot: IBot;
-    protected webServer: IWebServer
+    protected webServer: IWebServer;
     protected botToken: string;
     protected botHookUrl: string;
     protected plugins: IBotPlugin[];
@@ -25,7 +25,7 @@ export class BaseBotServer implements IBotServer {
     }
     public env(key: string, defaultValue: any = '') {
         if (process.env[this.envNamePrefix + key]) {
-            return process.env[this.envNamePrefix + key]
+            return process.env[this.envNamePrefix + key];
         } else {
             return defaultValue;
         }
@@ -43,7 +43,7 @@ export class BaseBotServer implements IBotServer {
             name: name || this.name,
             data: newMsg,
             message: message
-        }, true)
+        }, true);
     }
     public startPlugin(message: string, pluginName: string, locale: string): EventEmitter {
         const event = new EventEmitter();
@@ -78,7 +78,7 @@ export class BaseBotServer implements IBotServer {
                         } else {
                             this.notFound(msg).on('message', (notFoundAnswer: string) => {
                                 event.emit('message', answer);
-                            })
+                            });
                         }
                     })
                     .on('customError', (answer: string) => {

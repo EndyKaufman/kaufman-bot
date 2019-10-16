@@ -15,7 +15,7 @@ export class BaseWebServer implements IWebServer {
     }
     protected env(key: string, defaultValue: any = '') {
         if (process.env[this.envNamePrefix + key]) {
-            return process.env[this.envNamePrefix + key]
+            return process.env[this.envNamePrefix + key];
         } else {
             return defaultValue;
         }

@@ -48,7 +48,7 @@ describe('ScraperBotPlugin', () => {
             plugin.process(null, msg).on('message', (answer: string) => {
                 assert(answer.indexOf('Hello, World!') !== -1, answer);
                 done();
-            })
+            });
         });
     });
 });

@@ -27,7 +27,7 @@ export class App {
     }
     public env(key: string, defaultValue: any = '') {
         if (process.env[key]) {
-            return process.env[key]
+            return process.env[key];
         } else {
             return defaultValue;
         }
@@ -58,14 +58,14 @@ export class App {
                 this.program.locale ? this.program.locale : process.env.BOT_LOCALE
             ).on('message', (answer: string) => {
                 console.log(telegramBotServer.getName() + ': ' + answer);
-            })
+            });
             microsoftBotServer.startPlugin(
                 this.program.message,
                 this.program.plugin === true ? null : this.program.plugin,
                 this.program.locale ? this.program.locale : process.env.BOT_LOCALE
             ).on('message', (answer: string) => {
                 console.log(microsoftBotServer.getName() + ': ' + answer);
-            })
+            });
         }
         if (!selected && this.program.start) {
             selected = true;
