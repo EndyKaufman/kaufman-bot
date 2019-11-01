@@ -62,7 +62,7 @@
     "botbuilder": "^4.5.3",
     "charset": "^1.0.1",
     "cheerio": "^1.0.0-rc.2",
-    "commander": "^3.0.2",
+    "commander": "^4.0.0",
     "console-stamp": "^0.2.9",
     "dialogflow": "^0.12.1",
     "dotenv": "^8.2.0",
