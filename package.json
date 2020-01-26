@@ -48,7 +48,7 @@
     "conventional-commits-detector": "^1.0.2",
     "conventional-recommended-bump": "^6.0.2",
     "json-stringify-safe": "^5.0.1",
-    "mocha": "^6.2.1",
+    "mocha": "^7.0.1",
     "rimraf": "^3.0.0",
     "sinon": "^7.5.0",
     "ts-node": "^8.4.1",
