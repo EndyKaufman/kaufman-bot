@@ -78,6 +78,6 @@
     "request": "^2.88.0",
     "rollbar": "^2.13.0",
     "wikijs": "^6.0.1",
-    "wtf_wikipedia": "^7.7.1"
+    "wtf_wikipedia": "^8.0.0"
   }
 }
