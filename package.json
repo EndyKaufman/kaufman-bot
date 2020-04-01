@@ -42,7 +42,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.1",
     "@types/request": "^2.48.3",
-    "@types/sinon": "^7.5.0",
+    "@types/sinon": "^9.0.0",
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.25",
     "conventional-commits-detector": "^1.0.2",
