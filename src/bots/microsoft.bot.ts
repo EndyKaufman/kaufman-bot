@@ -1,17 +1,17 @@
-import { IBot, IBotMessage } from '../lib/interfaces';
 import { EventEmitter } from 'events';
+import { IBot } from '../lib/interfaces';
 
 import builder = require('botbuilder');
 
 export class MicrosoftBot implements IBot {
   protected onEvent: EventEmitter;
-  public originalConnector: any;
+  public originalConnector: builder.BotFrameworkAdapter;
   public originalBot: any;
   constructor(appId: string, appPassword: string) {
     this.onEvent = new EventEmitter();
     this.originalConnector = new builder.BotFrameworkAdapter({
       appId: appId,
-      appPassword: appPassword
+      appPassword: appPassword,
     });
     /*
     this.originalBot = new builder.UniversalBot(
@@ -40,15 +40,11 @@ export class MicrosoftBot implements IBot {
     text = text.replace(new RegExp('\n', 'ig'), '\n\n');
     text = text.replace(new RegExp('`', 'ig'), '');
     text = text + '\n';
-    if (
-      options.originalMessage &&
-      options.originalMessage.originalData &&
-      options.originalMessage.originalData
-    ) {
+    if (options.originalMessage && options.originalMessage.originalData && options.originalMessage.originalData) {
       options.originalMessage.originalData.send({
         type: 'message',
         text: text,
-        textFormat: 'markdown'
+        textFormat: 'markdown',
       });
     }
     return true;

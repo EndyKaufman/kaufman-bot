@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import * as _ from 'lodash';
+import _ = require('lodash');
 
 import { IBot, IBotMessage, IBotPlugin } from '../lib/interfaces';
 import { checkWordsInMessage } from '../lib/utils';

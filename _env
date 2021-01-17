@@ -1,5 +1,6 @@
 DEBUG=true
 PORT=1105
+AUTOSTART=true
 ADMIN_TELEGRAM_USER_ID=
 # Create project on https://rollbar.com
 ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN=
