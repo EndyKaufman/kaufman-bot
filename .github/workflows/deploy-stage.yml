@@ -37,6 +37,7 @@ jobs:
       - name: Run tests
         run: |
           . ./env/prod.env.sh
+          export PORT=${{ secrets.PORT }}
           export HOST=${{ secrets.HOST }}
           export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
           export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}
@@ -52,6 +53,7 @@ jobs:
       - name: Build the test prod on docker
         run: |
           . ./env/prod.env.sh
+          export PORT=${{ secrets.PORT }}
           export HOST=${{ secrets.HOST }}
           export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
           export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}
@@ -84,6 +86,7 @@ jobs:
       - name: Run generate K8S files
         run: |
           . ./env/prod.env.sh
+          export PORT=${{ secrets.PORT }}
           export HOST=${{ secrets.HOST }}
           export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
           export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}
@@ -151,6 +154,7 @@ jobs:
           script: |
             cd ./vps/kaufman-bot
             . ./env/prod.env.sh
+            export PORT=${{ secrets.PORT }}
             export HOST=${{ secrets.HOST }}
             export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
             export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}

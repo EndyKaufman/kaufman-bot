@@ -45,7 +45,8 @@
     "release": "standard-version",
     "release:alpha": "standard-version --prerelease alpha && git push --tags origin && git push --all origin",
     "release:alpha-silent": "npm run release:alpha &> /dev/null",
-    "scripts:build": "npm run tsc --  ./k8s/generators/*.ts",
+    "release:version-writer": "node ./scripts/version-writer.js",
+    "scripts:build": "npm run tsc -- ./scripts/*.ts && npm run tsc --  ./k8s/generators/*.ts",
     "postinstall": "npm run scripts:build && npm run generate"
   },
   "author": {
