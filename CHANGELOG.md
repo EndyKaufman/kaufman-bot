@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.3](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.2...v1.4.0-alpha.3) (2021-01-18)
+
+
+### Bug Fixes
+
+* **ci:** remove not need files from docker ([524d8b4](https://github.com/EndyKaufman/kaufman-bot/commit/524d8b4c364b2e29511c82efc8cacccea21a0f79))
+* **ci:** update deploy stage, add envs for docker tests ([a44b9e9](https://github.com/EndyKaufman/kaufman-bot/commit/a44b9e93cf253603bd08d60288ba1efd3a0ff15c))
+
 ## [1.4.0-alpha.2](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.1...v1.4.0-alpha.2) (2021-01-18)
 
 
