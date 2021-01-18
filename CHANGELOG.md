@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.6](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.5...v1.4.0-alpha.6) (2021-01-18)
+
+
+### Bug Fixes
+
+* add use github envs in deploy action ([de32538](https://github.com/EndyKaufman/kaufman-bot/commit/de325388f1e2f48624d4bcc4bf774695fd280631))
+
 ## [1.4.0-alpha.5](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.4...v1.4.0-alpha.5) (2021-01-18)
 
 
