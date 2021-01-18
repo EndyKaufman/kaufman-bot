@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd ./vps/kaufman-bot
-            ./env/prod.env.sh
+            . ./env/prod.env.sh
             export HOST=${{ secrets.HOST }}
             export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
             export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}

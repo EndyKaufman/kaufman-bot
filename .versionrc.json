@@ -1,0 +1,10 @@
+{
+    "bumpFiles": [
+        "package.json",
+        "package-lock.json",
+        {
+            "filename": "VERSION.txt",
+            "type": "plain-text"
+        }
+    ]
+}
