@@ -35,4 +35,15 @@ jobs:
         
       - name: Run tests
         run: |
+          ./env/prod.env.sh
+          export HOST=${{ secrets.HOST }}
+          export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
+          export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}
+          export GOOGLE_APIS_API_KEY=${{ secrets.GOOGLE_APIS_API_KEY}}
+          export GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID=${{ secrets.GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID}}
+          export MICROSOFT_APP_ID=${{ secrets.MICROSOFT_APP_ID}}
+          export MICROSOFT_APP_PASSWORD=${{ secrets.MICROSOFT_APP_PASSWORD}}
+          export ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN=${{ secrets.ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN}}
+          export ROLLBAR_SERVER_ACCESS_TOKEN=${{ secrets.ROLLBAR_SERVER_ACCESS_TOKEN}}
+          export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN}}
           npm run test
