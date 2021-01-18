@@ -1,6 +1,6 @@
 {
   "name": "kaufman-bot",
-  "version": "1.4.0-alpha.3",
+  "version": "1.4.0-alpha.4",
   "description": "A simple bot for Telegram and Skype",
   "repository": "https://github.com/EndyKaufman/kaufman-bot.git",
   "license": "MIT",
