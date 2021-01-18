@@ -11,6 +11,7 @@ on:
 jobs:
   apply-to-stage:
     name: Apply to stage
+    environment: prod
     runs-on: ubuntu-latest
 
     steps:

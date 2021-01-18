@@ -10,6 +10,7 @@ on:
 jobs:
   deploy-to-stage:
     name: Deploy to stage
+    environment: prod
     runs-on: ubuntu-latest
 
     steps:

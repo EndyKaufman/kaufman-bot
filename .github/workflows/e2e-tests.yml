@@ -7,6 +7,7 @@ on:
 jobs:
   e2e-test:
     name: E2E tests in docker
+    environment: prod
     runs-on: ubuntu-latest
 
     steps:
