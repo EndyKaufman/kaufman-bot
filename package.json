@@ -3,10 +3,6 @@
   "version": "1.4.0-alpha.0",
   "description": "A simple bot for Telegram and Skype",
   "repository": "https://github.com/EndyKaufman/kaufman-bot.git",
-  "engines": {
-    "node": "8.11.x",
-    "npm": "5.8.x"
-  },
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",
