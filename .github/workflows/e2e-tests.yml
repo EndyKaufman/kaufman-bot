@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # E2E tests in docker 
+      # E2E tests in docker
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -32,8 +32,10 @@ jobs:
         if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
 
       - name: Generate files
-        run: npm run generate-ci
-        
+        run: |
+          npm run scripts:build
+          npm run generate-ci
+
       - name: Run tests
         run: |
           . ./env/prod.env.sh
