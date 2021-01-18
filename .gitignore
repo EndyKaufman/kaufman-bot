@@ -7,3 +7,4 @@ npm-debug.log
 /bin
 /k8s/local
 /k8s/prod
+/tmp

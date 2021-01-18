@@ -39,7 +39,7 @@
     "k8s:local:build-images": ". ./env/local.env.sh && npm run generate-local && npm run build:local && ./k8s/build-images.sh",
     "k8s:local:apply": ". ./env/local.env.sh && npm run k8s:generator:run && ./k8s/import-local-images.sh && ./k8s/apply.sh",
     "k8s:prod:delete": "microk8s kubectl delete namespace kaufman-prod",
-    "k8s:prod:build-images": ". ./env/prod.env.sh && npm run generate-ci && npm run build:prod && ./k8s/build-images.sh",
+    "k8s:prod:build-images": ". ./env/prod.env.sh && npm run generate-ci && npm run build && ./k8s/build-images.sh",
     "k8s:prod:apply": ". ./env/prod.env.sh && npm run k8s:generator:run && ./k8s/import-images.sh && ./k8s/apply.sh",
     "k8s:dashboard": "/snap/bin/microk8s dashboard-proxy",
     "release": "standard-version",
