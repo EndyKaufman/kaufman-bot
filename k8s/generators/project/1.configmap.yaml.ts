@@ -43,6 +43,7 @@ import {
   TELEGRAM_TOKEN,
   WIKIPEDIA_CONTENT_LENGTH,
   WIKIPEDIA_SPY_WORDS,
+  PORT,
 } from '../constants';
 
 export const projectConfigmapYaml = {
@@ -53,6 +54,7 @@ export const projectConfigmapYaml = {
     name: `${PROJECT_NAME}-config`,
   },
   data: {
+    PORT,
     BOT_LOCALE,
     BOT_NAME_ALIASES,
     GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX,

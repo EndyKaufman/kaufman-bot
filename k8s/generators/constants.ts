@@ -10,6 +10,7 @@ export const PROJECT_DOMAIN = process.env.PROJECT_DOMAIN;
 export const PROJECT_BOT_INGRESS_PATH = process.env.PROJECT_BOT_INGRESS_PATH;
 export const PROJECT_BOT_INGRESS_REWRITE_TARGET = process.env.PROJECT_BOT_INGRESS_REWRITE_TARGET;
 
+export const PORT = process.env.PORT;
 export const BOT_LOCALE = process.env.BOT_LOCALE;
 export const BOT_NAME_ALIASES = process.env.BOT_NAME_ALIASES;
 export const GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX = process.env.GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX;
