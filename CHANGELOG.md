@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.11](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.10...v1.4.0-alpha.11) (2021-01-18)
+
+
+### Bug Fixes
+
+* **ci:** add run scripts:build on github actions ([52920e3](https://github.com/EndyKaufman/kaufman-bot/commit/52920e32f1ac955ae4040ad5d3fc5efadbae77b4))
+* **test:** enable google apis test ([9ce10de](https://github.com/EndyKaufman/kaufman-bot/commit/9ce10de6a62bda859bf2995a4edc80d34e254681))
+
 ## [1.4.0-alpha.10](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.9...v1.4.0-alpha.10) (2021-01-18)
 
 
