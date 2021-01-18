@@ -4,7 +4,7 @@ import { IBotMessage } from '../lib/interfaces';
 import { GoogleApisBotPlugin } from './google-apis.plugin';
 
 const assert = chai.assert;
-
+// todo: now disable because not work in github, enable later
 describe('GoogleApisBotPlugin', () => {
   describe('without bot', () => {
     let plugin: GoogleApisBotPlugin;
