@@ -1,0 +1,51 @@
+name: "Apply to stage"
+
+on: 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+
+jobs:
+  apply-to-stage:
+    name: Apply to stage
+    runs-on: ubuntu-latest
+
+    steps:
+      # E2E tests in docker 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      - name: Cache node_modules
+        id: cache_node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+      - name: Install packages
+        run: yarn install --link-duplicates --non-interactive
+        if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
+
+      # Apply changes
+      
+      - name: Apply to K8S
+        uses: appleboy/ssh-action@master
+        if: ${{ github.event_name == 'push' }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ./vps/kaufman-bot
+            ./env/prod.env.sh
+            export HOST=${{ secrets.HOST }}
+            ./k8s/import-images.sh
+            ./k8s/apply.sh

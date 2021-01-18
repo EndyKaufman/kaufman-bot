@@ -1,0 +1,38 @@
+name: "E2E tests"
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  e2e-test:
+    name: E2E tests in docker
+    runs-on: ubuntu-latest
+
+    steps:
+      # E2E tests in docker 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      - name: Cache node_modules
+        id: cache_node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+      - name: Install packages
+        run: yarn install --link-duplicates --non-interactive
+        if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
+
+      - name: Generate files
+        run: npm run ci:generate
+        
+      - name: Run tests
+        run: |
+          npm run test

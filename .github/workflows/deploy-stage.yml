@@ -1,0 +1,124 @@
+name: "Deploy to stage"
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    # branches: [develop]
+
+jobs:
+  deploy-to-stage:
+    name: Deploy to stage
+    runs-on: ubuntu-latest
+
+    steps:
+      # E2E tests in docker 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      - name: Cache node_modules
+        id: cache_node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+      - name: Install packages
+        run: yarn install --link-duplicates --non-interactive
+        if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
+
+      - name: Run tests
+        run: |
+          npm run test
+
+      - name: Build the test prod on docker
+        run: |
+          npm run docker:prod-local:up
+
+      - name: Show kaufman-bot docker logs
+        run: |
+          var1=$(docker logs kaufman-bot-service)
+          if grep -q "Express server is listening on" <<<"$var1"; then
+            echo "ok"
+          else 
+            echo $var1
+            exit 1
+          fi
+
+      # Delivery to host     
+
+      - name: Run build
+        run: |
+          npm run ci:generate
+          npm run build
+
+      - name: Run generate K8S files
+        run: |
+          ./env/prod.env.sh
+          export HOST=${{ secrets.HOST }}
+          node ./k8s/generators/generator.js
+
+      - name: Copy K8S files to host
+        uses: appleboy/scp-action@master
+        if: ${{ github.event_name == 'push' }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "k8s,env,VERSION.txt"
+          target: "vps/kaufman-bot"
+          rm: true
+
+      - name: Run build Docker images
+        run: |
+          npm run k8s:prod:build-images
+
+      - name: Add size of images to file
+        run: ls ./tmp -l --block-size=MB >> temp_file_list.txt
+
+      - name: Create comment for size of images
+        id: get-comment-body
+        run: |
+          body=$(cat temp_file_list.txt)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
+      - name: Add size of images to commit as comment
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: ${{ steps.get-comment-body.outputs.body }}
+
+      - name: Copy docker images to host
+        uses: appleboy/scp-action@master
+        if: ${{ github.event_name == 'push' }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "tmp/kaufman-bot-prod.tar.gz"
+          target: "vps/kaufman-bot"
+          overwrite: true
+
+      # Apply changes
+      
+      - name: Apply to K8S
+        uses: appleboy/ssh-action@master
+        if: ${{ github.event_name == 'push' }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ./vps/kaufman-bot
+            ./env/prod.env.sh
+            export HOST=${{ secrets.HOST }}
+            ./k8s/import-images.sh
+            ./k8s/apply.sh

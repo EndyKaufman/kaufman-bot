@@ -1,5 +1,6 @@
 import { CommanderStatic, OptionValues } from 'commander';
 import { config } from 'dotenv';
+import { existsSync } from 'fs';
 import { MicrosoftBotServer } from '../bots/microsoft.bot-server';
 import { TelegramBotServer } from '../bots/telegram.bot-server';
 import { IBotMessage } from '../lib/interfaces';
@@ -15,7 +16,9 @@ export class App {
   protected debug: boolean;
   protected rollbarPostServerItemAccessToken: string;
   constructor() {
-    config();
+    if (existsSync('../../.env')) {
+      config({ path: '../../.env' });
+    }
     this.adminTelegramUserId = this.env('ADMIN_TELEGRAM_USER_ID');
     this.port = this.env('PORT');
     this.debug = this.env('DEBUG') === 'true';
