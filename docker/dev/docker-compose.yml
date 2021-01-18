@@ -11,7 +11,7 @@ services:
         image: node:12
         user: $UID:$GID
         environment:
-            - PORT=5000
+            - PORT=${PORT}
             - AUTOSTART=${AUTOSTART}
             - BOT_LOCALE=${BOT_LOCALE}
             - BOT_NAME_ALIASES=${BOT_NAME_ALIASES}
@@ -63,8 +63,8 @@ services:
         # extra_hosts:
         #     - "host.docker.internal:127.0.0.1"
         ports:
-            - "5000:5000"
+            - "${PORT}:${PORT}"
         expose:
-            - "5000"
+            - "${PORT}"
         tty: true
         command: "npm run start:dev"

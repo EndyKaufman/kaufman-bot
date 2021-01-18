@@ -1,5 +1,5 @@
 import { Deployment } from 'kubernetes-types/apps/v1';
-import { DOCKER_BOT_IMAGE, HostType, HOST_TYPE, PROJECT_NAME } from '../../constants';
+import { DOCKER_BOT_IMAGE, HostType, HOST_TYPE, PORT, PROJECT_NAME } from '../../constants';
 
 export const botDeploymentYaml = {
   apiVersion: `apps/v1`,
@@ -33,7 +33,7 @@ export const botDeploymentYaml = {
             imagePullPolicy: HOST_TYPE === HostType.Prod ? `Always` : `Never`,
             ports: [
               {
-                containerPort: 5000,
+                containerPort: +PORT,
               },
             ],
 

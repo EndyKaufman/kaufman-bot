@@ -10,7 +10,7 @@ services:
     image: "kaufman/bot:local"
     container_name: "kaufman-bot-service"
     environment:
-      - PORT=5000
+      - PORT=${PORT}
       - AUTOSTART=${AUTOSTART}
       - BOT_LOCALE=${BOT_LOCALE}
       - BOT_NAME_ALIASES=${BOT_NAME_ALIASES}
@@ -62,5 +62,5 @@ services:
     # extra_hosts:
     #   - "host.docker.internal:172.11.0.1"
     ports:
-      - "5000:5000"
+      - "${PORT}:${PORT}"
     tty: true
