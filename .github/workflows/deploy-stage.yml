@@ -51,7 +51,7 @@ jobs:
 
       - name: Build the test prod on docker
         run: |
-          npm run docker:prod-local:up
+          npm run docker:prod-local:test-build
 
       - name: Show kaufman-bot docker logs
         run: |
