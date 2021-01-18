@@ -32,7 +32,7 @@ jobs:
         if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
 
       - name: Generate files
-        run: npm run ci:generate
+        run: npm run generate-ci
         
       - name: Run tests
         run: |
