@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.5](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.4...v1.4.0-alpha.5) (2021-01-18)
+
+
+### Features
+
+* **ci:** update k8s build ([438b30c](https://github.com/EndyKaufman/kaufman-bot/commit/438b30ccb6e1c319a270850c09e60fe13fd82cf7))
+
 ## [1.4.0-alpha.4](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.3...v1.4.0-alpha.4) (2021-01-18)
 
 
