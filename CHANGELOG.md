@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.7](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.6...v1.4.0-alpha.7) (2021-01-18)
+
+
+### Bug Fixes
+
+* **ci:** add support update docker image versions for k8s ([8ab3a04](https://github.com/EndyKaufman/kaufman-bot/commit/8ab3a049c73fb92be23bcff42684a4e7f18394e1))
+
 ## [1.4.0-alpha.6](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.5...v1.4.0-alpha.6) (2021-01-18)
 
 
