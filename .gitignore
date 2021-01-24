@@ -8,3 +8,4 @@ npm-debug.log
 /k8s/local
 /k8s/prod
 /tmp
+*.log
