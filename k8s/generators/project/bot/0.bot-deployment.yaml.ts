@@ -46,11 +46,11 @@ export const botDeploymentYaml = {
             ],
             resources: {
               requests: {
-                memory: `64Mi`,
+                memory: `128Mi`,
                 cpu: `75m`,
               },
               limits: {
-                memory: `128Mi`,
+                memory: `300Mi`,
                 cpu: `150m`,
               },
             },
