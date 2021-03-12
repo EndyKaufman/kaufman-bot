@@ -35,6 +35,11 @@ jobs:
         run: yarn install --link-duplicates --non-interactive
         if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
 
+      - name: Generate files
+        run: |
+          npm run scripts:build
+          npm run generate-ci
+
       # Apply changes
       
       - name: Apply to K8S
