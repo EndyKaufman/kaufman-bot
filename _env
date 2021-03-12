@@ -1,47 +1,16 @@
-DEBUG=true
-PORT=1105
-ADMIN_TELEGRAM_USER_ID=
-# Create project on https://rollbar.com
-ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN=
-BOT_NAME_ALIASES="kaufman,endy"
-BOT_LOCALE=en
-# Create bot on https://telegram.me/botfather
-TELEGRAM_TOKEN=
-TELEGRAM_HOOK_URL=
+# Create conversational apps on https://api.ai/
+APIAI_CLIENT_ACCESS_TOKEN=
+# Create account on telegram
+BOT_ADMIN_TELEGRAM_ID=
+# Get key from https://console.developers.google.com/apis/credentials/key
+GOOGLE_APIS_API_KEY=
+# Get key from https://cse.google.com/cse/create/new, and add site for search
+GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID=
 # Create bot on https://dev.botframework.com
 MICROSOFT_APP_ID=
 MICROSOFT_APP_PASSWORD=
-# Create conversational apps on https://api.ai/
-APIAI_CLIENT_ACCESS_TOKEN=
-WIKIPEDIA_SPY_WORDS="wiki,wikipedia"
-WIKIPEDIA_CONTENT_LENGTH=500
-SCRAPER_PING_URI="http://2whois.ru/?t=ping&data={text}"
-SCRAPER_PING_TIMEOUT=10000
-SCRAPER_PING_CONTENT_SELECTOR="body > div.wrapper > div.container.content > div.row.margin-bottom-30 > div > div > div > div > div > div.col-md-9 > div > pre"
-SCRAPER_PING_CONTENT_LENGTH=1000
-SCRAPER_PING_SPY_WORDS="ping,пинг,пинганика"
-SCRAPER_PING_WHAT_CAN_I_DO_EN="I know how to ping sites, for example: `ping google.com`"
-SCRAPER_PING_WHAT_CAN_I_DO_RU="Умею пинговать сайты, пример: `пинг ya.ru`"
-SCRAPER_BASHORG_URI="http://bash.im/random"
-SCRAPER_BASHORG_TIMEOUT=10000
-SCRAPER_BASHORG_CONTENT_SELECTOR="#body > div:nth-child(3) > div.text"
-SCRAPER_BASHORG_CONTENT_LENGTH=1000
-SCRAPER_BASHORG_SPY_WORDS="bash,joke,jokes,баш,шутка,шутки,пошути,шути,шутка,рассмеши,анекдот,смешинки,смешинка,гыгы,haha"
-SCRAPER_BASHORG_WHAT_CAN_I_DO_EN="I can joke and tell jokes, for example: `joke`"
-SCRAPER_BASHORG_WHAT_CAN_I_DO_RU="Умею шутить и рассказывать анекдоты, пример: `шутка`"
-SCRAPER_FORISMATIC_URI="https://api.forismatic.com/api/1.0/?method=getQuote&format=html&lang={lang}"
-SCRAPER_FORISMATIC_TIMEOUT=10000
-SCRAPER_FORISMATIC_CONTENT_SELECTOR="body > blockquote > strong > cite,body > blockquote > small"
-SCRAPER_FORISMATIC_CONTENT_LENGTH=4000
-SCRAPER_FORISMATIC_SPY_WORDS="quote,quotes,цитата,цитаты,цитируй,умная мысль,цита,мудрость,залечи"
-SCRAPER_FORISMATIC_WHAT_CAN_I_DO_EN="I know how to give random quotes, for example: `quotes`"
-SCRAPER_FORISMATIC_WHAT_CAN_I_DO_RU="Умею выдавать случайные цитаты, пример: `цитаты`"
-SCRAPER_FORISMATIC_URI="https://api.forismatic.com/api/1.0/?method=getQuote&format=html&lang={lang}"
-# Get key from https://console.developers.google.com/apis/credentials/key
-GOOGLE_APIS_API_KEY=""
-# Get key from https://cse.google.com/cse/create/new, and add site for search
-GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID=""
-GOOGLE_APIS_HABR_SEARCH_QUERY_PREFIX=""
-GOOGLE_APIS_HABR_SEARCH_SPY_WORDS="habr,habra,хабр,хабра"
-GOOGLE_APIS_HABR_WHAT_CAN_I_DO_EN="I know how to look for information on habrahabr.ru, for example: `habr typescript`"
-GOOGLE_APIS_HABR_WHAT_CAN_I_DO_RU="Умею искать информацию на хабре, пример: `хабра Typescript`"
+# Create project on https://rollbar.com
+ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN=
+ROLLBAR_SERVER_ACCESS_TOKEN=
+# Create bot on https://telegram.me/botfather
+TELEGRAM_TOKEN=

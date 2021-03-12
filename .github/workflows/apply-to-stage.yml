@@ -1,0 +1,67 @@
+name: "Apply to stage"
+
+on: 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+
+jobs:
+  apply-to-stage:
+    name: Apply to stage
+    environment: prod
+    runs-on: ubuntu-latest
+
+    steps:
+      # E2E tests in docker 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      - name: Cache node_modules
+        id: cache_node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+      - name: Install packages
+        run: yarn install --link-duplicates --non-interactive
+        if: ${{steps.cache_node_modules.outputs.cache-hit != 'true' }}
+
+      - name: Generate files
+        run: |
+          npm run scripts:build
+          npm run generate-ci
+
+      # Apply changes
+      
+      - name: Apply to K8S
+        uses: appleboy/ssh-action@master
+        if: ${{ github.event_name == 'push' }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ./vps/kaufman-bot
+            . ./env/prod.env.sh
+            export PORT=${{ secrets.PORT }}
+            export HOST=${{ secrets.HOST }}
+            export APIAI_CLIENT_ACCESS_TOKEN=${{ secrets.APIAI_CLIENT_ACCESS_TOKEN}}
+            export BOT_ADMIN_TELEGRAM_ID=${{ secrets.BOT_ADMIN_TELEGRAM_ID}}
+            export GOOGLE_APIS_API_KEY=${{ secrets.GOOGLE_APIS_API_KEY}}
+            export GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID=${{ secrets.GOOGLE_APIS_HABR_CUSTOM_SEARCH_ENGINE_ID}}
+            export MICROSOFT_APP_ID=${{ secrets.MICROSOFT_APP_ID}}
+            export MICROSOFT_APP_PASSWORD=${{ secrets.MICROSOFT_APP_PASSWORD}}
+            export ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN=${{ secrets.ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN}}
+            export ROLLBAR_SERVER_ACCESS_TOKEN=${{ secrets.ROLLBAR_SERVER_ACCESS_TOKEN}}
+            export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN}}
+            ./k8s/import-images.sh
+            ./k8s/apply.sh

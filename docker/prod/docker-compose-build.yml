@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  kaufman-bot:
+    image: 'kaufman/bot:local'
+    build:
+      context: ../../
+      dockerfile: ./docker/__Dockerfile/Dockerfile.kaufman-bot

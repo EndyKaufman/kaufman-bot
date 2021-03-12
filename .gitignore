@@ -5,3 +5,7 @@ npm-debug.log
 /build
 /dist
 /bin
+/k8s/local
+/k8s/prod
+/tmp
+*.log
