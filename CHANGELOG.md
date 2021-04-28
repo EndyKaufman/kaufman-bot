@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.12](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.11...v1.4.0-alpha.12) (2021-04-28)
+
+
+### Features
+
+* update ingress config for networking.k8s.io/v1 ([10de543](https://github.com/EndyKaufman/kaufman-bot/commit/10de5432d697c6cc6372da03881b692d13447202))
+* update issuer script ([3043120](https://github.com/EndyKaufman/kaufman-bot/commit/304312040fd8882723336ad8d2f1cd3adea5a379))
+* **k8s:** update limits of resources ([73d20b8](https://github.com/EndyKaufman/kaufman-bot/commit/73d20b811afebae827608524819f1a357192ec5f))
+
+
+### Bug Fixes
+
+* add generate scripts in deploy with ignore cache of node modules ([a158635](https://github.com/EndyKaufman/kaufman-bot/commit/a1586353d62881f730d187a77014876a265e9989))
+* add remove exists file on local build images ([1895d71](https://github.com/EndyKaufman/kaufman-bot/commit/1895d71c9179cf338f996067a8d825bc5872b76e))
+* add support deploy from develop branch ([a98c0be](https://github.com/EndyKaufman/kaufman-bot/commit/a98c0be2dda2d9f0f959779cb03a10b722805f94))
+
 ## [1.4.0-alpha.11](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.10...v1.4.0-alpha.11) (2021-01-18)
 
 
