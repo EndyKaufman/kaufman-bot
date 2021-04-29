@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-alpha.13](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.12...v1.4.0-alpha.13) (2021-04-29)
+
+
+### Bug Fixes
+
+* revert ingress to networking.k8s.io/v1beta1 ([e04f9a0](https://github.com/EndyKaufman/kaufman-bot/commit/e04f9a01ac4eacfc3610c7bbc555f9cfbab3e1d0))
+
 ## [1.4.0-alpha.12](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0-alpha.11...v1.4.0-alpha.12) (2021-04-28)
 
 
