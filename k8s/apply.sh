@@ -1,1 +1,2 @@
+/snap/bin/microk8s kubectl get secret regcred -n default -o yaml | sed s/"namespace: default"/"namespace: $PROJECT_NAME-$HOST_TYPE"/ | /snap/bin/microk8s kubectl apply -n $PROJECT_NAME-$HOST_TYPE -f -
 /snap/bin/microk8s kubectl apply -f ./k8s/$HOST_TYPE
