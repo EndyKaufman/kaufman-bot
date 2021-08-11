@@ -21,7 +21,7 @@ export const botIngressYaml = {
     tls: [
       {
         hosts: [PROJECT_DOMAIN],
-        secretName: `echo-tls`,
+        secretName: `${PROJECT_NAME}-${HOST_TYPE}-tls`,
       },
     ],
     rules: [
