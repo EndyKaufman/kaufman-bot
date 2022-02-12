@@ -669,6 +669,7 @@ It was the wrong way, I'll choose another :)
 ## Create Vercel config for correct deploy as nodejs app
 
 Create file vercel.json in root
+
 ```
 {
   "version": 2,
@@ -689,6 +690,7 @@ Create file vercel.json in root
 ```
 
 Change scripts in package.json
+
 ```
 "scripts": {
   "nx": "nx",
@@ -699,3 +701,19 @@ Change scripts in package.json
 ```
 
 Remove all deploy configs from settings in vercel dashboard
+
+Remove builds from vercel config file
+
+```
+{
+  "version": 2,
+  "name": "kaufman-bot",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/apps/server/main.js"
+    }
+  ]
+}
+
+```
