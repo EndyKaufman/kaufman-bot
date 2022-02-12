@@ -460,4 +460,6 @@ if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target
 //# sourceMappingURL=main.js.map
 ```
 
+It was the wrong way, I'll choose another, sorry guys :)
+
 #kaufmanbot #nx #netlify
