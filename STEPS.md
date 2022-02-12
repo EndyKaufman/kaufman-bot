@@ -464,7 +464,7 @@ It was the wrong way, I'll choose another, sorry guys :)
 
 #kaufmanbot #nx #netlify
 
-# [2022-02-12 23:20] Deploy nestjs application to vercel
+# [2022-02-12 23:20] Deploy nestjs application to vercel (Failure)
 
 ## Import repo
 
@@ -664,6 +664,8 @@ if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target
 //# sourceMappingURL=main.js.map
 ```
 
+ (Failure)
+
 It was the wrong way, I'll choose another :)
 
 ## Create Vercel config for correct deploy as nodejs app
@@ -688,6 +690,12 @@ Create file vercel.json in root
   ]
 }
 ```
+
+ (Failure)
+
+It was the wrong way, I'll choose another :)
+
+## Try change config in package.json for correct build
 
 Change scripts in package.json
 
@@ -717,3 +725,9 @@ Remove builds from vercel config file
 }
 
 ```
+
+ (Failure)
+
+It was the wrong way, I'll choose another :)
+
+#kaufmanbot #nx #vercel
