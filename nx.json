@@ -26,5 +26,9 @@
       }
     ]
   },
-  "projects": {}
+  "projects": {},
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "server"
 }
