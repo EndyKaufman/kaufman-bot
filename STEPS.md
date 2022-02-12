@@ -731,3 +731,44 @@ Remove builds from vercel config file
 It was the wrong way, I'll choose another :)
 
 #kaufmanbot #nx #vercel
+
+# [2022-02-13 00:26] Deploy nestjs application to heroku
+
+## Login in heroku
+
+https://www.heroku.com/
+
+## Create new application in heroku
+
+https://dashboard.heroku.com/new-app
+
+![Create new application in heroku](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lo3ee72i1pw9qr7g8zby.png)
+
+## Connect exists repository from github to created application
+
+https://dashboard.heroku.com/apps/kaufman-bot/deploy/github
+
+![Connect exists repository from github to created application](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/91eazbm7g1j7pfdxgys7.png)
+ 
+## Set branch name if not main
+
+![Set branch name if not main](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5hdpz599t79um8mnhoj0.png)
+
+And click to **Enable Automatic Deploys**
+
+After it click to deploy 
+![After it click to deploy ](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/29d8lx4meeya4hcazaid.png)
+
+Wait...
+
+## Check output of site
+
+> curl https://kaufman-bot.herokuapp.com/api
+```
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ curl https://kaufman-bot.herokuapp.com/api
+{"message":"Welcome to server!"}endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ 
+```
+
+It was easy!!!
+
+#kaufmanbot #nx #heroku
