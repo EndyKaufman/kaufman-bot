@@ -129,7 +129,7 @@ CREATE libs/core/server/src/lib/core-server.module.ts
 
 #kaufmanbot #nx #nestjs
 
-# [2022-02-12 22:12] Local build and run
+# [2022-02-12 22:12] Local build and run nestjs application
 
 ## Update nx
 
@@ -263,7 +263,7 @@ endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ curl http://localhost:
 {"message":"Welcome to server!"}endy@endy-virtual-machine:~/Projects/current/kaufman-bot$
 ```
 
-# [2022-02-12 22:58] Deploy to netfly (Failure)
+# [2022-02-12 22:58] Deploy nestjs application to netfly (Failure)
 
 ## Login in netlify with github account
 
