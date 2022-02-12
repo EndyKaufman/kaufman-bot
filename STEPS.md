@@ -697,3 +697,5 @@ Change scripts in package.json
   "test": "nx test"
 },
 ```
+
+Remove all deploy configs from settings in vercel dashboard
