@@ -463,3 +463,31 @@ if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target
 It was the wrong way, I'll choose another, sorry guys :)
 
 #kaufmanbot #nx #netlify
+
+# [2022-02-12 23:20] Deploy nestjs application to vercel
+
+## Import repo
+
+Login to https://vercel.com/login with github account
+
+Navigate to https://vercel.com/new
+
+Create new application and import exists git repository
+
+## Configure Project
+
+**FRAMEWORK PRESET**
+Other
+
+**BUILD COMMAND**
+npm run nx -- build server
+
+**OUTPUT DIRECTORY**
+/dist/apps/server/
+
+**INSTALL COMMAND**
+npm i --force
+
+Click to **Deploy**
+
+
