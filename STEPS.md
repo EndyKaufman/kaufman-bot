@@ -732,7 +732,7 @@ It was the wrong way, I'll choose another :)
 
 #kaufmanbot #nx #vercel
 
-# [2022-02-13 00:26] Deploy nestjs application to heroku
+# [2022-02-13 00:26] Deploy nestjs application to heroku (Success)
 
 ## Login in heroku
 
