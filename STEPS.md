@@ -263,6 +263,8 @@ endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ curl http://localhost:
 {"message":"Welcome to server!"}endy@endy-virtual-machine:~/Projects/current/kaufman-bot$
 ```
 
+#kaufmanbot #nx #nestjs #deploy
+
 # [2022-02-12 22:58] Deploy nestjs application to netfly (Failure)
 
 ## Login in netlify with github account
