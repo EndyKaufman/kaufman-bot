@@ -128,3 +128,149 @@ CREATE libs/core/server/src/lib/core-server.module.ts
 ```
 
 #kaufmanbot #nx #nestjs
+
+# [2022-02-12 22:1] Deploy to netfly
+
+## Update nx
+
+The current version of nx contains bugs, need update it
+
+> npx nx migrate @nrwl/workspace
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npx nx migrate @nrwl/workspace
+Fetching meta data about packages.
+It may take a few minutes.
+Fetching @nrwl/workspace@latest
+Fetching prettier@^2.5.1
+Fetching @nrwl/cli@13.8.1
+Fetching @nrwl/eslint-plugin-nx@13.8.1
+Fetching @nrwl/jest@13.8.1
+Fetching @nrwl/linter@13.8.1
+Fetching @nrwl/nest@13.8.1
+Fetching @nrwl/node@13.8.1
+Fetching @nrwl/tao@13.8.1
+Fetching @nrwl/workspace@13.8.1
+Fetching prettier@2.5.1
+
+>  NX  The migrate command has run successfully.
+
+- package.json has been updated
+- migrations.json has been generated
+
+>  NX  Next steps:
+
+- Make sure package.json changes make sense and then run 'npm install'
+- Run 'nx migrate --run-migrations'
+- To learn more go to https://nx.dev/using-nx/updating-nx
+- You may run "nx connect-to-nx-cloud" to get faster builds, GitHub integration, and more. Check out https://nx.app
+```
+
+> npm i
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm i
+
+added 1 package, removed 103 packages, changed 7 packages, and audited 746 packages in 4s
+
+76 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+```
+
+> npm run nx -- migrate --run-migrations
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run nx -- migrate --run-migrations
+
+> kaufman-bot@0.0.0 nx
+> nx "migrate" "--run-migrations"
+
+
+>  NX  Running 'npm install' to make sure necessary packages are installed
+
+
+up to date, audited 746 packages in 3s
+
+76 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+>  NX  Running migrations from 'migrations.json'
+
+Running migration set-default-base-if-not-set
+Successfully finished set-default-base-if-not-set
+---------------------------------------------------------
+Running migration 13-0-0-config-locations
+Successfully finished 13-0-0-config-locations
+---------------------------------------------------------
+Running migration set-parallel-default
+Successfully finished set-parallel-default
+---------------------------------------------------------
+Running migration 13-3-0-tsc-location
+Successfully finished 13-3-0-tsc-location
+---------------------------------------------------------
+Running migration 13-6-0-remove-old-task-runner-options
+Successfully finished 13-6-0-remove-old-task-runner-options
+---------------------------------------------------------
+
+>  NX  Successfully finished running migrations from 'migrations.json'
+```
+
+## Build sources
+
+> npm run nx -- build server
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run nx -- build server
+
+> kaufman-bot@0.0.0 nx
+> nx "build" "server"
+
+
+> nx run server:build
+
+chunk (runtime: main) main.js (main) 2.76 KiB [entry] [rendered]
+webpack compiled successfully (ba0f882f8a8c0d5f)
+
+ ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+ >  NX   Successfully ran target build for project server (4s)
+```
+
+## Start built application
+
+> node ./dist/apps/server/main.js
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ node ./dist/apps/server/main.js
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG [InstanceLoader] AppModule dependencies initialized +31ms
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG [RoutesResolver] AppController {/api}: +6ms
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG [RouterExplorer] Mapped {/api, GET} route +3ms
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG [NestApplication] Nest application successfully started +3ms
+[Nest] 1439017  - 02/12/2022, 9:14:11 PM     LOG 🚀 Application is running on: http://localhost:3333/api
+```
+
+## Login in netlify with github account
+
+https://www.netlify.com/
+
+Import an existing project from a Git repository
+
+Set config options
+
+**Base directory**
+EMPTY
+
+**Build command** 
+npm run nx -- build server
+
+**Publish directory**
+/dist/apps/server/
+
+And click **Deploy site**
+
+#kaufmanbot #nx #netlify
