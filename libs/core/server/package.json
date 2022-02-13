@@ -1,0 +1,10 @@
+{
+  "i18n": [
+    {
+      "scope": "core-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    }
+  ],
+  "version": "0.0.0"
+}

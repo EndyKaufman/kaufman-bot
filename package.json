@@ -3,12 +3,18 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "rucken": "rucken",
     "nx": "nx",
     "start": "node dist/apps/server/main.js",
     "build": "npm run nx -- build server",
     "test": "nx test",
     "serve": "npm run nx -- serve server",
-    "serve:local": "export $(xargs < ./.env.local) && npm run serve"
+    "serve:local": "export $(xargs < ./.env.local) && npm run serve",
+    "prepare": "husky install",
+    "lint": "npm run tsc:lint && nx workspace-lint && npm run nx -- run-many --target=lint --all",
+    "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
+    "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
+    "generate": "npm run rucken -- prepare && npm run lint:fix"
   },
   "private": true,
   "devDependencies": {
@@ -28,8 +34,11 @@
     "@typescript-eslint/parser": "~5.10.0",
     "eslint": "~8.7.0",
     "eslint-config-prettier": "8.1.0",
+    "husky": "^7.0.4",
     "jest": "27.2.3",
+    "lint-staged": "^12.3.3",
     "prettier": "2.5.1",
+    "rucken": "^3.4.0",
     "ts-jest": "27.0.5",
     "typescript": "~4.3.5"
   },
@@ -37,10 +46,15 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "env-var": "^7.1.1",
     "nestjs-telegraf": "^2.4.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "telegraf": "^4.7.0",
     "tslib": "^2.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --fix",
+    "*.{js,ts,css,scss,md}": "prettier --ignore-unknown --write"
   }
 }
