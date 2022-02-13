@@ -6,7 +6,9 @@
     "nx": "nx",
     "start": "node dist/apps/server/main.js",
     "build": "npm run nx -- build server",
-    "test": "nx test"
+    "test": "nx test",
+    "serve": "npm run nx -- serve server",
+    "serve:local": "export $(xargs < ./.env.local) && npm run serve"
   },
   "private": true,
   "devDependencies": {
@@ -35,9 +37,10 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "nestjs-telegraf": "^2.4.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
+    "telegraf": "^4.7.0",
     "tslib": "^2.0.0"
   }
 }
-
