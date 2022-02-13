@@ -664,7 +664,7 @@ if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target
 //# sourceMappingURL=main.js.map
 ```
 
- (Failure)
+(Failure)
 
 It was the wrong way, I'll choose another :)
 
@@ -691,7 +691,7 @@ Create file vercel.json in root
 }
 ```
 
- (Failure)
+(Failure)
 
 It was the wrong way, I'll choose another :)
 
@@ -726,7 +726,7 @@ Remove builds from vercel config file
 
 ```
 
- (Failure)
+(Failure)
 
 It was the wrong way, I'll choose another :)
 
@@ -749,14 +749,14 @@ https://dashboard.heroku.com/new-app
 https://dashboard.heroku.com/apps/kaufman-bot/deploy/github
 
 ![Connect exists repository from github to created application](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/91eazbm7g1j7pfdxgys7.png)
- 
+
 ## Set branch name if not main
 
 ![Set branch name if not main](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5hdpz599t79um8mnhoj0.png)
 
 And click to **Enable Automatic Deploys**
 
-After it click to deploy 
+After it click to deploy
 ![After it click to deploy ](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/29d8lx4meeya4hcazaid.png)
 
 Wait...
@@ -764,11 +764,213 @@ Wait...
 ## Check output of site
 
 > curl https://kaufman-bot.herokuapp.com/api
+
 ```
 endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ curl https://kaufman-bot.herokuapp.com/api
-{"message":"Welcome to server!"}endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ 
+{"message":"Welcome to server!"}endy@endy-virtual-machine:~/Projects/current/kaufman-bot$
 ```
 
 It was easy!!!
 
 #kaufmanbot #nx #heroku
+
+# [2022-02-13 13:42] Add support telegram bot to nestjs with nestjs-telegraf
+
+## Add library to application
+
+> npm i --save nestjs-telegraf telegraf
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm i --save nestjs-telegraf telegraf
+
+added 12 packages, and audited 758 packages in 13s
+
+77 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+```
+
+## Create token for bot
+
+Find user @BotFather in telegram and create new bot
+
+![Find user @BotFather in telegram and create new bot](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tvnznmev9xu84zver72y.png)
+
+Create .env.local file in root folder and write this token
+
+```sh
+TELEGRAM_BOT_TOKEN=5125823512:AAGfQnaPNYnIFh4z8e2A689tubxtoxSjwQg
+```
+
+![.env.local](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vck9mt94tv5dedm8u8uj.png)
+
+Update .gitignore file
+
+```sh
+...
+# Env files
+*.env.*
+```
+
+![.gitignore](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5oncbzto8pet7s8kpi2s.png)
+
+## Add env to heroku dashboard
+
+Go to https://dashboard.heroku.com/apps/kaufman-bot/settings
+
+Open envs panel
+![envs panel](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lw03wtuhqiqidhnqfz8g.png)
+
+Add token to env
+![Add token to env](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j7d4by0cyi97fj9aff0e.png)
+
+## Write first code in nestjs application
+
+Update app.module.ts file
+
+```ts
+import { Module } from '@nestjs/common';
+import { TelegrafModule } from 'nestjs-telegraf';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [
+    TelegrafModule.forRoot({
+      token: process.env.TELEGRAM_BOT_TOKEN,
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+```
+
+Update app.service.ts file
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { Hears, Help, On, Start, Update } from 'nestjs-telegraf';
+import { Context } from 'telegraf';
+
+@Update()
+@Injectable()
+export class AppService {
+  getData(): { message: string } {
+    return { message: 'Welcome to server!' };
+  }
+
+  @Start()
+  async startCommand(ctx: Context) {
+    await ctx.reply('Welcome');
+  }
+
+  @Help()
+  async helpCommand(ctx: Context) {
+    await ctx.reply('Send me a sticker');
+  }
+
+  @On('sticker')
+  async onSticker(ctx: Context) {
+    await ctx.reply('👍');
+  }
+
+  @Hears('hi')
+  async hearsHi(ctx: Context) {
+    await ctx.reply('Hey there');
+  }
+}
+```
+
+## Update scripts for run application
+
+```sh
+"scripts": {
+    "nx": "nx",
+    "start": "node dist/apps/server/main.js",
+    "build": "npm run nx -- build server",
+    "test": "nx test",
+    "serve": "npm run nx -- serve server",
+    "serve:local": "export $(xargs < ./.env.local) && npm run serve"
+}
+```
+
+![Update scripts for run application](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qgl8xje3s1vr2lvqi6t.png)
+
+## Run and test send message from telegram
+
+> npm run serve:local
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run serve:local
+
+> kaufman-bot@0.0.0 serve:local
+> export $(xargs < ./.env.local) && npm run serve
+
+
+> kaufman-bot@0.0.0 serve
+> npm run nx -- serve server
+
+
+> kaufman-bot@0.0.0 nx
+> nx "serve" "server"
+
+
+> nx run server:serve
+
+chunk (runtime: main) main.js (main) 5.13 KiB [entry] [rendered]
+webpack compiled successfully (1cb24aed742cbdb9)
+Starting inspector on localhost:9229 failed: address already in use
+Issues checking in progress...
+[Nest] 1495282  - 02/13/2022, 12:11:12 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 1495282  - 02/13/2022, 12:11:12 PM     LOG [InstanceLoader] TelegrafModule dependencies initialized +79ms
+[Nest] 1495282  - 02/13/2022, 12:11:12 PM     LOG [InstanceLoader] DiscoveryModule dependencies initialized +3ms
+[Nest] 1495282  - 02/13/2022, 12:11:12 PM     LOG [InstanceLoader] AppModule dependencies initialized +5ms
+[Nest] 1495282  - 02/13/2022, 12:11:13 PM     LOG [InstanceLoader] TelegrafCoreModule dependencies initialized +287ms
+[Nest] 1495282  - 02/13/2022, 12:11:13 PM     LOG [RoutesResolver] AppController {/api}: +6ms
+[Nest] 1495282  - 02/13/2022, 12:11:13 PM     LOG [RouterExplorer] Mapped {/api, GET} route +4ms
+[Nest] 1495282  - 02/13/2022, 12:11:13 PM     LOG [NestApplication] Nest application successfully started +4ms
+[Nest] 1495282  - 02/13/2022, 12:11:13 PM     LOG 🚀 Application is running on: http://localhost:3333/api
+No issues found.
+```
+
+![nx run server:serve](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z00aamitt0sl2sk2rwla.png)
+
+Open telegram and find you bot
+![Open telegram and find you bot](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f4atd0lcjqw5qqe3gbcn.png)
+
+Click to start message
+![Click to start message](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y5yix2i24p2z5lcnk3l6.png)
+
+Test other feature
+![Test other feature](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n9140jru3ej2a338uso9.png)
+
+## Deploy to heroku and test
+
+Commit all changes
+
+![Commit all changes](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tlff7p8nah4razd4ez5d.png)
+
+Stop local version of bot
+![Stop local version of bot](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w6pqlo8vz0i9o662hpsz.png)
+
+Remove vercel integrations if it exists
+![Remove vercel integrations if it exists](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nze2gmpq2gjbtavi4voc.png)
+
+![Remove vercel integrations if it exists2](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k7oyaz55ir028sb9lwhe.png)
+
+![Remove vercel integrations if it exists3](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hm2bwyrpe40bjum9j64i.png)
+
+If application not deploy automatic, change settings in heroku and click to manual deploy
+
+![manual deploy](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5bk4ja40r5259acmdeqm.png)
+
+Wait...
+
+Send message to bot
+
+![Send message to bot](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/37scr64040cr7mvufusm.png)
+
+#kaufmanbot #nestjs #telegram #nestjstelegraf
