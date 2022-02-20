@@ -1,7 +1,7 @@
 {
   "serverRootTranslationsPath": "./apps/server/src/assets/i18n/",
   "langs": ["en"],
-  "serverScopedLibs": ["libs/core/server"],
+  "serverScopedLibs": ["libs/core/server", "libs/plugins/server"],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
-  "scopedLibs": ["libs/core/server"]
+  "scopedLibs": ["libs/core/server", "libs/plugins/server"]
 }

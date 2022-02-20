@@ -23,7 +23,8 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "paths": {
-      "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"]
+      "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"],
+      "@kaufman-bot/plugins/server": ["libs/plugins/server/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

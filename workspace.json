@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "core-server": "libs/core/server",
+    "plugins-server": "libs/plugins/server",
     "server": "apps/server"
   }
 }
