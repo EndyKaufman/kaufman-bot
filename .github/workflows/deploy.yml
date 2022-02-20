@@ -1,0 +1,23 @@
+name: "deploy"
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - feature/73
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: "feature/73"
+          git_remote_url: "ssh://${{ secret.PROD_SERVER }}:22/kaufman-bot"
+          ssh_private_key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
