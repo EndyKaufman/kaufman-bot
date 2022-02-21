@@ -1787,3 +1787,209 @@ Test from telegram
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/aggtn76vyl7bzwexh91d.png)
 
 #kaufmanbot #nestjs #scraper #currency
+
+# [2022-02-21 09:29] Deploy nestjs project to VPS with dokku
+
+## Buy VPS
+
+Search VPS or VDS in google
+
+https://www.google.com/search?q=vps+vds+server
+
+I choice this https://ztv.su/aff.php?aff=526 for Russia
+
+Go to https://ztv.su/register.php?language=english
+![Reg user](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qqsko6kljq6o6ybq15gj.png)
+
+After login
+![After login](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7vfgsx54s4qv3d2omg4w.png)
+
+Click to create new server
+![Click to create new server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bgtu8to2yww6yzb8n6mp.png)
+
+Open menu
+![Open menu](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b2929mmv4dsut8hx56ov.png)
+
+Select SSD type of VPS
+![Select SSD type of VPS](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x6nx3p2y972mbsnn9l3i.png)
+
+Select type of server
+![Select type of server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/t1a19l3utm3efpy8vihx.png)
+
+Select OS Ubuntu as OS for this server
+![Select OS Ubuntu as OS for this server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yy0wsxi4aedxane9em4f.png)
+
+Order confirmation after pay
+![Order confirmation after pay](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lgvhgmqyzpxvrvnstu2s.png)
+
+Go to main dashboard https://ztv.su/clientarea.php
+
+Wait 20 minuts...
+
+## Tune remote access
+
+Click to new your server
+![Click to new your server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r2i9vwh63duiklz0coyp.png)
+
+Copy ip and password
+![Copy ip and password](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1tqtumji02cqq93otyur.png)
+
+Open vscode and install ms-vscode-remote.vscode-remote-extensionpack
+![Open vscode and install ms-vscode-remote.vscode-remote-extensionpack](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g177phknsg4o99xpywby.png)
+
+Add your local SSH key to new VPS from Windows PC
+
+```sh
+PS C:\Users\Admin> cat ~/.ssh/id_rsa.pub | ssh root@enter-server-ip-address "mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys"
+The authenticity of host 'enter-server-ip-address (enter-server-ip-address)' can't be established.
+ECDSA key fingerprint is SHA256:ShA-KeyY.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'enter-server-ip-address' (ECDSA) to the list of known hosts.
+root@enter-server-ip-address's password:
+```
+
+![Add your local SSH key to new VPS from Windows PC](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wdihccxm62jmzszc7430.png)
+
+Connect to remote server with vscode
+![Connect to remote server with vscode](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lmjxrh6q8zqbviymwr6o.png)
+
+Click to PLUS and add new connection to ssh server
+![Click to PLUS and add new connection to ssh server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f674gy5g0s6jtxo9dt35.png)
+
+Select Linux platform
+![Select Linux platform](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ouk5zyhnvvctjj686a3t.png)
+
+After connect you can see remote console and ip of server in left buttom panel
+![After connect you can see remote console and ip of server in left buttom panel](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kmkohyr1x7cq1t06hsoz.png)
+
+## Tune server
+
+Install all needed software
+
+Update OS
+
+```
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get dist-upgrade
+sudo apt autoremove
+sudo apt install -f
+```
+
+Install dokku to server
+
+> wget https://raw.githubusercontent.com/dokku/dokku/v0.26.8/bootstrap.sh
+> sudo DOKKU_TAG=v0.26.8 bash bootstrap.sh
+
+Wait...
+
+## Create application and add deploy script from github
+
+Create application
+
+> dokku apps:create kaufman-bot
+
+```
+root@vpsXXXX:~# dokku apps:create kaufman-bot
+-----> Creating kaufman-bot...
+```
+
+Create ssh key for github in VPS
+
+> mkdir github
+> ssh-keygen -C "github" -f github/id_rsa
+
+```
+root@vpsXXXX:~# mkdir github
+root@vpsXXXX:~# ssh-keygen -C "github" -f github/id_rsa
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in github/id_rsa
+Your public key has been saved in github/id_rsa.pub
+The key fingerprint is:
+SHA256:HASH github
+The key's randomart image is:
++---[RSA 3072]----+
+|  .o*oo.         |
++----[SHA256]-----+
+```
+
+Add created public key to VPS authorized_keys
+
+> cat github/id_rsa.pub >> ~/.ssh/authorized_keys
+
+Add created public key to dokku
+
+> dokku ssh-keys:add github ./github/id_rsa.pub
+
+Show and copy private key
+cat > github/id_rsa
+![Show and copy private key](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vh3lmminbruzpinh9qc1.png)
+
+Create environment in github
+![Create environment in github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwlr80qw8p2t2f87hrr8.png)
+
+Add created key to github
+![Add created key to github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qeh5fqjpq01545bteagu.png)
+
+Add server address to secret env in github
+![Add server address to secret env in github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4wln3qj90njqj6guumxh.png)
+
+Add ci config for github .github/workflows/develop.deploy.yml
+
+```yaml
+name: 'deploy'
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - feature/73
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: 'feature/73'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
+          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
+```
+
+Add environment values in dokku server
+
+> dokku config:set kaufman-bot TELEGRAM_BOT_TOKEN=........................
+
+```sh
+root@vpsXXXX:~# dokku config:set kaufman-bot TELEGRAM_BOT_TOKEN=........................
+-----> Setting config vars
+       TELEGRAM_BOT_TOKEN:  ........................
+-----> Restarting app kaufman-bot
+ !     App image (dokku/kaufman-bot:latest) not found
+```
+
+![Add environment values in dokku server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m7bv5s68h3dd15tlyba1.png)
+
+Run redeploy failed pipeline in github
+![Run redeploy failed pipeline in github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i22x5czkfzhk750wngc4.png)
+
+After correct deploy, pipeline mark as green badge
+![After correct deploy, pipeline mark as green badge](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ocvnj1t7hcrgloz1t5vd.png)
+
+Disable bot in heroku
+
+![Disable bot in heroku](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/woecwwfxrshuc5ol2pue.png)
+
+Test from telegram
+![Test from telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hkcfjy7yb4p0vlk3jr82.png)
+
+#kaufmanbot #nestjs #dokku #vps
