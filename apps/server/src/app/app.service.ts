@@ -1,11 +1,13 @@
 import { ScraperService } from '@kaufman-bot/plugins/server';
-import { Injectable } from '@nestjs/common';
-import { Hears, Help, On, Start, Update, Message } from 'nestjs-telegraf';
+import { Injectable, Logger } from '@nestjs/common';
+import { Hears, Help, Message, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 
 @Update()
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
   constructor(private readonly scraperService: ScraperService) {}
 
   getData(): { message: string } {
@@ -34,7 +36,11 @@ export class AppService {
 
   @On('text')
   async onMessage(@Message() msg) {
-    const scraperReplayMessage = await this.scraperService.onMessage(msg);
-    return scraperReplayMessage;
+    try {
+      const scraperReplayMessage = await this.scraperService.onMessage(msg);
+      return scraperReplayMessage;
+    } catch (err) {
+      this.logger.error(err, err.stack);
+    }
   }
 }
