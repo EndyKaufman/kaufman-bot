@@ -20,5 +20,5 @@ jobs:
         uses: dokku/github-action@master
         with:
           branch: "feature/73"
-          git_remote_url: "ssh://dokku@secrets.HOST:22/kaufman-bot"
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
+          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
