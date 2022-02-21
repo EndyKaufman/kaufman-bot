@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Cloning repo
         uses: actions/checkout@v2
@@ -19,5 +20,5 @@ jobs:
         uses: dokku/github-action@master
         with:
           branch: "feature/73"
-          git_remote_url: "ssh://dokku@194.226.49.205:22/kaufman-bot"
-          ssh_private_key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          git_remote_url: "ssh://dokku@secrets.HOST:22/kaufman-bot"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
