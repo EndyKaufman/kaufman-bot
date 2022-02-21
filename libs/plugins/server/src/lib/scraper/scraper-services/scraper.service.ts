@@ -6,14 +6,12 @@ import encoding from 'encoding';
 import htmlToText from 'html-to-text';
 import jschardet from 'jschardet';
 import { render } from 'mustache';
-import { Message as Msg, On, Update } from 'nestjs-telegraf';
 import {
   ScraperConfig,
   SCRAPER_CONFIG,
 } from '../scraper-config/scraper.config';
 import { ScraperCommandsEnum } from '../scraper-types/scraper-commands';
 
-@Update()
 @Injectable()
 export class ScraperService {
   private readonly logger = new Logger(ScraperService.name);
@@ -23,8 +21,7 @@ export class ScraperService {
     private readonly scraperConfig: ScraperConfig
   ) {}
 
-  @On('text')
-  async onMessage(@Msg() msg) {
+  async onMessage(msg) {
     const locale = msg.from?.language_code || null;
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
       msg.text.toLowerCase().includes(spyWord.toLowerCase())
@@ -96,12 +93,14 @@ export class ScraperService {
 
     try {
       const response = await axiosInstance.get(repalcedUri);
+
       const $ = cheerio.load(response.data);
       let content = this.scraperConfig.contentSelector
         .split(',')
         .map((selector: string) => htmlToText.fromString($(selector).html()))
         .join('\n\n');
 
+      console.log(content);
       const enc =
         charset(response.headers, response.data) ||
         jschardet.detect(response.data).encoding.toLowerCase();
