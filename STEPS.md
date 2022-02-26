@@ -2133,7 +2133,6 @@ export class ScraperService {
         .map((selector: string) => htmlToText.fromString($(selector).html()))
         .join('\n\n');
 
-      console.log(content);
       const enc =
         charset(response.headers, response.data) ||
         jschardet.detect(response.data).encoding.toLowerCase();
@@ -2582,3 +2581,183 @@ Test from telegram
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/psk75zs5ejlgxtupjkfq.png)
 
 #kaufmanbot #nestjs #modules #currency
+
+# [2022-02-13 16:07] Create facts generator for telegram bot with NestJS
+
+You need to go to google and find a site with a free joke generator, the site must not be a SPA
+
+https://www.google.com/search?q=random+fact+generator
+
+I chose the second
+![I chose the second](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p69zgwvol0kkq6jwmli1.png)
+
+Create new library facts-generator
+
+> npm run -- nx g @nrwl/nest:lib facts-generator/server
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run -- nx g @nrwl/nest:lib facts-generator/server
+
+> kaufman-bot@0.0.0 nx
+> nx "g" "@nrwl/nest:lib" "facts-generator/server"
+
+CREATE libs/facts-generator/server/README.md
+CREATE libs/facts-generator/server/.babelrc
+CREATE libs/facts-generator/server/src/index.ts
+CREATE libs/facts-generator/server/tsconfig.json
+CREATE libs/facts-generator/server/tsconfig.lib.json
+UPDATE tsconfig.base.json
+CREATE libs/facts-generator/server/project.json
+UPDATE workspace.json
+CREATE libs/facts-generator/server/.eslintrc.json
+CREATE libs/facts-generator/server/jest.config.js
+CREATE libs/facts-generator/server/tsconfig.spec.json
+CREATE libs/facts-generator/server/src/lib/facts-generator-server.module.ts
+```
+
+Go to the site and define a selector for fact text
+![Go to the site and define a selector for fact text](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jzyuw7ysmzhoon1dqtcu.png)
+
+Go to developer console panel and check selector
+![Go to developer console panel and check selector](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yzynntj2xmkb4bbgrljo.png)
+
+Create file **libs/facts-generator/server/src/lib/facts-generator-services/facts-generator.service.ts**
+
+```ts
+import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class FactsGeneratorService {
+  constructor(private readonly scraperService: ScraperService) {}
+
+  async onMessage(msg) {
+    let result = await this.scraperService.onMessage(msg);
+    if (result !== null) {
+      result = result.replace('\n\nTweet [http://twitter.com/share]', '');
+    }
+    return result;
+  }
+}
+```
+
+Create file **libs/facts-generator/server/src/lib/facts-generator.module.ts**
+
+```ts
+import { ScraperModule } from '@kaufman-bot/html-scraper/server';
+import { DynamicModule, Module } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
+import { FactsGeneratorService } from './facts-generator-services/facts-generator.service';
+
+@Module({})
+export class FactsGeneratorModule {
+  static forRoot(): DynamicModule {
+    return {
+      module: FactsGeneratorModule,
+      imports: [
+        ScraperModule.forRoot({
+          contentSelector: '#z',
+          help: getText('Random facts generator'),
+          spyWords: [getText('facts')],
+          removeWords: [getText('get'), getText('please')],
+          uri: 'http://randomfactgenerator.net/',
+        }),
+      ],
+      providers: [FactsGeneratorService],
+      exports: [ScraperModule, FactsGeneratorService],
+    };
+  }
+}
+```
+
+Run generate all needed files
+
+> npm run generate
+
+Update file **apps/server/src/app/app.module.ts**
+
+```ts
+import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
+import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
+import { Module } from '@nestjs/common';
+import env from 'env-var';
+import { TelegrafModule } from 'nestjs-telegraf';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [
+    TelegrafModule.forRoot({
+      token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
+    }),
+    CurrencyConverterModule.forRoot(),
+    FactsGeneratorModule.forRoot(),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+```
+
+Update file **apps/server/src/app/app.service.ts**
+
+```ts
+import { CurrencyConverterService } from '@kaufman-bot/currency-converter/server';
+import { FactsGeneratorService } from '@kaufman-bot/facts-generator/server';
+import { Injectable, Logger } from '@nestjs/common';
+import { Hears, Help, Message, On, Start, Update } from 'nestjs-telegraf';
+import { Context } from 'telegraf';
+
+@Update()
+@Injectable()
+export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
+  constructor(
+    private readonly currencyConverterService: CurrencyConverterService,
+    private readonly factsGeneratorService: FactsGeneratorService
+  ) {}
+
+  getData(): { message: string } {
+    return { message: 'Welcome to server!' };
+  }
+
+  @Start()
+  async startCommand(ctx: Context) {
+    await ctx.reply('Welcome');
+  }
+
+  @Help()
+  async helpCommand(ctx: Context) {
+    await ctx.reply('Send me a sticker');
+  }
+
+  @On('sticker')
+  async onSticker(ctx: Context) {
+    await ctx.reply('👍');
+  }
+
+  @Hears('hi')
+  async hearsHi(ctx: Context) {
+    await ctx.reply('Hey there');
+  }
+
+  @On('text')
+  async onMessage(@Message() msg) {
+    try {
+      let replayMessage = await this.currencyConverterService.onMessage(msg);
+      if (replayMessage === null) {
+        replayMessage = this.factsGeneratorService.onMessage(msg);
+      }
+      return replayMessage;
+    } catch (err) {
+      this.logger.error(err, err.stack);
+    }
+  }
+}
+```
+
+Test from telegram
+![Test from telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nfdj6ukeq3ahzlpdqqly.png)
+
+#kaufmanbot #facts #generator #nestjs
