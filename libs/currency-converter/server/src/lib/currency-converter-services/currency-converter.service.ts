@@ -7,7 +7,7 @@ export class CurrencyConverterService {
 
   async onMessage(msg) {
     const result = await this.scraperService.onMessage(msg);
-    if (result) {
+    if (result && /^[.,0-9]+$/.test(result.split(' ')[0])) {
       return result.split(' ')[0];
     }
     return result;
