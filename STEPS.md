@@ -2293,21 +2293,6 @@ function exitHandler(options, exitCode) {
 
 # [2022-02-26 13:15] Create CurrencyConverterModule for telegram bot on NestJS using ScraperModule
 
-Install nestjs-custom-injector
-
-> npm i --save nestjs-custom-injector
-
-```sh
-endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm i --save nestjs-custom-injector
-
-added 1 package, and audited 884 packages in 6s
-
-109 packages are looking for funding
-  run `npm fund` for details
-
-found 0 vulnerabilities
-```
-
 Create new library currency-converter
 
 > npm run -- nx g @nrwl/nest:lib currency-converter/server
@@ -2592,5 +2577,8 @@ export class AppService {
   }
 }
 ```
+
+Test from telegram
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/psk75zs5ejlgxtupjkfq.png)
 
 #kaufmanbot #nestjs #modules #currency
