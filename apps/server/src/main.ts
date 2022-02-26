@@ -1,3 +1,7 @@
+import { Logger } from '@nestjs/common';
+
+const logger = new Logger('Application');
+
 //do something when app is closing
 process.on('exit', exitHandler.bind(null, { cleanup: true }));
 
@@ -11,12 +15,9 @@ process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
 //catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import env from 'env-var';
 import { AppModule } from './app/app.module';
-
-const logger = new Logger('Application');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

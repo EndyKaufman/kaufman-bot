@@ -3,6 +3,7 @@
   "projects": {
     "core-server": "libs/core/server",
     "currency-converter-server": "libs/currency-converter/server",
+    "facts-generator-server": "libs/facts-generator/server",
     "html-scraper-server": "libs/html-scraper/server",
     "server": "apps/server"
   }

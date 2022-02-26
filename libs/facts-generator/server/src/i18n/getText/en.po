@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-02-26T09:45:08.378Z\n"
+"PO-Revision-Date: 2022-02-26T09:45:08.378Z\n"
+
+msgid "facts"
+msgstr "facts"
+
+msgid "get"
+msgstr "get"
+
+msgid "please"
+msgstr "please"
+
+msgid "Random facts generator"
+msgstr "Random facts generator"

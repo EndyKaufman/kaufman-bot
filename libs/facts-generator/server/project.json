@@ -1,0 +1,23 @@
+{
+  "root": "libs/facts-generator/server",
+  "sourceRoot": "libs/facts-generator/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/facts-generator/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/facts-generator/server"],
+      "options": {
+        "jestConfig": "libs/facts-generator/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

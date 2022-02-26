@@ -1,4 +1,5 @@
 import { CurrencyConverterService } from '@kaufman-bot/currency-converter/server';
+import { FactsGeneratorService } from '@kaufman-bot/facts-generator/server';
 import { Injectable, Logger } from '@nestjs/common';
 import { Hears, Help, Message, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
@@ -9,7 +10,8 @@ export class AppService {
   private readonly logger = new Logger(AppService.name);
 
   constructor(
-    private readonly currencyConverterService: CurrencyConverterService
+    private readonly currencyConverterService: CurrencyConverterService,
+    private readonly factsGeneratorService: FactsGeneratorService
   ) {}
 
   getData(): { message: string } {
@@ -39,7 +41,10 @@ export class AppService {
   @On('text')
   async onMessage(@Message() msg) {
     try {
-      const replayMessage = await this.currencyConverterService.onMessage(msg);
+      let replayMessage = await this.currencyConverterService.onMessage(msg);
+      if (replayMessage === null) {
+        replayMessage = this.factsGeneratorService.onMessage(msg);
+      }
       return replayMessage;
     } catch (err) {
       this.logger.error(err, err.stack);

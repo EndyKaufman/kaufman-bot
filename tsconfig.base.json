@@ -27,6 +27,9 @@
       "@kaufman-bot/currency-converter/server": [
         "libs/currency-converter/server/src/index.ts"
       ],
+      "@kaufman-bot/facts-generator/server": [
+        "libs/facts-generator/server/src/index.ts"
+      ],
       "@kaufman-bot/html-scraper/server": [
         "libs/html-scraper/server/src/index.ts"
       ]

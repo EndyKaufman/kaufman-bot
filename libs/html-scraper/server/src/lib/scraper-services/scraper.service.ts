@@ -26,6 +26,7 @@ export class ScraperService {
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
       msg.text.toLowerCase().includes(spyWord.toLowerCase())
     );
+    console.log(spyWord);
     if (spyWord) {
       if (
         msg.text.includes(`/${ScraperCommandsEnum.help}`) ||
@@ -84,6 +85,7 @@ export class ScraperService {
       });
     }
     const repalcedUri = render(this.scraperConfig.uri, replaceVariables);
+    console.log(repalcedUri);
     // const replacedText = render(text, replaceVariables);
 
     // Helper functions to get a random item from an array
@@ -136,6 +138,8 @@ export class ScraperService {
         .split(',')
         .map((selector: string) => htmlToText.fromString($(selector).html()))
         .join('\n\n');
+
+      console.log(response.data);
 
       const enc =
         charset(response.headers, response.data) ||

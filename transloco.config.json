@@ -4,12 +4,14 @@
   "serverScopedLibs": [
     "libs/core/server",
     "libs/currency-converter/server",
+    "libs/facts-generator/server",
     "libs/html-scraper/server"
   ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
   "scopedLibs": [
     "libs/core/server",
     "libs/currency-converter/server",
+    "libs/facts-generator/server",
     "libs/html-scraper/server"
   ]
 }
