@@ -2,7 +2,8 @@
   "version": 2,
   "projects": {
     "core-server": "libs/core/server",
-    "plugins-server": "libs/plugins/server",
+    "currency-converter-server": "libs/currency-converter/server",
+    "html-scraper-server": "libs/html-scraper/server",
     "server": "apps/server"
   }
 }

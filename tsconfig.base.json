@@ -24,7 +24,12 @@
     "noImplicitAny": false,
     "paths": {
       "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"],
-      "@kaufman-bot/plugins/server": ["libs/plugins/server/src/index.ts"]
+      "@kaufman-bot/currency-converter/server": [
+        "libs/currency-converter/server/src/index.ts"
+      ],
+      "@kaufman-bot/html-scraper/server": [
+        "libs/html-scraper/server/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

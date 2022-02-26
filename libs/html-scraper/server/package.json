@@ -1,7 +1,7 @@
 {
   "i18n": [
     {
-      "scope": "plugins-server",
+      "scope": "html-scraper-server",
       "path": "src/i18n",
       "strategy": "join"
     }

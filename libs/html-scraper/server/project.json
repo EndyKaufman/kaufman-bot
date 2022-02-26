@@ -1,20 +1,20 @@
 {
-  "root": "libs/plugins/server",
-  "sourceRoot": "libs/plugins/server/src",
+  "root": "libs/html-scraper/server",
+  "sourceRoot": "libs/html-scraper/server/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/plugins/server/**/*.ts"]
+        "lintFilePatterns": ["libs/html-scraper/server/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/plugins/server"],
+      "outputs": ["coverage/libs/html-scraper/server"],
       "options": {
-        "jestConfig": "libs/plugins/server/jest.config.js",
+        "jestConfig": "libs/html-scraper/server/jest.config.js",
         "passWithNoTests": true
       }
     }

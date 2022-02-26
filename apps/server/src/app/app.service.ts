@@ -1,4 +1,4 @@
-import { ScraperService } from '@kaufman-bot/plugins/server';
+import { CurrencyConverterService } from '@kaufman-bot/currency-converter/server';
 import { Injectable, Logger } from '@nestjs/common';
 import { Hears, Help, Message, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
@@ -8,7 +8,9 @@ import { Context } from 'telegraf';
 export class AppService {
   private readonly logger = new Logger(AppService.name);
 
-  constructor(private readonly scraperService: ScraperService) {}
+  constructor(
+    private readonly currencyConverterService: CurrencyConverterService
+  ) {}
 
   getData(): { message: string } {
     return { message: 'Welcome to server!' };
@@ -37,8 +39,8 @@ export class AppService {
   @On('text')
   async onMessage(@Message() msg) {
     try {
-      const scraperReplayMessage = await this.scraperService.onMessage(msg);
-      return scraperReplayMessage;
+      const replayMessage = await this.currencyConverterService.onMessage(msg);
+      return replayMessage;
     } catch (err) {
       this.logger.error(err, err.stack);
     }

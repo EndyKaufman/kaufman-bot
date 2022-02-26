@@ -1,4 +1,4 @@
-name: "deploy"
+name: 'deploy'
 
 # yamllint disable-line rule:truthy
 on:
@@ -19,6 +19,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: "feature/73"
-          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
+          branch: 'feature/73'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}

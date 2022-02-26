@@ -1,0 +1,23 @@
+{
+  "root": "libs/currency-converter/server",
+  "sourceRoot": "libs/currency-converter/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/currency-converter/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/currency-converter/server"],
+      "options": {
+        "jestConfig": "libs/currency-converter/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,7 +1,15 @@
 {
   "serverRootTranslationsPath": "./apps/server/src/assets/i18n/",
   "langs": ["en"],
-  "serverScopedLibs": ["libs/core/server", "libs/plugins/server"],
+  "serverScopedLibs": [
+    "libs/core/server",
+    "libs/currency-converter/server",
+    "libs/html-scraper/server"
+  ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
-  "scopedLibs": ["libs/core/server", "libs/plugins/server"]
+  "scopedLibs": [
+    "libs/core/server",
+    "libs/currency-converter/server",
+    "libs/html-scraper/server"
+  ]
 }

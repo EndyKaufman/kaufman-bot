@@ -1,4 +1,17 @@
 {
   "core-server": {},
-  "plugins-server": {}
+  "plugins-server": {},
+  "currency-converter-server": {
+    "convert": "convert",
+    "Currency converter": "Currency converter",
+    "please": "please",
+    "to": "to"
+  },
+  "html-scraper-server": {},
+  "currency-converter-server-getText": {
+    "convert": "convert",
+    "Currency converter": "Currency converter",
+    "please": "please",
+    "to": "to"
+  }
 }
