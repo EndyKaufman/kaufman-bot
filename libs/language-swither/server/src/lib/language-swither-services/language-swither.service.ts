@@ -102,7 +102,7 @@ export class LanguageSwitherService {
           getText(`locale "{{locale}}" not founded, current locale: "en"`),
           locale,
           {
-            locale,
+            locale: text.trim().toLowerCase(),
           }
         );
       }
