@@ -1,5 +1,9 @@
 {
+  "Command to convert one currency to another": "Command to convert one currency to another",
   "convert": "convert",
+  "convert 1 usd to eur": "convert 1 usd to eur",
+  "converter": "converter",
+  "converter help": "converter help",
   "Currency converter": "Currency converter",
   "please": "please",
   "to": "to"

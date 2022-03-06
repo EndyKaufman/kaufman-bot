@@ -5,17 +5,29 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-02-26T09:45:08.378Z\n"
-"PO-Revision-Date: 2022-02-26T09:45:08.378Z\n"
+"POT-Creation-Date: 2022-03-03T05:36:10.323Z\n"
+"PO-Revision-Date: 2022-03-03T05:36:10.323Z\n"
+
+msgid "Command to generate text with a random fact"
+msgstr "Command to generate text with a random fact"
 
 msgid "facts"
 msgstr "facts"
 
+msgid "Facts generator"
+msgstr "Facts generator"
+
+msgid "facts help"
+msgstr "facts help"
+
 msgid "get"
 msgstr "get"
 
+msgid "get facts"
+msgstr "get facts"
+
+msgid "help"
+msgstr "help"
+
 msgid "please"
 msgstr "please"
-
-msgid "Random facts generator"
-msgstr "Random facts generator"

@@ -1,3 +1,4 @@
+import { СommandToolsService } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import charset from 'charset';
@@ -18,32 +19,42 @@ export class ScraperService {
 
   constructor(
     @Inject(SCRAPER_CONFIG)
-    private readonly scraperConfig: ScraperConfig
+    private readonly scraperConfig: ScraperConfig,
+    private readonly commandToolsService: СommandToolsService
   ) {}
 
   async onMessage(msg) {
     const locale = msg.from?.language_code || null;
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
-      msg.text.toLowerCase().includes(spyWord.toLowerCase())
+      this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (
-        msg.text.includes(`/${ScraperCommandsEnum.help}`) ||
-        msg.text.includes(ScraperCommandsEnum.help)
+        this.commandToolsService.checkCommands(
+          msg.text,
+          [ScraperCommandsEnum.help],
+          locale
+        )
       ) {
-        const replayHelpMessage =
-          (locale && this.scraperConfig.helpLocale?.[locale]) ||
-          this.scraperConfig.help;
-        return replayHelpMessage;
+        return {
+          markdown: this.commandToolsService.generateHelpMessage(
+            locale,
+            this.scraperConfig.name,
+            this.scraperConfig.descriptions,
+            this.scraperConfig.usage
+          ),
+        };
       }
 
-      const preparedText = msg.text
-        .split(spyWord)
-        .join('')
-        .split('  ')
-        .join('')
-        .trim();
-
+      const preparedText = this.commandToolsService.clearCommands(
+        msg.text,
+        [
+          spyWord,
+          ...Object.keys(ScraperCommandsEnum),
+          ...(this.scraperConfig.removeWords || []),
+        ],
+        locale
+      );
       const replayMessage = await this.scrap(locale, preparedText);
 
       if (replayMessage) {
@@ -61,7 +72,6 @@ export class ScraperService {
       .filter((arr) => arr[0] === 'name')
       .map((arr) => arr[1]);
     const otherText = text;*/
-
     const replaceVariables = { text: encodeURIComponent(text.trim()), locale };
     (this.scraperConfig.removeWords || []).forEach((removeWord: string) => {
       text = text

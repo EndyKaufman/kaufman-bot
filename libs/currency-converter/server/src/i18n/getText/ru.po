@@ -1,0 +1,34 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"POT-Creation-Date: 2022-03-03T05:36:10.315Z\n"
+"PO-Revision-Date: 2022-03-03T05:36:10.315Z\n"
+
+msgid "Command to convert one currency to another"
+msgstr ""
+
+msgid "convert"
+msgstr ""
+
+msgid "convert 1 usd to eur"
+msgstr ""
+
+msgid "converter"
+msgstr ""
+
+msgid "converter help"
+msgstr ""
+
+msgid "Currency converter"
+msgstr ""
+
+msgid "please"
+msgstr ""
+
+msgid "to"
+msgstr ""

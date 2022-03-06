@@ -1,29 +1,92 @@
 {
-  "core-server": {},
-  "plugins-server": {},
-  "currency-converter-server": {
-    "convert": "convert",
-    "Currency converter": "Currency converter",
-    "please": "please",
-    "to": "to"
+  "core-server": {
+    "usage": "usage"
   },
-  "html-scraper-server": {},
-  "currency-converter-server-getText": {
+  "currency-converter-server": {
+    "Command to convert one currency to another": "Command to convert one currency to another",
     "convert": "convert",
+    "convert 1 usd to eur": "convert 1 usd to eur",
+    "converter": "converter",
+    "converter help": "converter help",
     "Currency converter": "Currency converter",
     "please": "please",
     "to": "to"
   },
   "facts-generator-server": {
+    "Command to generate text with a random fact": "Command to generate text with a random fact",
     "facts": "facts",
+    "Facts generator": "Facts generator",
+    "facts help": "facts help",
     "get": "get",
+    "get facts": "get facts",
+    "help": "help",
+    "please": "please"
+  },
+  "html-scraper-server": {
+    "help": "help"
+  },
+  "language-swither-server": {
+    "change": "change",
+    "change locale to ru": "change locale to ru",
+    "Commands for setting and changing the current user language": "Commands for setting and changing the current user language",
+    "current": "current",
+    "help": "help",
+    "lang": "lang",
+    "Language swither": "Language swither",
+    "locale": "locale",
+    "locale changed, current locale: {{locale}}": "locale changed, current locale: {{locale}}",
+    "locale help": "locale help",
+    "my": "my",
+    "my locale": "my locale",
     "please": "please",
-    "Random facts generator": "Random facts generator"
+    "quick change": "quick change",
+    "set": "set",
+    "to": "to",
+    "you locale: {{locale}}": "you locale: {{locale}}"
+  },
+  "core-server-getText": {
+    "usage": "usage"
+  },
+  "currency-converter-server-getText": {
+    "Command to convert one currency to another": "Command to convert one currency to another",
+    "convert": "convert",
+    "convert 1 usd to eur": "convert 1 usd to eur",
+    "converter": "converter",
+    "converter help": "converter help",
+    "Currency converter": "Currency converter",
+    "please": "please",
+    "to": "to"
   },
   "facts-generator-server-getText": {
+    "Command to generate text with a random fact": "Command to generate text with a random fact",
     "facts": "facts",
+    "Facts generator": "Facts generator",
+    "facts help": "facts help",
     "get": "get",
+    "get facts": "get facts",
+    "help": "help",
+    "please": "please"
+  },
+  "html-scraper-server-getText": {
+    "help": "help"
+  },
+  "language-swither-server-getText": {
+    "change": "change",
+    "change locale to ru": "change locale to ru",
+    "Commands for setting and changing the current user language": "Commands for setting and changing the current user language",
+    "current": "current",
+    "help": "help",
+    "lang": "lang",
+    "Language swither": "Language swither",
+    "locale": "locale",
+    "locale changed, current locale: {{locale}}": "locale changed, current locale: {{locale}}",
+    "locale help": "locale help",
+    "my": "my",
+    "my locale": "my locale",
     "please": "please",
-    "Random facts generator": "Random facts generator"
+    "quick change": "quick change",
+    "set": "set",
+    "to": "to",
+    "you locale: {{locale}}": "you locale: {{locale}}"
   }
 }

@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-03-03T05:36:10.414Z\n"
+"PO-Revision-Date: 2022-03-03T05:36:10.414Z\n"
+
+msgid "change"
+msgstr "change"
+
+msgid "change locale to ru"
+msgstr "change locale to ru"
+
+msgid "Commands for setting and changing the current user language"
+msgstr "Commands for setting and changing the current user language"
+
+msgid "current"
+msgstr "current"
+
+msgid "help"
+msgstr "help"
+
+msgid "lang"
+msgstr "lang"
+
+msgid "Language swither"
+msgstr "Language swither"
+
+msgid "locale"
+msgstr "locale"
+
+msgid "locale changed, current locale: {{locale}}"
+msgstr "locale changed, current locale: {{locale}}"
+
+msgid "locale help"
+msgstr "locale help"
+
+msgid "my"
+msgstr "my"
+
+msgid "my locale"
+msgstr "my locale"
+
+msgid "please"
+msgstr "please"
+
+msgid "quick change"
+msgstr "quick change"
+
+msgid "set"
+msgstr "set"
+
+msgid "to"
+msgstr "to"
+
+msgid "you locale: {{locale}}"
+msgstr "you locale: {{locale}}"

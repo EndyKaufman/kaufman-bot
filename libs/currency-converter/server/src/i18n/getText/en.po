@@ -5,11 +5,23 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-02-26T07:13:34.160Z\n"
-"PO-Revision-Date: 2022-02-26T07:13:34.160Z\n"
+"POT-Creation-Date: 2022-03-03T05:36:10.305Z\n"
+"PO-Revision-Date: 2022-03-03T05:36:10.305Z\n"
+
+msgid "Command to convert one currency to another"
+msgstr "Command to convert one currency to another"
 
 msgid "convert"
 msgstr "convert"
+
+msgid "convert 1 usd to eur"
+msgstr "convert 1 usd to eur"
+
+msgid "converter"
+msgstr "converter"
+
+msgid "converter help"
+msgstr "converter help"
 
 msgid "Currency converter"
 msgstr "Currency converter"

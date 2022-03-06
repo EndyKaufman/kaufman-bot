@@ -1,6 +1,10 @@
 {
+  "Command to generate text with a random fact": "Command to generate text with a random fact",
   "facts": "facts",
+  "Facts generator": "Facts generator",
+  "facts help": "facts help",
   "get": "get",
-  "please": "please",
-  "Random facts generator": "Random facts generator"
+  "get facts": "get facts",
+  "help": "help",
+  "please": "please"
 }

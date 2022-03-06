@@ -1,3 +1,5 @@
-export enum ScraperCommandsEnum {
-  help = 'help',
-}
+import { getText } from 'class-validator-multi-lang';
+
+export const ScraperCommandsEnum = {
+  help: getText('help'),
+};

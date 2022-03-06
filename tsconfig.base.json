@@ -32,6 +32,9 @@
       ],
       "@kaufman-bot/html-scraper/server": [
         "libs/html-scraper/server/src/index.ts"
+      ],
+      "@kaufman-bot/language-swither/server": [
+        "libs/language-swither/server/src/index.ts"
       ]
     }
   },

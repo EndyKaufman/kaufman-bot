@@ -8,6 +8,7 @@ export interface ScraperConfig {
   contentCodepage?: string;
   spyWords: string[];
   removeWords?: string[];
-  help: string;
-  helpLocale?: { [locale: string]: string };
+  name: string;
+  descriptions: string;
+  usage: string[];
 }

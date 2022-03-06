@@ -1,0 +1,52 @@
+{
+  "core-server": {},
+  "currency-converter-server": {},
+  "facts-generator-server": {},
+  "html-scraper-server": {},
+  "language-swither-server": {},
+  "core-server-getText": {
+    "usage": ""
+  },
+  "currency-converter-server-getText": {
+    "Command to convert one currency to another": "",
+    "convert": "",
+    "convert 1 usd to eur": "",
+    "converter": "",
+    "converter help": "",
+    "Currency converter": "",
+    "please": "",
+    "to": ""
+  },
+  "facts-generator-server-getText": {
+    "Command to generate text with a random fact": "",
+    "facts": "",
+    "Facts generator": "",
+    "facts help": "",
+    "get": "",
+    "get facts": "",
+    "help": "",
+    "please": ""
+  },
+  "html-scraper-server-getText": {
+    "help": ""
+  },
+  "language-swither-server-getText": {
+    "change": "",
+    "change locale to ru": "",
+    "Commands for setting and changing the current user language": "",
+    "current": "",
+    "help": "",
+    "lang": "",
+    "Language swither": "",
+    "locale": "",
+    "locale changed, current locale: {{locale}}": "",
+    "locale help": "",
+    "my": "",
+    "my locale": "",
+    "please": "",
+    "quick change": "",
+    "set": "",
+    "to": "",
+    "you locale: {{locale}}": ""
+  }
+}

@@ -10,5 +10,6 @@
       "path": "src/i18n/getText",
       "strategy": "join"
     }
-  ]
+  ],
+  "version": "0.0.0"
 }

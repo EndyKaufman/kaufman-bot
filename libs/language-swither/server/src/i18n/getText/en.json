@@ -1,0 +1,19 @@
+{
+  "change": "change",
+  "change locale to ru": "change locale to ru",
+  "Commands for setting and changing the current user language": "Commands for setting and changing the current user language",
+  "current": "current",
+  "help": "help",
+  "lang": "lang",
+  "Language swither": "Language swither",
+  "locale": "locale",
+  "locale changed, current locale: {{locale}}": "locale changed, current locale: {{locale}}",
+  "locale help": "locale help",
+  "my": "my",
+  "my locale": "my locale",
+  "please": "please",
+  "quick change": "quick change",
+  "set": "set",
+  "to": "to",
+  "you locale: {{locale}}": "you locale: {{locale}}"
+}
