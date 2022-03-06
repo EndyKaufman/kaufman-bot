@@ -2761,3 +2761,29 @@ Test from telegram
 ![Test from telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nfdj6ukeq3ahzlpdqqly.png)
 
 #kaufmanbot #facts #generator #nestjs
+
+# [2022-03-07 01:24] Add multi-language support for telegram bot on NestJS
+
+A lot of changes, I didn’t copy and paste the whole process, I’ll just give a link to the commit, everything is there.
+
+## Links
+
+https://github.com/EndyKaufman/kaufman-bot/commit/641320a74c27e74e46d7da31fbf64348a8978384 - commit with current changes
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+## Significant changes:
+
+1. Added a new lib for switching languages ​​LanguageSwitherModule
+2. Updated old libs and added support for multiple languages
+3. Moved general things about processing commands into a separate module
+
+![Significant changes](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f1jc68dbi6ades74vvz8.png)
+
+## Screenshots with new logic
+
+![Screenshots with new logic](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vjrpzjwho7c6qvk2a03w.png)
+
+In the next post there will be instructions on how to add new dictionaries with translations...
+
+#kaufmanbot #nestjs #languages #multi
