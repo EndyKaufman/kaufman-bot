@@ -6,29 +6,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-03-03T05:36:10.333Z\n"
-"PO-Revision-Date: 2022-03-03T05:36:10.333Z\n"
+"POT-Creation-Date: 2022-03-08T20:48:05.315Z\n"
+"PO-Revision-Date: 2022-03-08T20:48:05.315Z\n"
 
 msgid "Command to generate text with a random fact"
-msgstr ""
+msgstr "Команда для создания текста со случайным фактом"
 
 msgid "facts"
-msgstr ""
+msgstr "факты"
 
 msgid "Facts generator"
-msgstr ""
+msgstr "Генератор фактов"
 
 msgid "facts help"
-msgstr ""
+msgstr "справка по фактам"
 
 msgid "get"
-msgstr ""
+msgstr "дай"
 
 msgid "get facts"
-msgstr ""
+msgstr "дай факты"
 
 msgid "help"
-msgstr ""
+msgstr "помощь"
 
 msgid "please"
-msgstr ""
+msgstr "пожалуйста"

@@ -6,56 +6,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-03-03T05:36:10.441Z\n"
-"PO-Revision-Date: 2022-03-03T05:36:10.441Z\n"
+"POT-Creation-Date: 2022-03-08T20:48:05.433Z\n"
+"PO-Revision-Date: 2022-03-08T20:48:05.433Z\n"
 
 msgid "change"
-msgstr ""
+msgstr "измени"
 
 msgid "change locale to ru"
-msgstr ""
+msgstr "измени язык на ru"
 
 msgid "Commands for setting and changing the current user language"
-msgstr ""
+msgstr "Команды для настройки и изменения текущего языка пользователя"
 
 msgid "current"
-msgstr ""
+msgstr "текущий"
 
 msgid "help"
-msgstr ""
+msgstr "помощь"
 
 msgid "lang"
-msgstr ""
+msgstr "язык"
 
 msgid "Language swither"
-msgstr ""
+msgstr "Переключатель языков"
 
 msgid "locale"
-msgstr ""
+msgstr "локаль"
 
 msgid "locale changed, current locale: {{locale}}"
-msgstr ""
+msgstr "язык изменен, текущий язык: {{locale}}"
 
 msgid "locale help"
-msgstr ""
+msgstr "язык помощь"
 
 msgid "my"
-msgstr ""
+msgstr "мой"
 
 msgid "my locale"
-msgstr ""
+msgstr "мой язык"
 
 msgid "please"
-msgstr ""
+msgstr "пожалуйста"
 
 msgid "quick change"
-msgstr ""
+msgstr "смени"
 
 msgid "set"
-msgstr ""
+msgstr "установить"
 
 msgid "to"
-msgstr ""
+msgstr "в"
 
 msgid "you locale: {{locale}}"
-msgstr ""
+msgstr "ваш язык: {{locale}}"
+
+msgid "locale \"{{locale}}\" not founded, current locale: \"en\""
+msgstr "язык \"{{locale}}\" не найден, текущий язык: \"en\""
+
+msgid "locale changed, current locale: \"{{locale}}\""
+msgstr "язык изменен, текущий язык: {{locale}}"

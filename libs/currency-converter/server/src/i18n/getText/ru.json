@@ -1,10 +1,10 @@
 {
-  "Command to convert one currency to another": "",
-  "convert": "",
-  "convert 1 usd to eur": "",
-  "converter": "",
-  "converter help": "",
-  "Currency converter": "",
-  "please": "",
-  "to": ""
+  "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
+  "convert": "конвертируй",
+  "convert 1 usd to eur": "конвертировать 1 USD в EUR",
+  "converter": "конвертер",
+  "converter help": "справка по конвертеру",
+  "Currency converter": "Конвертер валют",
+  "please": "пожалуйста",
+  "to": "в"
 }

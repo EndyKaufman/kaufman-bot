@@ -6,29 +6,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-03-03T05:36:10.315Z\n"
-"PO-Revision-Date: 2022-03-03T05:36:10.315Z\n"
+"POT-Creation-Date: 2022-03-08T20:48:05.277Z\n"
+"PO-Revision-Date: 2022-03-08T20:48:05.277Z\n"
 
 msgid "Command to convert one currency to another"
-msgstr ""
+msgstr "Команда для конвертации одной валюты в другую"
 
 msgid "convert"
-msgstr ""
+msgstr "конвертируй"
 
 msgid "convert 1 usd to eur"
-msgstr ""
+msgstr "конвертировать 1 USD в EUR"
 
 msgid "converter"
-msgstr ""
+msgstr "конвертер"
 
 msgid "converter help"
-msgstr ""
+msgstr "справка по конвертеру"
 
 msgid "Currency converter"
-msgstr ""
+msgstr "Конвертер валют"
 
 msgid "please"
-msgstr ""
+msgstr "пожалуйста"
 
 msgid "to"
-msgstr ""
+msgstr "в"

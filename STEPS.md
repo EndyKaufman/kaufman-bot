@@ -2787,3 +2787,78 @@ https://telegram.me/DevelopKaufmanBot - current bot in telegram
 In the next post there will be instructions on how to add new dictionaries with translations...
 
 #kaufmanbot #nestjs #languages #multi
+
+# [2022-03-09 2:06] Add new dictionaries with translations to NestJS application using poedit.net
+
+Links
+
+https://poedit.net/ - desktop editor for po dictionaries
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+https://github.com/EndyKaufman/kaufman-bot -source code
+
+Add required libraries if they were not previously installed
+
+> npm i --save-dev rucken
+> npm i --save class-validator-multi-lang
+
+Update scripts in package.json if not changed before
+
+```json
+  "scripts": {
+    ...
+    "rucken": "rucken",
+    "generate": "npm run rucken -- prepare --locales=en,ru && npm run lint:fix"
+    ...
+  },
+```
+
+Start preparing and generating the necessary files
+
+> npm run generate
+
+Install the translation software for your operating room from https://poedit.net/
+
+I installed for Ubuntu operating system
+
+Run the program and select catalog manager
+![Run the program and select catalog manager](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/05em4xgpk00xu4zj5smn.png)
+
+Add folder with project
+![Add folder with project](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bosjdi5twqu6dhboi0uy.png)
+
+Set name of project
+![Set name of project](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/iw74hxo79jncof94vbfx.png)
+
+Add libs and apps folders
+![Add libs and apps folders](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pq0og3rw6rl9g2a0zerh.png)
+
+We see all possible translations
+![We see all possible translations](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lz8tzmzd3r2xnjdcmlzr.png)
+
+Click on the line with a red circle where not everything is translated
+![Click on the line with a red circle where not everything is translated](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/66dbf70b8voxvgk5tsxo.png)
+
+Select suggestion or enter you version of translate
+![Select suggestion or enter you version of translate](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/leb6gsg48nq65ccuzcr0.png)
+
+Update all dictionaries
+![Update all dictionaries
+](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/id3qzkd2zodfqnxlxlf5.png)
+
+Run preparing and generating the necessary files
+
+> npm run generate
+
+![Run preparing and generating the necessary files](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yu7wtxkfsf0r0ds245mi.png)
+
+Test from telegram
+![Test from telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1n3xnkrullwdoyros73a.png)
+
+Switch language in telegram
+![Switch language in telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b3ztv9udemgizi7567ky.png)
+
+In the next post I will use nestjs-custom-injector...
+
+#kaufmanbot #nestjs #translates #poedit

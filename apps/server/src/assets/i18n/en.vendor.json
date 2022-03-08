@@ -42,7 +42,9 @@
     "quick change": "quick change",
     "set": "set",
     "to": "to",
-    "you locale: {{locale}}": "you locale: {{locale}}"
+    "you locale: {{locale}}": "you locale: {{locale}}",
+    "locale \"{{locale}}\" not founded, current locale: \"en\"": "locale \"{{locale}}\" not founded, current locale: \"en\"",
+    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\""
   },
   "core-server-getText": {
     "usage": "usage"
@@ -87,6 +89,8 @@
     "quick change": "quick change",
     "set": "set",
     "to": "to",
-    "you locale: {{locale}}": "you locale: {{locale}}"
+    "you locale: {{locale}}": "you locale: {{locale}}",
+    "locale \"{{locale}}\" not founded, current locale: \"en\"": "locale \"{{locale}}\" not founded, current locale: \"en\"",
+    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\""
   }
 }

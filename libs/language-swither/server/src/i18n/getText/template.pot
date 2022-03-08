@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-03-03T05:36:10.414Z\n"
-"PO-Revision-Date: 2022-03-03T05:36:10.414Z\n"
+"POT-Creation-Date: 2022-03-08T19:42:14.475Z\n"
+"PO-Revision-Date: 2022-03-08T19:42:14.475Z\n"
 
 msgid "change"
 msgstr "change"
@@ -58,3 +58,9 @@ msgstr "to"
 
 msgid "you locale: {{locale}}"
 msgstr "you locale: {{locale}}"
+
+msgid "locale \"{{locale}}\" not founded, current locale: \"en\""
+msgstr "locale \"{{locale}}\" not founded, current locale: \"en\""
+
+msgid "locale changed, current locale: \"{{locale}}\""
+msgstr "locale changed, current locale: \"{{locale}}\""

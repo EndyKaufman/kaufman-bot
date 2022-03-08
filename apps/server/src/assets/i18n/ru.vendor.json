@@ -5,48 +5,50 @@
   "html-scraper-server": {},
   "language-swither-server": {},
   "core-server-getText": {
-    "usage": ""
+    "usage": "использование"
   },
   "currency-converter-server-getText": {
-    "Command to convert one currency to another": "",
-    "convert": "",
-    "convert 1 usd to eur": "",
-    "converter": "",
-    "converter help": "",
-    "Currency converter": "",
-    "please": "",
-    "to": ""
+    "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
+    "convert": "конвертируй",
+    "convert 1 usd to eur": "конвертировать 1 USD в EUR",
+    "converter": "конвертер",
+    "converter help": "справка по конвертеру",
+    "Currency converter": "Конвертер валют",
+    "please": "пожалуйста",
+    "to": "в"
   },
   "facts-generator-server-getText": {
-    "Command to generate text with a random fact": "",
-    "facts": "",
-    "Facts generator": "",
-    "facts help": "",
-    "get": "",
-    "get facts": "",
-    "help": "",
-    "please": ""
+    "Command to generate text with a random fact": "Команда для создания текста со случайным фактом",
+    "facts": "факты",
+    "Facts generator": "Генератор фактов",
+    "facts help": "справка по фактам",
+    "get": "дай",
+    "get facts": "дай факты",
+    "help": "помощь",
+    "please": "пожалуйста"
   },
   "html-scraper-server-getText": {
-    "help": ""
+    "help": "помощь"
   },
   "language-swither-server-getText": {
-    "change": "",
-    "change locale to ru": "",
-    "Commands for setting and changing the current user language": "",
-    "current": "",
-    "help": "",
-    "lang": "",
-    "Language swither": "",
-    "locale": "",
-    "locale changed, current locale: {{locale}}": "",
-    "locale help": "",
-    "my": "",
-    "my locale": "",
-    "please": "",
-    "quick change": "",
-    "set": "",
-    "to": "",
-    "you locale: {{locale}}": ""
+    "change": "измени",
+    "change locale to ru": "измени язык на ru",
+    "Commands for setting and changing the current user language": "Команды для настройки и изменения текущего языка пользователя",
+    "current": "текущий",
+    "help": "помощь",
+    "lang": "язык",
+    "Language swither": "Переключатель языков",
+    "locale": "локаль",
+    "locale changed, current locale: {{locale}}": "язык изменен, текущий язык: {{locale}}",
+    "locale help": "язык помощь",
+    "my": "мой",
+    "my locale": "мой язык",
+    "please": "пожалуйста",
+    "quick change": "смени",
+    "set": "установить",
+    "to": "в",
+    "you locale: {{locale}}": "ваш язык: {{locale}}",
+    "locale \"{{locale}}\" not founded, current locale: \"en\"": "язык \"{{locale}}\" не найден, текущий язык: \"en\"",
+    "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}"
   }
 }
