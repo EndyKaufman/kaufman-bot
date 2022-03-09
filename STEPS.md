@@ -2790,13 +2790,15 @@ In the next post there will be instructions on how to add new dictionaries with 
 
 # [2022-03-09 2:06] Add new dictionaries with translations to NestJS application using poedit.net
 
-Links
+## Links
 
 https://poedit.net/ - desktop editor for po dictionaries
 
 https://telegram.me/DevelopKaufmanBot - current bot in telegram
 
 https://github.com/EndyKaufman/kaufman-bot -source code
+
+## Prepare
 
 Add required libraries if they were not previously installed
 
@@ -2813,6 +2815,8 @@ Update scripts in package.json if not changed before
     ...
   },
 ```
+
+## Using Poedit to create dictionaries with translations
 
 Start preparing and generating the necessary files
 
