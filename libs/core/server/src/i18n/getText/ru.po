@@ -6,8 +6,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-03-08T20:48:05.246Z\n"
-"PO-Revision-Date: 2022-03-08T20:48:05.246Z\n"
+"POT-Creation-Date: 2022-03-12T20:48:59.321Z\n"
+"PO-Revision-Date: 2022-03-12T20:48:59.321Z\n"
 
 msgid "usage"
 msgstr "использование"
+
+msgid "get"
+msgstr "дай"
+
+msgid "help"
+msgstr "помощь"

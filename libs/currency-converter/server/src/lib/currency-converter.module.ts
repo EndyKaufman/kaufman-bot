@@ -1,3 +1,4 @@
+import { BOT_COMMANDS_PROVIDER } from '@kaufman-bot/core/server';
 import { ScraperModule } from '@kaufman-bot/html-scraper/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -20,8 +21,13 @@ export class CurrencyConverterModule {
           uri: 'https://www.xe.com/currencyconverter/convert/?Amount={{TEXT1}}&From={{TEXT2}}&To={{TEXT3}}',
         }),
       ],
-      providers: [CurrencyConverterService],
-      exports: [ScraperModule, CurrencyConverterService],
+      providers: [
+        {
+          provide: BOT_COMMANDS_PROVIDER,
+          useClass: CurrencyConverterService,
+        },
+      ],
+      exports: [ScraperModule],
     };
   }
 }

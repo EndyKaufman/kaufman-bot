@@ -5,14 +5,16 @@
   "html-scraper-server": {},
   "language-swither-server": {},
   "core-server-getText": {
-    "usage": "использование"
+    "usage": "использование",
+    "get": "дай",
+    "help": "помощь"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
     "convert": "конвертируй",
-    "convert 1 usd to eur": "конвертировать 1 USD в EUR",
+    "convert 1 usd to eur": "конвертируй 1 USD в EUR",
     "converter": "конвертер",
-    "converter help": "справка по конвертеру",
+    "converter help": "конвертер помощь",
     "Currency converter": "Конвертер валют",
     "please": "пожалуйста",
     "to": "в"
@@ -21,7 +23,7 @@
     "Command to generate text with a random fact": "Команда для создания текста со случайным фактом",
     "facts": "факты",
     "Facts generator": "Генератор фактов",
-    "facts help": "справка по фактам",
+    "facts help": "факты помощь",
     "get": "дай",
     "get facts": "дай факты",
     "help": "помощь",
@@ -49,6 +51,8 @@
     "to": "в",
     "you locale: {{locale}}": "ваш язык: {{locale}}",
     "locale \"{{locale}}\" not founded, current locale: \"en\"": "язык \"{{locale}}\" не найден, текущий язык: \"en\"",
-    "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}"
+    "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}",
+    "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "язык \"{{locale}}\" не найден, текущий язык: \"{{currentLocale}}\"",
+    "to-alt": "на"
   }
 }

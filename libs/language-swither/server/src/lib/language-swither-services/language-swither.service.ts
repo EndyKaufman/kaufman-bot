@@ -1,15 +1,25 @@
-import { СommandToolsService } from '@kaufman-bot/core/server';
+import {
+  BotCommandsEnum,
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+  BotСommandsToolsService,
+  OnBeforeBotCommands,
+} from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
+  DEFAULT_LANGUAGE,
   LanguageSwitherConfig,
   LANGUAGE_SWITHER_CONFIG,
 } from '../language-swither-config/language-swither.config';
 import { LanguageSwitherCommandsEnum } from '../language-swither-types/language-swither-commands';
 
 @Injectable()
-export class LanguageSwitherService {
+export class LanguageSwitherService
+  implements BotCommandsProvider, OnBeforeBotCommands
+{
   private readonly logger = new Logger(LanguageSwitherService.name);
 
   private readonly languageOfUsers: Record<number, string> = {};
@@ -19,24 +29,39 @@ export class LanguageSwitherService {
     private readonly languageSwitherConfig: LanguageSwitherConfig,
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
-    private readonly commandToolsService: СommandToolsService
+    private readonly commandToolsService: BotСommandsToolsService
   ) {}
 
-  async onHelp(msg) {
+  async onBeforeBotCommands<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<TMsg> {
+    const locale =
+      this.languageOfUsers[msg.from?.id] ||
+      msg.from?.language_code ||
+      DEFAULT_LANGUAGE;
+    if (msg.from?.id && !this.languageOfUsers[msg.from?.id]) {
+      this.languageOfUsers[msg.from?.id] = locale;
+    } else {
+      if (locale) {
+        msg.from.language_code = locale;
+      }
+    }
+    return msg;
+  }
+
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     return await this.onMessage({
       ...msg,
-      text: `locale ${LanguageSwitherCommandsEnum.help}`,
+      text: `${this.languageSwitherConfig.name} ${BotCommandsEnum.help}`,
     });
   }
 
-  async onMessage(msg) {
-    const locale =
-      this.languageOfUsers[msg.from?.id] || msg.from?.language_code || null;
-    if (!this.languageOfUsers[msg.from?.id]) {
-      this.languageOfUsers[msg.from?.id] = locale;
-    } else {
-      msg.from.language_code = locale;
-    }
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const locale = this.languageOfUsers[msg.from?.id];
     const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
       this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
     );
@@ -44,11 +69,12 @@ export class LanguageSwitherService {
       if (
         this.commandToolsService.checkCommands(
           msg.text,
-          [LanguageSwitherCommandsEnum.help],
+          [BotCommandsEnum.help],
           locale
         )
       ) {
         return {
+          type: 'markdown',
           markdown: this.commandToolsService.generateHelpMessage(
             locale,
             this.languageSwitherConfig.name,
@@ -68,19 +94,27 @@ export class LanguageSwitherService {
         locale
       );
 
-      msg = await this.process(msg, locale, preparedText);
+      const processedMsg = await this.process(msg, locale, preparedText);
 
-      if (msg) {
-        return msg;
+      if (typeof processedMsg === 'string') {
+        return {
+          type: 'text',
+          text: processedMsg,
+        };
+      }
+      if (processedMsg) {
+        return { type: 'message', message: processedMsg };
       }
 
       this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
       this.logger.debug(msg);
     }
-    return msg;
+    return null;
   }
 
-  private async process(msg, locale: string, text: string) {
+  private async process<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg, locale: string, text: string) {
     if (
       this.commandToolsService.checkCommands(
         msg.text,
@@ -97,12 +131,15 @@ export class LanguageSwitherService {
           .map((key) => key.toLowerCase())
           .includes(text.trim().toLowerCase())
       ) {
-        this.languageOfUsers[msg.from?.id] = 'en';
+        const currentLocale = this.languageOfUsers[msg.from?.id];
         return this.translatesService.translate(
-          getText(`locale "{{locale}}" not founded, current locale: "en"`),
-          locale,
+          getText(
+            `locale "{{locale}}" not founded, current locale: "{{currentLocale}}"`
+          ),
+          currentLocale,
           {
             locale: text.trim().toLowerCase(),
+            currentLocale,
           }
         );
       }

@@ -1,6 +1,8 @@
 {
   "core-server": {
-    "usage": "usage"
+    "usage": "usage",
+    "get": "get",
+    "help": "help"
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -44,10 +46,14 @@
     "to": "to",
     "you locale: {{locale}}": "you locale: {{locale}}",
     "locale \"{{locale}}\" not founded, current locale: \"en\"": "locale \"{{locale}}\" not founded, current locale: \"en\"",
-    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\""
+    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\"",
+    "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"",
+    "to-alt": "to-alt"
   },
   "core-server-getText": {
-    "usage": "usage"
+    "usage": "usage",
+    "get": "get",
+    "help": "help"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -91,6 +97,8 @@
     "to": "to",
     "you locale: {{locale}}": "you locale: {{locale}}",
     "locale \"{{locale}}\" not founded, current locale: \"en\"": "locale \"{{locale}}\" not founded, current locale: \"en\"",
-    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\""
+    "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\"",
+    "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"",
+    "to-alt": "to-alt"
   }
 }

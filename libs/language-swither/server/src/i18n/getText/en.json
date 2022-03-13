@@ -17,5 +17,7 @@
   "to": "to",
   "you locale: {{locale}}": "you locale: {{locale}}",
   "locale \"{{locale}}\" not founded, current locale: \"en\"": "locale \"{{locale}}\" not founded, current locale: \"en\"",
-  "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\""
+  "locale changed, current locale: \"{{locale}}\"": "locale changed, current locale: \"{{locale}}\"",
+  "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"",
+  "to-alt": "to-alt"
 }

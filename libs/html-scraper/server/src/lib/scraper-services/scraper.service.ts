@@ -1,4 +1,10 @@
-import { СommandToolsService } from '@kaufman-bot/core/server';
+import {
+  BotCommandsEnum,
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+  BotСommandsToolsService,
+} from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import charset from 'charset';
@@ -14,30 +20,45 @@ import {
 import { ScraperCommandsEnum } from '../scraper-types/scraper-commands';
 
 @Injectable()
-export class ScraperService {
+export class ScraperService implements BotCommandsProvider {
   private readonly logger = new Logger(ScraperService.name);
 
   constructor(
     @Inject(SCRAPER_CONFIG)
     private readonly scraperConfig: ScraperConfig,
-    private readonly commandToolsService: СommandToolsService
+    private readonly botСommandsToolsService: BotСommandsToolsService
   ) {}
 
-  async onMessage(msg) {
-    const locale = msg.from?.language_code || null;
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    return await this.onMessage({
+      ...msg,
+      text: `${this.scraperConfig.name} ${BotCommandsEnum.help}`,
+    });
+  }
+
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const locale = msg.from?.language_code;
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
-      this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
+      if (!locale) {
+        throw new Error(`locale not set`);
+      }
       if (
-        this.commandToolsService.checkCommands(
+        this.botСommandsToolsService.checkCommands(
           msg.text,
           [ScraperCommandsEnum.help],
           locale
         )
       ) {
         return {
-          markdown: this.commandToolsService.generateHelpMessage(
+          type: 'markdown',
+          markdown: this.botСommandsToolsService.generateHelpMessage(
             locale,
             this.scraperConfig.name,
             this.scraperConfig.descriptions,
@@ -46,7 +67,7 @@ export class ScraperService {
         };
       }
 
-      const preparedText = this.commandToolsService.clearCommands(
+      const preparedText = this.botСommandsToolsService.clearCommands(
         msg.text,
         [
           spyWord,
@@ -58,7 +79,10 @@ export class ScraperService {
       const replayMessage = await this.scrap(locale, preparedText);
 
       if (replayMessage) {
-        return replayMessage;
+        return {
+          type: 'text',
+          text: replayMessage,
+        };
       }
 
       this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
@@ -67,7 +91,7 @@ export class ScraperService {
     return null;
   }
 
-  private async scrap(locale: string, text: string) {
+  private async scrap(locale: string, text: string): Promise<string> {
     /*const parsedVariables = parse(this.scraperConfig.uri)
       .filter((arr) => arr[0] === 'name')
       .map((arr) => arr[1]);

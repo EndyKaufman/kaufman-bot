@@ -1,7 +1,10 @@
-import { CommandToolsModule } from '@kaufman-bot/core/server';
+import { BotCommandsModule } from '@kaufman-bot/core/server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
-import { LanguageSwitherModule } from '@kaufman-bot/language-swither/server';
+import {
+  DEFAULT_LANGUAGE,
+  LanguageSwitherModule,
+} from '@kaufman-bot/language-swither/server';
 import { Module } from '@nestjs/common';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
@@ -25,10 +28,10 @@ import { AppService } from './app.service';
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
-        locales: ['en', 'ru'],
+        locales: [DEFAULT_LANGUAGE, 'ru'],
       })
     ),
-    CommandToolsModule,
+    BotCommandsModule,
     LanguageSwitherModule.forRoot(),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),

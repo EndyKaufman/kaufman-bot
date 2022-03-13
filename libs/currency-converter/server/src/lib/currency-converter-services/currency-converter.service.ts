@@ -1,27 +1,32 @@
 import {
-  ScraperCommandsEnum,
-  ScraperService,
-} from '@kaufman-bot/html-scraper/server';
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+} from '@kaufman-bot/core/server';
+import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { Injectable } from '@nestjs/common';
 @Injectable()
-export class CurrencyConverterService {
+export class CurrencyConverterService implements BotCommandsProvider {
   constructor(private readonly scraperService: ScraperService) {}
 
-  async onHelp(msg) {
-    return await this.scraperService.onMessage({
-      ...msg,
-      text: `convert ${ScraperCommandsEnum.help}`,
-    });
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    return await this.scraperService.onHelp(msg);
   }
 
-  async onMessage(msg) {
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const result = await this.scraperService.onMessage(msg);
     if (
-      result &&
-      typeof result === 'string' &&
-      /^[.,0-9]+$/.test(result.split(' ')[0])
+      result?.type === 'text' &&
+      /^[.,0-9]+$/.test(result.text.split(' ')[0])
     ) {
-      return result.split(' ')[0];
+      return {
+        type: 'text',
+        text: result.text.split(' ')[0],
+      };
     }
     return result;
   }

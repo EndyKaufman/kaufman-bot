@@ -1,6 +1,6 @@
 import { getText } from 'class-validator-multi-lang';
 
-export const FactsGeneratorCommandsEnum = {
+export const BotCommandsEnum = {
   help: getText('help'),
   get: getText('get'),
 };

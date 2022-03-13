@@ -1,6 +1,7 @@
-import { CurrencyConverterService } from '@kaufman-bot/currency-converter/server';
-import { FactsGeneratorService } from '@kaufman-bot/facts-generator/server';
-import { LanguageSwitherService } from '@kaufman-bot/language-swither/server';
+import {
+  BotCommandsProviderActionMsg,
+  BotСommandsService,
+} from '@kaufman-bot/core/server';
 import { Injectable, Logger } from '@nestjs/common';
 import { Hears, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
@@ -10,11 +11,7 @@ import { Context } from 'telegraf';
 export class AppService {
   private readonly logger = new Logger(AppService.name);
 
-  constructor(
-    private readonly currencyConverterService: CurrencyConverterService,
-    private readonly factsGeneratorService: FactsGeneratorService,
-    private readonly languageSwitherService: LanguageSwitherService
-  ) {}
+  constructor(private readonly botСommandsService: BotСommandsService) {}
 
   getData(): { message: string } {
     return { message: 'Welcome to server!' };
@@ -36,44 +33,19 @@ export class AppService {
   }
 
   @On('text')
-  async onMessage(ctx: Context) {
-    try {
-      const msg = await this.languageSwitherService.onMessage(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (ctx.update as any).message
-      );
-      let replayMessage;
-
-      if (typeof msg === 'string' || msg?.markdown) {
-        replayMessage = msg;
-      }
-
-      if (msg.text === '/help') {
-        replayMessage = {
-          markdown: [
-            (await this.languageSwitherService.onHelp(msg)).markdown,
-            (await this.currencyConverterService.onHelp(msg)).markdown,
-            (await this.factsGeneratorService.onHelp(msg)).markdown,
-          ].join('\n\n'),
-        };
-      }
-
-      if (!replayMessage) {
-        replayMessage = await this.currencyConverterService.onMessage(msg);
-      }
-
-      if (!replayMessage) {
-        replayMessage = await this.factsGeneratorService.onMessage(msg);
-      }
-      if (replayMessage) {
-        if (replayMessage.markdown) {
-          ctx.reply(replayMessage.markdown, { parse_mode: 'MarkdownV2' });
-        } else {
-          ctx.reply(replayMessage);
-        }
-      }
-    } catch (err) {
-      this.logger.error(err, err.stack);
+  async onMessage(ctx) {
+    let msg: BotCommandsProviderActionMsg = ctx.update.message;
+    const result = await this.botСommandsService.onMessage(msg);
+    if (result?.type === 'message') {
+      msg = result.message;
+    }
+    if (result?.type === 'markdown') {
+      ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+      return;
+    }
+    if (result?.type === 'text') {
+      ctx.reply(result.text);
+      return;
     }
   }
 }

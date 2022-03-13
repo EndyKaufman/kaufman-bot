@@ -1,3 +1,5 @@
 {
-  "usage": "usage"
+  "usage": "usage",
+  "get": "get",
+  "help": "help"
 }

@@ -19,7 +19,7 @@ msgid "Facts generator"
 msgstr "Генератор фактов"
 
 msgid "facts help"
-msgstr "справка по фактам"
+msgstr "факты помощь"
 
 msgid "get"
 msgstr "дай"

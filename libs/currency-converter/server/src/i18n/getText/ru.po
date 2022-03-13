@@ -16,13 +16,13 @@ msgid "convert"
 msgstr "конвертируй"
 
 msgid "convert 1 usd to eur"
-msgstr "конвертировать 1 USD в EUR"
+msgstr "конвертируй 1 USD в EUR"
 
 msgid "converter"
 msgstr "конвертер"
 
 msgid "converter help"
-msgstr "справка по конвертеру"
+msgstr "конвертер помощь"
 
 msgid "Currency converter"
 msgstr "Конвертер валют"

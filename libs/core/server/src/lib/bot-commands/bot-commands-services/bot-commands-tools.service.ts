@@ -4,7 +4,7 @@ import { render } from 'mustache';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 
 @Injectable()
-export class СommandToolsService {
+export class BotСommandsToolsService {
   private lowerCaseTranslates?: TranslatesStorage['translates'];
 
   constructor(
@@ -35,15 +35,19 @@ export class СommandToolsService {
     return replayHelpMessage;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private translateByLowerCase(key: string, locale: string, context: any = {}) {
+  private translateByLowerCase(
+    key: string,
+    locale?: string,
+    context: unknown = {}
+  ) {
     this.initLowerCaseTranslates();
     const lowerCaseKey = key.toLowerCase();
     if (!this.lowerCaseTranslates) {
       throw new Error(`lowerCaseTranslates not set`);
     }
     const value =
-      this.lowerCaseTranslates?.[locale]?.[lowerCaseKey] || lowerCaseKey;
+      (locale && this.lowerCaseTranslates?.[locale]?.[lowerCaseKey]) ||
+      lowerCaseKey;
     return value ? render(value, context) : value;
   }
 
@@ -99,7 +103,7 @@ export class СommandToolsService {
     return words.join(' ').split('  ').join(' ');
   }
 
-  checkCommands(text: string, commands: string[], locale: string) {
+  checkCommands(text: string, commands: string[], locale?: string) {
     const lowerCasedText = (text || '').toLowerCase();
     const lowerCasedCommands = commands.map((c) => c.toLowerCase());
     if (

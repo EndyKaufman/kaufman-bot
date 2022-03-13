@@ -17,5 +17,7 @@
   "to": "в",
   "you locale: {{locale}}": "ваш язык: {{locale}}",
   "locale \"{{locale}}\" not founded, current locale: \"en\"": "язык \"{{locale}}\" не найден, текущий язык: \"en\"",
-  "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}"
+  "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}",
+  "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "язык \"{{locale}}\" не найден, текущий язык: \"{{currentLocale}}\"",
+  "to-alt": "на"
 }
