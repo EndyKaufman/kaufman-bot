@@ -3766,11 +3766,120 @@ export class CurrencyConverterModule {
 }
 ```
 
-## Generating a list of files and extracting words for translation
+### Generating a list of files and extracting words for translation
 
 > npm run generate
 
-## Check all logic for correct work from telegram
+## Update application files
+
+### Update app service
+
+_apps/server/src/app/app.service.ts_
+
+```ts
+import {
+  BotCommandsProviderActionMsg,
+  BotСommandsService,
+} from '@kaufman-bot/core/server';
+import { Injectable, Logger } from '@nestjs/common';
+import { Hears, On, Start, Update } from 'nestjs-telegraf';
+import { Context } from 'telegraf';
+
+@Update()
+@Injectable()
+export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
+  constructor(private readonly botСommandsService: BotСommandsService) {}
+
+  getData(): { message: string } {
+    return { message: 'Welcome to server!' };
+  }
+
+  @Start()
+  async startCommand(ctx: Context) {
+    await ctx.reply('Welcome');
+  }
+
+  @On('sticker')
+  async onSticker(ctx: Context) {
+    await ctx.reply('👍');
+  }
+
+  @Hears('hi')
+  async hearsHi(ctx: Context) {
+    await ctx.reply('Hey there');
+  }
+
+  @On('text')
+  async onMessage(ctx) {
+    let msg: BotCommandsProviderActionMsg = ctx.update.message;
+    const result = await this.botСommandsService.onMessage(msg);
+    if (result?.type === 'message') {
+      msg = result.message;
+    }
+    if (result?.type === 'markdown') {
+      ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+      return;
+    }
+    if (result?.type === 'text') {
+      ctx.reply(result.text);
+      return;
+    }
+  }
+}
+```
+
+### Update app module
+
+_apps/server/src/app/app.module.ts_
+
+```ts
+import { BotCommandsModule } from '@kaufman-bot/core/server';
+import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
+import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
+import {
+  DEFAULT_LANGUAGE,
+  LanguageSwitherModule,
+} from '@kaufman-bot/language-swither/server';
+import { Module } from '@nestjs/common';
+import env from 'env-var';
+import { TelegrafModule } from 'nestjs-telegraf';
+import {
+  getDefaultTranslatesModuleOptions,
+  TranslatesModule,
+} from 'nestjs-translates';
+import { join } from 'path';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [
+    TelegrafModule.forRoot({
+      token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
+    }),
+    TranslatesModule.forRoot(
+      getDefaultTranslatesModuleOptions({
+        localePaths: [
+          join(__dirname, 'assets', 'i18n'),
+          join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
+        ],
+        vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
+        locales: [DEFAULT_LANGUAGE, 'ru'],
+      })
+    ),
+    BotCommandsModule,
+    LanguageSwitherModule.forRoot(),
+    CurrencyConverterModule.forRoot(),
+    FactsGeneratorModule.forRoot(),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+```
+
+### Check all logic for correct work from telegram
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zybimmn0hrma94gk1kuk.png)
 
