@@ -3776,8 +3776,4 @@ export class CurrencyConverterModule {
 
 In the next post there will be instructions on how to add dev infrastructure to docker compose...
 
-Use nestjs-custom-injector to create dynamic handlers in NestJS when creating a telegram bot
-Add up to 4 tagsMaximum 4 selections
-Selected items:
-
 #nestjs #kaufmanbot #providers #multi
