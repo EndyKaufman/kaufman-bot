@@ -18,10 +18,14 @@
     "docker:dev:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-down.sh",
     "docker:dev:restart": "npm run docker:dev:down && npm run docker:dev:up",
     "docker:dev:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-up.sh",
+    "docker:dev:clean-down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-clean-down.sh",
+    "docker:dev:clean-restart": "npm run docker:dev:clean-down && npm run docker:dev:up",
     "docker:prod:build-sources": "npm run build",
     "docker:prod:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/prod/docker-compose-down.sh",
     "docker:prod:restart": "npm run docker:prod:down && npm run docker:prod:up",
-    "docker:prod:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run docker:prod:build-sources && ./docker/prod/docker-compose-up.sh"
+    "docker:prod:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run docker:prod:build-sources && ./docker/prod/docker-compose-up.sh",
+    "docker:prod:clean-down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/prod/docker-compose-clean-down.sh",
+    "docker:prod:clean-restart": "npm run docker:prod:clean-down && npm run docker:prod:up"
   },
   "private": true,
   "devDependencies": {

@@ -5,7 +5,27 @@ networks:
             config:
                 - subnet: "172.6.0.0/16"
 
+volumes:
+    kaufman-bot-postgres-volume:
+        external: true
+
 services:
+    kaufman-bot-postgres:
+        image: 'endykaufman/postgres-default'
+        container_name: 'kaufman-bot-postgres'
+        environment:
+            - POSTGRES_USER=${ROOT_POSTGRES_USER}
+            - POSTGRES_PASSWORD=${ROOT_POSTGRES_PASSWORD}
+            - POSTGRES_DB=postgres
+        env_file:
+            - ../../.env.local
+        ports:
+            - '5432:5432'
+        volumes:
+            - kaufman-bot-postgres-volume:/var/lib/postgresql/data
+        networks:
+            - kaufman-bot-network
+
     kaufman-bot-server:
         image: node:16-alpine
         user: ${CURRENT_UID}
@@ -23,3 +43,5 @@ services:
             - kaufman-bot-network
         command: "npm run start"
         tty: true
+        depends_on:
+            - kaufman-bot-postgres
