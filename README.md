@@ -6,7 +6,7 @@ The current running bot is here: https://telegram.me/DevelopKaufmanBot
 
 The whole rewriting process can be viewed as posts on https://dev.to/t/kaufmanbot
 
-Or follow on twitter https://twitter.com/hashtag/kaufmanbot?src=hashtag_click
+Or follow on twitter https://twitter.com/hashtag/kaufmanbot
 
 Information about updates and new posts about the bot is also in my personal log on the Telegram channel: https://t.me/kaufman_log
 
