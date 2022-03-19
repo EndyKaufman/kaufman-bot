@@ -3886,3 +3886,289 @@ export class AppModule {}
 In the next post there will be instructions on how to add dev infrastructure to docker compose...
 
 #nestjs #kaufmanbot #providers #multi
+
+# [2022-03-19 16:10] Add dev and prod infrastructure on docker compose for NestJS application
+
+In the future, various databases and other self-host solutions will be needed for the application to work; in order not to experience problems with installing and running such services, you need to add developer infrastructure
+
+## Links
+
+https://github.com/EndyKaufman/kaufman-bot - source code of bot
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+## Installing the required software
+
+I have an Ubuntu operating system and I describe all the solutions only for this operating system
+For other operating systems, look for the instructions yourself
+
+### Docker
+
+https://docs.docker.com/engine/install/ubuntu/
+
+```sh
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+dockerd-rootless-setuptool.sh install
+sudo chown $USER /var/run/docker.sock
+sudo systemctl restart docker
+```
+
+### Docker compose
+
+https://docs.docker.com/compose/install/#install-compose
+
+```sh
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+```
+
+## Prepare common files
+
+### Create dockerignore file in root directory
+
+_.dockerignore_
+
+```sh
+node_modules
+tmp
+```
+
+### Add additional scripts to packge.json
+
+_package.json_
+
+```json
+...
+    "docker:dev:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-down.sh",
+    "docker:dev:restart": "npm run docker:dev:down && npm run docker:dev:up",
+    "docker:dev:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-up.sh",
+    "docker:prod:build-sources": "npm run build",
+    "docker:prod:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/prod/docker-compose-down.sh",
+    "docker:prod:restart": "npm run docker:prod:down && npm run docker:prod:up",
+    "docker:prod:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run docker:prod:build-sources && ./docker/prod/docker-compose-up.sh"
+...
+```
+
+## Create developer infrastructure
+
+### Add docker compose file
+
+_docker/dev/docker-compose.yml_
+
+```yaml
+version: '3'
+networks:
+  kaufman-bot-network:
+    ipam:
+      config:
+        - subnet: '172.6.0.0/16'
+
+services:
+  kaufman-bot-server:
+    image: node:16-alpine
+    user: ${CURRENT_UID}
+    container_name: 'kaufman-bot-server'
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - PORT=3000
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    working_dir: '/app'
+    volumes:
+      - ./../../:/app
+    networks:
+      - kaufman-bot-network
+    command: 'npm run serve'
+    tty: true
+```
+
+### Add up script file
+
+_docker/dev/docker-compose-up.sh_
+
+```sh
+#!/bin/bash
+#export UID=$(id -u)
+#export GID=$(id -g)
+export CURRENT_UID=$(id -u):$(id -g)
+docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+```
+
+### Add down script file
+
+_docker/dev/docker-compose-down.sh_
+
+```sh
+#!/bin/bash
+#export UID=$(id -u)
+#export GID=$(id -g)
+export CURRENT_UID=$(id -u):$(id -g)
+docker-compose -f ./docker/dev/docker-compose.yml down
+```
+
+## Create production infrastructure
+
+### Add docker compose file
+
+_docker/prod/docker-compose.yml_
+
+```yaml
+version: '3'
+networks:
+  kaufman-bot-network:
+    ipam:
+      config:
+        - subnet: '172.6.0.0/16'
+
+services:
+  kaufman-bot-server:
+    image: node:16-alpine
+    user: ${CURRENT_UID}
+    container_name: 'kaufman-bot-server'
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - PORT=3000
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    working_dir: '/app'
+    volumes:
+      - ./../../:/app
+    networks:
+      - kaufman-bot-network
+    command: 'npm run start'
+    tty: true
+```
+
+### Add up script file
+
+_docker/prod/docker-compose-up.sh_
+
+```sh
+#!/bin/bash
+#export UID=$(id -u)
+#export GID=$(id -g)
+export CURRENT_UID=$(id -u):$(id -g)
+docker-compose -f ./docker/prod/docker-compose.yml --compatibility up -d
+```
+
+### Add down script file
+
+_docker/prod/docker-compose-down.sh_
+
+```sh
+#!/bin/bash
+#export UID=$(id -u)
+#export GID=$(id -g)
+export CURRENT_UID=$(id -u):$(id -g)
+docker-compose -f ./docker/prod/docker-compose.yml down
+```
+
+## Run and test from telegram
+
+### Start dev infra
+
+> npm run docker:dev:up
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run docker:dev:up
+
+> kaufman-bot@0.0.0 docker:dev:up
+> export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-up.sh
+
+Creating network "dev_kaufman-bot-network" with the default driver
+Creating kaufman-bot-server ... done
+
+```
+
+### Check status of created containers
+
+> docker status
+
+```sh
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O     PIDS
+ea93db120ed3   kaufman-bot-server   0.34%     304.4MiB / 13.57GiB   2.19%     3.67MB / 158kB   0B / 49.2kB   59
+```
+
+![Check status of created containers](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tbdta96bm1lrzay9it7i.png)
+
+### Show all logs of containers
+
+> docker-compose -f ./docker/dev/docker-compose.yml logs
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ docker-compose  -f ./docker/dev/docker-compose.yml logs
+Attaching to kaufman-bot-server
+kaufman-bot-server    |
+kaufman-bot-server    | > kaufman-bot@0.0.0 serve
+kaufman-bot-server    | > npm run nx -- serve server
+kaufman-bot-server    |
+kaufman-bot-server    |
+kaufman-bot-server    | > kaufman-bot@0.0.0 nx
+kaufman-bot-server    | > nx "serve" "server"
+kaufman-bot-server    |
+kaufman-bot-server    |
+kaufman-bot-server    | > nx run server:serve
+kaufman-bot-server    |
+kaufman-bot-server    | chunk (runtime: main) main.js (main) 49.7 KiB [entry] [rendered]
+kaufman-bot-server    | webpack compiled successfully (5a171399d4564c11)
+kaufman-bot-server    | Debugger listening on ws://localhost:9229/78012d34-483b-4d11-ace7-7d4bd30708e9
+kaufman-bot-server    | For help, see: https://nodejs.org/en/docs/inspector
+kaufman-bot-server    | Issues checking in progress...
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [NestFactory] Starting Nest application...
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] TelegrafModule dependencies initialized +57ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] TranslatesModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] LanguageSwitherModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] LanguageSwitherModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] DiscoveryModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] CustomInjectorCoreModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] TranslatesModuleCore dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] TranslatesModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] BotCommandsModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] ScraperModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] ScraperModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] CustomInjectorModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] FactsGeneratorModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] CurrencyConverterModule dependencies initialized +0ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [InstanceLoader] TelegrafCoreModule dependencies initialized +292ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [RoutesResolver] AppController {/api}: +5ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [RouterExplorer] Mapped {/api, GET} route +2ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [TranslatesBootstrapService] onModuleInit
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [TranslatesStorage] Add 2 translates for locale: en
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [TranslatesStorage] Add 2 translates for locale: ru
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [NestApplication] Nest application successfully started +2ms
+kaufman-bot-server    | [Nest] 57  - 03/19/2022, 10:57:17 AM     LOG [Application] ���� Application is running on: http://localhost:3000/api
+kaufman-bot-server    | No issues found.
+```
+
+![Show all logs of containers](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/huzea7l9xmj2rj3zeuxh.png)
+
+### Check work from telegram
+
+![Check work from telegram](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uf733hw63tw9hwi9gdgf.png)
+
+### Stop dev infra
+
+> npm run docker:dev:down
+
+```sh
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run docker:dev:down
+
+> kaufman-bot@0.0.0 docker:dev:down
+> export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-down.sh
+
+Stopping kaufman-bot-server ... done
+Removing kaufman-bot-server ... done
+Removing network dev_kaufman-bot-network
+```
+
+![Stop dev infra](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p9rqkltfbdvq1ngw6mai.png)
+
+The next post will be adding a database to dev infra and dokku infra...
+
+#nestjs #kaufmanbot #docker #infrastructure

@@ -1,0 +1,25 @@
+version: "3"
+networks:
+    kaufman-bot-network:
+        ipam:
+            config:
+                - subnet: "172.6.0.0/16"
+
+services:
+    kaufman-bot-server:
+        image: node:16-alpine
+        user: ${CURRENT_UID}
+        container_name: "kaufman-bot-server"
+        environment:
+            - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+            - PORT=3000
+        ports:
+            - "3000:3000"
+            - "9229:9229"
+        working_dir: "/app"
+        volumes:
+            - ./../../:/app
+        networks:
+            - kaufman-bot-network
+        command: "npm run start"
+        tty: true

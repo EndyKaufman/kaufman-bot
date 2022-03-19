@@ -9,12 +9,19 @@
     "build": "npm run nx -- build server",
     "test": "nx test",
     "serve": "npm run nx -- serve server",
-    "serve:local": "export $(xargs < ./.env.local) && npm run serve",
+    "serve:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run serve",
     "prepare": "husky install",
     "lint": "npm run tsc:lint && nx workspace-lint && npm run nx -- run-many --target=lint --all",
     "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
-    "generate": "npm run rucken -- prepare --locales=en,ru && npm run lint:fix"
+    "generate": "npm run rucken -- prepare --locales=en,ru && npm run lint:fix",
+    "docker:dev:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-down.sh",
+    "docker:dev:restart": "npm run docker:dev:down && npm run docker:dev:up",
+    "docker:dev:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-up.sh",
+    "docker:prod:build-sources": "npm run build",
+    "docker:prod:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/prod/docker-compose-down.sh",
+    "docker:prod:restart": "npm run docker:prod:down && npm run docker:prod:up",
+    "docker:prod:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run docker:prod:build-sources && ./docker/prod/docker-compose-up.sh"
   },
   "private": true,
   "devDependencies": {
