@@ -6,3 +6,6 @@ export * from './lib/bot-commands/bot-commands-types/bot-commands-provider-actio
 export * from './lib/bot-commands/bot-commands-types/bot-commands-provider.interface';
 export * from './lib/bot-commands/bot-commands-types/on-after-bot-commands.interface';
 export * from './lib/bot-commands/bot-commands-types/on-before-bot-commands.interface';
+export * from './lib/prisma-client/prisma-client.config';
+export * from './lib/prisma-client/prisma-client.module';
+export * from './lib/prisma-client/prisma-client.service';

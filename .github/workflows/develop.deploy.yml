@@ -1,4 +1,4 @@
-name: "deploy"
+name: 'deploy'
 
 # yamllint disable-line rule:truthy
 on:
@@ -29,6 +29,8 @@ jobs:
           export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
           npm run rucken -- postgres
           export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
+          dokku config:set --no-restart kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL
+          dokku config:set --no-restart --global POSTGRES_HOST=global-postgres 
 
   deploy:
     needs: [migrate]
@@ -43,6 +45,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: "feature/73"
-          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
+          branch: 'feature/73'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}

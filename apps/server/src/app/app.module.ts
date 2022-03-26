@@ -1,4 +1,7 @@
-import { BotCommandsModule } from '@kaufman-bot/core/server';
+import {
+  BotCommandsModule,
+  PrismaClientModule,
+} from '@kaufman-bot/core/server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
 import {
@@ -20,6 +23,11 @@ import { AppService } from './app.service';
   imports: [
     TelegrafModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
+    }),
+    PrismaClientModule.forRoot({
+      databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
+      logging: 'long_queries',
+      maxQueryExecutionTime: 5000,
     }),
     TranslatesModule.forRoot(
       getDefaultTranslatesModuleOptions({

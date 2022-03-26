@@ -16,5 +16,9 @@ done
 npm run rucken -- postgres
 # Run migrate database for specific database
 export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
+# Change database host for applications
+export POSTGRES_HOST=kaufman-bot-postgres
+# Update all egnerated files
+npm run generate
 # Start all services
 docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d

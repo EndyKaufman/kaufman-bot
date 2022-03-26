@@ -1,52 +1,54 @@
-version: "3"
+version: '3'
 networks:
-    kaufman-bot-network:
-        ipam:
-            config:
-                - subnet: "172.6.0.0/16"
+  kaufman-bot-network:
+    ipam:
+      config:
+        - subnet: '172.6.0.0/16'
 
 volumes:
-    kaufman-bot-postgres-volume:
-        external: true
+  kaufman-bot-postgres-volume:
+    external: true
 
 services:
-    kaufman-bot-postgres:
-        image: "endykaufman/postgres-default"
-        container_name: "kaufman-bot-postgres"
-        environment:
-            - POSTGRES_USER=${ROOT_POSTGRES_USER}
-            - POSTGRES_PASSWORD=${ROOT_POSTGRES_PASSWORD}
-            - POSTGRES_DB=postgres
-        env_file:
-            - ../../.env.local
-        ports:
-            - "5432:5432"
-        volumes:
-            - kaufman-bot-postgres-volume:/var/lib/postgresql/data
-        networks:
-            - kaufman-bot-network
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U postgres"]
-            interval: 5s
-            timeout: 5s
-            retries: 5
+  kaufman-bot-postgres:
+    image: 'endykaufman/postgres-default'
+    container_name: 'kaufman-bot-postgres'
+    environment:
+      - POSTGRES_USER=${ROOT_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${ROOT_POSTGRES_PASSWORD}
+      - POSTGRES_DB=postgres
+    env_file:
+      - ../../.env.local
+    ports:
+      - '5432:5432'
+    volumes:
+      - kaufman-bot-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - kaufman-bot-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-    kaufman-bot-server:
-        image: node:16-alpine
-        user: ${CURRENT_UID}
-        container_name: "kaufman-bot-server"
-        environment:
-            - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-            - PORT=3000
-        ports:
-            - "3000:3000"
-            - "9229:9229"
-        working_dir: "/app"
-        volumes:
-            - ./../../:/app
-        networks:
-            - kaufman-bot-network
-        command: "npm run serve"
-        tty: true
-        depends_on:
-            - kaufman-bot-postgres
+  kaufman-bot-server:
+    image: node:16-alpine
+    user: ${CURRENT_UID}
+    container_name: 'kaufman-bot-server'
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - SERVER_POSTGRES_URL=${SERVER_POSTGRES_URL}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - PORT=3000
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    working_dir: '/app'
+    volumes:
+      - ./../../:/app
+    networks:
+      - kaufman-bot-network
+    command: 'npm run serve'
+    tty: true
+    depends_on:
+      - kaufman-bot-postgres
