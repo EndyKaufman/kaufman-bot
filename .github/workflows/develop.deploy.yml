@@ -7,24 +7,7 @@ on:
       - feature/73
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: dev
-    steps:
-      - name: Cloning repo
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          branch: "feature/73"
-          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
-          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
-
   migrate:
-    needs: [deploy]
     runs-on: [self-hosted, develop-vps]
     environment: dev
     steps:
@@ -46,3 +29,20 @@ jobs:
           export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
           npm run rucken -- postgres
           export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
+
+  deploy:
+    needs: [migrate]
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: "feature/73"
+          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
+          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
