@@ -32,6 +32,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Node
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          . ~/.nvm/nvm.sh
+          nvm --version
+          nvm install v16.13.2
+          nvm use v16.13.2
+
       - name: Detect internal database ip
         run: export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
 
