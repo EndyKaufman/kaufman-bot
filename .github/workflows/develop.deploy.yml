@@ -32,25 +32,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Node
+      - name: Apply migrations
         run: |
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           . ~/.nvm/nvm.sh
           nvm --version
           nvm install v16.13.2
           nvm use v16.13.2
-
-      - name: Detect internal database ip
-        run: export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
-
-      - name: Create connection string for root database
-        run: export ROOT_POSTGRES_URL=postgres://postgres:${{secrets.ROOT_POSTGRES_PASSWORD}}@${POSTGRES_HOST}:5432/postgres?schema=public
-
-      - name: Create connection string for server application database
-        run: export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
-
-      - name: Create all nx application databases
-        run: npm run rucken -- postgres
-
-      - name: Apply migrations for server database
-        run: export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
+          export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
+          export ROOT_POSTGRES_URL=postgres://postgres:${{secrets.ROOT_POSTGRES_PASSWORD}}@${POSTGRES_HOST}:5432/postgres?schema=public
+          export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
+          npm run rucken -- postgres
+          export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
