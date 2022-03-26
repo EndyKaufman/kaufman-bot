@@ -4854,4 +4854,6 @@ kaufman_bot_develop=> select * from "User";
 
 ![Check database](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6i7t960eazvlacimtrlg.png)
 
+In the next post, we will create a database in dokku infra and set up migration from github
+
 #kaufmanbot #postgres #flyway #migrations
