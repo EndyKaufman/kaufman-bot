@@ -5135,10 +5135,10 @@ found 0 vulnerabilities
 
 For correct work with postgres in prod mode, need install pg deps
 
-> npm install pg --save
+> npm install pg pg-promise --save
 
 ```sh
-endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm install pg --save
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm install pg pg-promise --save
 
 up to date, audited 942 packages in 3s
 
