@@ -1,6 +1,9 @@
 const { ConnectionString } = require('connection-string');
 const cs = new ConnectionString(
-  process.env.POSTGRES_URL || process.env.DATABASE_URL
+  (process.env.POSTGRES_URL || process.env.DATABASE_URL).replace(
+    '${POSTGRES_HOST}',
+    process.env['POSTGRES_HOST']
+  )
 );
 const {
   user: USERNAME,
