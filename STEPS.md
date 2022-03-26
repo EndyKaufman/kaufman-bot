@@ -4857,3 +4857,253 @@ kaufman_bot_develop=> select * from "User";
 In the next post, we will create a database in dokku infra and set up migration from github
 
 #kaufmanbot #postgres #flyway #migrations
+
+# [2022-03-26 16:22] Create a database for the application and create first migration via flyway
+
+## Links
+
+https://github.com/EndyKaufman/kaufman-bot - source code of bot
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners - instruction for github runners
+
+## Add self host runner in vps
+
+Navigate to https://github.com/YOU_NAME/YOU_REPOSITORY_NAME/settings/actions/runners/new?arch=x64&os=linux and read about install steps
+
+```sh
+mkdir actions-runner && cd actions-runner
+curl -o actions-runner-linux-x64-2.288.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.288.1/actions-runner-linux-x64-2.288.1.tar.gz
+echo "CUSTOM_NUMBERS  actions-runner-linux-x64-2.288.1.tar.gz" | shasum -a 256 -c
+tar xzf ./actions-runner-linux-x64-2.288.1.tar.gz
+export RUNNER_ALLOW_RUNASROOT=true && ./config.sh --url https://github.com/EndyKaufman/kaufman-bot --token TOKEN_FOR_RUNNER
+```
+
+Result
+
+```sh
+root@vps17825:~/actions-runner# ./config.sh --url https://github.com/EndyKaufman/kaufman-bot --token TOKEN_FOR_RUNNER
+
+--------------------------------------------------------------------------------
+|        ____ _ _   _   _       _          _        _   _                      |
+|       / ___(_) |_| | | |_   _| |__      / \   ___| |_(_) ___  _ __  ___      |
+|      | |  _| | __| |_| | | | | '_ \    / _ \ / __| __| |/ _ \| '_ \/ __|     |
+|      | |_| | | |_|  _  | |_| | |_) |  / ___ \ (__| |_| | (_) | | | \__ \     |
+|       \____|_|\__|_| |_|\__,_|_.__/  /_/   \_\___|\__|_|\___/|_| |_|___/     |
+|                                                                              |
+|                       Self-hosted runner registration                        |
+|                                                                              |
+--------------------------------------------------------------------------------
+
+# Authentication
+
+
+√ Connected to GitHub
+
+# Runner Registration
+
+Enter the name of the runner group to add this runner to: [press Enter for Default]
+
+Enter the name of runner: [press Enter for vps17825] develop-vps
+
+This runner will have the following labels: 'self-hosted', 'Linux', 'X64'
+Enter any additional labels (ex. label-1,label-2): [press Enter to skip] develop-vps
+
+√ Runner successfully added
+√ Runner connection is good
+
+# Runner settings
+
+Enter name of work folder: [press Enter for _work]
+
+√ Settings Saved.
+
+root@vps17825:~/actions-runner#
+```
+
+![Result](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b72jxxpcvqb6981e5do1.png)
+
+Configuring the self-hosted runner application as a service
+
+```sh
+sudo ./svc.sh install
+sudo ./svc.sh start
+```
+
+Result
+
+```sh
+root@vps17825:~/actions-runner# sudo ./svc.sh install
+Creating launch runner in /etc/systemd/system/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service
+Run as user: root
+Run as uid: 0
+gid: 0
+Created symlink /etc/systemd/system/multi-user.target.wants/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service → /etc/systemd/system/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service.
+root@vps17825:~/actions-runner# sudo ./svc.sh start
+
+/etc/systemd/system/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service
+● actions.runner.EndyKaufman-kaufman-bot.develop-vps.service - GitHub Actions Runner (EndyKaufman-kaufman-bot.develop-vps)
+     Loaded: loaded (/etc/systemd/system/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2022-03-26 12:06:28 MSK; 21ms ago
+   Main PID: 2266387 (runsvc.sh)
+      Tasks: 2 (limit: 2253)
+     Memory: 784.0K
+     CGroup: /system.slice/actions.runner.EndyKaufman-kaufman-bot.develop-vps.service
+             ├─2266387 /bin/bash /root/actions-runner/runsvc.sh
+             └─2266397 ./externals/node16/bin/node ./bin/RunnerService.js
+
+Mar 26 12:06:28 vps17825 systemd[1]: Started GitHub Actions Runner (EndyKaufman-kaufman-bot.develop-vps).
+Mar 26 12:06:28 vps17825 runsvc.sh[2266387]: .path=/root/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/s…ames:/snap/bin
+Hint: Some lines were ellipsized, use -l to show in full.
+```
+
+![Result](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pm2wahw41n3ysungv4zr.png)
+
+View created runner in Github UI
+![View created runner in Github UI](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0dnqltq7neidy8dayif.png)
+
+## Add support apply migration on vps database
+
+### Append new env value in github
+
+Add password for root user of data base
+
+```sh
+ROOT_POSTGRES_PASSWORD=postgres
+```
+
+![UI](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lryq07syalxfag2hta5d.png)
+
+![Append new env value in github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8eumn7g7uichvlpymida.png)
+
+Add connection strings for all need applications
+
+```sh
+SERVER_POSTGRES_URL=postgres://admin_develop:password_develop@${POSTGRES_HOST}:5432/kaufman_bot_develop?schema=public
+```
+
+![UI](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2m7nbongg7nqpi37xczz.png)
+
+![Append new env value in github](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yltvson2013gfb0gzotq.png)
+
+### Update deploy script
+
+_.github/workflows/develop.deploy.yml_
+
+```yaml
+name: 'deploy'
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - feature/73
+
+jobs:
+  migrate:
+    runs-on: [self-hosted, develop-vps]
+    environment: dev
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Apply migrations
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          . ~/.nvm/nvm.sh
+          nvm --version
+          nvm install v16.13.2
+          nvm use v16.13.2
+          npm i --force
+          export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
+          export ROOT_POSTGRES_URL=postgres://postgres:${{secrets.ROOT_POSTGRES_PASSWORD}}@${POSTGRES_HOST}:5432/postgres?schema=public
+          export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
+          npm run rucken -- postgres
+          export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
+
+  deploy:
+    needs: [migrate]
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: 'feature/73'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
+          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
+```
+
+### Update flyway config for support change host name
+
+_.flyway.js_
+
+```js
+...
+const cs = new ConnectionString(
+  (process.env.POSTGRES_URL || process.env.DATABASE_URL).replace(
+    '${POSTGRES_HOST}',
+    process.env['POSTGRES_HOST']
+  )
+);
+...
+```
+
+![Update flyway config for support change host name](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/35zimt2606u2z74xw40h.png)
+
+### Check deploy in Github UI
+
+After apply migartions and deploy you see result in Github UI
+
+https://github.com/EndyKaufman/kaufman-bot/actions/runs/2044314338
+![After apply migartions and deploy you see result in Github UI](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rm93bxi7uy0n8l9y6agt.png)
+
+For see complete of migrations expand needed step of job
+
+https://github.com/EndyKaufman/kaufman-bot/runs/5702849615?check_suite_focus=true
+![For see complete of migrations expand needed step of job](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xnrbtymhi35w99i6q3jy.png)
+
+## Check database in vps server
+
+Connect to database
+
+> dokku postgres:connect global-postgres
+> ![Connect to database](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x0tpgsk9x1hr7u36yqup.png)
+
+Switch database
+
+> \connect kaufman_bot_develop
+
+Select telegram users
+
+> select \* from "User";
+
+```sh
+root@vps17825:~# dokku postgres:connect global-postgres
+psql (13.3 (Debian 13.3-1.pgdg100+1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+global_postgres=# \connect kaufman_bot_develop
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+You are now connected to database "kaufman_bot_develop" as user "postgres".
+kaufman_bot_develop=# select * from "User";
+                  id                  | telegramId | langCode
+--------------------------------------+------------+----------
+ 7fa21a25-60a9-4d69-86d9-13770bd467fd | testId     | en
+(1 row)
+```
+
+![Check database in vps server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3pn69n3q2i8yzh30dndl.png)
+
+In the next post, I will add prisma to the project to save the user's language to the database...
+
+#kaufmanbot #postgres #github #migrations
