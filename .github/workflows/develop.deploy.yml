@@ -1,4 +1,4 @@
-name: 'deploy'
+name: "deploy"
 
 # yamllint disable-line rule:truthy
 on:
@@ -19,6 +19,30 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: 'feature/73'
-          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
+          branch: "feature/73"
+          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/kaufman-bot"
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
+
+  migrate:
+    runs-on: [self-hosted, develop-vps]
+    environment: dev
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Detect internal database ip
+        run: export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
+
+      - name: Create connection string for root database
+        run: export ROOT_POSTGRES_URL=postgres://postgres:${{secrets.ROOT_POSTGRES_PASSWORD}}@${POSTGRES_HOST}:5432/postgres?schema=public
+
+      - name: Create connection string for server application database
+        run: export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
+
+      - name: Create all nx application databases
+        run: npm run rucken -- postgres
+
+      - name: Apply migrations for server database
+        run: export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
