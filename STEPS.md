@@ -5769,6 +5769,7 @@ export class LanguageSwitherService
 _docker/dev/docker-compose.yml_
 
 ```yaml
+
 ---
 kaufman-bot-server:
   image: node:16-alpine
@@ -5921,6 +5922,40 @@ jobs:
           git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
 ```
+
+## Check database in vps server
+
+Connect to database
+
+> dokku postgres:connect global-postgres
+> ![Connect to database](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x0tpgsk9x1hr7u36yqup.png)
+
+Switch database
+
+> \connect kaufman_bot_develop
+
+Select telegram users
+
+> select \* from "User";
+
+```sh
+root@vps17825:~# dokku postgres:connect global-postgres
+psql (13.3 (Debian 13.3-1.pgdg100+1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+global_postgres=# \connect kaufman_bot_develop
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+You are now connected to database "kaufman_bot_develop" as user "postgres".
+kaufman_bot_develop=# select * from "User";
+                  id                  | telegramId | langCode
+--------------------------------------+------------+----------
+ 7fa21a25-60a9-4d69-86d9-13770bd467fd | testId     | en
+ 99ea4d90-04a9-4d69-9a74-0eff06823f3a | 102375526  | ru
+(2 rows)
+```
+
+![Check database in vps server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h3sejc73zdfd5k9rl98u.png)
 
 In the next post, I will add a module for debugging messages in admin mode and user mode...
 
