@@ -70,7 +70,9 @@
     "off": "выключить",
     "on": "включить",
     "state": "состояние",
-    "debug help": "отладка помощь"
+    "debug help": "отладка помощь",
+    "disabled": "выключено",
+    "enabled": "включено"
   },
   "debug-messages-server": {}
 }

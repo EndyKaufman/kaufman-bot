@@ -187,7 +187,7 @@ export class DebugMessagesService
       return this.translatesService.translate(
         getText(`debug: {{debugMode}}`),
         locale,
-        { debugMode: debugMode ? 'enable' : 'disable' }
+        { debugMode: debugMode ? getText('enabled') : getText('disabled') }
       );
     }
     return msg;

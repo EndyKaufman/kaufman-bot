@@ -13,5 +13,7 @@
   "off": "off",
   "on": "on",
   "state": "state",
-  "debug help": "debug help"
+  "debug help": "debug help",
+  "disabled": "disabled",
+  "enabled": "enabled"
 }
