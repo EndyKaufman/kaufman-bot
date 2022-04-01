@@ -1,0 +1,16 @@
+{
+  "Commands for enable and disable debug mode": "Commands for enable and disable debug mode",
+  "debug": "debug",
+  "debug already disabled": "debug already disabled",
+  "debug already enabled": "debug already enabled",
+  "debug disabled": "debug disabled",
+  "debug enabled": "debug enabled",
+  "Debug messages": "Debug messages",
+  "debug off": "debug off",
+  "debug on": "debug on",
+  "debug state": "debug state",
+  "debug: {{debugMode}}": "debug: {{debugMode}}",
+  "off": "off",
+  "on": "on",
+  "state": "state"
+}

@@ -19,32 +19,32 @@ export class AppService {
 
   @Start()
   async startCommand(ctx: Context) {
-    await ctx.reply('Welcome');
+    await this.botСommandsService.process(ctx, () => ctx.reply('Welcome'));
   }
 
   @On('sticker')
-  async onSticker(ctx: Context) {
-    await ctx.reply('👍');
+  async onSticker(ctx) {
+    await this.botСommandsService.process(ctx, () => ctx.reply('👍'));
   }
 
   @Hears('hi')
   async hearsHi(ctx: Context) {
-    await ctx.reply('Hey there');
+    await this.botСommandsService.process(ctx, () => ctx.reply('Hey there'));
   }
 
   @On('text')
   async onMessage(ctx) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
-    const result = await this.botСommandsService.onMessage(msg);
+    const result = await this.botСommandsService.onMessage(msg, ctx);
     if (result?.type === 'message') {
       msg = result.message;
     }
     if (result?.type === 'markdown') {
-      ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+      await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
       return;
     }
     if (result?.type === 'text') {
-      ctx.reply(result.text);
+      await ctx.reply(result.text);
       return;
     }
   }

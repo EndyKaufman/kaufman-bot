@@ -28,7 +28,7 @@
     "docker:prod:clean-restart": "npm run docker:prod:clean-down && npm run docker:prod:up",
     "flyway": "flyway -c .flyway.js",
     "migrate": "npm run flyway -- migrate",
-    "migrate:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run migrate",
+    "migrate:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate",
     "prisma": "prisma",
     "prisma:pull": "npm run -- prisma db pull && npm run prisma:generate",
     "prisma:pull:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && export DATABASE_URL=$SERVER_POSTGRES_URL && npm run -- prisma db pull && npm run prisma:generate",

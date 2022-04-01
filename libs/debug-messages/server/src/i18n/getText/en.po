@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-04-01T18:12:53.990Z\n"
+"PO-Revision-Date: 2022-04-01T18:12:53.990Z\n"
+
+msgid "Commands for enable and disable debug mode"
+msgstr "Commands for enable and disable debug mode"
+
+msgid "debug"
+msgstr "debug"
+
+msgid "debug already disabled"
+msgstr "debug already disabled"
+
+msgid "debug already enabled"
+msgstr "debug already enabled"
+
+msgid "debug disabled"
+msgstr "debug disabled"
+
+msgid "debug enabled"
+msgstr "debug enabled"
+
+msgid "Debug messages"
+msgstr "Debug messages"
+
+msgid "debug off"
+msgstr "debug off"
+
+msgid "debug on"
+msgstr "debug on"
+
+msgid "debug state"
+msgstr "debug state"
+
+msgid "debug: {{debugMode}}"
+msgstr "debug: {{debugMode}}"
+
+msgid "off"
+msgstr "off"
+
+msgid "on"
+msgstr "on"
+
+msgid "state"
+msgstr "state"

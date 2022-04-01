@@ -22,9 +22,25 @@ export class BotСommandsService implements BotCommandsProvider {
     private readonly botСommandsToolsService: BotСommandsToolsService
   ) {}
 
+  async process(ctx, defaultHandler?: () => Promise<unknown>) {
+    let msg: BotCommandsProviderActionMsg = ctx.update.message;
+    const result = await this.onMessage(msg, ctx, defaultHandler);
+    if (result?.type === 'message') {
+      msg = result.message;
+    }
+    if (result?.type === 'markdown') {
+      await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+      return;
+    }
+    if (result?.type === 'text') {
+      await ctx.reply(result.text);
+      return;
+    }
+  }
+
   async onHelp<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
-    ctx?: BotCommandsProviderActionContext
+    ctx: BotCommandsProviderActionContext
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const allResults: string[] = [];
     const len = this.botCommandsProviders.length;
@@ -49,7 +65,8 @@ export class BotСommandsService implements BotCommandsProvider {
 
   async onMessage<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
-    ctx?: BotCommandsProviderActionContext
+    ctx: BotCommandsProviderActionContext,
+    defaultHandler?: () => Promise<unknown>
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
@@ -79,6 +96,11 @@ export class BotСommandsService implements BotCommandsProvider {
       msg,
       ctx
     );
+
+    if (defaultHandler) {
+      await defaultHandler();
+    }
+
     return afterBotCommand.result;
   }
 

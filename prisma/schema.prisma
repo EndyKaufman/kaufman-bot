@@ -9,9 +9,10 @@ datasource db {
 }
 
 model User {
-  id         String @id(map: "PK_USERS") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  telegramId String @unique(map: "UQ_USERS__TELEGRAM_ID") @db.VarChar(64)
-  langCode   String @default("en") @db.VarChar(64)
+  id         String  @id(map: "PK_USERS") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  telegramId String  @unique(map: "UQ_USERS__TELEGRAM_ID") @db.VarChar(64)
+  langCode   String  @default("en") @db.VarChar(64)
+  debugMode  Boolean @default(false)
 }
 
 model migrations {

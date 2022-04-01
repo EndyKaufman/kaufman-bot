@@ -1,0 +1,16 @@
+{
+  "Commands for enable and disable debug mode": "Команды для включения и отключения режима отладки",
+  "debug": "отладка",
+  "debug already disabled": "отладка уже отключена",
+  "debug already enabled": "отладка уже включена",
+  "debug disabled": "отладка отключена",
+  "debug enabled": "отладка включена",
+  "Debug messages": "Отладка сообщения",
+  "debug off": "отладка выключить",
+  "debug on": "отладка включить",
+  "debug state": "отладка состояние",
+  "debug: {{debugMode}}": "состояние отладки: {{debugMode}}",
+  "off": "выключить",
+  "on": "включить",
+  "state": "состояние"
+}

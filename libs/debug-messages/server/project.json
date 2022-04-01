@@ -1,0 +1,23 @@
+{
+  "root": "libs/debug-messages/server",
+  "sourceRoot": "libs/debug-messages/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/debug-messages/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/debug-messages/server"],
+      "options": {
+        "jestConfig": "libs/debug-messages/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -54,5 +54,22 @@
     "locale changed, current locale: \"{{locale}}\"": "язык изменен, текущий язык: {{locale}}",
     "locale \"{{locale}}\" not founded, current locale: \"{{currentLocale}}\"": "язык \"{{locale}}\" не найден, текущий язык: \"{{currentLocale}}\"",
     "to-alt": "на"
-  }
+  },
+  "debug-messages-server-getText": {
+    "Commands for enable and disable debug mode": "Команды для включения и отключения режима отладки",
+    "debug": "отладка",
+    "debug already disabled": "отладка уже отключена",
+    "debug already enabled": "отладка уже включена",
+    "debug disabled": "отладка отключена",
+    "debug enabled": "отладка включена",
+    "Debug messages": "Отладка сообщения",
+    "debug off": "отладка выключить",
+    "debug on": "отладка включить",
+    "debug state": "отладка состояние",
+    "debug: {{debugMode}}": "состояние отладки: {{debugMode}}",
+    "off": "выключить",
+    "on": "включить",
+    "state": "состояние"
+  },
+  "debug-messages-server": {}
 }

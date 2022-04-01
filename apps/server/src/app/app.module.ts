@@ -3,6 +3,7 @@ import {
   PrismaClientModule,
 } from '@kaufman-bot/core/server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
+import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
 import {
   DEFAULT_LANGUAGE,
@@ -41,6 +42,7 @@ import { AppService } from './app.service';
     ),
     BotCommandsModule,
     LanguageSwitherModule.forRoot(),
+    DebugMessagesModule.forRoot(),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
   ],

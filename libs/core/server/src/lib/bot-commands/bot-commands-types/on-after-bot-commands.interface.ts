@@ -1,8 +1,5 @@
 import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
-import {
-  BotCommandsProviderActionContext,
-  BotCommandsProviderActionMsg,
-} from './bot-commands-provider.interface';
+import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface';
 
 export interface OnAfterBotCommands {
   onAfterBotCommands<
@@ -11,6 +8,6 @@ export interface OnAfterBotCommands {
   >(
     result: TResult,
     msg: TMsg,
-    ctx?: BotCommandsProviderActionContext
+    ctx?
   ): Promise<{ result: TResult; msg: TMsg }>;
 }
