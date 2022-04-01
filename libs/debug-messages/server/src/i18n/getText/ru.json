@@ -5,12 +5,13 @@
   "debug already enabled": "отладка уже включена",
   "debug disabled": "отладка отключена",
   "debug enabled": "отладка включена",
-  "Debug messages": "Отладка сообщения",
+  "Debug messages": "Отладка сообщений",
   "debug off": "отладка выключить",
   "debug on": "отладка включить",
   "debug state": "отладка состояние",
   "debug: {{debugMode}}": "состояние отладки: {{debugMode}}",
   "off": "выключить",
   "on": "включить",
-  "state": "состояние"
+  "state": "состояние",
+  "debug help": "отладка помощь"
 }

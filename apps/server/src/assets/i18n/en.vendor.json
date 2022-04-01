@@ -115,7 +115,8 @@
     "debug: {{debugMode}}": "debug: {{debugMode}}",
     "off": "off",
     "on": "on",
-    "state": "state"
+    "state": "state",
+    "debug help": "debug help"
   },
   "debug-messages-server": {
     "Commands for enable and disable debug mode": "Commands for enable and disable debug mode",
@@ -131,6 +132,7 @@
     "debug: {{debugMode}}": "debug: {{debugMode}}",
     "off": "off",
     "on": "on",
-    "state": "state"
+    "state": "state",
+    "debug help": "debug help"
   }
 }

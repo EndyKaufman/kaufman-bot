@@ -6,8 +6,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-04-01T18:18:34.559Z\n"
-"PO-Revision-Date: 2022-04-01T18:18:34.559Z\n"
+"POT-Creation-Date: 2022-04-01T18:42:37.644Z\n"
+"PO-Revision-Date: 2022-04-01T18:42:37.644Z\n"
 
 msgid "Commands for enable and disable debug mode"
 msgstr "Команды для включения и отключения режима отладки"
@@ -28,7 +28,7 @@ msgid "debug enabled"
 msgstr "отладка включена"
 
 msgid "Debug messages"
-msgstr "Отладка сообщения"
+msgstr "Отладка сообщений"
 
 msgid "debug off"
 msgstr "отладка выключить"
@@ -50,3 +50,6 @@ msgstr "включить"
 
 msgid "state"
 msgstr "состояние"
+
+msgid "debug help"
+msgstr "отладка помощь"

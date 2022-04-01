@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-01T18:12:53.990Z\n"
-"PO-Revision-Date: 2022-04-01T18:12:53.990Z\n"
+"POT-Creation-Date: 2022-04-01T18:41:49.766Z\n"
+"PO-Revision-Date: 2022-04-01T18:41:49.766Z\n"
 
 msgid "Commands for enable and disable debug mode"
 msgstr "Commands for enable and disable debug mode"
@@ -49,3 +49,6 @@ msgstr "on"
 
 msgid "state"
 msgstr "state"
+
+msgid "debug help"
+msgstr "debug help"

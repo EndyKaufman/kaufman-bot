@@ -40,6 +40,7 @@ export class DebugMessagesModule {
                   getText('debug on'),
                   getText('debug off'),
                   getText('debug state'),
+                  getText('debug help'),
                 ],
                 descriptions: getText(
                   'Commands for enable and disable debug mode'
