@@ -16,8 +16,7 @@ import {
 } from '../debug-messages-config/debug-messages.config';
 import { DebugMessagesCommandsEnum } from '../debug-messages-types/debug-messages-commands';
 import { DebugMessagesStorage } from './debug-messages.storage';
-
-const DEBUG_MODE = 'debugMode';
+import { DebugService } from './debug.service';
 
 @Injectable()
 export class DebugMessagesService
@@ -30,22 +29,25 @@ export class DebugMessagesService
     private readonly debugMessagesConfig: DebugMessagesConfig,
     private readonly translatesService: TranslatesService,
     private readonly debugMessagesStorage: DebugMessagesStorage,
-    private readonly commandToolsService: BotСommandsToolsService
+    private readonly commandToolsService: BotСommandsToolsService,
+    private readonly debugService: DebugService
   ) {}
 
   async onAfterBotCommands<
-    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg,
-    TResult extends BotCommandsProviderActionResultType<TMsg> = BotCommandsProviderActionResultType<TMsg>
-  >(result: TResult, msg: TMsg, ctx): Promise<{ result: TResult; msg: TMsg }> {
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(
+    result: BotCommandsProviderActionResultType<TMsg>,
+    msg: TMsg,
+    ctx
+  ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { botContext, ...debugData } = msg;
-    if (botContext?.[DEBUG_MODE] && ctx) {
-      ctx.reply(
-        ['```', JSON.stringify(debugData, undefined, 4), '```'].join('\n'),
-        {
-          parse_mode: 'MarkdownV2',
-        }
-      );
-    }
+    this.debugService.sendDebugInfo(
+      msg,
+      ctx,
+      debugData,
+      this.debugMessagesConfig.name
+    );
     return {
       msg,
       result,
@@ -58,11 +60,7 @@ export class DebugMessagesService
     const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
       msg.from?.id
     );
-    if (!msg.botContext) {
-      msg.botContext = {};
-    }
-    msg.botContext[DEBUG_MODE] = debugMode;
-    return msg;
+    return this.debugService.setDebugMode(msg, debugMode);
   }
 
   async onHelp<
@@ -190,6 +188,6 @@ export class DebugMessagesService
         { debugMode: debugMode ? getText('enabled') : getText('disabled') }
       );
     }
-    return msg;
+    return null;
   }
 }

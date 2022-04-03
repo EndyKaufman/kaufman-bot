@@ -31,6 +31,9 @@ jobs:
           export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
           dokku config:set --no-restart kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL
           dokku config:set --no-restart --global POSTGRES_HOST=global-postgres
+          dokku config:set --no-restart kaufman-bot GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json
+          dokku config:set --no-restart kaufman-bot GOOGLE_CREDENTIALS=${{secrets.GOOGLE_CREDENTIALS}}
+          dokku config:set --no-restart kaufman-bot DIALOGFLOW_PROJECT_ID=${{secrets.DIALOGFLOW_PROJECT_ID}}
 
   deploy:
     needs: [migrate]

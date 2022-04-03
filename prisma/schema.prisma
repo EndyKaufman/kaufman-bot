@@ -9,10 +9,11 @@ datasource db {
 }
 
 model User {
-  id         String  @id(map: "PK_USERS") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  telegramId String  @unique(map: "UQ_USERS__TELEGRAM_ID") @db.VarChar(64)
-  langCode   String  @default("en") @db.VarChar(64)
-  debugMode  Boolean @default(false)
+  id                String              @id(map: "PK_USERS") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  telegramId        String              @unique(map: "UQ_USERS__TELEGRAM_ID") @db.VarChar(64)
+  langCode          String              @default("en") @db.VarChar(64)
+  debugMode         Boolean             @default(false)
+  DialogflowSession DialogflowSession[]
 }
 
 model migrations {
@@ -29,4 +30,18 @@ model migrations {
 
   @@index([success], map: "__migrations_s_idx")
   @@map("__migrations")
+}
+
+model DialogflowSession {
+  id                String   @id(map: "PK_DIALOGFLOW_SESSION") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId            String   @db.Uuid
+  projectId         String   @db.VarChar(512)
+  sessionId         String   @db.Uuid
+  requestsMetadata  Json     @default("[]")
+  responsesMetadata Json     @default("[]")
+  createdAt         DateTime @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime @default(now()) @db.Timestamp(6)
+  User              User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_DIALOGFLOW_SESSION__USER_ID")
+
+  @@unique([userId, projectId, sessionId], map: "UQ_DIALOGFLOW_SESSION")
 }

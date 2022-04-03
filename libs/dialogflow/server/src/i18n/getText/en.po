@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-04-03T11:31:49.807Z\n"
+"PO-Revision-Date: 2022-04-03T11:31:49.807Z\n"
+
+msgid "ai"
+msgstr "ai"
+
+msgid "ai hello"
+msgstr "ai hello"
+
+msgid "Commands for process request with Dialogflow intents"
+msgstr "Commands for process request with Dialogflow intents"
+
+msgid "dialog"
+msgstr "dialog"
+
+msgid "dialog hello"
+msgstr "dialog hello"
+
+msgid "Dialogflow"
+msgstr "Dialogflow"
+
+msgid "ai help"
+msgstr "ai help"
+
+msgid "dialog help"
+msgstr "dialog help"

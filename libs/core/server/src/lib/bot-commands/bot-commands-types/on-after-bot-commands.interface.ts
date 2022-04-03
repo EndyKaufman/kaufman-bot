@@ -3,11 +3,11 @@ import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface'
 
 export interface OnAfterBotCommands {
   onAfterBotCommands<
-    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg,
-    TResult extends BotCommandsProviderActionResultType<TMsg> = BotCommandsProviderActionResultType<TMsg>
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(
-    result: TResult,
+    result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg,
-    ctx?
-  ): Promise<{ result: TResult; msg: TMsg }>;
+    ctx?,
+    defaultHandler?: () => Promise<unknown>
+  ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }>;
 }

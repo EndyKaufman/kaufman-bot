@@ -6966,6 +6966,6 @@ Answer
 For emoji used top app handler
 ![For emoji used top app handler](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z17c6ex9ec40bgrapu86.png)
 
-In the next post, I will add a module for process unhandled message with dialogwlow ai...
+In the next post, I will add a module for process unhandled message with Dialogflow API...
 
 #kaufmanbot #nestjs #debug #telegram

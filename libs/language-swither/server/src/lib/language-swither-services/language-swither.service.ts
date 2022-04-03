@@ -186,6 +186,6 @@ export class LanguageSwitherService
         { locale }
       );
     }
-    return msg;
+    return null;
   }
 }

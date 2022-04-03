@@ -1,7 +1,4 @@
-import {
-  BotCommandsProviderActionMsg,
-  BotСommandsService,
-} from '@kaufman-bot/core/server';
+import { BotСommandsService } from '@kaufman-bot/core/server';
 import { Injectable, Logger } from '@nestjs/common';
 import { Hears, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
@@ -34,18 +31,6 @@ export class AppService {
 
   @On('text')
   async onMessage(ctx) {
-    let msg: BotCommandsProviderActionMsg = ctx.update.message;
-    const result = await this.botСommandsService.onMessage(msg, ctx);
-    if (result?.type === 'message') {
-      msg = result.message;
-    }
-    if (result?.type === 'markdown') {
-      await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
-      return;
-    }
-    if (result?.type === 'text') {
-      await ctx.reply(result.text);
-      return;
-    }
+    await this.botСommandsService.process(ctx);
   }
 }

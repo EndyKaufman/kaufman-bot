@@ -13,15 +13,17 @@ import {
 } from './debug-messages-config/debug-messages.config';
 import { DebugMessagesService } from './debug-messages-services/debug-messages.service';
 import { DebugMessagesStorage } from './debug-messages-services/debug-messages.storage';
+import { DebugService } from './debug-messages-services/debug.service';
 
 @Module({
   imports: [TranslatesModule, PrismaClientModule, BotCommandsModule],
-  providers: [DebugMessagesStorage],
+  providers: [DebugMessagesStorage, DebugService],
   exports: [
     TranslatesModule,
     PrismaClientModule,
     BotCommandsModule,
     DebugMessagesStorage,
+    DebugService,
   ],
 })
 export class DebugMessagesModule {

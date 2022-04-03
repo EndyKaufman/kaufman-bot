@@ -4,6 +4,7 @@ import {
 } from '@kaufman-bot/core/server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
+import { DialogflowModule } from '@kaufman-bot/dialogflow/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
 import {
   DEFAULT_LANGUAGE,
@@ -45,6 +46,9 @@ import { AppService } from './app.service';
     DebugMessagesModule.forRoot(),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
+    DialogflowModule.forRoot({
+      projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -94,7 +94,8 @@ export class BotСommandsService implements BotCommandsProvider {
     const afterBotCommand = await this.processOnAfterBotCommands(
       result,
       msg,
-      ctx
+      ctx,
+      defaultHandler
     );
 
     if (defaultHandler) {
@@ -117,22 +118,23 @@ export class BotСommandsService implements BotCommandsProvider {
     return msg;
   }
 
-  async processOnAfterBotCommands<
-    TMsg extends BotCommandsProviderActionMsg,
-    TResult extends BotCommandsProviderActionResultType<TMsg> = BotCommandsProviderActionResultType<TMsg>
-  >(
-    result: TResult,
+  async processOnAfterBotCommands<TMsg extends BotCommandsProviderActionMsg>(
+    result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg,
-    ctx?: BotCommandsProviderActionContext
-  ): Promise<{ result: TResult; msg: TMsg }> {
+    ctx?: BotCommandsProviderActionContext,
+    defaultHandler?: () => Promise<unknown>
+  ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
       if (botCommandsProvider.onAfterBotCommands) {
-        const afterBotCommand = await botCommandsProvider.onAfterBotCommands<
-          TMsg,
-          TResult
-        >(result, msg, ctx);
+        const afterBotCommand =
+          await botCommandsProvider.onAfterBotCommands<TMsg>(
+            result,
+            msg,
+            ctx,
+            defaultHandler
+          );
         result = afterBotCommand.result;
         msg = afterBotCommand.msg;
       }

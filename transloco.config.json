@@ -5,6 +5,7 @@
     "libs/core/server",
     "libs/currency-converter/server",
     "libs/debug-messages/server",
+    "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
     "libs/language-swither/server"
@@ -14,6 +15,7 @@
     "libs/core/server",
     "libs/currency-converter/server",
     "libs/debug-messages/server",
+    "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
     "libs/language-swither/server"
