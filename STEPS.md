@@ -8520,3 +8520,266 @@ Show debug information of process
 In the next post, I will add different multilingual settings for facts commands...
 
 #kaufmanbot #nestjs #telegram #dialogflow
+
+# [2022-04-05 15:13] Add different multilingual settings for FactsGeneratorModule in NestJS Telegram bot
+
+##Links
+
+https://github.com/EndyKaufman/kaufman-bot - source code of bot
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+https://dev.to/endykaufman/series/17029 - series about custom injector
+
+## Description of work
+
+The fact generator is based on the ScraperModule, we will not introduce the logic of supporting different configurations for different languages into this module.
+
+For different options for working for different languages, we will add a duplicate ScraperModule import with a different configuration and create a language-specific command handler.
+
+In order for the logic of two different ScraperModules not to overlap, we will wrap its import in CustomInjectorModule.forFeature.
+
+## Update facts-generator
+
+### Create new service for Russian language
+
+_libs/facts-generator/server/src/lib/facts-generator-services/ru-facts-generator.service.ts_
+
+```ts
+import {
+  BotCommandsEnum,
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+  BotСommandsToolsService,
+} from '@kaufman-bot/core/server';
+import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class RuFactsGeneratorService implements BotCommandsProvider {
+  constructor(
+    private readonly scraperService: ScraperService,
+    private readonly botСommandsToolsService: BotСommandsToolsService
+  ) {}
+
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const locale = msg.from?.language_code;
+    if (!locale?.includes('ru')) {
+      return null;
+    }
+    return await this.scraperService.onHelp(msg);
+  }
+
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const locale = msg.from?.language_code;
+    if (!locale?.includes('ru')) {
+      return null;
+    }
+    if (
+      this.botСommandsToolsService.checkCommands(
+        msg.text,
+        [...Object.keys(BotCommandsEnum)],
+        locale
+      )
+    ) {
+      const result = await this.scraperService.onMessage(msg);
+      try {
+        if (result?.type === 'text') {
+          return {
+            type: 'text',
+            text: result.text.split('\\"').join('"').split('\n').join(' '),
+          };
+        }
+        return result;
+      } catch (err) {
+        console.debug(result);
+        console.error(err, err.stack);
+        throw err;
+      }
+    }
+    return null;
+  }
+}
+```
+
+### Update old service for English language
+
+_libs/facts-generator/server/src/lib/facts-generator-services/facts-generator.service.ts_
+
+```ts
+import {
+  BotCommandsEnum,
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+  BotСommandsToolsService,
+} from '@kaufman-bot/core/server';
+import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class FactsGeneratorService implements BotCommandsProvider {
+  constructor(
+    private readonly scraperService: ScraperService,
+    private readonly botСommandsToolsService: BotСommandsToolsService
+  ) {}
+
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const locale = msg.from?.language_code;
+    if (locale?.includes('ru')) {
+      return null;
+    }
+    return await this.scraperService.onHelp(msg);
+  }
+
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const locale = msg.from?.language_code;
+    if (locale?.includes('ru')) {
+      return null;
+    }
+    if (
+      this.botСommandsToolsService.checkCommands(
+        msg.text,
+        [...Object.keys(BotCommandsEnum)],
+        locale
+      )
+    ) {
+      const result = await this.scraperService.onMessage(msg);
+      try {
+        if (result?.type === 'text') {
+          return {
+            type: 'text',
+            text: result.text
+              .replace('\n\nTweet [http://twitter.com/share]', '')
+              .split('\\"')
+              .join('"')
+              .split('\n')
+              .join(' '),
+          };
+        }
+        return result;
+      } catch (err) {
+        console.debug(result);
+        console.error(err, err.stack);
+        throw err;
+      }
+    }
+    return null;
+  }
+}
+```
+
+### Update FactsGeneratorModule
+
+_libs/facts-generator/server/src/lib/facts-generator.module.ts_
+
+```ts
+import {
+  BotCommandsModule,
+  BOT_COMMANDS_PROVIDER,
+} from '@kaufman-bot/core/server';
+import { ScraperModule } from '@kaufman-bot/html-scraper/server';
+import { DynamicModule, Module } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
+import { CustomInjectorModule } from 'nestjs-custom-injector';
+import { TranslatesModule } from 'nestjs-translates';
+import { FactsGeneratorService } from './facts-generator-services/facts-generator.service';
+import { RuFactsGeneratorService } from './facts-generator-services/ru-facts-generator.service';
+
+@Module({
+  imports: [TranslatesModule, BotCommandsModule],
+  exports: [TranslatesModule, BotCommandsModule],
+})
+export class FactsGeneratorModule {
+  static forRoot(): DynamicModule {
+    return {
+      module: FactsGeneratorModule,
+      imports: [
+        CustomInjectorModule.forFeature({
+          imports: [
+            ScraperModule.forRoot({
+              name: getText('Facts generator'),
+              descriptions: getText(
+                'Command to generate text with a random fact'
+              ),
+              usage: [getText('get facts'), getText('facts help')],
+              contentSelector: '#z',
+              spyWords: [getText('facts')],
+              removeWords: [getText('get'), getText('please')],
+              uri: 'http://randomfactgenerator.net/',
+            }),
+          ],
+          providers: [
+            {
+              provide: BOT_COMMANDS_PROVIDER,
+              useClass: FactsGeneratorService,
+            },
+          ],
+          exports: [ScraperModule],
+        }),
+        CustomInjectorModule.forFeature({
+          imports: [
+            ScraperModule.forRoot({
+              name: getText('Facts generator'),
+              descriptions: getText(
+                'Command to generate text with a random fact'
+              ),
+              usage: [getText('get facts'), getText('facts help')],
+              contentSelector: '#fact > table > tbody > tr > td',
+              spyWords: [getText('facts')],
+              removeWords: [getText('get'), getText('please')],
+              uri: 'https://randstuff.ru/fact/',
+              contentCodepage: 'utf8',
+            }),
+          ],
+          providers: [
+            {
+              provide: BOT_COMMANDS_PROVIDER,
+              useClass: RuFactsGeneratorService,
+            },
+          ],
+          exports: [ScraperModule],
+        }),
+      ],
+    };
+  }
+}
+```
+
+## Prepare files and append translates if need
+
+> npm run generate
+
+Because nothing to changed, we may commit code and test it from telegram
+![nothing to changed](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vf7lm466xicbxfc9wcjn.png)
+
+## Check new logic in telegram bot
+
+### Common help message
+
+![Common help message](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qeyts6n0zi2jfp00h20i.png)
+
+### Common help message in Russian language
+
+![Common help message in Russian language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g8op5b0k3fidqspjarvr.png)
+
+### Get fact in English language
+
+![Get fact in English language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q7ocfamm8vb9a36gg3fz.png)
+
+### Get fact in Russian language
+
+![Get fact in Russian language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z5b38bwr7ohjiro3u1jp.png)
+
+In the next post, I will add people quotes and jokes for English and Russian languages...
+
+#kaufmanbot #nestjs #telegram #facts
