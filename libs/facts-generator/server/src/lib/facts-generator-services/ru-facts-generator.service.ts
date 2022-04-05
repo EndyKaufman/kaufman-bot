@@ -9,7 +9,7 @@ import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class FactsGeneratorService implements BotCommandsProvider {
+export class RuFactsGeneratorService implements BotCommandsProvider {
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botСommandsToolsService: BotСommandsToolsService
@@ -19,7 +19,7 @@ export class FactsGeneratorService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     const locale = msg.from?.language_code;
-    if (locale?.includes('ru')) {
+    if (!locale?.includes('ru')) {
       return null;
     }
     return await this.scraperService.onHelp(msg);
@@ -29,7 +29,7 @@ export class FactsGeneratorService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = msg.from?.language_code;
-    if (locale?.includes('ru')) {
+    if (!locale?.includes('ru')) {
       return null;
     }
     if (
@@ -44,12 +44,7 @@ export class FactsGeneratorService implements BotCommandsProvider {
         if (result?.type === 'text') {
           return {
             type: 'text',
-            text: result.text
-              .replace('\n\nTweet [http://twitter.com/share]', '')
-              .split('\\"')
-              .join('"')
-              .split('\n')
-              .join(' '),
+            text: result.text.split('\\"').join('"').split('\n').join(' '),
           };
         }
         return result;
