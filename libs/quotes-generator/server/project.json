@@ -1,0 +1,23 @@
+{
+  "root": "libs/quotes-generator/server",
+  "sourceRoot": "libs/quotes-generator/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/quotes-generator/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/quotes-generator/server"],
+      "options": {
+        "jestConfig": "libs/quotes-generator/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

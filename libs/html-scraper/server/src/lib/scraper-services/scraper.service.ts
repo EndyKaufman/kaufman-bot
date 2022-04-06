@@ -124,7 +124,7 @@ export class ScraperService implements BotCommandsProvider {
     // Helper functions to get a random item from an array
     const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
-    const headers = [
+    const headers = this.scraperConfig.headers || [
       {
         Accept:
           'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',

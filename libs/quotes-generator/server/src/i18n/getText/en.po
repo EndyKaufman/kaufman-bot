@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-04-06T05:01:10.892Z\n"
+"PO-Revision-Date: 2022-04-06T05:01:10.892Z\n"
+
+msgid "Command to generate text with a random quotes"
+msgstr "Command to generate text with a random quotes"
+
+msgid "get"
+msgstr "get"
+
+msgid "get quote"
+msgstr "get quote"
+
+msgid "please"
+msgstr "please"
+
+msgid "quote"
+msgstr "quote"
+
+msgid "quotes"
+msgstr "quotes"
+
+msgid "Quotes generator"
+msgstr "Quotes generator"
+
+msgid "quotes help"
+msgstr "quotes help"

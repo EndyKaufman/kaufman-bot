@@ -158,5 +158,25 @@
     "Dialogflow": "Dialogflow",
     "ai help": "ai help",
     "dialog help": "dialog help"
+  },
+  "quotes-generator-server": {
+    "Command to generate text with a random quotes": "Command to generate text with a random quotes",
+    "get": "get",
+    "get quote": "get quote",
+    "please": "please",
+    "quote": "quote",
+    "quotes": "quotes",
+    "Quotes generator": "Quotes generator",
+    "quotes help": "quotes help"
+  },
+  "quotes-generator-server-getText": {
+    "Command to generate text with a random quotes": "Command to generate text with a random quotes",
+    "get": "get",
+    "get quote": "get quote",
+    "please": "please",
+    "quote": "quote",
+    "quotes": "quotes",
+    "Quotes generator": "Quotes generator",
+    "quotes help": "quotes help"
   }
 }

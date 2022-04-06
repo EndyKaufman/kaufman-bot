@@ -11,4 +11,5 @@ export interface ScraperConfig {
   name: string;
   descriptions: string;
   usage: string[];
+  headers?: Record<string, string>[];
 }

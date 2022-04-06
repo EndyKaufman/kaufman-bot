@@ -85,5 +85,16 @@
     "Dialogflow": "Диалоги",
     "ai help": "ии помощь",
     "dialog help": "диалог помощь"
+  },
+  "quotes-generator-server": {},
+  "quotes-generator-server-getText": {
+    "Command to generate text with a random quotes": "Команда для создания текста с случайной цитатой",
+    "get": "дай",
+    "get quote": "дай цитаты",
+    "please": "пожалуйста",
+    "quote": "цитата",
+    "quotes": "цитаты",
+    "Quotes generator": "Генератор цитат",
+    "quotes help": "цитаты помощь"
   }
 }

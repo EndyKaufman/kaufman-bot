@@ -10,6 +10,7 @@ import {
   DEFAULT_LANGUAGE,
   LanguageSwitherModule,
 } from '@kaufman-bot/language-swither/server';
+import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator/server';
 import { Module } from '@nestjs/common';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
@@ -46,6 +47,7 @@ import { AppService } from './app.service';
     DebugMessagesModule.forRoot(),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
+    QuotesGeneratorModule.forRoot(),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),

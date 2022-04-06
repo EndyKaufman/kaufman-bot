@@ -8,7 +8,8 @@
     "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
-    "libs/language-swither/server"
+    "libs/language-swither/server",
+    "libs/quotes-generator/server"
   ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
   "scopedLibs": [
@@ -18,6 +19,7 @@
     "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
-    "libs/language-swither/server"
+    "libs/language-swither/server",
+    "libs/quotes-generator/server"
   ]
 }

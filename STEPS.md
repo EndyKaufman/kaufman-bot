@@ -8783,3 +8783,219 @@ Because nothing to changed, we may commit code and test it from telegram
 In the next post, I will add people quotes and jokes for English and Russian languages...
 
 #kaufmanbot #nestjs #telegram #facts
+
+# [2022-04-06 10:32] Create module for generate random quote of famus people in Telegram bot on NestJS
+
+## Links
+
+https://github.com/EndyKaufman/kaufman-bot - source code of bot
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+https://www.forismatic.com/ - site for generate random quotes in English and Russian languages
+
+## Description of work
+
+If you describe the addition of two modules at once on people's quotes and jokes, a very large post will come out
+
+I decided to split the work into two separate posts
+
+This module is a copy of the fact generator, it just uses another site for data parsing and other settings
+
+This module uses features of the scrapper module that have not been used before:
+
+1. using the user's locale in the page address for parsing
+2. multiple element selector
+3. modification of pre-installed anti anti ddos headers
+
+## Create QuoteModule
+
+### Add new library plugins
+
+> npm run -- nx g @nrwl/nest:lib quotes-generator/server
+
+```ts
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ npm run -- nx g @nrwl/nest:lib quotes-generator/server
+
+> kaufman-bot@0.0.0 nx
+> nx "g" "@nrwl/nest:lib" "quotes-generator/server"
+
+CREATE libs/quotes-generator/server/README.md
+CREATE libs/quotes-generator/server/.babelrc
+CREATE libs/quotes-generator/server/src/index.ts
+CREATE libs/quotes-generator/server/tsconfig.json
+CREATE libs/quotes-generator/server/tsconfig.lib.json
+UPDATE tsconfig.base.json
+CREATE libs/quotes-generator/server/project.json
+UPDATE workspace.json
+CREATE libs/quotes-generator/server/.eslintrc.json
+CREATE libs/quotes-generator/server/jest.config.js
+CREATE libs/quotes-generator/server/tsconfig.spec.json
+CREATE libs/quotes-generator/server/src/lib/quotes-generator-server.module.ts
+```
+
+![npm run -- nx g @nrwl/nest:lib quotes-generator/server](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/69mau8eegthlkm66ylm9.png)
+
+### Add QuotesGeneratorService
+
+_libs/quotes-generator/server/src/lib/quotes-generator-services/quotes-generator.service.ts_
+
+```ts
+import {
+  BotCommandsEnum,
+  BotCommandsProvider,
+  BotCommandsProviderActionMsg,
+  BotCommandsProviderActionResultType,
+  BotСommandsToolsService,
+} from '@kaufman-bot/core/server';
+import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class QuotesGeneratorService implements BotCommandsProvider {
+  constructor(
+    private readonly scraperService: ScraperService,
+    private readonly botСommandsToolsService: BotСommandsToolsService
+  ) {}
+
+  async onHelp<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    return await this.scraperService.onHelp(msg);
+  }
+
+  async onMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    let locale = msg.from?.language_code;
+    if (!locale?.includes('ru') || !locale?.includes('en')) {
+      locale = 'en';
+    }
+    if (
+      this.botСommandsToolsService.checkCommands(
+        msg.text,
+        [...Object.keys(BotCommandsEnum)],
+        locale
+      )
+    ) {
+      const result = await this.scraperService.onMessage(msg);
+      try {
+        if (result?.type === 'text') {
+          return {
+            type: 'text',
+            text: result.text.split('\\"').join('"').split('\n').join(' '),
+          };
+        }
+        return result;
+      } catch (err) {
+        console.debug(result);
+        console.error(err, err.stack);
+        throw err;
+      }
+    }
+    return null;
+  }
+}
+```
+
+### Add QuotesGeneratorModule
+
+_libs/quotes-generator/server/src/lib/quotes-generator.module.ts_
+
+```ts
+import {
+  BotCommandsModule,
+  BOT_COMMANDS_PROVIDER,
+} from '@kaufman-bot/core/server';
+import { ScraperModule } from '@kaufman-bot/html-scraper/server';
+import { DynamicModule, Module } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
+import { TranslatesModule } from 'nestjs-translates';
+import { QuotesGeneratorService } from './quotes-generator-services/quotes-generator.service';
+
+@Module({
+  imports: [TranslatesModule, BotCommandsModule],
+  exports: [TranslatesModule, BotCommandsModule],
+})
+export class QuotesGeneratorModule {
+  static forRoot(): DynamicModule {
+    return {
+      module: QuotesGeneratorModule,
+      imports: [
+        ScraperModule.forRoot({
+          name: getText('Quotes generator'),
+          descriptions: getText(
+            'Command to generate text with a random quotes'
+          ),
+          usage: [getText('get quote'), getText('quotes help')],
+          contentSelector:
+            'forismatic > quote > quotetext, forismatic > quote > quoteauthor',
+          spyWords: [getText('quotes'), getText('quote')],
+          removeWords: [getText('get'), getText('please')],
+          uri: 'https://api.forismatic.com/api/1.0/?method=getQuote&format=xml&lang={{locale}}',
+          contentCodepage: 'utf8',
+          headers: [{}],
+        }),
+      ],
+      providers: [
+        {
+          provide: BOT_COMMANDS_PROVIDER,
+          useClass: QuotesGeneratorService,
+        },
+      ],
+      exports: [ScraperModule],
+    };
+  }
+}
+```
+
+### Prepare files
+
+> npm run generate
+> ![npm run generate](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ziaje76wygxfwjua6012.png)
+
+### Translate all words with po editor
+
+Look list of all dictionaries
+![Look list of all dictionaries](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kk1cqm7msrohb9guefvn.png)
+
+Append all needed translates
+![Append all needed translates](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2jw8w7hof1hbad0fh6gr.png)
+
+### Prepare files for convert po dictionaries to json
+
+> npm run generate
+
+### Add QuotesGeneratorModule to AppModule
+
+_apps/server/src/app/app.module.ts_
+
+```ts
+@Module({
+  imports: [
+    ...
+    QuotesGeneratorModule.forRoot(),
+    ...
+  ],
+  ...
+})
+export class AppModule {}
+```
+
+## Check new logic in telegram bot
+
+### Common help message
+
+![Common help message](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vgdmui5q2nndonq32d96.png)
+
+### Get quotes in English language
+
+![Get quotes in English language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/addt82j2z8oy5btr8r5f.png)
+
+### Get quotes in Russian language
+
+![Get quotes in Russian language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/66efp0pitzf1opmga763.png)
+
+In the next post, I will add people jokes for English and Russian languages...
+
+#kaufmanbot #nestjs #telegram #quotes
