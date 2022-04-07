@@ -178,5 +178,25 @@
     "quotes": "quotes",
     "Quotes generator": "Quotes generator",
     "quotes help": "quotes help"
+  },
+  "jokes-generator-server": {
+    "Command to generate text with a random jokes": "Command to generate text with a random jokes",
+    "get": "get",
+    "get joke": "get joke",
+    "joke": "joke",
+    "jokes": "jokes",
+    "Jokes generator": "Jokes generator",
+    "jokes help": "jokes help",
+    "please": "please"
+  },
+  "jokes-generator-server-getText": {
+    "Command to generate text with a random jokes": "Command to generate text with a random jokes",
+    "get": "get",
+    "get joke": "get joke",
+    "joke": "joke",
+    "jokes": "jokes",
+    "Jokes generator": "Jokes generator",
+    "jokes help": "jokes help",
+    "please": "please"
   }
 }

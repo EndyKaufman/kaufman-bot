@@ -1,0 +1,23 @@
+{
+  "root": "libs/jokes-generator/server",
+  "sourceRoot": "libs/jokes-generator/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/jokes-generator/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/jokes-generator/server"],
+      "options": {
+        "jestConfig": "libs/jokes-generator/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -6,13 +6,16 @@ import {
   BotСommandsToolsService,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Injectable } from '@nestjs/common';
+import { TranslatesStorage } from 'nestjs-translates';
 
 @Injectable()
 export class QuotesGeneratorService implements BotCommandsProvider {
   constructor(
     private readonly scraperService: ScraperService,
-    private readonly botСommandsToolsService: BotСommandsToolsService
+    private readonly botСommandsToolsService: BotСommandsToolsService,
+    private readonly translatesStorage: TranslatesStorage
   ) {}
 
   async onHelp<
@@ -25,8 +28,13 @@ export class QuotesGeneratorService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     let locale = msg.from?.language_code;
-    if (!locale?.includes('ru') && !locale?.includes('en')) {
-      locale = 'en';
+    if (
+      !locale ||
+      !Object.keys(this.translatesStorage.translates).find((key) =>
+        locale?.includes(key)
+      )
+    ) {
+      locale = DEFAULT_LANGUAGE;
     }
     if (
       this.botСommandsToolsService.checkCommands(

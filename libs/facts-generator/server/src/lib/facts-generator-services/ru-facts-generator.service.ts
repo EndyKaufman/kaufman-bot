@@ -8,6 +8,8 @@ import {
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { Injectable } from '@nestjs/common';
 
+const RUSSIAN_LANGUAGE = 'ru';
+
 @Injectable()
 export class RuFactsGeneratorService implements BotCommandsProvider {
   constructor(
@@ -19,7 +21,7 @@ export class RuFactsGeneratorService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     const locale = msg.from?.language_code;
-    if (!locale?.includes('ru')) {
+    if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
     return await this.scraperService.onHelp(msg);
@@ -29,7 +31,7 @@ export class RuFactsGeneratorService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = msg.from?.language_code;
-    if (!locale?.includes('ru')) {
+    if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
     if (

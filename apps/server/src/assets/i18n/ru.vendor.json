@@ -96,5 +96,16 @@
     "quotes": "цитаты",
     "Quotes generator": "Генератор цитат",
     "quotes help": "цитаты помощь"
+  },
+  "jokes-generator-server": {},
+  "jokes-generator-server-getText": {
+    "Command to generate text with a random jokes": "Команда для создания текста с случайной шуткой",
+    "get": "дай",
+    "get joke": "дай шутки",
+    "joke": "шутка",
+    "jokes": "шутки",
+    "Jokes generator": "Генератор шуток",
+    "jokes help": "шутки помощь",
+    "please": "пожалуйста"
   }
 }

@@ -7,6 +7,7 @@
     "dialogflow-server": "libs/dialogflow/server",
     "facts-generator-server": "libs/facts-generator/server",
     "html-scraper-server": "libs/html-scraper/server",
+    "jokes-generator-server": "libs/jokes-generator/server",
     "language-swither-server": "libs/language-swither/server",
     "quotes-generator-server": "libs/quotes-generator/server",
     "server": "apps/server"

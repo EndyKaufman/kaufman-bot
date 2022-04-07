@@ -6,6 +6,7 @@ import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server'
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
 import { DialogflowModule } from '@kaufman-bot/dialogflow/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
+import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator/server';
 import {
   DEFAULT_LANGUAGE,
   LanguageSwitherModule,
@@ -48,6 +49,7 @@ import { AppService } from './app.service';
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),
+    JokesGeneratorModule.forRoot(),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),

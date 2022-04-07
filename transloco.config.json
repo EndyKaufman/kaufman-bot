@@ -8,6 +8,7 @@
     "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
+    "libs/jokes-generator/server",
     "libs/language-swither/server",
     "libs/quotes-generator/server"
   ],
@@ -19,6 +20,7 @@
     "libs/dialogflow/server",
     "libs/facts-generator/server",
     "libs/html-scraper/server",
+    "libs/jokes-generator/server",
     "libs/language-swither/server",
     "libs/quotes-generator/server"
   ]

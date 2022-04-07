@@ -7,37 +7,37 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInjectorModule } from 'nestjs-custom-injector';
 import { TranslatesModule } from 'nestjs-translates';
-import { FactsGeneratorService } from './facts-generator-services/facts-generator.service';
-import { RuFactsGeneratorService } from './facts-generator-services/ru-facts-generator.service';
+import { JokesGeneratorService } from './jokes-generator-services/jokes-generator.service';
+import { RuJokesGeneratorService } from './jokes-generator-services/ru-jokes-generator.service';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
   exports: [TranslatesModule, BotCommandsModule],
 })
-export class FactsGeneratorModule {
+export class JokesGeneratorModule {
   static forRoot(): DynamicModule {
     return {
-      module: FactsGeneratorModule,
+      module: JokesGeneratorModule,
       imports: [
         CustomInjectorModule.forFeature({
           imports: [
             ScraperModule.forRoot({
-              name: getText('Facts generator'),
+              name: getText('Jokes generator'),
               descriptions: getText(
-                'Command to generate text with a random fact'
+                'Command to generate text with a random jokes'
               ),
-              usage: [getText('get facts'), getText('facts help')],
-              contentSelector: '#fact > table > tbody > tr > td',
-              spyWords: [getText('facts')],
+              usage: [getText('get joke'), getText('jokes help')],
+              contentSelector: '#joke > table > tbody > tr > td',
+              spyWords: [getText('jokes'), getText('joke')],
               removeWords: [getText('get'), getText('please')],
-              uri: 'https://randstuff.ru/fact/',
+              uri: 'https://randstuff.ru/joke/',
               contentCodepage: 'utf8',
             }),
           ],
           providers: [
             {
               provide: BOT_COMMANDS_PROVIDER,
-              useClass: RuFactsGeneratorService,
+              useClass: RuJokesGeneratorService,
             },
           ],
           exports: [ScraperModule],
@@ -45,21 +45,22 @@ export class FactsGeneratorModule {
         CustomInjectorModule.forFeature({
           imports: [
             ScraperModule.forRoot({
-              name: getText('Facts generator'),
+              name: getText('Jokes generator'),
               descriptions: getText(
-                'Command to generate text with a random fact'
+                'Command to generate text with a random jokes'
               ),
-              usage: [getText('get facts'), getText('facts help')],
-              contentSelector: '#z',
-              spyWords: [getText('facts')],
+              usage: [getText('get joke'), getText('jokes help')],
+              contentSelector: 'data > joke',
+              spyWords: [getText('jokes'), getText('joke')],
               removeWords: [getText('get'), getText('please')],
-              uri: 'http://randomfactgenerator.net/',
+              uri: 'https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single&format=xml',
+              contentCodepage: 'utf8',
             }),
           ],
           providers: [
             {
               provide: BOT_COMMANDS_PROVIDER,
-              useClass: FactsGeneratorService,
+              useClass: JokesGeneratorService,
             },
           ],
           exports: [ScraperModule],

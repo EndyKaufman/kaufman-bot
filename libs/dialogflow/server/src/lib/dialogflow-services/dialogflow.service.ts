@@ -8,7 +8,9 @@ import {
   OnAfterBotCommands,
 } from '@kaufman-bot/core/server';
 import { DebugService } from '@kaufman-bot/debug-messages/server';
+import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { TranslatesStorage } from 'nestjs-translates';
 import { v4 } from 'uuid';
 import {
   DialogflowConfig,
@@ -27,7 +29,8 @@ export class DialogflowService
     private readonly dialogflowConfig: DialogflowConfig,
     private readonly dialogflowStorage: DialogflowStorage,
     private readonly botСommandsToolsService: BotСommandsToolsService,
-    private readonly debugService: DebugService
+    private readonly debugService: DebugService,
+    private readonly translatesStorage: TranslatesStorage
   ) {}
 
   async onAfterBotCommands<
@@ -78,7 +81,15 @@ export class DialogflowService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = msg.from?.language_code || 'en';
+    let locale = msg.from?.language_code;
+    if (
+      !locale ||
+      !Object.keys(this.translatesStorage.translates).find((key) =>
+        locale?.includes(key)
+      )
+    ) {
+      locale = DEFAULT_LANGUAGE;
+    }
 
     const spyWord = this.dialogflowConfig.spyWords.find((spyWord) =>
       this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)

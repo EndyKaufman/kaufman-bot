@@ -7,9 +7,10 @@ import {
   OnAfterBotCommands,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
+import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
-import { TranslatesService } from 'nestjs-translates';
+import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
   DebugMessagesConfig,
   DEBUG_MESSAGES_CONFIG,
@@ -30,7 +31,8 @@ export class DebugMessagesService
     private readonly translatesService: TranslatesService,
     private readonly debugMessagesStorage: DebugMessagesStorage,
     private readonly commandToolsService: BotСommandsToolsService,
-    private readonly debugService: DebugService
+    private readonly debugService: DebugService,
+    private readonly translatesStorage: TranslatesStorage
   ) {}
 
   async onAfterBotCommands<
@@ -75,8 +77,15 @@ export class DebugMessagesService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = msg.from?.language_code || 'en';
-
+    let locale = msg.from?.language_code;
+    if (
+      !locale ||
+      !Object.keys(this.translatesStorage.translates).find((key) =>
+        locale?.includes(key)
+      )
+    ) {
+      locale = DEFAULT_LANGUAGE;
+    }
     const spyWord = this.debugMessagesConfig.spyWords.find((spyWord) =>
       this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
     );
@@ -185,7 +194,11 @@ export class DebugMessagesService
       return this.translatesService.translate(
         getText(`debug: {{debugMode}}`),
         locale,
-        { debugMode: debugMode ? getText('enabled') : getText('disabled') }
+        {
+          debugMode: debugMode
+            ? this.translatesService.translate(getText('enabled'), locale)
+            : this.translatesService.translate(getText('disabled'), locale),
+        }
       );
     }
     return null;
