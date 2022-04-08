@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
+import {
+  BotCommandsConfig,
+  BOT_COMMANDS_CONFIG,
+} from '../bot-commands-config/bot-commands.config';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
 import {
@@ -10,31 +14,61 @@ import {
 } from '../bot-commands-types/bot-commands-provider.interface';
 import { OnAfterBotCommands } from '../bot-commands-types/on-after-bot-commands.interface';
 import { OnBeforeBotCommands } from '../bot-commands-types/on-before-bot-commands.interface';
+import { OnContextBotCommands } from '../bot-commands-types/on-context-bot-commands.interface';
 import { BotСommandsToolsService } from './bot-commands-tools.service';
+
+const DEFAULT_MAX_RECURSIVE_DEPTH = 5;
 @Injectable()
 export class BotСommandsService implements BotCommandsProvider {
+  lastBotCommandRequests: {
+    [telegramUserId: string]: {
+      botCommandHandlerId: string;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      botCommandHandlerContext: Record<string, any>;
+      request: string;
+      response: BotCommandsProviderActionResultType<unknown>;
+    } | null;
+  } = {};
+
   @CustomInject(BOT_COMMANDS_PROVIDER, { multi: true })
   private botCommandsProviders!: (BotCommandsProvider &
     Partial<OnBeforeBotCommands> &
-    Partial<OnAfterBotCommands>)[];
+    Partial<OnAfterBotCommands> &
+    Partial<OnContextBotCommands>)[];
 
   constructor(
+    @Inject(BOT_COMMANDS_CONFIG)
+    private readonly botCommandsConfig: BotCommandsConfig | undefined,
     private readonly botСommandsToolsService: BotСommandsToolsService
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
-    const result = await this.onMessage(msg, ctx, defaultHandler);
-    if (result?.type === 'message') {
-      msg = result.message;
-    }
-    if (result?.type === 'markdown') {
-      await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
-      return;
-    }
-    if (result?.type === 'text') {
-      await ctx.reply(result.text);
-      return;
+
+    let recursiveDepth = 1;
+    while (
+      recursiveDepth > 0 &&
+      recursiveDepth <=
+        (this.botCommandsConfig?.maxRecursiveDepth ||
+          DEFAULT_MAX_RECURSIVE_DEPTH)
+    ) {
+      const result = await this.onMessage(msg, ctx, defaultHandler);
+
+      if (result?.type === 'message') {
+        msg = result.message;
+      }
+      if (result?.type === 'markdown') {
+        await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+      }
+      if (result?.type === 'text') {
+        await ctx.reply(result.text);
+      }
+
+      if (result?.recursive) {
+        recursiveDepth++;
+      } else {
+        recursiveDepth = 0;
+      }
     }
   }
 
@@ -42,8 +76,13 @@ export class BotСommandsService implements BotCommandsProvider {
     msg: TMsg,
     ctx: BotCommandsProviderActionContext
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    this.initBotCommandHandlerId();
+
     const allResults: string[] = [];
     const len = this.botCommandsProviders.length;
+
+    let allContext: Record<string, unknown> = {};
+
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
 
@@ -51,15 +90,19 @@ export class BotСommandsService implements BotCommandsProvider {
 
       if (result !== null && result.type === 'text') {
         allResults.push(result.text);
+        allContext = { ...allContext, ...(result.context || {}) };
       }
 
       if (result !== null && result.type === 'markdown') {
         allResults.push(result.markdown);
+        allContext = { ...allContext, ...(result.context || {}) };
       }
     }
     return {
       type: 'markdown',
+      message: msg,
       markdown: allResults.join('\n\n'),
+      context: allContext,
     };
   }
 
@@ -68,17 +111,14 @@ export class BotСommandsService implements BotCommandsProvider {
     ctx: BotCommandsProviderActionContext,
     defaultHandler?: () => Promise<unknown>
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    let result: BotCommandsProviderActionResultType<TMsg> = null;
+
+    this.initBotCommandHandlerId();
+
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    const len = this.botCommandsProviders.length;
-    let result: BotCommandsProviderActionResultType<TMsg> = null;
-    for (let i = 0; i < len; i++) {
-      if (!result) {
-        const botCommandsProvider = this.botCommandsProviders[i];
-
-        result = await botCommandsProvider.onMessage(msg, ctx);
-      }
-    }
+    result = await this.processOnMessage(result, msg, ctx);
+    result = await this.processOnContext(result, msg, ctx);
 
     if (
       result === null &&
@@ -140,5 +180,82 @@ export class BotСommandsService implements BotCommandsProvider {
       }
     }
     return { result, msg };
+  }
+
+  private async initBotCommandHandlerId() {
+    const len = this.botCommandsProviders.length;
+    for (let i = 0; i < len; i++) {
+      if (!this.botCommandsProviders[i].botCommandHandlerId) {
+        this.botCommandsProviders[i].botCommandHandlerId = i.toString();
+      }
+    }
+  }
+
+  private async processOnMessage<TMsg extends BotCommandsProviderActionMsg>(
+    result: BotCommandsProviderActionResultType<TMsg>,
+    msg: TMsg,
+    ctx: BotCommandsProviderActionContext
+  ) {
+    const len = this.botCommandsProviders.length;
+    msg.botCommandHandlerId = null;
+    for (let i = 0; i < len; i++) {
+      if (!result) {
+        result = await this.botCommandsProviders[i].onMessage(msg, ctx);
+        if (result) {
+          msg.botCommandHandlerId =
+            this.botCommandsProviders[i].botCommandHandlerId || i.toString();
+        }
+      }
+    }
+    return result;
+  }
+
+  private async processOnContext<TMsg extends BotCommandsProviderActionMsg>(
+    result: BotCommandsProviderActionResultType<TMsg>,
+    msg: TMsg,
+    ctx: BotCommandsProviderActionContext
+  ) {
+    if (
+      msg.botCommandHandlerId === null &&
+      this.lastBotCommandRequests[msg.from.id] &&
+      result === null
+    ) {
+      const len = this.botCommandsProviders.length;
+      for (let i = 0; i < len; i++) {
+        const botCommandsProvider = this.botCommandsProviders[i];
+        if (
+          !result &&
+          this.lastBotCommandRequests[msg.from.id]?.botCommandHandlerId ===
+            botCommandsProvider.botCommandHandlerId &&
+          botCommandsProvider.onContextBotCommands
+        ) {
+          msg.botCommandHandlerContext =
+            this.lastBotCommandRequests[msg.from.id]
+              ?.botCommandHandlerContext || {};
+          result = await botCommandsProvider.onContextBotCommands(msg, ctx);
+          if (result && botCommandsProvider.botCommandHandlerId) {
+            msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
+          }
+        }
+      }
+      if (!result) {
+        this.lastBotCommandRequests[msg.from.id] = null;
+      }
+    }
+    if (result && msg.botCommandHandlerId) {
+      this.lastBotCommandRequests[msg.from.id] = {
+        botCommandHandlerId: msg.botCommandHandlerId,
+        request: msg.text,
+        response: result,
+        botCommandHandlerContext: {
+          ...(this.lastBotCommandRequests[msg.from.id]
+            ?.botCommandHandlerContext || {}),
+          ...result.context,
+        },
+      };
+    } else {
+      this.lastBotCommandRequests[msg.from.id] = null;
+    }
+    return result;
   }
 }

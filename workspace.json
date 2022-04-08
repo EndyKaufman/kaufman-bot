@@ -10,6 +10,7 @@
     "jokes-generator-server": "libs/jokes-generator/server",
     "language-swither-server": "libs/language-swither/server",
     "quotes-generator-server": "libs/quotes-generator/server",
-    "server": "apps/server"
+    "server": "apps/server",
+    "short-commands-server": "libs/short-commands/server"
   }
 }

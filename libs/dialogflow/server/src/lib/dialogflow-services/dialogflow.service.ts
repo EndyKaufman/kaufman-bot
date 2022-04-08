@@ -104,12 +104,13 @@ export class DialogflowService
       ) {
         return {
           type: 'markdown',
-          markdown: this.botСommandsToolsService.generateHelpMessage(
+          message: msg,
+          markdown: this.botСommandsToolsService.generateHelpMessage({
             locale,
-            this.dialogflowConfig.name,
-            this.dialogflowConfig.descriptions,
-            this.dialogflowConfig.usage
-          ),
+            name: this.dialogflowConfig.title,
+            descriptions: this.dialogflowConfig.descriptions,
+            usage: this.dialogflowConfig.usage,
+          }),
         };
       }
 
@@ -124,6 +125,7 @@ export class DialogflowService
       if (typeof processedMsg === 'string') {
         return {
           type: 'text',
+          message: msg,
           text: processedMsg,
         };
       }

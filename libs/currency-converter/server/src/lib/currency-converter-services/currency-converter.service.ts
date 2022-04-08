@@ -25,6 +25,7 @@ export class CurrencyConverterService implements BotCommandsProvider {
     ) {
       return {
         type: 'text',
+        message: msg,
         text: result.text.split(' ')[0],
       };
     }

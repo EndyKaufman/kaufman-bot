@@ -12,26 +12,57 @@ export class BotСommandsToolsService {
     private readonly translatesService: TranslatesService
   ) {}
 
-  generateHelpMessage(
-    locale: string,
-    name: string,
-    descriptions: string,
-    usage: string[]
-  ) {
+  generateHelpMessage({
+    locale,
+    name,
+    descriptions,
+    usage,
+    contextUsage,
+  }: {
+    locale: string;
+    name: string;
+    descriptions: string;
+    usage: string[];
+    contextUsage?: string[];
+  }) {
     const usageWithLocalized = Array.from(
-      new Set([
-        ...usage,
-        ...usage.map((u) => this.translatesService.translate(u, locale)),
-      ])
+      new Set(
+        [
+          ...usage,
+          ...usage.map((u) => this.translatesService.translate(u, locale)),
+        ].filter(Boolean)
+      )
     );
+    const contextUsageWithLocalized = contextUsage
+      ? Array.from(
+          new Set(
+            [
+              ...contextUsage,
+              ...contextUsage.map((u) =>
+                this.translatesService.translate(u, locale)
+              ),
+            ].filter(Boolean)
+          )
+        )
+      : null;
     const replayHelpMessage = [
-      `__${this.translatesService.translate(name, locale)}__`,
-      this.translatesService.translate(descriptions, locale),
+      name ? `__${this.translatesService.translate(name, locale)}__` : '',
+      descriptions
+        ? this.translatesService.translate(descriptions, locale)
+        : '',
       `${this.translatesService.translate(
         getText('usage'),
         locale
       )}: ${usageWithLocalized.map((u) => `_${u}_`).join(', ')}`,
-    ].join('\n');
+      contextUsageWithLocalized
+        ? `${this.translatesService.translate(
+            getText('usage with context'),
+            locale
+          )}: ${contextUsageWithLocalized.map((u) => `_${u}_`).join(', ')}`
+        : '',
+    ]
+      .filter(Boolean)
+      .join('\n');
     return replayHelpMessage;
   }
 
@@ -104,8 +135,10 @@ export class BotСommandsToolsService {
   }
 
   checkCommands(text: string, commands: string[], locale?: string) {
-    const lowerCasedText = (text || '').toLowerCase();
-    const lowerCasedCommands = commands.map((c) => c.toLowerCase());
+    const lowerCasedText = (text || '').toLowerCase().split('ё').join('е');
+    const lowerCasedCommands = commands
+      .map((c) => c.toLowerCase().split('ё').join('е').split('|'))
+      .reduce((acc, val) => acc.concat(val), []);
     if (
       lowerCasedCommands.find(
         (command) =>
@@ -118,10 +151,43 @@ export class BotСommandsToolsService {
     if (
       lowerCasedCommands.find(
         (command) =>
-          lowerCasedText.includes(this.translateByLowerCase(command, locale)) ||
           lowerCasedText.includes(
-            `/${this.translateByLowerCase(command, locale)}`
+            this.translateByLowerCase(command, locale).split('ё').join('е')
+          ) ||
+          lowerCasedText.includes(
+            `/${this.translateByLowerCase(command, locale)
+              .split('ё')
+              .join('е')}`
           )
+      )
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  checkFullmatchCommands(text: string, commands: string[], locale?: string) {
+    const lowerCasedText = (text || '').toLowerCase().split('ё').join('е');
+    const lowerCasedCommands = commands
+      .map((c) => c.toLowerCase().split('ё').join('е').split('|'))
+      .reduce((acc, val) => acc.concat(val), []);
+    if (
+      lowerCasedCommands.find(
+        (command) =>
+          lowerCasedText === command || lowerCasedText === `/${command}`
+      )
+    ) {
+      return true;
+    }
+    if (
+      lowerCasedCommands.find(
+        (command) =>
+          lowerCasedText ===
+            this.translateByLowerCase(command, locale).split('ё').join('е') ||
+          lowerCasedText ===
+            `/${this.translateByLowerCase(command, locale)
+              .split('ё')
+              .join('е')}`
       )
     ) {
       return true;

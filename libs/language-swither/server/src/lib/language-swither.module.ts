@@ -35,7 +35,8 @@ export class LanguageSwitherModule {
             {
               provide: LANGUAGE_SWITHER_CONFIG,
               useValue: <LanguageSwitherConfig>{
-                name: getText('Language swither'),
+                title: getText('Language swither'),
+                name: 'locale',
                 usage: [
                   getText('my locale'),
                   getText('change locale to ru'),

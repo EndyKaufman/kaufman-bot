@@ -4,6 +4,7 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotСommandsToolsService,
+  OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
@@ -12,12 +13,21 @@ import { TranslatesStorage } from 'nestjs-translates';
 
 const RUSSIAN_LANGUAGE = 'ru';
 @Injectable()
-export class FactsGeneratorService implements BotCommandsProvider {
+export class FactsGeneratorService
+  implements BotCommandsProvider, OnContextBotCommands
+{
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botСommandsToolsService: BotСommandsToolsService,
     private readonly translatesStorage: TranslatesStorage
   ) {}
+
+  async onContextBotCommands<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const contextMsg = await this.scraperService.onContextBotCommands(msg);
+    return contextMsg ? this.onMessage(contextMsg.message) : null;
+  }
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
@@ -53,6 +63,7 @@ export class FactsGeneratorService implements BotCommandsProvider {
         if (result?.type === 'text') {
           return {
             type: 'text',
+            message: msg,
             text: result.text
               .replace('\n\nTweet [http://twitter.com/share]', '')
               .split('\\"')

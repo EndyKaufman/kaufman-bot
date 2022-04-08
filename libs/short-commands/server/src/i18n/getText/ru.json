@@ -1,0 +1,11 @@
+{
+  "aliases": "синонимы",
+  "command": "команда",
+  "Short commands": "Короткие команды",
+  "Shortened versions of commands for quick launch": "Сокращённые версии команд для быстрого запуска",
+  "alias": "синоним",
+  "scmd": "кмд",
+  "scmd help": "кмд помощь",
+  "scmd state": "кмд состяние",
+  "List of short commands:": "Список коротких команд:"
+}

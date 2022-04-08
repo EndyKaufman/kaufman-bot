@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-04-08T17:58:10.160Z\n"
+"PO-Revision-Date: 2022-04-08T17:58:10.160Z\n"
+
+msgid "aliases"
+msgstr "aliases"
+
+msgid "command"
+msgstr "command"
+
+msgid "Short commands"
+msgstr "Short commands"
+
+msgid "Shortened versions of commands for quick launch"
+msgstr "Shortened versions of commands for quick launch"
+
+msgid "alias"
+msgstr "alias"
+
+msgid "scmd"
+msgstr "scmd"
+
+msgid "scmd help"
+msgstr "scmd help"
+
+msgid "scmd state"
+msgstr "scmd state"
+
+msgid "List of short commands:"
+msgstr "List of short commands:"

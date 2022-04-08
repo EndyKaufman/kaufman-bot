@@ -7,7 +7,9 @@
   "core-server-getText": {
     "usage": "использование",
     "get": "дай",
-    "help": "помощь"
+    "help": "помощь",
+    "state": "состояние",
+    "usage with context": "использование с контекстом"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
@@ -17,20 +19,26 @@
     "converter help": "конвертер помощь",
     "Currency converter": "Конвертер валют",
     "please": "пожалуйста",
-    "to": "в"
+    "to": "в",
+    "more": "ещё",
+    "next": "дальше"
   },
   "facts-generator-server-getText": {
-    "Command to generate text with a random fact": "Команда для создания текста со случайным фактом",
+    "Command to generate text with a random fact": "Команда для создания текста с случайным фактом",
     "facts": "факты",
     "Facts generator": "Генератор фактов",
     "facts help": "факты помощь",
     "get": "дай",
     "get facts": "дай факты",
     "help": "помощь",
-    "please": "пожалуйста"
+    "please": "пожалуйста",
+    "next": "дальше",
+    "more": "ещё"
   },
   "html-scraper-server-getText": {
-    "help": "помощь"
+    "help": "помощь",
+    "more": "ещё",
+    "next": "дальше"
   },
   "language-swither-server-getText": {
     "change": "измени",
@@ -95,7 +103,9 @@
     "quote": "цитата",
     "quotes": "цитаты",
     "Quotes generator": "Генератор цитат",
-    "quotes help": "цитаты помощь"
+    "quotes help": "цитаты помощь",
+    "next": "дальше",
+    "more": "ещё"
   },
   "jokes-generator-server": {},
   "jokes-generator-server-getText": {
@@ -106,6 +116,20 @@
     "jokes": "шутки",
     "Jokes generator": "Генератор шуток",
     "jokes help": "шутки помощь",
-    "please": "пожалуйста"
+    "please": "пожалуйста",
+    "next": "дальше",
+    "more": "ещё"
+  },
+  "short-commands-server": {},
+  "short-commands-server-getText": {
+    "aliases": "синонимы",
+    "command": "команда",
+    "Short commands": "Короткие команды",
+    "Shortened versions of commands for quick launch": "Сокращённые версии команд для быстрого запуска",
+    "alias": "синоним",
+    "scmd": "кмд",
+    "scmd help": "кмд помощь",
+    "scmd state": "кмд состяние",
+    "List of short commands:": "Список коротких команд:"
   }
 }

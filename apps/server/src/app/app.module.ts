@@ -12,6 +12,7 @@ import {
   LanguageSwitherModule,
 } from '@kaufman-bot/language-swither/server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator/server';
+import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
 import { Module } from '@nestjs/common';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
@@ -43,9 +44,25 @@ import { AppService } from './app.service';
         locales: [DEFAULT_LANGUAGE, 'ru'],
       })
     ),
-    BotCommandsModule,
+    BotCommandsModule.forRoot(),
     LanguageSwitherModule.forRoot(),
     DebugMessagesModule.forRoot(),
+    ShortCommandsModule.forRoot({
+      commands: {
+        en: {
+          joke: 'get jokes',
+          'quote|thought|wisdom': 'get quotes',
+          'facts|fact|history': 'get facts',
+        },
+        ru: {
+          'joke|jokes|шутка|шутки|пошути|шути|рассмеши|смешинки|смешинка':
+            'get jokes',
+          'quote|thought|wisdom|цитата|цитаты|цитируй|мысль|мудрость|залечи':
+            'get quotes',
+          'facts|fact|history|факт|факты|история': 'get facts',
+        },
+      },
+    }),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),

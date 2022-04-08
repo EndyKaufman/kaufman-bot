@@ -4,11 +4,13 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotСommandsToolsService,
+  OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import charset from 'charset';
 import cheerio from 'cheerio';
+import { getText } from 'class-validator-multi-lang';
 import encoding from 'encoding';
 import htmlToText from 'html-to-text';
 import jschardet from 'jschardet';
@@ -17,10 +19,11 @@ import {
   ScraperConfig,
   SCRAPER_CONFIG,
 } from '../scraper-config/scraper.config';
-import { ScraperCommandsEnum } from '../scraper-types/scraper-commands';
 
 @Injectable()
-export class ScraperService implements BotCommandsProvider {
+export class ScraperService
+  implements BotCommandsProvider, OnContextBotCommands
+{
   private readonly logger = new Logger(ScraperService.name);
 
   constructor(
@@ -28,6 +31,26 @@ export class ScraperService implements BotCommandsProvider {
     private readonly scraperConfig: ScraperConfig,
     private readonly botСommandsToolsService: BotСommandsToolsService
   ) {}
+
+  async onContextBotCommands<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const locale = msg.from?.language_code;
+    if (
+      this.botСommandsToolsService.checkCommands(
+        msg.text,
+        [getText('more'), getText('next')],
+        locale
+      )
+    ) {
+      msg.text = `${BotCommandsEnum.get} ${this.scraperConfig.name}`;
+      return {
+        type: 'message',
+        message: msg,
+      };
+    }
+    return null;
+  }
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
@@ -52,18 +75,20 @@ export class ScraperService implements BotCommandsProvider {
       if (
         this.botСommandsToolsService.checkCommands(
           msg.text,
-          [ScraperCommandsEnum.help],
+          [BotCommandsEnum.help],
           locale
         )
       ) {
         return {
           type: 'markdown',
-          markdown: this.botСommandsToolsService.generateHelpMessage(
+          message: msg,
+          markdown: this.botСommandsToolsService.generateHelpMessage({
             locale,
-            this.scraperConfig.name,
-            this.scraperConfig.descriptions,
-            this.scraperConfig.usage
-          ),
+            name: this.scraperConfig.title,
+            contextUsage: this.scraperConfig.contextUsage,
+            descriptions: this.scraperConfig.descriptions,
+            usage: this.scraperConfig.usage,
+          }),
         };
       }
 
@@ -71,7 +96,7 @@ export class ScraperService implements BotCommandsProvider {
         msg.text,
         [
           spyWord,
-          ...Object.keys(ScraperCommandsEnum),
+          BotCommandsEnum.help,
           ...(this.scraperConfig.removeWords || []),
         ],
         locale
@@ -81,6 +106,7 @@ export class ScraperService implements BotCommandsProvider {
       if (replayMessage) {
         return {
           type: 'text',
+          message: msg,
           text: replayMessage,
         };
       }

@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"POT-Creation-Date: 2022-04-08T18:06:06.590Z\n"
+"PO-Revision-Date: 2022-04-08T18:06:06.590Z\n"
+
+msgid "aliases"
+msgstr "синонимы"
+
+msgid "command"
+msgstr "команда"
+
+msgid "Short commands"
+msgstr "Короткие команды"
+
+msgid "Shortened versions of commands for quick launch"
+msgstr "Сокращённые версии команд для быстрого запуска"
+
+msgid "alias"
+msgstr "синоним"
+
+msgid "scmd"
+msgstr "кмд"
+
+msgid "scmd help"
+msgstr "кмд помощь"
+
+msgid "scmd state"
+msgstr "кмд состяние"
+
+msgid "List of short commands:"
+msgstr "Список коротких команд:"

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-07T07:13:29.340Z\n"
-"PO-Revision-Date: 2022-04-07T07:13:29.340Z\n"
+"POT-Creation-Date: 2022-04-08T18:06:06.315Z\n"
+"PO-Revision-Date: 2022-04-08T18:06:06.315Z\n"
 
 msgid "Command to generate text with a random jokes"
 msgstr "Command to generate text with a random jokes"
@@ -31,3 +31,9 @@ msgstr "jokes help"
 
 msgid "please"
 msgstr "please"
+
+msgid "next"
+msgstr "next"
+
+msgid "more"
+msgstr "more"

@@ -45,6 +45,9 @@
       ],
       "@kaufman-bot/quotes-generator/server": [
         "libs/quotes-generator/server/src/index.ts"
+      ],
+      "@kaufman-bot/short-commands/server": [
+        "libs/short-commands/server/src/index.ts"
       ]
     }
   },

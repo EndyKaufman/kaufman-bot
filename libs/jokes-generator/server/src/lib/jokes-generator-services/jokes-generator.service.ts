@@ -4,6 +4,7 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotСommandsToolsService,
+  OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
@@ -11,12 +12,21 @@ import { Injectable } from '@nestjs/common';
 import { TranslatesStorage } from 'nestjs-translates';
 
 @Injectable()
-export class JokesGeneratorService implements BotCommandsProvider {
+export class JokesGeneratorService
+  implements BotCommandsProvider, OnContextBotCommands
+{
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botСommandsToolsService: BotСommandsToolsService,
     private readonly translatesStorage: TranslatesStorage
   ) {}
+
+  async onContextBotCommands<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const contextMsg = await this.scraperService.onContextBotCommands(msg);
+    return contextMsg ? this.onMessage(contextMsg.message) : null;
+  }
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
@@ -57,6 +67,7 @@ export class JokesGeneratorService implements BotCommandsProvider {
         if (result?.type === 'text') {
           return {
             type: 'text',
+            message: msg,
             text: result.text.split('\\"').join('"').split('\n').join(' '),
           };
         }

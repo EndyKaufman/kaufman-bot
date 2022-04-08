@@ -1,0 +1,11 @@
+{
+  "aliases": "aliases",
+  "command": "command",
+  "Short commands": "Short commands",
+  "Shortened versions of commands for quick launch": "Shortened versions of commands for quick launch",
+  "alias": "alias",
+  "scmd": "scmd",
+  "scmd help": "scmd help",
+  "scmd state": "scmd state",
+  "List of short commands:": "List of short commands:"
+}

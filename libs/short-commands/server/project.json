@@ -1,0 +1,23 @@
+{
+  "root": "libs/short-commands/server",
+  "sourceRoot": "libs/short-commands/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/short-commands/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/short-commands/server"],
+      "options": {
+        "jestConfig": "libs/short-commands/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

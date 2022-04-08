@@ -1,10 +1,12 @@
 {
-  "Command to generate text with a random fact": "Команда для создания текста со случайным фактом",
+  "Command to generate text with a random fact": "Команда для создания текста с случайным фактом",
   "facts": "факты",
   "Facts generator": "Генератор фактов",
   "facts help": "факты помощь",
   "get": "дай",
   "get facts": "дай факты",
   "help": "помощь",
-  "please": "пожалуйста"
+  "please": "пожалуйста",
+  "next": "дальше",
+  "more": "ещё"
 }

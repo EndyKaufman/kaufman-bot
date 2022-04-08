@@ -1,5 +1,7 @@
 {
   "usage": "usage",
   "get": "get",
-  "help": "help"
+  "help": "help",
+  "state": "state",
+  "usage with context": "usage with context"
 }

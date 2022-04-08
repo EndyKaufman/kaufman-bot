@@ -11,9 +11,11 @@ export class CurrencyConverterModule {
       module: CurrencyConverterModule,
       imports: [
         ScraperModule.forRoot({
-          name: getText('Currency converter'),
+          title: getText('Currency converter'),
+          name: 'converter',
           descriptions: getText('Command to convert one currency to another'),
           usage: [getText('convert 1 usd to eur'), getText('converter help')],
+          contextUsage: [getText('more'), getText('next')],
           contentSelector:
             '#__next > div:nth-child(2) > div.fluid-container__BaseFluidContainer-qoidzu-0.gJBOzk > section > div:nth-child(2) > div > main > form > div:nth-child(2) > div:nth-child(1) > p.result__BigRate-sc-1bsijpp-1.iGrAod',
           spyWords: [getText('convert'), getText('converter')],

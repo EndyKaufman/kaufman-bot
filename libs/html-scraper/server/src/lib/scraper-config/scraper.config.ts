@@ -1,6 +1,7 @@
 export const SCRAPER_CONFIG = 'SCRAPER_CONFIG';
 
 export interface ScraperConfig {
+  title: string;
   uri: string;
   timeout?: number;
   contentSelector: string;
@@ -12,4 +13,5 @@ export interface ScraperConfig {
   descriptions: string;
   usage: string[];
   headers?: Record<string, string>[];
+  contextUsage?: string[];
 }

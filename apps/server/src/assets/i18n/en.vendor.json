@@ -2,7 +2,9 @@
   "core-server": {
     "usage": "usage",
     "get": "get",
-    "help": "help"
+    "help": "help",
+    "state": "state",
+    "usage with context": "usage with context"
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -12,7 +14,9 @@
     "converter help": "converter help",
     "Currency converter": "Currency converter",
     "please": "please",
-    "to": "to"
+    "to": "to",
+    "more": "more",
+    "next": "next"
   },
   "facts-generator-server": {
     "Command to generate text with a random fact": "Command to generate text with a random fact",
@@ -22,10 +26,14 @@
     "get": "get",
     "get facts": "get facts",
     "help": "help",
-    "please": "please"
+    "please": "please",
+    "next": "next",
+    "more": "more"
   },
   "html-scraper-server": {
-    "help": "help"
+    "help": "help",
+    "more": "more",
+    "next": "next"
   },
   "language-swither-server": {
     "change": "change",
@@ -53,7 +61,9 @@
   "core-server-getText": {
     "usage": "usage",
     "get": "get",
-    "help": "help"
+    "help": "help",
+    "state": "state",
+    "usage with context": "usage with context"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -63,7 +73,9 @@
     "converter help": "converter help",
     "Currency converter": "Currency converter",
     "please": "please",
-    "to": "to"
+    "to": "to",
+    "more": "more",
+    "next": "next"
   },
   "facts-generator-server-getText": {
     "Command to generate text with a random fact": "Command to generate text with a random fact",
@@ -73,10 +85,14 @@
     "get": "get",
     "get facts": "get facts",
     "help": "help",
-    "please": "please"
+    "please": "please",
+    "next": "next",
+    "more": "more"
   },
   "html-scraper-server-getText": {
-    "help": "help"
+    "help": "help",
+    "more": "more",
+    "next": "next"
   },
   "language-swither-server-getText": {
     "change": "change",
@@ -167,7 +183,9 @@
     "quote": "quote",
     "quotes": "quotes",
     "Quotes generator": "Quotes generator",
-    "quotes help": "quotes help"
+    "quotes help": "quotes help",
+    "next": "next",
+    "more": "more"
   },
   "quotes-generator-server-getText": {
     "Command to generate text with a random quotes": "Command to generate text with a random quotes",
@@ -177,7 +195,9 @@
     "quote": "quote",
     "quotes": "quotes",
     "Quotes generator": "Quotes generator",
-    "quotes help": "quotes help"
+    "quotes help": "quotes help",
+    "next": "next",
+    "more": "more"
   },
   "jokes-generator-server": {
     "Command to generate text with a random jokes": "Command to generate text with a random jokes",
@@ -187,7 +207,9 @@
     "jokes": "jokes",
     "Jokes generator": "Jokes generator",
     "jokes help": "jokes help",
-    "please": "please"
+    "please": "please",
+    "next": "next",
+    "more": "more"
   },
   "jokes-generator-server-getText": {
     "Command to generate text with a random jokes": "Command to generate text with a random jokes",
@@ -197,6 +219,30 @@
     "jokes": "jokes",
     "Jokes generator": "Jokes generator",
     "jokes help": "jokes help",
-    "please": "please"
+    "please": "please",
+    "next": "next",
+    "more": "more"
+  },
+  "short-commands-server": {
+    "aliases": "aliases",
+    "command": "command",
+    "Short commands": "Short commands",
+    "Shortened versions of commands for quick launch": "Shortened versions of commands for quick launch",
+    "alias": "alias",
+    "scmd": "scmd",
+    "scmd help": "scmd help",
+    "scmd state": "scmd state",
+    "List of short commands:": "List of short commands:"
+  },
+  "short-commands-server-getText": {
+    "aliases": "aliases",
+    "command": "command",
+    "Short commands": "Short commands",
+    "Shortened versions of commands for quick launch": "Shortened versions of commands for quick launch",
+    "alias": "alias",
+    "scmd": "scmd",
+    "scmd help": "scmd help",
+    "scmd state": "scmd state",
+    "List of short commands:": "List of short commands:"
   }
 }

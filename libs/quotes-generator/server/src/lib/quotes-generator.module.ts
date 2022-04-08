@@ -18,11 +18,13 @@ export class QuotesGeneratorModule {
       module: QuotesGeneratorModule,
       imports: [
         ScraperModule.forRoot({
-          name: getText('Quotes generator'),
+          title: getText('Quotes generator'),
+          name: 'quotes',
           descriptions: getText(
             'Command to generate text with a random quotes'
           ),
           usage: [getText('get quote'), getText('quotes help')],
+          contextUsage: [getText('more'), getText('next')],
           contentSelector:
             'forismatic > quote > quotetext, forismatic > quote > quoteauthor',
           spyWords: [getText('quotes'), getText('quote')],

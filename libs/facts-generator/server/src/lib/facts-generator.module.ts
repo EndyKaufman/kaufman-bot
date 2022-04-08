@@ -22,11 +22,13 @@ export class FactsGeneratorModule {
         CustomInjectorModule.forFeature({
           imports: [
             ScraperModule.forRoot({
-              name: getText('Facts generator'),
+              title: getText('Facts generator'),
+              name: 'facts',
               descriptions: getText(
                 'Command to generate text with a random fact'
               ),
               usage: [getText('get facts'), getText('facts help')],
+              contextUsage: [getText('more'), getText('next')],
               contentSelector: '#fact > table > tbody > tr > td',
               spyWords: [getText('facts')],
               removeWords: [getText('get'), getText('please')],
@@ -45,11 +47,13 @@ export class FactsGeneratorModule {
         CustomInjectorModule.forFeature({
           imports: [
             ScraperModule.forRoot({
-              name: getText('Facts generator'),
+              title: getText('Facts generator'),
+              name: 'facts',
               descriptions: getText(
                 'Command to generate text with a random fact'
               ),
               usage: [getText('get facts'), getText('facts help')],
+              contextUsage: [getText('more'), getText('next')],
               contentSelector: '#z',
               spyWords: [getText('facts')],
               removeWords: [getText('get'), getText('please')],

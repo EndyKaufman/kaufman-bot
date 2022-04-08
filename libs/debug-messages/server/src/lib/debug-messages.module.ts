@@ -37,7 +37,8 @@ export class DebugMessagesModule {
             {
               provide: DEBUG_MESSAGES_CONFIG,
               useValue: <DebugMessagesConfig>{
-                name: getText('Debug messages'),
+                title: getText('Debug messages'),
+                name: 'debug',
                 usage: [
                   getText('debug on'),
                   getText('debug off'),

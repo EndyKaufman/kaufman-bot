@@ -39,7 +39,7 @@ export class DebugService {
           parse_mode: 'MarkdownV2',
         }
       );
+      this.logger.debug(data, context);
     }
-    this.logger.debug(data, context);
   }
 }

@@ -1,4 +1,5 @@
 export * from './lib/bot-commands/bot-commands.module';
+export * from './lib/bot-commands/bot-commands-config/bot-commands.config';
 export * from './lib/bot-commands/bot-commands-services/bot-commands-tools.service';
 export * from './lib/bot-commands/bot-commands-services/bot-commands.service';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-enum';
@@ -6,6 +7,7 @@ export * from './lib/bot-commands/bot-commands-types/bot-commands-provider-actio
 export * from './lib/bot-commands/bot-commands-types/bot-commands-provider.interface';
 export * from './lib/bot-commands/bot-commands-types/on-after-bot-commands.interface';
 export * from './lib/bot-commands/bot-commands-types/on-before-bot-commands.interface';
+export * from './lib/bot-commands/bot-commands-types/on-context-bot-commands.interface';
 export * from './lib/prisma-client/prisma-client.config';
 export * from './lib/prisma-client/prisma-client.module';
 export * from './lib/prisma-client/prisma-client.service';

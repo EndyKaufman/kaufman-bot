@@ -10,7 +10,8 @@
     "libs/html-scraper/server",
     "libs/jokes-generator/server",
     "libs/language-swither/server",
-    "libs/quotes-generator/server"
+    "libs/quotes-generator/server",
+    "libs/short-commands/server"
   ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
   "scopedLibs": [
@@ -22,6 +23,7 @@
     "libs/html-scraper/server",
     "libs/jokes-generator/server",
     "libs/language-swither/server",
-    "libs/quotes-generator/server"
+    "libs/quotes-generator/server",
+    "libs/short-commands/server"
   ]
 }

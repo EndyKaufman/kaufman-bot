@@ -42,7 +42,8 @@ export class DialogflowModule {
             {
               provide: DIALOGFLOW_CONFIG,
               useValue: <DialogflowConfig>{
-                name: getText('Dialogflow'),
+                title: getText('Dialogflow'),
+                name: 'dialogflow',
                 usage: [
                   getText('dialog hello'),
                   getText('ai hello'),

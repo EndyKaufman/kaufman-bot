@@ -82,12 +82,13 @@ export class LanguageSwitherService
       ) {
         return {
           type: 'markdown',
-          markdown: this.commandToolsService.generateHelpMessage(
+          message: msg,
+          markdown: this.commandToolsService.generateHelpMessage({
             locale,
-            this.languageSwitherConfig.name,
-            this.languageSwitherConfig.descriptions,
-            this.languageSwitherConfig.usage
-          ),
+            name: this.languageSwitherConfig.title,
+            descriptions: this.languageSwitherConfig.descriptions,
+            usage: this.languageSwitherConfig.usage,
+          }),
         };
       }
 
@@ -106,6 +107,7 @@ export class LanguageSwitherService
       if (typeof processedMsg === 'string') {
         return {
           type: 'text',
+          message: msg,
           text: processedMsg,
         };
       }

@@ -99,12 +99,13 @@ export class DebugMessagesService
       ) {
         return {
           type: 'markdown',
-          markdown: this.commandToolsService.generateHelpMessage(
+          message: msg,
+          markdown: this.commandToolsService.generateHelpMessage({
             locale,
-            this.debugMessagesConfig.name,
-            this.debugMessagesConfig.descriptions,
-            this.debugMessagesConfig.usage
-          ),
+            name: this.debugMessagesConfig.title,
+            descriptions: this.debugMessagesConfig.descriptions,
+            usage: this.debugMessagesConfig.usage,
+          }),
         };
       }
 
@@ -113,6 +114,7 @@ export class DebugMessagesService
       if (typeof processedMsg === 'string') {
         return {
           type: 'text',
+          message: msg,
           text: processedMsg,
         };
       }
@@ -187,7 +189,7 @@ export class DebugMessagesService
     if (
       this.commandToolsService.checkCommands(
         msg.text,
-        [DebugMessagesCommandsEnum.current],
+        [BotCommandsEnum.state],
         locale
       )
     ) {
