@@ -120,7 +120,7 @@ export class ShortCommandsService
             locale
               ? [
                   `${this.translatesService.translate(
-                    getText('alias'),
+                    getText('aliases'),
                     locale
                   )}: ${alias
                     .split('|')
@@ -129,7 +129,7 @@ export class ShortCommandsService
                   `${this.translatesService.translate(
                     getText('command'),
                     locale
-                  )}: ${commands[alias]}\n`,
+                  )}: _${commands[alias]}_\n`,
                 ].join('\n')
               : ''
           ),

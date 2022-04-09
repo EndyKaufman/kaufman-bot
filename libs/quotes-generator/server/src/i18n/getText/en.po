@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-08T18:06:06.428Z\n"
-"PO-Revision-Date: 2022-04-08T18:06:06.428Z\n"
+"POT-Creation-Date: 2022-04-09T05:40:17.110Z\n"
+"PO-Revision-Date: 2022-04-09T05:40:17.110Z\n"
 
 msgid "Command to generate text with a random quotes"
 msgstr "Command to generate text with a random quotes"
@@ -37,3 +37,6 @@ msgstr "next"
 
 msgid "more"
 msgstr "more"
+
+msgid "get quotes"
+msgstr "get quotes"

@@ -33,7 +33,9 @@
     "help": "помощь",
     "please": "пожалуйста",
     "next": "дальше",
-    "more": "ещё"
+    "more": "ещё",
+    "fact": "факт",
+    "get fact": "дай факт"
   },
   "html-scraper-server-getText": {
     "help": "помощь",
@@ -98,27 +100,29 @@
   "quotes-generator-server-getText": {
     "Command to generate text with a random quotes": "Команда для создания текста с случайной цитатой",
     "get": "дай",
-    "get quote": "дай цитаты",
+    "get quote": "дай цитату",
     "please": "пожалуйста",
     "quote": "цитата",
     "quotes": "цитаты",
     "Quotes generator": "Генератор цитат",
     "quotes help": "цитаты помощь",
     "next": "дальше",
-    "more": "ещё"
+    "more": "ещё",
+    "get quotes": "дай цитаты"
   },
   "jokes-generator-server": {},
   "jokes-generator-server-getText": {
     "Command to generate text with a random jokes": "Команда для создания текста с случайной шуткой",
     "get": "дай",
-    "get joke": "дай шутки",
+    "get joke": "дай шутку",
     "joke": "шутка",
     "jokes": "шутки",
     "Jokes generator": "Генератор шуток",
     "jokes help": "шутки помощь",
     "please": "пожалуйста",
     "next": "дальше",
-    "more": "ещё"
+    "more": "ещё",
+    "get jokes": "дай шутки"
   },
   "short-commands-server": {},
   "short-commands-server-getText": {
@@ -126,7 +130,6 @@
     "command": "команда",
     "Short commands": "Короткие команды",
     "Shortened versions of commands for quick launch": "Сокращённые версии команд для быстрого запуска",
-    "alias": "синоним",
     "scmd": "кмд",
     "scmd help": "кмд помощь",
     "scmd state": "кмд состяние",

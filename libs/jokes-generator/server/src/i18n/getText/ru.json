@@ -1,12 +1,13 @@
 {
   "Command to generate text with a random jokes": "Команда для создания текста с случайной шуткой",
   "get": "дай",
-  "get joke": "дай шутки",
+  "get joke": "дай шутку",
   "joke": "шутка",
   "jokes": "шутки",
   "Jokes generator": "Генератор шуток",
   "jokes help": "шутки помощь",
   "please": "пожалуйста",
   "next": "дальше",
-  "more": "ещё"
+  "more": "ещё",
+  "get jokes": "дай шутки"
 }

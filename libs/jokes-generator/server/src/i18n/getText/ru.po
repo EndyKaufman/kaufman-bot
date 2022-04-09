@@ -6,8 +6,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-04-08T18:06:06.328Z\n"
-"PO-Revision-Date: 2022-04-08T18:06:06.328Z\n"
+"POT-Creation-Date: 2022-04-09T05:43:04.951Z\n"
+"PO-Revision-Date: 2022-04-09T05:43:04.951Z\n"
 
 msgid "Command to generate text with a random jokes"
 msgstr "Команда для создания текста с случайной шуткой"
@@ -16,7 +16,7 @@ msgid "get"
 msgstr "дай"
 
 msgid "get joke"
-msgstr "дай шутки"
+msgstr "дай шутку"
 
 msgid "joke"
 msgstr "шутка"
@@ -38,3 +38,6 @@ msgstr "дальше"
 
 msgid "more"
 msgstr "ещё"
+
+msgid "get jokes"
+msgstr "дай шутки"

@@ -28,7 +28,9 @@
     "help": "help",
     "please": "please",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "fact": "fact",
+    "get fact": "get fact"
   },
   "html-scraper-server": {
     "help": "help",
@@ -87,7 +89,9 @@
     "help": "help",
     "please": "please",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "fact": "fact",
+    "get fact": "get fact"
   },
   "html-scraper-server-getText": {
     "help": "help",
@@ -185,7 +189,8 @@
     "Quotes generator": "Quotes generator",
     "quotes help": "quotes help",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "get quotes": "get quotes"
   },
   "quotes-generator-server-getText": {
     "Command to generate text with a random quotes": "Command to generate text with a random quotes",
@@ -197,7 +202,8 @@
     "Quotes generator": "Quotes generator",
     "quotes help": "quotes help",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "get quotes": "get quotes"
   },
   "jokes-generator-server": {
     "Command to generate text with a random jokes": "Command to generate text with a random jokes",
@@ -209,7 +215,8 @@
     "jokes help": "jokes help",
     "please": "please",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "get jokes": "get jokes"
   },
   "jokes-generator-server-getText": {
     "Command to generate text with a random jokes": "Command to generate text with a random jokes",
@@ -221,14 +228,14 @@
     "jokes help": "jokes help",
     "please": "please",
     "next": "next",
-    "more": "more"
+    "more": "more",
+    "get jokes": "get jokes"
   },
   "short-commands-server": {
     "aliases": "aliases",
     "command": "command",
     "Short commands": "Short commands",
     "Shortened versions of commands for quick launch": "Shortened versions of commands for quick launch",
-    "alias": "alias",
     "scmd": "scmd",
     "scmd help": "scmd help",
     "scmd state": "scmd state",
@@ -239,7 +246,6 @@
     "command": "command",
     "Short commands": "Short commands",
     "Shortened versions of commands for quick launch": "Shortened versions of commands for quick launch",
-    "alias": "alias",
     "scmd": "scmd",
     "scmd help": "scmd help",
     "scmd state": "scmd state",

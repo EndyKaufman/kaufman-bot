@@ -23,7 +23,11 @@ export class QuotesGeneratorModule {
           descriptions: getText(
             'Command to generate text with a random quotes'
           ),
-          usage: [getText('get quote'), getText('quotes help')],
+          usage: [
+            getText('get quote'),
+            getText('get quotes'),
+            getText('quotes help'),
+          ],
           contextUsage: [getText('more'), getText('next')],
           contentSelector:
             'forismatic > quote > quotetext, forismatic > quote > quoteauthor',

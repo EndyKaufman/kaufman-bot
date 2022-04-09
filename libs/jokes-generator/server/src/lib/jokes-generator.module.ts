@@ -27,7 +27,11 @@ export class JokesGeneratorModule {
               descriptions: getText(
                 'Command to generate text with a random jokes'
               ),
-              usage: [getText('get joke'), getText('jokes help')],
+              usage: [
+                getText('get joke'),
+                getText('get jokes'),
+                getText('jokes help'),
+              ],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#joke > table > tbody > tr > td',
               spyWords: [getText('jokes'), getText('joke')],
@@ -52,7 +56,11 @@ export class JokesGeneratorModule {
               descriptions: getText(
                 'Command to generate text with a random jokes'
               ),
-              usage: [getText('get joke'), getText('jokes help')],
+              usage: [
+                getText('get joke'),
+                getText('get jokes'),
+                getText('jokes help'),
+              ],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: 'data > joke',
               spyWords: [getText('jokes'), getText('joke')],

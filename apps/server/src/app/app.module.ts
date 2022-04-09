@@ -50,16 +50,16 @@ import { AppService } from './app.service';
     ShortCommandsModule.forRoot({
       commands: {
         en: {
-          joke: 'get jokes',
+          joke: `get jokes`,
           'quote|thought|wisdom': 'get quotes',
           'facts|fact|history': 'get facts',
         },
         ru: {
-          'joke|jokes|шутка|шутки|пошути|шути|рассмеши|смешинки|смешинка':
+          'joke|jokes|шутка|дай шутку|шутки|пошути|шути|рассмеши|смешинки|смешинка':
             'get jokes',
-          'quote|thought|wisdom|цитата|цитаты|цитируй|мысль|мудрость|залечи':
+          'quote|thought|wisdom|цитата|дай цитату|цитаты|цитируй|мысль|мудрость|залечи':
             'get quotes',
-          'facts|fact|history|факт|факты|история': 'get facts',
+          'facts|fact|history|дай факт|факты|история': 'get facts',
         },
       },
     }),

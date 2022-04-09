@@ -1,6 +1,7 @@
 import {
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
+  BOT_COMMANDS_TOOLS_INTERCEPTOR,
 } from '@kaufman-bot/core/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -9,6 +10,7 @@ import {
   ShortCommandsConfig,
   SHORT_COMMANDS_CONFIG,
 } from './short-commands-config/short-commands.config';
+import { ShortCommandsBotCommandsToolsInterceptor } from './short-commands-services/short-commands.bot-commands-tools-interceptor';
 import { ShortCommandsService } from './short-commands-services/short-commands.service';
 
 @Module({
@@ -36,6 +38,10 @@ export class ShortCommandsModule {
         {
           provide: BOT_COMMANDS_PROVIDER,
           useClass: ShortCommandsService,
+        },
+        {
+          provide: BOT_COMMANDS_TOOLS_INTERCEPTOR,
+          useClass: ShortCommandsBotCommandsToolsInterceptor,
         },
       ],
     };

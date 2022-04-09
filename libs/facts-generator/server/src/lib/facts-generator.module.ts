@@ -27,10 +27,14 @@ export class FactsGeneratorModule {
               descriptions: getText(
                 'Command to generate text with a random fact'
               ),
-              usage: [getText('get facts'), getText('facts help')],
+              usage: [
+                getText('get facts'),
+                getText('get fact'),
+                getText('facts help'),
+              ],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#fact > table > tbody > tr > td',
-              spyWords: [getText('facts')],
+              spyWords: [getText('facts'), getText('fact')],
               removeWords: [getText('get'), getText('please')],
               uri: 'https://randstuff.ru/fact/',
               contentCodepage: 'utf8',
@@ -52,10 +56,14 @@ export class FactsGeneratorModule {
               descriptions: getText(
                 'Command to generate text with a random fact'
               ),
-              usage: [getText('get facts'), getText('facts help')],
+              usage: [
+                getText('get facts'),
+                getText('get fact'),
+                getText('facts help'),
+              ],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#z',
-              spyWords: [getText('facts')],
+              spyWords: [getText('facts'), getText('fact')],
               removeWords: [getText('get'), getText('please')],
               uri: 'http://randomfactgenerator.net/',
             }),

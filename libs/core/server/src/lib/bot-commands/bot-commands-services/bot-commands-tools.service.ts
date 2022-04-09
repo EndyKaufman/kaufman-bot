@@ -1,10 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { render } from 'mustache';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
+import {
+  BotCommandsToolsInterceptor,
+  BOT_COMMANDS_TOOLS_INTERCEPTOR,
+} from '../bot-commands-types/bot-commands-tools-interceptor.interface';
+import { BotCommandsToolsGenerateHelpMessageOptions } from '../bot-commands-types/bot-commands-tools-types.interface';
 
 @Injectable()
 export class BotСommandsToolsService {
+  @CustomInject(BOT_COMMANDS_TOOLS_INTERCEPTOR, {
+    multi: true,
+  })
+  private botCommandsToolsInterceptors?: BotCommandsToolsInterceptor[];
+
   private lowerCaseTranslates?: TranslatesStorage['translates'];
 
   constructor(
@@ -12,103 +23,83 @@ export class BotСommandsToolsService {
     private readonly translatesService: TranslatesService
   ) {}
 
-  generateHelpMessage({
-    locale,
-    name,
-    descriptions,
-    usage,
-    contextUsage,
-  }: {
-    locale: string;
-    name: string;
-    descriptions: string;
-    usage: string[];
-    contextUsage?: string[];
-  }) {
+  generateHelpMessage(options: BotCommandsToolsGenerateHelpMessageOptions) {
+    if (
+      this.botCommandsToolsInterceptors &&
+      this.botCommandsToolsInterceptors.length > 0
+    ) {
+      for (
+        let index = 0;
+        index < this.botCommandsToolsInterceptors.length;
+        index++
+      ) {
+        const botCommandsToolsInterceptor =
+          this.botCommandsToolsInterceptors[index];
+        if (botCommandsToolsInterceptor?.interceptHelpMessageOptions) {
+          options =
+            botCommandsToolsInterceptor.interceptHelpMessageOptions(options);
+        }
+      }
+    }
     const usageWithLocalized = Array.from(
       new Set(
         [
-          ...usage,
-          ...usage.map((u) => this.translatesService.translate(u, locale)),
+          ...options.usage,
+          ...options.usage.map((u) =>
+            this.translatesService.translate(u, options.locale)
+          ),
         ].filter(Boolean)
       )
     );
-    const contextUsageWithLocalized = contextUsage
+    const contextUsageWithLocalized = options.contextUsage
       ? Array.from(
           new Set(
             [
-              ...contextUsage,
-              ...contextUsage.map((u) =>
-                this.translatesService.translate(u, locale)
+              ...options.contextUsage,
+              ...options.contextUsage.map((u) =>
+                this.translatesService.translate(u, options.locale)
               ),
             ].filter(Boolean)
           )
         )
       : null;
+
+    const caption = options.name
+      ? `__${this.translatesService.translate(options.name, options.locale)}__`
+      : '';
+    const descriptions = options.descriptions
+      ? this.translatesService.translate(options.descriptions, options.locale)
+      : '';
+    const usage = `${this.translatesService.translate(
+      getText('usage'),
+      options.locale
+    )}: ${usageWithLocalized.map((u) => `_${u}_`).join(', ')}`;
+    const contextUsage = contextUsageWithLocalized
+      ? `${this.translatesService.translate(
+          getText('usage with context'),
+          options.locale
+        )}: ${contextUsageWithLocalized.map((u) => `_${u}_`).join(', ')}`
+      : '';
+    const customHelpFields = Object.keys(options.customHelpFields || {}).map(
+      (customHelpFieldKey) =>
+        `${this.translatesService.translate(
+          customHelpFieldKey,
+          options.locale
+        )}: ${(options.customHelpFields?.[customHelpFieldKey] || [])
+          .map((u) => `_${u}_`)
+          .join(', ')}`
+    );
+
     const replayHelpMessage = [
-      name ? `__${this.translatesService.translate(name, locale)}__` : '',
-      descriptions
-        ? this.translatesService.translate(descriptions, locale)
-        : '',
-      `${this.translatesService.translate(
-        getText('usage'),
-        locale
-      )}: ${usageWithLocalized.map((u) => `_${u}_`).join(', ')}`,
-      contextUsageWithLocalized
-        ? `${this.translatesService.translate(
-            getText('usage with context'),
-            locale
-          )}: ${contextUsageWithLocalized.map((u) => `_${u}_`).join(', ')}`
-        : '',
+      caption,
+      descriptions,
+      usage,
+      contextUsage,
+      ...customHelpFields,
     ]
       .filter(Boolean)
       .join('\n');
     return replayHelpMessage;
-  }
-
-  private translateByLowerCase(
-    key: string,
-    locale?: string,
-    context: unknown = {}
-  ) {
-    this.initLowerCaseTranslates();
-    const lowerCaseKey = key.toLowerCase();
-    if (!this.lowerCaseTranslates) {
-      throw new Error(`lowerCaseTranslates not set`);
-    }
-    const value =
-      (locale && this.lowerCaseTranslates?.[locale]?.[lowerCaseKey]) ||
-      lowerCaseKey;
-    return value ? render(value, context) : value;
-  }
-
-  private initLowerCaseTranslates() {
-    if (!this.lowerCaseTranslates) {
-      this.lowerCaseTranslates = {};
-      Object.keys(this.translatesStorage.translates).forEach(
-        (translateLocale) => {
-          if (!this.lowerCaseTranslates) {
-            throw new Error(`lowerCaseTranslates not set`);
-          }
-          this.lowerCaseTranslates[translateLocale] = {};
-          Object.keys(
-            this.translatesStorage.translates[translateLocale]
-          ).forEach((translateKey) => {
-            if (!this.lowerCaseTranslates?.[translateLocale]) {
-              throw new Error(
-                `lowerCaseTranslates by locale "${translateLocale}" not set`
-              );
-            }
-            this.lowerCaseTranslates[translateLocale][
-              translateKey.toLowerCase()
-            ] =
-              this.translatesStorage.translates[translateLocale][
-                translateKey
-              ].toLowerCase();
-          });
-        }
-      );
-    }
   }
 
   clearCommands(text: string, commands: string[], locale: string) {
@@ -193,5 +184,50 @@ export class BotСommandsToolsService {
       return true;
     }
     return false;
+  }
+
+  private translateByLowerCase(
+    key: string,
+    locale?: string,
+    context: unknown = {}
+  ) {
+    this.initLowerCaseTranslates();
+    const lowerCaseKey = key.toLowerCase();
+    if (!this.lowerCaseTranslates) {
+      throw new Error(`lowerCaseTranslates not set`);
+    }
+    const value =
+      (locale && this.lowerCaseTranslates?.[locale]?.[lowerCaseKey]) ||
+      lowerCaseKey;
+    return value ? render(value, context) : value;
+  }
+
+  private initLowerCaseTranslates() {
+    if (!this.lowerCaseTranslates) {
+      this.lowerCaseTranslates = {};
+      Object.keys(this.translatesStorage.translates).forEach(
+        (translateLocale) => {
+          if (!this.lowerCaseTranslates) {
+            throw new Error(`lowerCaseTranslates not set`);
+          }
+          this.lowerCaseTranslates[translateLocale] = {};
+          Object.keys(
+            this.translatesStorage.translates[translateLocale]
+          ).forEach((translateKey) => {
+            if (!this.lowerCaseTranslates?.[translateLocale]) {
+              throw new Error(
+                `lowerCaseTranslates by locale "${translateLocale}" not set`
+              );
+            }
+            this.lowerCaseTranslates[translateLocale][
+              translateKey.toLowerCase()
+            ] =
+              this.translatesStorage.translates[translateLocale][
+                translateKey
+              ].toLowerCase();
+          });
+        }
+      );
+    }
   }
 }

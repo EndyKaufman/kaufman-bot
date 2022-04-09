@@ -1,4 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
+import { CustomInjectorModule } from 'nestjs-custom-injector';
 import { TranslatesModule } from 'nestjs-translates';
 import {
   BotCommandsConfig,
@@ -8,9 +9,9 @@ import { BotСommandsToolsService } from './bot-commands-services/bot-commands-t
 import { BotСommandsService } from './bot-commands-services/bot-commands.service';
 
 @Module({
-  imports: [TranslatesModule],
+  imports: [CustomInjectorModule, TranslatesModule],
   providers: [BotСommandsToolsService],
-  exports: [TranslatesModule, BotСommandsToolsService],
+  exports: [CustomInjectorModule, TranslatesModule, BotСommandsToolsService],
 })
 export class BotCommandsModule {
   static forRoot(config?: BotCommandsConfig): DynamicModule {

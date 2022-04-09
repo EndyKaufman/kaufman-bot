@@ -1,12 +1,13 @@
 {
   "Command to generate text with a random quotes": "Команда для создания текста с случайной цитатой",
   "get": "дай",
-  "get quote": "дай цитаты",
+  "get quote": "дай цитату",
   "please": "пожалуйста",
   "quote": "цитата",
   "quotes": "цитаты",
   "Quotes generator": "Генератор цитат",
   "quotes help": "цитаты помощь",
   "next": "дальше",
-  "more": "ещё"
+  "more": "ещё",
+  "get quotes": "дай цитаты"
 }

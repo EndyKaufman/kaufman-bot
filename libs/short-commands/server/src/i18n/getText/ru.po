@@ -21,9 +21,6 @@ msgstr "Короткие команды"
 msgid "Shortened versions of commands for quick launch"
 msgstr "Сокращённые версии команд для быстрого запуска"
 
-msgid "alias"
-msgstr "синоним"
-
 msgid "scmd"
 msgstr "кмд"
 

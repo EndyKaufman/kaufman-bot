@@ -20,9 +20,6 @@ msgstr "Short commands"
 msgid "Shortened versions of commands for quick launch"
 msgstr "Shortened versions of commands for quick launch"
 
-msgid "alias"
-msgstr "alias"
-
 msgid "scmd"
 msgstr "scmd"
 
