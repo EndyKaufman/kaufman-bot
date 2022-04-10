@@ -1,0 +1,144 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2022-04-10T18:17:17.268Z\n"
+"PO-Revision-Date: 2022-04-10T18:17:17.268Z\n"
+
+msgid "Example of recursive contextable commands \"first meeting\""
+msgstr "Example of recursive contextable commands \"first meeting\""
+
+msgid "First meeting"
+msgstr "First meeting"
+
+msgid "Hi!"
+msgstr "Hi!"
+
+msgid "meet"
+msgstr "meet"
+
+msgid "meet help"
+msgstr "meet help"
+
+msgid "meet reset"
+msgstr "meet reset"
+
+msgid "Your meeting information has been deleted"
+msgstr "Your meeting information has been deleted"
+
+msgid "am"
+msgstr "am"
+
+msgid "female"
+msgstr "female"
+
+msgid "first"
+msgstr "first"
+
+msgid "firstname"
+msgstr "firstname"
+
+msgid "fm"
+msgstr "fm"
+
+msgid "hello"
+msgstr "hello"
+
+msgid "hey"
+msgstr "hey"
+
+msgid "hi"
+msgstr "hi"
+
+msgid "I"
+msgstr "I"
+
+msgid "is"
+msgstr "is"
+
+msgid "last"
+msgstr "last"
+
+msgid "lastname"
+msgstr "lastname"
+
+msgid "Madam"
+msgstr "Madam"
+
+msgid "my"
+msgstr "my"
+
+msgid "name"
+msgstr "name"
+
+msgid "Sir"
+msgstr "Sir"
+
+msgid "What is your gender?"
+msgstr "What is your gender?"
+
+msgid "What is your last name?"
+msgstr "What is your last name?"
+
+msgid "Hello {{firstname}} {{lastname}} {{handsplayed}}"
+msgstr "Hello {{firstname}} {{lastname}} {{handsplayed}}"
+
+msgid "Hello {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}"
+msgstr "Hello {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}"
+
+msgid "Hey! what's your name?"
+msgstr "Hey! what's your name?"
+
+msgid "I forgot about your existence {{worried}}"
+msgstr "I forgot about your existence {{worried}}"
+
+msgid "I'm glad to see you {{firstname}} {{wink}}"
+msgstr "I'm glad to see you {{firstname}} {{wink}}"
+
+msgid "meet start"
+msgstr "meet start"
+
+msgid "next"
+msgstr "next"
+
+msgid "Nice to meet you, {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}"
+msgstr "Nice to meet you, {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}"
+
+msgid "skip"
+msgstr "skip"
+
+msgid "start"
+msgstr "start"
+
+msgid "Your meeting information has been deleted {{unamused}}"
+msgstr "Your meeting information has been deleted {{unamused}}"
+
+msgid "Hey! I'm Endy {{smile}}, what's your name?"
+msgstr "Hey! I'm Endy {{smile}}, what's your name?"
+
+msgid "Hi {{firstname}} {{vulcan}}"
+msgstr "Hi {{firstname}} {{vulcan}}"
+
+msgid "{{close}} Meeting canceled"
+msgstr "{{close}} Meeting canceled"
+
+msgid "cancel"
+msgstr "cancel"
+
+msgid "exit"
+msgstr "exit"
+
+msgid "Nice to meet you, {{firstname}} {{vulcan}}"
+msgstr "Nice to meet you, {{firstname}} {{vulcan}}"
+
+msgid "reset"
+msgstr "reset"
+
+msgid "end"
+msgstr "end"
+
+msgid "stop"
+msgstr "stop"

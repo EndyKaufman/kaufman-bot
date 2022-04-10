@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-08T18:47:04.767Z\n"
-"PO-Revision-Date: 2022-04-08T18:47:04.767Z\n"
+"POT-Creation-Date: 2022-04-10T08:28:03.863Z\n"
+"PO-Revision-Date: 2022-04-10T08:28:03.863Z\n"
 
 msgid "usage"
 msgstr "usage"
@@ -22,3 +22,6 @@ msgstr "state"
 
 msgid "usage with context"
 msgstr "usage with context"
+
+msgid "reset"
+msgstr "reset"

@@ -42,6 +42,12 @@ export class BotСommandsService implements BotCommandsProvider {
     private readonly botСommandsToolsService: BotСommandsToolsService
   ) {}
 
+  async start(ctx) {
+    const msg: BotCommandsProviderActionMsg = ctx.update.message;
+    msg.botStart = true;
+    await this.process(ctx);
+  }
+
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
 

@@ -1,0 +1,23 @@
+{
+  "root": "libs/first-meeting/server",
+  "sourceRoot": "libs/first-meeting/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/first-meeting/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/first-meeting/server"],
+      "options": {
+        "jestConfig": "libs/first-meeting/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

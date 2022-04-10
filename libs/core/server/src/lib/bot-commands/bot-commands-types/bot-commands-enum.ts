@@ -4,4 +4,5 @@ export const BotCommandsEnum = {
   help: getText('help'),
   get: getText('get'),
   state: getText('state'),
+  reset: getText('reset'),
 };

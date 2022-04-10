@@ -1,6 +1,6 @@
 import { BotСommandsService } from '@kaufman-bot/core/server';
 import { Injectable, Logger } from '@nestjs/common';
-import { Hears, On, Start, Update } from 'nestjs-telegraf';
+import { On, Start, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 
 @Update()
@@ -16,17 +16,12 @@ export class AppService {
 
   @Start()
   async startCommand(ctx: Context) {
-    await this.botСommandsService.process(ctx, () => ctx.reply('Welcome'));
+    await this.botСommandsService.start(ctx);
   }
 
   @On('sticker')
   async onSticker(ctx) {
-    await this.botСommandsService.process(ctx, () => ctx.reply('👍'));
-  }
-
-  @Hears('hi')
-  async hearsHi(ctx: Context) {
-    await this.botСommandsService.process(ctx, () => ctx.reply('Hey there'));
+    await this.botСommandsService.process(ctx);
   }
 
   @On('text')

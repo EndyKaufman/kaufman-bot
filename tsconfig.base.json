@@ -10,7 +10,10 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -23,16 +26,23 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "paths": {
-      "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"],
+      "@kaufman-bot/core/server": [
+        "libs/core/server/src/index.ts"
+      ],
       "@kaufman-bot/currency-converter/server": [
         "libs/currency-converter/server/src/index.ts"
       ],
       "@kaufman-bot/debug-messages/server": [
         "libs/debug-messages/server/src/index.ts"
       ],
-      "@kaufman-bot/dialogflow/server": ["libs/dialogflow/server/src/index.ts"],
+      "@kaufman-bot/dialogflow/server": [
+        "libs/dialogflow/server/src/index.ts"
+      ],
       "@kaufman-bot/facts-generator/server": [
         "libs/facts-generator/server/src/index.ts"
+      ],
+      "@kaufman-bot/first-meeting/server": [
+        "libs/first-meeting/server/src/index.ts"
       ],
       "@kaufman-bot/html-scraper/server": [
         "libs/html-scraper/server/src/index.ts"
@@ -51,5 +61,8 @@
       ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

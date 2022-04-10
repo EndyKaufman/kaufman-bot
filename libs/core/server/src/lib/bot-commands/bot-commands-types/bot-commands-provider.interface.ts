@@ -6,6 +6,7 @@ export const BOT_COMMANDS_PROVIDER = Symbol('BOT_COMMANDS_PROVIDER');
 
 export type BotCommandsProviderActionMsg = Update.MessageUpdate['message'] & {
   text: string;
+  botStart: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   botContext?: Record<string, any>;
   botCommandHandlerId: string | null;

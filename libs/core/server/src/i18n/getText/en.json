@@ -3,5 +3,6 @@
   "get": "get",
   "help": "help",
   "state": "state",
-  "usage with context": "usage with context"
+  "usage with context": "usage with context",
+  "reset": "reset"
 }

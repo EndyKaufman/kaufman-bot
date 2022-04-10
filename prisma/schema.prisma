@@ -14,6 +14,7 @@ model User {
   langCode          String              @default("en") @db.VarChar(64)
   debugMode         Boolean             @default(false)
   DialogflowSession DialogflowSession[]
+  FirstMeeting      FirstMeeting?
 }
 
 model migrations {
@@ -44,4 +45,29 @@ model DialogflowSession {
   User              User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_DIALOGFLOW_SESSION__USER_ID")
 
   @@unique([userId, projectId, sessionId], map: "UQ_DIALOGFLOW_SESSION")
+}
+
+model FirstMeeting {
+  id        String             @id(map: "PK_FIRST_MEETING") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId    String             @unique(map: "UQ_FIRST_MEETING") @db.Uuid
+  status    FirstMeetingStatus
+  firstname String             @db.VarChar(100)
+  lastname  String             @db.VarChar(100)
+  gender    Gender
+  createdAt DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt DateTime           @default(now()) @db.Timestamp(6)
+  User      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_FIRST_MEETING__USER_ID")
+}
+
+enum FirstMeetingStatus {
+  StartMeeting
+  AskFirstname
+  AskLastname
+  AskGender
+  EndMeeting
+}
+
+enum Gender {
+  Male
+  Female
 }

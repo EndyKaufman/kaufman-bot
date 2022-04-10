@@ -6,6 +6,7 @@ import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server'
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
 import { DialogflowModule } from '@kaufman-bot/dialogflow/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
+import { FirstMeetingModule } from '@kaufman-bot/first-meeting/server';
 import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator/server';
 import {
   DEFAULT_LANGUAGE,
@@ -53,6 +54,8 @@ import { AppService } from './app.service';
           joke: `get jokes`,
           'quote|thought|wisdom': 'get quotes',
           'facts|fact|history': 'get facts',
+          'forgot me': 'meet reset',
+          'what you can do|faq': 'help',
         },
         ru: {
           'joke|jokes|шутка|дай шутку|шутки|пошути|шути|рассмеши|смешинки|смешинка':
@@ -60,6 +63,8 @@ import { AppService } from './app.service';
           'quote|thought|wisdom|цитата|дай цитату|цитаты|цитируй|мысль|мудрость|залечи':
             'get quotes',
           'facts|fact|history|дай факт|факты|история': 'get facts',
+          'forgot me|забудь меня': 'meet reset',
+          'what you can do|faq|что ты умеешь|справка': 'help',
         },
       },
     }),
@@ -67,6 +72,7 @@ import { AppService } from './app.service';
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
+    FirstMeetingModule.forRoot(),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
