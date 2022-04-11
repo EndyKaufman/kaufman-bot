@@ -48,6 +48,7 @@
     "@nrwl/tao": "13.8.1",
     "@nrwl/workspace": "13.8.1",
     "@types/jest": "27.0.2",
+    "@types/micromatch": "^4.0.2",
     "@types/mustache": "^4.1.2",
     "@types/node": "14.14.33",
     "@types/uuid": "^8.3.4",
@@ -67,7 +68,6 @@
   },
   "dependencies": {
     "@google-cloud/dialogflow": "^4.7.0",
-    "uuid": "^8.3.2",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
@@ -82,6 +82,7 @@
     "env-var": "^7.1.1",
     "html-to-text": "^8.1.0",
     "jschardet": "^3.0.0",
+    "micromatch": "^4.0.5",
     "mustache": "^4.2.0",
     "nestjs-custom-injector": "^1.0.1",
     "nestjs-telegraf": "^2.4.0",
@@ -91,7 +92,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "telegraf": "^4.7.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "uuid": "^8.3.2"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",

@@ -1,34 +1,31 @@
 {
-    "serverRootTranslationsPath": "./apps/server/src/assets/i18n/",
-    "langs": [
-        "en",
-        "ru"
-    ],
-    "serverScopedLibs": [
-        "libs/core/server",
-        "libs/currency-converter/server",
-        "libs/debug-messages/server",
-        "libs/dialogflow/server",
-        "libs/facts-generator/server",
-        "libs/first-meeting/server",
-        "libs/html-scraper/server",
-        "libs/jokes-generator/server",
-        "libs/language-swither/server",
-        "libs/quotes-generator/server",
-        "libs/short-commands/server"
-    ],
-    "rootTranslationsPath": "./apps/server/src/assets/i18n/",
-    "scopedLibs": [
-        "libs/core/server",
-        "libs/currency-converter/server",
-        "libs/debug-messages/server",
-        "libs/dialogflow/server",
-        "libs/facts-generator/server",
-        "libs/first-meeting/server",
-        "libs/html-scraper/server",
-        "libs/jokes-generator/server",
-        "libs/language-swither/server",
-        "libs/quotes-generator/server",
-        "libs/short-commands/server"
-    ]
+  "serverRootTranslationsPath": "./apps/server/src/assets/i18n/",
+  "langs": ["en", "ru"],
+  "serverScopedLibs": [
+    "libs/core/server",
+    "libs/currency-converter/server",
+    "libs/debug-messages/server",
+    "libs/dialogflow/server",
+    "libs/facts-generator/server",
+    "libs/first-meeting/server",
+    "libs/html-scraper/server",
+    "libs/jokes-generator/server",
+    "libs/language-swither/server",
+    "libs/quotes-generator/server",
+    "libs/short-commands/server"
+  ],
+  "rootTranslationsPath": "./apps/server/src/assets/i18n/",
+  "scopedLibs": [
+    "libs/core/server",
+    "libs/currency-converter/server",
+    "libs/debug-messages/server",
+    "libs/dialogflow/server",
+    "libs/facts-generator/server",
+    "libs/first-meeting/server",
+    "libs/html-scraper/server",
+    "libs/jokes-generator/server",
+    "libs/language-swither/server",
+    "libs/quotes-generator/server",
+    "libs/short-commands/server"
+  ]
 }

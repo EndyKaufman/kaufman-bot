@@ -38,7 +38,7 @@ export class ShortCommandsService
       const shortCommands = this.shortCommandsConfig.commands[locale] || {};
       const matchedCommands = Object.keys(shortCommands)
         .filter((commands) =>
-          this.botСommandsToolsService.checkFullmatchCommands(
+          this.botСommandsToolsService.checkMicromatchCommands(
             text,
             commands.split('|')
           )

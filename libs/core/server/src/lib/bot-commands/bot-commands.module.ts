@@ -20,7 +20,10 @@ export class BotCommandsModule {
       providers: [
         {
           provide: BOT_COMMANDS_CONFIG,
-          useValue: <BotCommandsConfig>(config || { maxRecursiveDepth: 5 }),
+          useValue: <BotCommandsConfig>{
+            maxRecursiveDepth: 5,
+            ...(config || {}),
+          },
         },
         BotСommandsService,
       ],

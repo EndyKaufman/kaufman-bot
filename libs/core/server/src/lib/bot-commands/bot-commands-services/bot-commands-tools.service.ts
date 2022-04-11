@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { isMatch } from 'micromatch';
 import { render } from 'mustache';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
+import {
+  BotCommandsConfig,
+  BOT_COMMANDS_CONFIG,
+} from '../bot-commands-config/bot-commands.config';
 import {
   BotCommandsToolsInterceptor,
   BOT_COMMANDS_TOOLS_INTERCEPTOR,
@@ -15,6 +20,9 @@ export class BotСommandsToolsService {
     multi: true,
   })
   private botCommandsToolsInterceptors?: BotCommandsToolsInterceptor[];
+
+  @CustomInject(BOT_COMMANDS_CONFIG)
+  private botCommandsConfig?: BotCommandsConfig;
 
   private lowerCaseTranslates?: TranslatesStorage['translates'];
 
@@ -126,9 +134,9 @@ export class BotСommandsToolsService {
   }
 
   checkCommands(text: string, commands: string[], locale?: string) {
-    const lowerCasedText = (text || '').toLowerCase().split('ё').join('е');
+    const lowerCasedText = this.prepareCommandString(text.toLocaleLowerCase());
     const lowerCasedCommands = commands
-      .map((c) => c.toLowerCase().split('ё').join('е').split('|'))
+      .map((c) => this.prepareCommandString(c).toLocaleLowerCase().split('|'))
       .reduce((acc, val) => acc.concat(val), []);
     if (
       lowerCasedCommands.find(
@@ -143,12 +151,14 @@ export class BotСommandsToolsService {
       lowerCasedCommands.find(
         (command) =>
           lowerCasedText.includes(
-            this.translateByLowerCase(command, locale).split('ё').join('е')
+            this.prepareCommandString(
+              this.translateByLowerCase(command, locale)
+            )
           ) ||
           lowerCasedText.includes(
-            `/${this.translateByLowerCase(command, locale)
-              .split('ё')
-              .join('е')}`
+            `/${this.prepareCommandString(
+              this.translateByLowerCase(command, locale)
+            )}`
           )
       )
     ) {
@@ -157,28 +167,16 @@ export class BotСommandsToolsService {
     return false;
   }
 
-  checkFullmatchCommands(text: string, commands: string[], locale?: string) {
-    const lowerCasedText = (text || '').toLowerCase().split('ё').join('е');
+  checkMicromatchCommands(text: string | undefined, commands: string[]) {
+    const lowerCasedText = this.prepareCommandString(
+      (text || '').toLocaleLowerCase()
+    );
     const lowerCasedCommands = commands
-      .map((c) => c.toLowerCase().split('ё').join('е').split('|'))
+      .map((c) => this.prepareCommandString(c.toLocaleLowerCase()).split('|'))
       .reduce((acc, val) => acc.concat(val), []);
     if (
-      lowerCasedCommands.find(
-        (command) =>
-          lowerCasedText === command || lowerCasedText === `/${command}`
-      )
-    ) {
-      return true;
-    }
-    if (
-      lowerCasedCommands.find(
-        (command) =>
-          lowerCasedText ===
-            this.translateByLowerCase(command, locale).split('ё').join('е') ||
-          lowerCasedText ===
-            `/${this.translateByLowerCase(command, locale)
-              .split('ё')
-              .join('е')}`
+      lowerCasedCommands.find((command) =>
+        isMatch(lowerCasedText, `${command}`)
       )
     ) {
       return true;
@@ -200,6 +198,13 @@ export class BotСommandsToolsService {
       (locale && this.lowerCaseTranslates?.[locale]?.[lowerCaseKey]) ||
       lowerCaseKey;
     return value ? render(value, context) : value;
+  }
+
+  private prepareCommandString(command: string): string {
+    if (this.botCommandsConfig?.prepareCommandString) {
+      return this.botCommandsConfig.prepareCommandString(command);
+    }
+    return command || '';
   }
 
   private initLowerCaseTranslates() {

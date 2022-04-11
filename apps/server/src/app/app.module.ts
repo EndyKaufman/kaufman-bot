@@ -45,7 +45,10 @@ import { AppService } from './app.service';
         locales: [DEFAULT_LANGUAGE, 'ru'],
       })
     ),
-    BotCommandsModule.forRoot(),
+    BotCommandsModule.forRoot({
+      prepareCommandString: (command?: string) =>
+        (command || '').split('ё').join('е'),
+    }),
     LanguageSwitherModule.forRoot(),
     DebugMessagesModule.forRoot(),
     ShortCommandsModule.forRoot({
@@ -58,11 +61,11 @@ import { AppService } from './app.service';
           'what you can do|faq': 'help',
         },
         ru: {
-          'joke|jokes|шутка|дай шутку|шутки|пошути|шути|рассмеши|смешинки|смешинка':
+          'joke|jokes|*шутка|*шутку|*шутки|пошути|шути|рассмеши|смешинки|смешинка':
             'get jokes',
-          'quote|thought|wisdom|цитата|дай цитату|цитаты|цитируй|мысль|мудрость|залечи':
+          'quote*|thought|wisdom*|цитата|дай цитату|цитируй|*мысль|*мудрость|*залечи*':
             'get quotes',
-          'facts|fact|history|дай факт|факты|история': 'get facts',
+          'facts|fact|history|история|*историю': 'get facts',
           'forgot me|забудь меня': 'meet reset',
           'what you can do|faq|что ты умеешь|справка': 'help',
         },
