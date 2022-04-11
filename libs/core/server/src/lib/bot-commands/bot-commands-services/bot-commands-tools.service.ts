@@ -78,16 +78,20 @@ export class BotCommandsToolsService {
     const descriptions = options.descriptions
       ? this.translatesService.translate(options.descriptions, options.locale)
       : '';
-    const usage = `${this.translatesService.translate(
-      getText('usage'),
-      options.locale
-    )}: ${usageWithLocalized.map((u) => `_${u}_`).join(', ')}`;
-    const contextUsage = contextUsageWithLocalized
-      ? `${this.translatesService.translate(
-          getText('usage with context'),
-          options.locale
-        )}: ${contextUsageWithLocalized.map((u) => `_${u}_`).join(', ')}`
-      : '';
+    const usage =
+      usageWithLocalized.length > 0
+        ? `${this.translatesService.translate(
+            getText('usage'),
+            options.locale
+          )}: ${usageWithLocalized.map((u) => `_${u}_`).join(', ')}`
+        : '';
+    const contextUsage =
+      contextUsageWithLocalized && contextUsageWithLocalized.length > 0
+        ? `${this.translatesService.translate(
+            getText('usage with context'),
+            options.locale
+          )}: ${contextUsageWithLocalized.map((u) => `_${u}_`).join(', ')}`
+        : '';
     const customHelpFields = Object.keys(options.customHelpFields || {}).map(
       (customHelpFieldKey) =>
         `${this.translatesService.translate(
@@ -182,6 +186,10 @@ export class BotCommandsToolsService {
       return true;
     }
     return false;
+  }
+
+  prepareHelpString(text: string) {
+    return text.split('*').join('\\*');
   }
 
   private translateByLowerCase(

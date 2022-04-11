@@ -122,14 +122,17 @@ export class ShortCommandsService
                   `${this.translatesService.translate(
                     getText('aliases'),
                     locale
-                  )}: ${alias
+                  )}: ${this.botCommandsToolsService
+                    .prepareHelpString(alias)
                     .split('|')
                     .map((u) => `_${u}_`)
                     .join(', ')}`,
                   `${this.translatesService.translate(
                     getText('command'),
                     locale
-                  )}: _${commands[alias]}_\n`,
+                  )}: _${this.botCommandsToolsService.prepareHelpString(
+                    commands[alias]
+                  )}_\n`,
                 ].join('\n')
               : ''
           ),

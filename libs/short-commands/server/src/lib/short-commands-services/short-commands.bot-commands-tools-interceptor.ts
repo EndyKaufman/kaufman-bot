@@ -1,6 +1,7 @@
 import {
   BotCommandsToolsGenerateHelpMessageOptions,
   BotCommandsToolsInterceptor,
+  BotCommandsToolsService,
 } from '@kaufman-bot/core/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
@@ -17,7 +18,8 @@ export class ShortCommandsBotCommandsToolsInterceptor
   constructor(
     @Inject(SHORT_COMMANDS_CONFIG)
     private readonly shortCommandsConfig: ShortCommandsConfig,
-    private readonly translatesService: TranslatesService
+    private readonly translatesService: TranslatesService,
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   interceptHelpMessageOptions(
@@ -38,7 +40,15 @@ export class ShortCommandsBotCommandsToolsInterceptor
     );
     const value = aliases
       .filter((alias) => options.usage.includes(commands[alias]))
-      .map((alias) => `${commands[alias]} \\- ${alias.split('|').join(', ')}`);
+      .map(
+        (alias) =>
+          `${this.botCommandsToolsService.prepareHelpString(
+            commands[alias]
+          )} \\- ${this.botCommandsToolsService
+            .prepareHelpString(alias)
+            .split('|')
+            .join(', ')}`
+      );
 
     if (!options.customHelpFields) {
       options.customHelpFields = {};
