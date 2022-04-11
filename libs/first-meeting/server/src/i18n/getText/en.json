@@ -35,7 +35,7 @@
   "skip": "skip",
   "start": "start",
   "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}",
-  "Hey! I'm Endy {{smile}}, what's your name?": "Hey! I'm Endy {{smile}}, what's your name?",
+  "Hey! I'm {{botName}} {{smile}}, what's your name?": "Hey! I'm {{botName}} {{smile}}, what's your name?",
   "Hi {{firstname}} {{vulcan}}": "Hi {{firstname}} {{vulcan}}",
   "{{close}} Meeting canceled": "{{close}} Meeting canceled",
   "cancel": "cancel",

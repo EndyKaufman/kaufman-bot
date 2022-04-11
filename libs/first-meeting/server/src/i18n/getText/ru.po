@@ -117,8 +117,8 @@ msgstr "начать"
 msgid "Your meeting information has been deleted {{unamused}}"
 msgstr "Сведения о знакомстве были удалены {{unamused}}"
 
-msgid "Hey! I'm Endy {{smile}}, what's your name?"
-msgstr "Привет! Меня зовут Энди {{smile}}, а как тебя зовут?"
+msgid "Hey! I'm {{botName}} {{smile}}, what's your name?"
+msgstr "Привет! Меня зовут {{botName}} {{smile}}, а как тебя зовут?"
 
 msgid "Hi {{firstname}} {{vulcan}}"
 msgstr "Привет {{firstname}} {{vulcan}}"

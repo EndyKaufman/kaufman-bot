@@ -307,11 +307,17 @@ export class FirstMeetingService
         type: 'text',
         text: this.translatesService.translate(
           this.getRandomItem([
-            getText(`Hey! I'm Endy {{smile}}, what's your name?`),
+            getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
             getText(`Hey! what's your name?`),
           ]),
           locale,
-          { smile: '🙂' }
+          {
+            botName: this.translatesService.translate(
+              this.firstMeetingConfig.botName,
+              locale
+            ),
+            smile: '🙂',
+          }
         ),
         message: msg,
         context: <Partial<FirstMeeting>>{ status: 'AskFirstname' },

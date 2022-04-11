@@ -174,7 +174,7 @@
     "skip": "пропустить",
     "start": "начать",
     "Your meeting information has been deleted {{unamused}}": "Сведения о знакомстве были удалены {{unamused}}",
-    "Hey! I'm Endy {{smile}}, what's your name?": "Привет! Меня зовут Энди {{smile}}, а как тебя зовут?",
+    "Hey! I'm {{botName}} {{smile}}, what's your name?": "Привет! Меня зовут {{botName}} {{smile}}, а как тебя зовут?",
     "Hi {{firstname}} {{vulcan}}": "Привет {{firstname}} {{vulcan}}",
     "{{close}} Meeting canceled": "{{close}} Знакомство прервано",
     "cancel": "отмена",

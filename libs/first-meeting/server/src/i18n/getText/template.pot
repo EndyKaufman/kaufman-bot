@@ -116,8 +116,8 @@ msgstr "start"
 msgid "Your meeting information has been deleted {{unamused}}"
 msgstr "Your meeting information has been deleted {{unamused}}"
 
-msgid "Hey! I'm Endy {{smile}}, what's your name?"
-msgstr "Hey! I'm Endy {{smile}}, what's your name?"
+msgid "Hey! I'm {{botName}} {{smile}}, what's your name?"
+msgstr "Hey! I'm {{botName}} {{smile}}, what's your name?"
 
 msgid "Hi {{firstname}} {{vulcan}}"
 msgstr "Hi {{firstname}} {{vulcan}}"

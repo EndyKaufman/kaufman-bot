@@ -18,7 +18,7 @@ import { FirstMeetingStorage } from './first-meeting-services/first-meeting.stor
   exports: [TranslatesModule, BotCommandsModule],
 })
 export class FirstMeetingModule {
-  static forRoot(): DynamicModule {
+  static forRoot(config: Pick<FirstMeetingConfig, 'botName'>): DynamicModule {
     return {
       module: FirstMeetingModule,
       imports: [PrismaClientModule],
@@ -27,6 +27,7 @@ export class FirstMeetingModule {
         {
           provide: FIRST_MEETING_CONFIG,
           useValue: <FirstMeetingConfig>{
+            ...config,
             title: getText('First meeting'),
             name: 'meet',
             descriptions: getText(

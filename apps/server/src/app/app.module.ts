@@ -15,6 +15,7 @@ import {
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator/server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
 import { Module } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
@@ -39,6 +40,7 @@ import { AppService } from './app.service';
       getDefaultTranslatesModuleOptions({
         localePaths: [
           join(__dirname, 'assets', 'i18n'),
+          join(__dirname, 'assets', 'i18n', 'getText'),
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
@@ -75,7 +77,7 @@ import { AppService } from './app.service';
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
-    FirstMeetingModule.forRoot(),
+    FirstMeetingModule.forRoot({ botName: getText('Endy') }),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
