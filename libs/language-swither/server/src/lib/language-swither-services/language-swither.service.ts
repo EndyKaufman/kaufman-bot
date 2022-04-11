@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -28,7 +28,7 @@ export class LanguageSwitherService
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
     private readonly languageSwitherStorage: LanguageSwitherStorage,
-    private readonly commandToolsService: BotСommandsToolsService
+    private readonly commandToolsService: BotCommandsToolsService
   ) {}
 
   async onBeforeBotCommands<

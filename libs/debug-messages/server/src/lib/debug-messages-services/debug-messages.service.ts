@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnAfterBotCommands,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
@@ -30,7 +30,7 @@ export class DebugMessagesService
     private readonly debugMessagesConfig: DebugMessagesConfig,
     private readonly translatesService: TranslatesService,
     private readonly debugMessagesStorage: DebugMessagesStorage,
-    private readonly commandToolsService: BotСommandsToolsService,
+    private readonly commandToolsService: BotCommandsToolsService,
     private readonly debugService: DebugService,
     private readonly translatesStorage: TranslatesStorage
   ) {}

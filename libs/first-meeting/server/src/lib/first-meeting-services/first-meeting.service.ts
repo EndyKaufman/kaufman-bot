@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnAfterBotCommands,
   OnBeforeBotCommands,
   OnContextBotCommands,
@@ -30,7 +30,7 @@ export class FirstMeetingService
   constructor(
     @Inject(FIRST_MEETING_CONFIG)
     private readonly firstMeetingConfig: FirstMeetingConfig,
-    private readonly botСommandsToolsService: BotСommandsToolsService,
+    private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly translatesStorage: TranslatesStorage,
     private readonly translatesService: TranslatesService,
     private readonly firstMeetingStorage: FirstMeetingStorage
@@ -62,7 +62,7 @@ export class FirstMeetingService
       msg.botCommandHandlerContext;
 
     if (
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [this.firstMeetingConfig.name],
         locale
@@ -70,7 +70,7 @@ export class FirstMeetingService
       Object.keys(contextFirstMeeting).length > 0
     ) {
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [
             getText('exit'),
@@ -137,7 +137,7 @@ export class FirstMeetingService
         const firstMeeting: Partial<FirstMeeting> = {
           ...contextFirstMeeting,
           status: 'EndMeeting',
-          gender: this.botСommandsToolsService.checkCommands(
+          gender: this.botCommandsToolsService.checkCommands(
             this.prepareText(msg.text, locale),
             [getText('female'), getText('fm')],
             locale
@@ -229,11 +229,11 @@ export class FirstMeetingService
       telegramUserId: msg.from.id,
     });
     const spyWord = this.firstMeetingConfig.spyWords.find((spyWord) =>
-      this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           locale
@@ -242,7 +242,7 @@ export class FirstMeetingService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botСommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage({
             locale,
             name: this.firstMeetingConfig.title,
             descriptions: this.firstMeetingConfig.descriptions,
@@ -252,7 +252,7 @@ export class FirstMeetingService
       }
 
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.reset],
           locale
@@ -281,13 +281,13 @@ export class FirstMeetingService
     }
 
     if (
-      !this.botСommandsToolsService.checkCommands(
+      !this.botCommandsToolsService.checkCommands(
         msg.text,
         [BotCommandsEnum.help],
         locale
       ) &&
       ((spyWord &&
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [getText('start')],
           locale
@@ -320,7 +320,7 @@ export class FirstMeetingService
 
     if (
       firstMeeting.status === 'EndMeeting' &&
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [getText('hi'), getText('hello'), getText('hey')],
         locale
@@ -379,7 +379,7 @@ export class FirstMeetingService
 
   private prepareText(text: string, locale: string) {
     if (
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         text,
         [getText('skip'), getText('next')],
         locale
@@ -387,7 +387,7 @@ export class FirstMeetingService
     ) {
       return '';
     }
-    return this.botСommandsToolsService
+    return this.botCommandsToolsService
       .clearCommands(
         text,
         [

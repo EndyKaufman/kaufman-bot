@@ -15,7 +15,7 @@ import {
 import { BotCommandsToolsGenerateHelpMessageOptions } from '../bot-commands-types/bot-commands-tools-types.interface';
 
 @Injectable()
-export class BotСommandsToolsService {
+export class BotCommandsToolsService {
   @CustomInject(BOT_COMMANDS_TOOLS_INTERCEPTOR, {
     multi: true,
   })

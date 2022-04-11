@@ -15,11 +15,11 @@ import {
 import { OnAfterBotCommands } from '../bot-commands-types/on-after-bot-commands.interface';
 import { OnBeforeBotCommands } from '../bot-commands-types/on-before-bot-commands.interface';
 import { OnContextBotCommands } from '../bot-commands-types/on-context-bot-commands.interface';
-import { BotСommandsToolsService } from './bot-commands-tools.service';
+import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 const DEFAULT_MAX_RECURSIVE_DEPTH = 5;
 @Injectable()
-export class BotСommandsService implements BotCommandsProvider {
+export class BotCommandsService implements BotCommandsProvider {
   lastBotCommandRequests: {
     [telegramUserId: string]: {
       botCommandHandlerId: string;
@@ -39,7 +39,7 @@ export class BotСommandsService implements BotCommandsProvider {
   constructor(
     @Inject(BOT_COMMANDS_CONFIG)
     private readonly botCommandsConfig: BotCommandsConfig | undefined,
-    private readonly botСommandsToolsService: BotСommandsToolsService
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   async start(ctx) {
@@ -128,7 +128,7 @@ export class BotСommandsService implements BotCommandsProvider {
 
     if (
       result === null &&
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [BotCommandsEnum.help],
         msg.from.language_code

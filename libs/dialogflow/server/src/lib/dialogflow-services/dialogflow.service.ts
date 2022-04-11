@@ -4,7 +4,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnAfterBotCommands,
 } from '@kaufman-bot/core/server';
 import { DebugService } from '@kaufman-bot/debug-messages/server';
@@ -28,7 +28,7 @@ export class DialogflowService
     @Inject(DIALOGFLOW_CONFIG)
     private readonly dialogflowConfig: DialogflowConfig,
     private readonly dialogflowStorage: DialogflowStorage,
-    private readonly botСommandsToolsService: BotСommandsToolsService,
+    private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly debugService: DebugService,
     private readonly translatesStorage: TranslatesStorage
   ) {}
@@ -92,11 +92,11 @@ export class DialogflowService
     }
 
     const spyWord = this.dialogflowConfig.spyWords.find((spyWord) =>
-      this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           locale
@@ -105,7 +105,7 @@ export class DialogflowService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botСommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage({
             locale,
             name: this.dialogflowConfig.title,
             descriptions: this.dialogflowConfig.descriptions,
@@ -114,7 +114,7 @@ export class DialogflowService
         };
       }
 
-      const preparedText = this.botСommandsToolsService.clearCommands(
+      const preparedText = this.botCommandsToolsService.clearCommands(
         msg.text,
         [spyWord],
         locale

@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -29,7 +29,7 @@ export class ScraperService
   constructor(
     @Inject(SCRAPER_CONFIG)
     private readonly scraperConfig: ScraperConfig,
-    private readonly botСommandsToolsService: BotСommandsToolsService
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   async onContextBotCommands<
@@ -37,7 +37,7 @@ export class ScraperService
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = msg.from?.language_code;
     if (
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [getText('more'), getText('next')],
         locale
@@ -66,14 +66,14 @@ export class ScraperService
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = msg.from?.language_code;
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
-      this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (!locale) {
         throw new Error(`locale not set`);
       }
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           locale
@@ -82,7 +82,7 @@ export class ScraperService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botСommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage({
             locale,
             name: this.scraperConfig.title,
             contextUsage: this.scraperConfig.contextUsage,
@@ -92,7 +92,7 @@ export class ScraperService
         };
       }
 
-      const preparedText = this.botСommandsToolsService.clearCommands(
+      const preparedText = this.botCommandsToolsService.clearCommands(
         msg.text,
         [
           spyWord,

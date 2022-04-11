@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
@@ -17,7 +17,7 @@ export class QuotesGeneratorService
 {
   constructor(
     private readonly scraperService: ScraperService,
-    private readonly botСommandsToolsService: BotСommandsToolsService,
+    private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly translatesStorage: TranslatesStorage
   ) {}
 
@@ -47,7 +47,7 @@ export class QuotesGeneratorService
       locale = DEFAULT_LANGUAGE;
     }
     if (
-      this.botСommandsToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [...Object.keys(BotCommandsEnum)],
         locale

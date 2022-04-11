@@ -5,13 +5,13 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from './bot-commands-config/bot-commands.config';
-import { BotСommandsToolsService } from './bot-commands-services/bot-commands-tools.service';
-import { BotСommandsService } from './bot-commands-services/bot-commands.service';
+import { BotCommandsToolsService } from './bot-commands-services/bot-commands-tools.service';
+import { BotCommandsService } from './bot-commands-services/bot-commands.service';
 
 @Module({
   imports: [CustomInjectorModule, TranslatesModule],
-  providers: [BotСommandsToolsService],
-  exports: [CustomInjectorModule, TranslatesModule, BotСommandsToolsService],
+  providers: [BotCommandsToolsService],
+  exports: [CustomInjectorModule, TranslatesModule, BotCommandsToolsService],
 })
 export class BotCommandsModule {
   static forRoot(config?: BotCommandsConfig): DynamicModule {
@@ -25,9 +25,9 @@ export class BotCommandsModule {
             ...(config || {}),
           },
         },
-        BotСommandsService,
+        BotCommandsService,
       ],
-      exports: [BOT_COMMANDS_CONFIG, BotСommandsService],
+      exports: [BOT_COMMANDS_CONFIG, BotCommandsService],
     };
   }
 }

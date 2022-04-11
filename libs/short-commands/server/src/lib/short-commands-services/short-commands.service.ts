@@ -3,7 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-  BotСommandsToolsService,
+  BotCommandsToolsService,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
@@ -24,7 +24,7 @@ export class ShortCommandsService
   constructor(
     @Inject(SHORT_COMMANDS_CONFIG)
     private readonly shortCommandsConfig: ShortCommandsConfig,
-    private readonly botСommandsToolsService: BotСommandsToolsService,
+    private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly translatesStorage: TranslatesStorage,
     private readonly translatesService: TranslatesService
   ) {}
@@ -38,7 +38,7 @@ export class ShortCommandsService
       const shortCommands = this.shortCommandsConfig.commands[locale] || {};
       const matchedCommands = Object.keys(shortCommands)
         .filter((commands) =>
-          this.botСommandsToolsService.checkMicromatchCommands(
+          this.botCommandsToolsService.checkMicromatchCommands(
             text,
             commands.split('|')
           )
@@ -74,11 +74,11 @@ export class ShortCommandsService
     }
 
     const spyWord = this.shortCommandsConfig.spyWords.find((spyWord) =>
-      this.botСommandsToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           locale
@@ -87,7 +87,7 @@ export class ShortCommandsService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botСommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage({
             locale,
             name: this.shortCommandsConfig.title,
             descriptions: this.shortCommandsConfig.descriptions,
@@ -97,7 +97,7 @@ export class ShortCommandsService
       }
 
       if (
-        this.botСommandsToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.state],
           locale
