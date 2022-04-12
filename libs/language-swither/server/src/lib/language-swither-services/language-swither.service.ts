@@ -35,20 +35,25 @@ export class LanguageSwitherService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const locale = await this.languageSwitherStorage.getLanguageOfUser(
-      msg.from?.id
+    const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
+      msg?.from?.id
     );
-    const detectedLocale = await this.languageSwitherStorage.getLanguageOfUser(
-      msg.from?.id,
-      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE)
+    const detectedLocale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
     );
-    if (msg.from?.id && !locale) {
-      await this.languageSwitherStorage.setLanguageOfUser(
-        msg.from?.id,
-        detectedLocale
-      );
+    if (msg?.from?.id) {
+      if (!dbLocale) {
+        await this.languageSwitherStorage.setLanguageOfUser(
+          msg?.from?.id,
+          detectedLocale
+        );
+        msg.from.language_code = detectedLocale;
+      } else {
+        msg.from.language_code = dbLocale;
+      }
     } else {
-      if (detectedLocale) {
+      if (msg.from) {
         msg.from.language_code = detectedLocale;
       }
     }
@@ -67,9 +72,9 @@ export class LanguageSwitherService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = await this.languageSwitherStorage.getLanguageOfUser(
-      msg.from?.id
-    );
+    const locale =
+      (await this.languageSwitherStorage.getLanguageOfUser(msg?.from?.id)) ||
+      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
     const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
@@ -142,7 +147,9 @@ export class LanguageSwitherService
           .includes(text.trim().toLowerCase())
       ) {
         const currentLocale =
-          await this.languageSwitherStorage.getLanguageOfUser(msg.from?.id);
+          (await this.languageSwitherStorage.getLanguageOfUser(
+            msg?.from?.id
+          )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
         return this.translatesService.translate(
           getText(
             `locale "{{locale}}" not founded, current locale: "{{currentLocale}}"`
@@ -164,7 +171,7 @@ export class LanguageSwitherService
       msg.from.language_code = inputLocale || locale;
 
       await this.languageSwitherStorage.setLanguageOfUser(
-        msg.from?.id,
+        msg?.from?.id,
         inputLocale || locale
       );
 

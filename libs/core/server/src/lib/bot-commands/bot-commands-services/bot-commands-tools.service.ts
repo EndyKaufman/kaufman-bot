@@ -207,7 +207,7 @@ export class BotCommandsToolsService {
   getLocale<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, defaultValue: string) {
-    let locale = msg.from?.language_code;
+    let locale = msg?.from?.language_code;
     if (
       !locale ||
       !Object.keys(this.translatesStorage.translates).find((key) =>

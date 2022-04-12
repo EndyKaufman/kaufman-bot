@@ -69,8 +69,6 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
     }),
-    LanguageSwitherModule.forRoot(),
-    DebugMessagesModule.forRoot(),
     BotInGroupsModule.forRoot({
       botNames: {
         en: ['Endy', 'Kaufman'],
@@ -93,6 +91,8 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
         ru: [`Теперь у меня есть доступ, спасибо 😉`],
       },
     }),
+    LanguageSwitherModule.forRoot(),
+    DebugMessagesModule.forRoot(),
     ShortCommandsModule.forRoot({
       commands: {
         en: {

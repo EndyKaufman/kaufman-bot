@@ -1,6 +1,5 @@
 import { PrismaClientService } from '@kaufman-bot/core/server';
 import { Injectable } from '@nestjs/common';
-import { DEFAULT_LANGUAGE } from '../language-swither-config/language-swither.config';
 
 @Injectable()
 export class LanguageSwitherStorage {
@@ -8,33 +7,34 @@ export class LanguageSwitherStorage {
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
-  async getLanguageOfUser(
-    userId: number,
-    defaultLangCode?: string
-  ): Promise<string> {
-    const currentLanguageCode = this.languageOfUsers[userId];
+  async getLanguageOfUser(telegramUserId: number): Promise<string | null> {
+    const currentLanguageCode = this.languageOfUsers[telegramUserId];
     if (currentLanguageCode) {
       return currentLanguageCode;
     }
     try {
       const currentLanguageCodeFromDatabase =
         await this.prismaClientService.user.findFirst({
-          where: { telegramId: userId.toString() },
+          where: { telegramId: telegramUserId.toString() },
           rejectOnNotFound: true,
         });
-      this.languageOfUsers[userId] = currentLanguageCodeFromDatabase.langCode;
-      return this.languageOfUsers[userId];
+      this.languageOfUsers[telegramUserId] =
+        currentLanguageCodeFromDatabase.langCode;
+      return this.languageOfUsers[telegramUserId];
     } catch (error) {
-      return defaultLangCode || DEFAULT_LANGUAGE;
+      return null;
     }
   }
 
-  async setLanguageOfUser(userId: number, langCode: string): Promise<void> {
+  async setLanguageOfUser(
+    telegramUserId: number,
+    langCode: string
+  ): Promise<void> {
     await this.prismaClientService.user.upsert({
-      create: { telegramId: userId.toString(), langCode },
+      create: { telegramId: telegramUserId.toString(), langCode },
       update: { langCode },
-      where: { telegramId: userId.toString() },
+      where: { telegramId: telegramUserId.toString() },
     });
-    this.languageOfUsers[userId] = langCode;
+    this.languageOfUsers[telegramUserId] = langCode;
   }
 }

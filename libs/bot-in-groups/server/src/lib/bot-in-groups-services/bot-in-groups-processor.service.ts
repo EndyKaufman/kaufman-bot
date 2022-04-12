@@ -2,7 +2,10 @@ import {
   BotCommandsService,
   BotCommandsToolsService,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
+import {
+  DEFAULT_LANGUAGE,
+  LanguageSwitherStorage,
+} from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import {
   BotInGroupsConfig,
@@ -15,14 +18,22 @@ export class BotInGroupsProcessorService {
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botCommandsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly botCommandsService: BotCommandsService
+    private readonly botCommandsService: BotCommandsService,
+    private readonly languageSwitherStorage: LanguageSwitherStorage
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
-    const locale = this.botCommandsToolsService.getLocale(
-      ctx?.update?.message || ctx?.update?.my_chat_member,
-      DEFAULT_LANGUAGE
-    );
+    const dbLocale = ctx?.update?.message?.from?.id
+      ? await this.languageSwitherStorage.getLanguageOfUser(
+          ctx?.update?.message.from.id
+        )
+      : null;
+    const locale =
+      dbLocale ||
+      this.botCommandsToolsService.getLocale(
+        ctx?.update?.message,
+        DEFAULT_LANGUAGE
+      );
 
     if (ctx.update?.message?.chat?.id > 0) {
       await this.botCommandsService.process(ctx, defaultHandler);

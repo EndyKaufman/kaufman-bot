@@ -60,7 +60,7 @@ export class DebugMessagesService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
     const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-      msg.from?.id
+      msg?.from?.id
     );
     return this.debugService.setDebugMode(msg, debugMode);
   }
@@ -128,7 +128,7 @@ export class DebugMessagesService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, locale: string) {
     const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-      msg.from?.id
+      msg?.from?.id
     );
     if (
       this.commandToolsService.checkCommands(
@@ -138,7 +138,7 @@ export class DebugMessagesService
       )
     ) {
       if (!debugMode) {
-        await this.debugMessagesStorage.setDebugModeOfUser(msg.from?.id, true);
+        await this.debugMessagesStorage.setDebugModeOfUser(msg?.from?.id, true);
         return this.translatesService.translate(
           getText(`debug enabled`),
           locale,
@@ -164,7 +164,10 @@ export class DebugMessagesService
       )
     ) {
       if (debugMode) {
-        await this.debugMessagesStorage.setDebugModeOfUser(msg.from?.id, false);
+        await this.debugMessagesStorage.setDebugModeOfUser(
+          msg?.from?.id,
+          false
+        );
         return this.translatesService.translate(
           getText(`debug disabled`),
           locale,
