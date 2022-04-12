@@ -10,8 +10,13 @@ import { BotCommandsService } from './bot-commands-services/bot-commands.service
 
 @Module({
   imports: [CustomInjectorModule, TranslatesModule],
-  providers: [BotCommandsToolsService],
-  exports: [CustomInjectorModule, TranslatesModule, BotCommandsToolsService],
+  providers: [BotCommandsToolsService, BotCommandsService],
+  exports: [
+    CustomInjectorModule,
+    TranslatesModule,
+    BotCommandsToolsService,
+    BotCommandsService,
+  ],
 })
 export class BotCommandsModule {
   static forRoot(config?: BotCommandsConfig): DynamicModule {
@@ -25,9 +30,8 @@ export class BotCommandsModule {
             ...(config || {}),
           },
         },
-        BotCommandsService,
       ],
-      exports: [BOT_COMMANDS_CONFIG, BotCommandsService],
+      exports: [BOT_COMMANDS_CONFIG],
     };
   }
 }

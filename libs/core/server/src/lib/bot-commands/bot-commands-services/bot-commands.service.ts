@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
   BotCommandsConfig,
@@ -36,9 +36,10 @@ export class BotCommandsService implements BotCommandsProvider {
     Partial<OnAfterBotCommands> &
     Partial<OnContextBotCommands>)[];
 
+  @CustomInject(BOT_COMMANDS_CONFIG)
+  private botCommandsConfig!: BotCommandsConfig;
+
   constructor(
-    @Inject(BOT_COMMANDS_CONFIG)
-    private readonly botCommandsConfig: BotCommandsConfig | undefined,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 

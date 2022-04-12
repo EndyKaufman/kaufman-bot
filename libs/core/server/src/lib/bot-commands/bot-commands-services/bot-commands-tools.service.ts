@@ -115,8 +115,8 @@ export class BotCommandsToolsService {
     return replayHelpMessage;
   }
 
-  clearCommands(text: string, commands: string[], locale: string) {
-    const words = text.split(' ');
+  clearCommands(text: string | undefined, commands: string[], locale: string) {
+    const words = (text || '').split(' ');
     const lowerCasedWords = words.map((c) => c.toLowerCase());
     const lowerCasedCommands = commands.map((c) => c.toLowerCase());
     lowerCasedCommands.forEach((command) => {
@@ -138,8 +138,10 @@ export class BotCommandsToolsService {
     return words.join(' ').split('  ').join(' ').trim();
   }
 
-  checkCommands(text: string, commands: string[], locale?: string) {
-    const lowerCasedText = this.prepareCommandString(text.toLocaleLowerCase());
+  checkCommands(text: string | undefined, commands: string[], locale?: string) {
+    const lowerCasedText = this.prepareCommandString(
+      (text || '').toLocaleLowerCase()
+    );
     const lowerCasedCommands = commands
       .map((c) => this.prepareCommandString(c).toLocaleLowerCase().split('|'))
       .reduce((acc, val) => acc.concat(val), []);
@@ -189,8 +191,8 @@ export class BotCommandsToolsService {
     return false;
   }
 
-  prepareHelpString(text: string) {
-    return text.split('*').join('\\*');
+  prepareHelpString(text: string | undefined) {
+    return (text || '').split('*').join('\\*');
   }
 
   getRandomItem<T>(items: T[]) {
