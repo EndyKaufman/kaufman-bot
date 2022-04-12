@@ -78,7 +78,7 @@ export class DialogflowStorage {
       this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
       ...(currentSessionOfUsers.requestsMetadata || []),
-      ...sessionOfUsers.requestsMetadata,
+      ...(sessionOfUsers.requestsMetadata || []),
     ];
     currentSessionOfUsers.responsesMetadata = [
       ...(currentSessionOfUsers.responsesMetadata || []),
@@ -146,10 +146,10 @@ export class DialogflowStorage {
     const currentSessionOfUsers: SessionOfUsers =
       this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
-      ...sessionOfUsers.requestsMetadata,
+      ...(sessionOfUsers?.requestsMetadata || []),
     ];
     currentSessionOfUsers.responsesMetadata = [
-      ...sessionOfUsers.responsesMetadata,
+      ...(sessionOfUsers.responsesMetadata || []),
     ];
 
     await this.prismaClientService.dialogflowSession.upsert({

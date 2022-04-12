@@ -40,7 +40,7 @@ export class FirstMeetingService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return msg;
     }
     if (msg.botStart) {
@@ -53,7 +53,7 @@ export class FirstMeetingService
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return null;
     }
 
@@ -192,7 +192,7 @@ export class FirstMeetingService
     result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
-    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return { result, msg };
     }
 
@@ -223,7 +223,7 @@ export class FirstMeetingService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return null;
     }
 

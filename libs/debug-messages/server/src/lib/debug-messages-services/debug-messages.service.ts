@@ -59,10 +59,14 @@ export class DebugMessagesService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-      msg?.from?.id
-    );
-    return this.debugService.setDebugMode(msg, debugMode);
+    const telegramUserId = msg?.chat?.id || msg?.from?.id;
+    if (telegramUserId) {
+      const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
+        telegramUserId
+      );
+      return this.debugService.setDebugMode(msg, debugMode);
+    }
+    return msg;
   }
 
   async onHelp<
@@ -128,7 +132,7 @@ export class DebugMessagesService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, locale: string) {
     const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-      msg?.from?.id
+      msg?.chat?.id || msg?.from?.id
     );
     if (
       this.commandToolsService.checkCommands(
@@ -138,7 +142,10 @@ export class DebugMessagesService
       )
     ) {
       if (!debugMode) {
-        await this.debugMessagesStorage.setDebugModeOfUser(msg?.from?.id, true);
+        await this.debugMessagesStorage.setDebugModeOfUser(
+          msg?.chat?.id || msg?.from?.id,
+          true
+        );
         return this.translatesService.translate(
           getText(`debug enabled`),
           locale,
@@ -165,7 +172,7 @@ export class DebugMessagesService
     ) {
       if (debugMode) {
         await this.debugMessagesStorage.setDebugModeOfUser(
-          msg?.from?.id,
+          msg?.chat?.id || msg?.from?.id,
           false
         );
         return this.translatesService.translate(

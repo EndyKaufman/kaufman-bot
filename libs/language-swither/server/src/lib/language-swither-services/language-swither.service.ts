@@ -36,16 +36,16 @@ export class LanguageSwitherService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
     const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
-      msg?.from?.id
+      msg?.chat?.id || msg?.from?.id
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(
       msg,
       DEFAULT_LANGUAGE
     );
-    if (msg?.from?.id) {
+    if (msg?.chat?.id || msg?.from?.id) {
       if (!dbLocale) {
         await this.languageSwitherStorage.setLanguageOfUser(
-          msg?.from?.id,
+          msg?.chat?.id || msg?.from?.id,
           detectedLocale
         );
         msg.from.language_code = detectedLocale;
@@ -148,7 +148,7 @@ export class LanguageSwitherService
       ) {
         const currentLocale =
           (await this.languageSwitherStorage.getLanguageOfUser(
-            msg?.from?.id
+            msg?.chat?.id || msg?.from?.id
           )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
         return this.translatesService.translate(
           getText(
@@ -171,7 +171,7 @@ export class LanguageSwitherService
       msg.from.language_code = inputLocale || locale;
 
       await this.languageSwitherStorage.setLanguageOfUser(
-        msg?.from?.id,
+        msg?.chat?.id || msg?.from?.id,
         inputLocale || locale
       );
 

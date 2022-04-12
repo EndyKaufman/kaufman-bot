@@ -10,10 +10,12 @@ export class DebugService {
   setDebugMode<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, value: boolean) {
-    if (!msg.botContext) {
-      msg.botContext = {};
+    if (msg) {
+      if (!msg.botContext) {
+        msg.botContext = {};
+      }
+      msg.botContext[DEBUG_MODE] = value;
     }
-    msg.botContext[DEBUG_MODE] = value;
     return msg;
   }
 
@@ -27,7 +29,7 @@ export class DebugService {
     data: any,
     context: string
   ) {
-    if (msg.botContext?.[DEBUG_MODE]) {
+    if (msg?.botContext?.[DEBUG_MODE]) {
       ctx.reply(
         [
           `*${context} \\(${+new Date()}\\):*`,
