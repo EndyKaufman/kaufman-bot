@@ -2,6 +2,7 @@
   "serverRootTranslationsPath": "./apps/server/src/assets/i18n/",
   "langs": ["en", "ru"],
   "serverScopedLibs": [
+    "libs/bot-in-groups/server",
     "libs/core/server",
     "libs/currency-converter/server",
     "libs/debug-messages/server",
@@ -16,6 +17,7 @@
   ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
   "scopedLibs": [
+    "libs/bot-in-groups/server",
     "libs/core/server",
     "libs/currency-converter/server",
     "libs/debug-messages/server",

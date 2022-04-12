@@ -46,6 +46,7 @@ function exitHandler(options, exitCode) {
   if (exitCode || exitCode === 0) {
     if (exitCode !== 0) {
       logger.error(exitCode, exitCode.stack);
+      logger.log(`exit: code - ${exitCode}`);
     } else {
       logger.log(`exit: code - ${exitCode}`);
     }

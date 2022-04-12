@@ -1,3 +1,4 @@
+import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups/server';
 import {
   BotCommandsModule,
   PrismaClientModule,
@@ -15,7 +16,6 @@ import {
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator/server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
 import { Module } from '@nestjs/common';
-import { getText } from 'class-validator-multi-lang';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
@@ -30,6 +30,7 @@ import { AppService } from './app.service';
   imports: [
     TelegrafModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
+      launchOptions: { dropPendingUpdates: true },
     }),
     PrismaClientModule.forRoot({
       databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
@@ -51,6 +52,28 @@ import { AppService } from './app.service';
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
     }),
+    BotInGroupsModule.forRoot({
+      botNames: {
+        en: ['Endy', 'Kaufman'],
+        ru: ['Энди', 'Endy', 'Kaufman', 'Енди', 'Кауфман'],
+      },
+      botMeetingInformation: {
+        en: [`Hello! \\'m Endy 😉`, 'Hello!', 'Hello 🖖'],
+        ru: [`Всем привет! я Энди 😉`, `Всем привет!`, 'Всем привет 🖖'],
+      },
+      botDoNotHaveFullAccess: {
+        en: [
+          `I not have access to read messages and process your commands 😢, please give me access 😉`,
+        ],
+        ru: [
+          `У меня нет доступа на чтение ваших сообщений и обработки команд 😢, пожалуйста дайте мне доступ 😉`,
+        ],
+      },
+      botNowHaveFullAccess: {
+        en: [`Now I have access, thanks 😉`],
+        ru: [`Теперь у меня есть доступ, спасибо 😉`],
+      },
+    }),
     LanguageSwitherModule.forRoot(),
     DebugMessagesModule.forRoot(),
     ShortCommandsModule.forRoot({
@@ -60,16 +83,20 @@ import { AppService } from './app.service';
           'quote|thought|wisdom': 'get quotes',
           'facts|fact|history': 'get facts',
           'forgot me': 'meet reset',
-          'what you can do|faq': 'help',
+          '*what you can do*|faq': 'help',
+          'disable debug': 'debug off',
+          'enable debug': 'debug on',
         },
         ru: {
           'joke|jokes|*шутка|*шутку|*шутки|пошути|шути|рассмеши|смешинки|смешинка':
             'get jokes',
           'quote*|thought|wisdom*|цитата|дай цитату|цитируй|*мысль|*мудрость|*залечи*':
             'get quotes',
-          'facts|fact|history|история|*историю': 'get facts',
+          'facts|fact|history|история|*историю|*факты': 'get facts',
           'forgot me|забудь меня': 'meet reset',
-          'what you can do|faq|что ты умеешь|справка': 'help',
+          '*what you can do*|faq|*что ты умеешь*|справка': 'help',
+          'disable debug|выключи дебаг': 'debug off',
+          'enable debug|включи дебаг': 'debug on',
         },
       },
     }),
@@ -77,7 +104,7 @@ import { AppService } from './app.service';
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
-    FirstMeetingModule.forRoot({ botName: getText('Endy') }),
+    FirstMeetingModule.forRoot({ botName: { en: 'Endy', ru: 'Энди' } }),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),

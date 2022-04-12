@@ -183,5 +183,14 @@
     "reset": "сбросить",
     "end": "конец",
     "stop": "стоп"
+  },
+  "bot-in-groups-server": {},
+  "bot-in-groups-server-getText": {
+    "Bot in groups": "Бот в группах",
+    "Commands for support work the bot in groups": "Команды для поддержки работы бота в группах",
+    "groups": "группы",
+    "groups help": "",
+    "groups meet": "",
+    "meet": ""
   }
 }

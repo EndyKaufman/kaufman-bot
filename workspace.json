@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "bot-in-groups-server": "libs/bot-in-groups/server",
     "core-server": "libs/core/server",
     "currency-converter-server": "libs/currency-converter/server",
     "debug-messages-server": "libs/debug-messages/server",

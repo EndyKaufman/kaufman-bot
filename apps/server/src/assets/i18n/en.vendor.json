@@ -346,5 +346,21 @@
     "reset": "reset",
     "end": "end",
     "stop": "stop"
+  },
+  "bot-in-groups-server": {
+    "Bot in groups": "Bot in groups",
+    "Commands for support work the bot in groups": "Commands for support work the bot in groups",
+    "groups": "groups",
+    "groups help": "groups help",
+    "groups meet": "groups meet",
+    "meet": "meet"
+  },
+  "bot-in-groups-server-getText": {
+    "Bot in groups": "Bot in groups",
+    "Commands for support work the bot in groups": "Commands for support work the bot in groups",
+    "groups": "groups",
+    "groups help": "groups help",
+    "groups meet": "groups meet",
+    "meet": "meet"
   }
 }

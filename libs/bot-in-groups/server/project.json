@@ -1,0 +1,23 @@
+{
+  "root": "libs/bot-in-groups/server",
+  "sourceRoot": "libs/bot-in-groups/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/bot-in-groups/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/bot-in-groups/server"],
+      "options": {
+        "jestConfig": "libs/bot-in-groups/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -124,15 +124,15 @@ export class BotCommandsService implements BotCommandsProvider {
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    if (!msg.botCommandHandlerBreak) {
+    if (!msg?.botCommandHandlerBreak) {
       result = await this.processOnMessage(result, msg, ctx);
     }
 
-    if (!msg.botCommandHandlerBreak) {
+    if (!msg?.botCommandHandlerBreak) {
       result = await this.processOnContext(result, msg, ctx);
     }
 
-    if (msg.botCommandHandlerBreak) {
+    if (msg?.botCommandHandlerBreak) {
       return { type: 'stop', message: msg };
     }
 
@@ -170,9 +170,10 @@ export class BotCommandsService implements BotCommandsProvider {
       const botCommandsProvider = this.botCommandsProviders[i];
       if (
         botCommandsProvider.onBeforeBotCommands &&
-        !msg.botCommandHandlerBreak
-      )
+        !msg?.botCommandHandlerBreak
+      ) {
         msg = await botCommandsProvider.onBeforeBotCommands(msg, ctx);
+      }
     }
     return msg;
   }
@@ -218,7 +219,7 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     msg.botCommandHandlerId = null;
     for (let i = 0; i < len; i++) {
-      if (!result && !msg.botCommandHandlerBreak) {
+      if (!result && !msg?.botCommandHandlerBreak) {
         result = await this.botCommandsProviders[i].onMessage(msg, ctx);
         if (result) {
           msg.botCommandHandlerId =

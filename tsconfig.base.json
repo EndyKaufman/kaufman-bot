@@ -23,6 +23,9 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "paths": {
+      "@kaufman-bot/bot-in-groups/server": [
+        "libs/bot-in-groups/server/src/index.ts"
+      ],
       "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"],
       "@kaufman-bot/currency-converter/server": [
         "libs/currency-converter/server/src/index.ts"
