@@ -86,10 +86,6 @@ export class BotInGroupsProcessorService {
       }
     }
 
-    const admins = await ctx.getChatAdministrators();
-    const botIsAdmin =
-      admins.filter((admin) => admin.user.id === ctx.botInfo.id).length > 0;
-
     if (
       ctx.update?.message?.chat?.id < 0 &&
       ctx.update?.message?.new_chat_member?.id === ctx.botInfo.id
@@ -97,43 +93,6 @@ export class BotInGroupsProcessorService {
       await ctx.reply(
         this.botCommandsToolsService.getRandomItem(
           this.botCommandsConfig.botMeetingInformation[locale]
-        )
-      );
-      if (!botIsAdmin) {
-        await ctx.reply(
-          this.botCommandsToolsService.getRandomItem(
-            this.botCommandsConfig.botDoNotHaveFullAccess[locale]
-          )
-        );
-      }
-      return;
-    }
-
-    if (
-      ctx.update.my_chat_member?.chat?.id < 0 &&
-      ctx.update.my_chat_member?.old_chat_member.user.id === ctx.botInfo.id &&
-      ctx.update.my_chat_member?.old_chat_member.status === 'left' &&
-      ctx.update.my_chat_member?.new_chat_member.user.id === ctx.botInfo.id &&
-      ctx.update.my_chat_member?.new_chat_member.status === 'administrator'
-    ) {
-      await ctx.reply(
-        this.botCommandsToolsService.getRandomItem(
-          this.botCommandsConfig.botNowHaveFullAccess[locale]
-        )
-      );
-      return;
-    }
-
-    if (
-      ctx.update.my_chat_member?.chat?.id < 0 &&
-      ctx.update.my_chat_member?.old_chat_member.user.id === ctx.botInfo.id &&
-      ctx.update.my_chat_member?.old_chat_member.status === 'member' &&
-      ctx.update.my_chat_member?.new_chat_member.user.id === ctx.botInfo.id &&
-      ctx.update.my_chat_member?.new_chat_member.status === 'administrator'
-    ) {
-      await ctx.reply(
-        this.botCommandsToolsService.getRandomItem(
-          this.botCommandsConfig.botNowHaveFullAccess[locale]
         )
       );
       return;
@@ -148,8 +107,6 @@ export class BotInGroupsProcessorService {
       return;
     }
 
-    if (botIsAdmin) {
-      await this.botCommandsService.process(ctx, defaultHandler);
-    }
+    await this.botCommandsService.process(ctx, defaultHandler);
   }
 }

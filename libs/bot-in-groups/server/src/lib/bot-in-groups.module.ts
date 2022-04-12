@@ -30,13 +30,7 @@ import { BotInGroupsService } from './bot-in-groups-services/bot-in-groups.servi
 })
 export class BotInGroupsModule {
   static forRoot(
-    config: Pick<
-      BotInGroupsConfig,
-      | 'botNames'
-      | 'botMeetingInformation'
-      | 'botDoNotHaveFullAccess'
-      | 'botNowHaveFullAccess'
-    >
+    config: Pick<BotInGroupsConfig, 'botNames' | 'botMeetingInformation'>
   ): DynamicModule {
     return {
       module: BotInGroupsModule,

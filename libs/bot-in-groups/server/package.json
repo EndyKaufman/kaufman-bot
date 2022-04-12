@@ -1,15 +1,15 @@
 {
-    "i18n": [
-        {
-            "scope": "bot-in-groups-server",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "bot-in-groups-server-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        }
-    ],
-    "version": "0.0.0"
+  "i18n": [
+    {
+      "scope": "bot-in-groups-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    },
+    {
+      "scope": "bot-in-groups-server-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    }
+  ],
+  "version": "0.0.0"
 }

@@ -103,18 +103,6 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
         en: [`Hello! I'm Endy 😉`, 'Hello!', 'Hello 🖖'],
         ru: [`Всем привет! я Энди 😉`, `Всем привет!`, 'Всем привет 🖖'],
       },
-      botDoNotHaveFullAccess: {
-        en: [
-          `I not have access to read messages and process your commands 😢, please give me access 😉`,
-        ],
-        ru: [
-          `У меня нет доступа на чтение ваших сообщений и обработку команд 😢, пожалуйста дайте мне доступ 😉`,
-        ],
-      },
-      botNowHaveFullAccess: {
-        en: [`Now I have access, thanks 😉`],
-        ru: [`Теперь у меня есть доступ, спасибо 😉`],
-      },
     }),
     LanguageSwitherModule.forRoot(),
     CurrencyConverterModule.forRoot(),

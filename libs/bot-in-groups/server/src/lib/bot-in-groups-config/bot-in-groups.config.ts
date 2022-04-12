@@ -8,6 +8,4 @@ export interface BotInGroupsConfig {
   spyWords: string[];
   botNames: { [langCode: string]: string[] };
   botMeetingInformation: { [langCode: string]: string[] };
-  botDoNotHaveFullAccess: { [langCode: string]: string[] };
-  botNowHaveFullAccess: { [langCode: string]: string[] };
 }

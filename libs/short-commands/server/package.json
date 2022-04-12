@@ -1,15 +1,15 @@
 {
-    "i18n": [
-        {
-            "scope": "short-commands-server",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "short-commands-server-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        }
-    ],
-    "version": "0.0.0"
+  "i18n": [
+    {
+      "scope": "short-commands-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    },
+    {
+      "scope": "short-commands-server-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    }
+  ],
+  "version": "0.0.0"
 }
