@@ -11657,3 +11657,35 @@ List all env
 In the next post, I will hide system commands from all users and show them only to bot admins, and append bot descriptions...
 
 #kaufmanbot #nestjs #telegram #webhook
+
+# [2022-04-12 22:54] How to receive messages in group chats using telegram bot app without full access in Telegram bot on NestJS
+
+## Links
+
+https://github.com/EndyKaufman/kaufman-bot - source code of bot
+
+https://telegram.me/DevelopKaufmanBot - current bot in telegram
+
+## Disable privacy mode
+
+Sequence within a BotFather chat:
+
+You: /setprivacy
+
+BotFather: Choose a bot to change group messages settings.
+
+You: @your_name_bot
+
+BotFather: 'Enable' - your bot will only receive messages that either start with the '/' symbol or mention the bot by username.
+
+'Disable' - your bot will receive all messages that people send to groups.
+
+Current status is: ENABLED
+
+You: Disable
+
+BotFather: Success! The new status is: DISABLED. /help
+
+![Disable privacy mode](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/21v5kzgamzd4sf5hczhy.png)
+
+#kaufmanbot #nestjs #telegram #groups
