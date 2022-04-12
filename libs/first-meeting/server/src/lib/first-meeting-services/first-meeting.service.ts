@@ -19,6 +19,8 @@ import {
 } from '../first-meeting-config/first-meeting.config';
 import { FirstMeetingStorage } from './first-meeting.storage';
 
+export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
+
 @Injectable()
 export class FirstMeetingService
   implements
@@ -38,7 +40,7 @@ export class FirstMeetingService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    if (msg.from.id < 0) {
+    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return msg;
     }
     if (msg.botStart) {
@@ -51,6 +53,10 @@ export class FirstMeetingService
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+      return null;
+    }
+
     const locale = this.botCommandsToolsService.getLocale(
       msg,
       DEFAULT_LANGUAGE
@@ -186,6 +192,10 @@ export class FirstMeetingService
     result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
+    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+      return { result, msg };
+    }
+
     if (msg.botStart) {
       await this.firstMeetingStorage.removeUserFirstMeeting({
         telegramUserId: msg.from.id,
@@ -213,14 +223,14 @@ export class FirstMeetingService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    if (msg.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
+      return null;
+    }
+
     const locale = this.botCommandsToolsService.getLocale(
       msg,
       DEFAULT_LANGUAGE
     );
-
-    if (msg.from.id < 0) {
-      return null;
-    }
 
     const firstMeeting = await this.firstMeetingStorage.getUserFirstMeeting({
       telegramUserId: msg.from.id,

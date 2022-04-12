@@ -1,15 +1,15 @@
 {
-  "i18n": [
-    {
-      "scope": "html-scraper-server",
-      "path": "src/i18n",
-      "strategy": "join"
-    },
-    {
-      "scope": "html-scraper-server-getText",
-      "path": "src/i18n/getText",
-      "strategy": "join"
-    }
-  ],
-  "version": "0.0.0"
+    "i18n": [
+        {
+            "scope": "html-scraper-server",
+            "path": "src/i18n",
+            "strategy": "join"
+        },
+        {
+            "scope": "html-scraper-server-getText",
+            "path": "src/i18n/getText",
+            "strategy": "join"
+        }
+    ],
+    "version": "0.0.0"
 }

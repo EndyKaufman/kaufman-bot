@@ -20,9 +20,11 @@ export class DialogflowStorage {
   async getUserSession({
     telegramUserId,
     projectId,
+    createIfNotExists = true,
   }: {
     telegramUserId: number;
     projectId: string;
+    createIfNotExists?: boolean;
   }): Promise<SessionOfUsers | null> {
     const currentSessionOfUsers: SessionOfUsers =
       this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
@@ -45,6 +47,18 @@ export class DialogflowStorage {
       };
       return this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
     } catch (error) {
+      await this.setUserSession({
+        telegramUserId,
+        projectId,
+        sessionOfUsers: currentSessionOfUsers,
+      });
+      if (createIfNotExists) {
+        return await this.getUserSession({
+          telegramUserId,
+          projectId,
+          createIfNotExists: false,
+        });
+      }
       return null;
     }
   }
@@ -176,29 +190,33 @@ export class DialogflowStorage {
     telegramUserId: number;
     projectId: string;
   }) {
-    const defaultUserSession =
-      await this.prismaClientService.dialogflowSession.findFirst({
-        where: {
-          User: { telegramId: telegramUserId.toString() },
-          projectId,
-        },
-      });
-    if (defaultUserSession) {
-      await this.prismaClientService.dialogflowSession.updateMany({
-        data: {
+    try {
+      const defaultUserSession =
+        await this.prismaClientService.dialogflowSession.findFirst({
+          where: {
+            User: { telegramId: telegramUserId.toString() },
+            projectId,
+          },
+        });
+      if (defaultUserSession) {
+        await this.prismaClientService.dialogflowSession.updateMany({
+          data: {
+            requestsMetadata: [],
+            responsesMetadata: [],
+          },
+          where: {
+            sessionId: defaultUserSession.sessionId,
+            projectId,
+          },
+        });
+        this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+          sessionId: defaultUserSession.sessionId,
           requestsMetadata: [],
           responsesMetadata: [],
-        },
-        where: {
-          sessionId: defaultUserSession.sessionId,
-          projectId,
-        },
-      });
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
-        sessionId: defaultUserSession.sessionId,
-        requestsMetadata: [],
-        responsesMetadata: [],
-      };
+        };
+      }
+    } catch (error) {
+      null;
     }
   }
 

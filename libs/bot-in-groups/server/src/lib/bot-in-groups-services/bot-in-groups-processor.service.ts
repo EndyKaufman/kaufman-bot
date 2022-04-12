@@ -2,10 +2,15 @@ import {
   BotCommandsService,
   BotCommandsToolsService,
 } from '@kaufman-bot/core/server';
+import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting/server';
 import {
   DEFAULT_LANGUAGE,
   LanguageSwitherStorage,
 } from '@kaufman-bot/language-swither/server';
+import {
+  DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
+  ShortCommandsToolsService,
+} from '@kaufman-bot/short-commands/server';
 import { Inject, Injectable } from '@nestjs/common';
 import {
   BotInGroupsConfig,
@@ -19,7 +24,8 @@ export class BotInGroupsProcessorService {
     private readonly botCommandsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly botCommandsService: BotCommandsService,
-    private readonly languageSwitherStorage: LanguageSwitherStorage
+    private readonly languageSwitherStorage: LanguageSwitherStorage,
+    private readonly shortCommandsToolsService: ShortCommandsToolsService
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
@@ -39,6 +45,8 @@ export class BotInGroupsProcessorService {
             DEFAULT_LANGUAGE
           ));
 
+    const botName = this.botCommandsConfig.botNames[locale][0];
+
     if (ctx.update?.message?.from?.language_code) {
       ctx.update.message.from.language_code = locale;
     }
@@ -47,6 +55,37 @@ export class BotInGroupsProcessorService {
       await this.botCommandsService.process(ctx, defaultHandler);
       return;
     }
+
+    if (ctx?.update?.message) {
+      if (!ctx.update.message.botContext) {
+        ctx.update.message.botContext = {};
+      }
+      ctx.update.message.botContext[DISABLE_FIRST_MEETING_COMMANDS] = true;
+      ctx.update.message.botContext[DISABLE_SHORT_COMMANDS__BEFORE_HOOK] = true;
+      if (ctx.update.message.text) {
+        const shortCommand =
+          this.shortCommandsToolsService.updateTextWithShortCommands(
+            locale,
+            this.botCommandsToolsService.clearCommands(
+              ctx.update.message.text,
+              this.botCommandsConfig.botNames[locale],
+              locale
+            )
+          );
+        if (
+          this.botCommandsToolsService.checkCommands(
+            ctx.update.message.text,
+            this.botCommandsConfig.botNames[locale],
+            locale
+          )
+        ) {
+          ctx.update.message.text = `${botName} ${shortCommand}`;
+        } else {
+          ctx.update.message.text = shortCommand;
+        }
+      }
+    }
+
     const admins = await ctx.getChatAdministrators();
     const botIsAdmin =
       admins.filter((admin) => admin.user.id === ctx.botInfo.id).length > 0;
@@ -104,7 +143,7 @@ export class BotInGroupsProcessorService {
       ctx.update?.message?.chat?.id < 0 &&
       ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
     ) {
-      ctx.update.message.text = `${this.botCommandsConfig.botNames[0]} ${ctx.update.message.text}`;
+      ctx.update.message.text = `${botName} ${ctx.update.message.text}`;
       await this.botCommandsService.process(ctx, defaultHandler);
       return;
     }

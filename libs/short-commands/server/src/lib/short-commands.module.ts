@@ -10,12 +10,14 @@ import {
   ShortCommandsConfig,
   SHORT_COMMANDS_CONFIG,
 } from './short-commands-config/short-commands.config';
+import { ShortCommandsToolsService } from './short-commands-services/short-commands-tools.service';
 import { ShortCommandsBotCommandsToolsInterceptor } from './short-commands-services/short-commands.bot-commands-tools-interceptor';
 import { ShortCommandsService } from './short-commands-services/short-commands.service';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
-  exports: [TranslatesModule, BotCommandsModule],
+  providers: [ShortCommandsToolsService],
+  exports: [TranslatesModule, BotCommandsModule, ShortCommandsToolsService],
 })
 export class ShortCommandsModule {
   static forRoot(config: Pick<ShortCommandsConfig, 'commands'>): DynamicModule {

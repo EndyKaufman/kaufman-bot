@@ -14,7 +14,10 @@ import {
   ShortCommandsConfig,
   SHORT_COMMANDS_CONFIG,
 } from '../short-commands-config/short-commands.config';
+import { ShortCommandsToolsService } from './short-commands-tools.service';
 
+export const DISABLE_SHORT_COMMANDS__BEFORE_HOOK =
+  'DISABLE_SHORT_COMMANDS__BEFORE_HOOK';
 @Injectable()
 export class ShortCommandsService
   implements BotCommandsProvider, OnBeforeBotCommands
@@ -25,28 +28,20 @@ export class ShortCommandsService
     @Inject(SHORT_COMMANDS_CONFIG)
     private readonly shortCommandsConfig: ShortCommandsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService
+    private readonly translatesService: TranslatesService,
+    private readonly shortCommandsToolsService: ShortCommandsToolsService
   ) {}
 
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const locale = msg.from.language_code;
-    const text = msg.text;
-    if (locale && this.shortCommandsConfig) {
-      const shortCommands = this.shortCommandsConfig.commands[locale] || {};
-      const matchedCommands = Object.keys(shortCommands)
-        .filter((commands) =>
-          this.botCommandsToolsService.checkMicromatchCommands(
-            text,
-            commands.split('|')
-          )
-        )
-        .map((commands) => shortCommands[commands]);
-      if (matchedCommands?.length > 0) {
-        msg.text = matchedCommands[0];
-      }
+    if (msg.botContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
+      return msg;
     }
+    msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
+      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE),
+      msg.text
+    );
     return msg;
   }
 

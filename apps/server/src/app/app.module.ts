@@ -65,9 +65,34 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
         locales: [DEFAULT_LANGUAGE, 'ru'],
       })
     ),
+    DebugMessagesModule.forRoot(),
     BotCommandsModule.forRoot({
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
+    }),
+    ShortCommandsModule.forRoot({
+      commands: {
+        en: {
+          '*joke*': `get jokes`,
+          '*quote*|*thought*|*wisdom*': 'get quotes',
+          '*fact*|history': 'get facts',
+          'forgot me': 'meet reset',
+          '*what you can do*|faq': 'help',
+          'disable debug': 'debug off',
+          'enable debug': 'debug on',
+        },
+        ru: {
+          '*joke*|*шутка|*шутку|*шутки|пошути*|шути|рассмеши|смешинки|смешинка':
+            'get jokes',
+          '*quote*|*thought|*wisdom*|цитата|дай цитату|цитируй|*мысль|*мудрость|*залечи*':
+            'get quotes',
+          '*fact*|history|история|*историю|*факты': 'get facts',
+          'forgot me|забудь меня': 'meet reset',
+          '*what you can do*|faq|*что ты умеешь*|справка': 'help',
+          'disable debug|выключи дебаг': 'debug off',
+          'enable debug|включи дебаг': 'debug on',
+        },
+      },
     }),
     BotInGroupsModule.forRoot({
       botNames: {
@@ -92,31 +117,6 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
       },
     }),
     LanguageSwitherModule.forRoot(),
-    DebugMessagesModule.forRoot(),
-    ShortCommandsModule.forRoot({
-      commands: {
-        en: {
-          joke: `get jokes`,
-          'quote|thought|wisdom': 'get quotes',
-          'facts|fact|history': 'get facts',
-          'forgot me': 'meet reset',
-          '*what you can do*|faq': 'help',
-          'disable debug': 'debug off',
-          'enable debug': 'debug on',
-        },
-        ru: {
-          'joke|jokes|*шутка|*шутку|*шутки|пошути|шути|рассмеши|смешинки|смешинка':
-            'get jokes',
-          'quote*|thought|wisdom*|цитата|дай цитату|цитируй|*мысль|*мудрость|*залечи*':
-            'get quotes',
-          'facts|fact|history|история|*историю|*факты': 'get facts',
-          'forgot me|забудь меня': 'meet reset',
-          '*what you can do*|faq|*что ты умеешь*|справка': 'help',
-          'disable debug|выключи дебаг': 'debug off',
-          'enable debug|включи дебаг': 'debug on',
-        },
-      },
-    }),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),

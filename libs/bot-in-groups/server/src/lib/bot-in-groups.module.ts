@@ -3,6 +3,7 @@ import {
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core/server';
 import { LanguageSwitherModule } from '@kaufman-bot/language-swither/server';
+import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesModule } from 'nestjs-translates';
@@ -14,8 +15,18 @@ import { BotInGroupsProcessorService } from './bot-in-groups-services/bot-in-gro
 import { BotInGroupsService } from './bot-in-groups-services/bot-in-groups.service';
 
 @Module({
-  imports: [TranslatesModule, BotCommandsModule, LanguageSwitherModule],
-  exports: [TranslatesModule, BotCommandsModule, LanguageSwitherModule],
+  imports: [
+    TranslatesModule,
+    BotCommandsModule,
+    LanguageSwitherModule,
+    ShortCommandsModule,
+  ],
+  exports: [
+    TranslatesModule,
+    BotCommandsModule,
+    LanguageSwitherModule,
+    ShortCommandsModule,
+  ],
 })
 export class BotInGroupsModule {
   static forRoot(
