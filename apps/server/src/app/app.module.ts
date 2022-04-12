@@ -100,7 +100,7 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
         ru: ['Энди', 'Endy', 'Kaufman', 'Енди', 'Кауфман'],
       },
       botMeetingInformation: {
-        en: [`Hello! \\'m Endy 😉`, 'Hello!', 'Hello 🖖'],
+        en: [`Hello! I'm Endy 😉`, 'Hello!', 'Hello 🖖'],
         ru: [`Всем привет! я Энди 😉`, `Всем привет!`, 'Всем привет 🖖'],
       },
       botDoNotHaveFullAccess: {
@@ -108,7 +108,7 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
           `I not have access to read messages and process your commands 😢, please give me access 😉`,
         ],
         ru: [
-          `У меня нет доступа на чтение ваших сообщений и обработки команд 😢, пожалуйста дайте мне доступ 😉`,
+          `У меня нет доступа на чтение ваших сообщений и обработку команд 😢, пожалуйста дайте мне доступ 😉`,
         ],
       },
       botNowHaveFullAccess: {
