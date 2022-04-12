@@ -9,17 +9,13 @@ import {
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Injectable } from '@nestjs/common';
-import { TranslatesStorage } from 'nestjs-translates';
-
-const RUSSIAN_LANGUAGE = 'ru';
 @Injectable()
 export class FactsGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
   constructor(
     private readonly scraperService: ScraperService,
-    private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesStorage: TranslatesStorage
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   async onContextBotCommands<
@@ -32,13 +28,11 @@ export class FactsGeneratorService
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    const locale = msg.from?.language_code;
-    if (
-      Object.keys(this.translatesStorage.translates).find((key) =>
-        locale?.includes(key)
-      ) &&
-      !locale?.includes(DEFAULT_LANGUAGE)
-    ) {
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+    if (!locale?.includes(DEFAULT_LANGUAGE)) {
       return null;
     }
     return await this.scraperService.onHelp(msg);
@@ -47,8 +41,11 @@ export class FactsGeneratorService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = msg.from?.language_code;
-    if (locale?.includes(RUSSIAN_LANGUAGE)) {
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+    if (!locale?.includes(DEFAULT_LANGUAGE)) {
       return null;
     }
     if (

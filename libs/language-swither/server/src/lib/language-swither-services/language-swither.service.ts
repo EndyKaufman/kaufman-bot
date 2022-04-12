@@ -10,6 +10,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
+  DEFAULT_LANGUAGE,
   LanguageSwitherConfig,
   LANGUAGE_SWITHER_CONFIG,
 } from '../language-swither-config/language-swither.config';
@@ -28,7 +29,7 @@ export class LanguageSwitherService
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
     private readonly languageSwitherStorage: LanguageSwitherStorage,
-    private readonly commandToolsService: BotCommandsToolsService
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   async onBeforeBotCommands<
@@ -39,7 +40,7 @@ export class LanguageSwitherService
     );
     const detectedLocale = await this.languageSwitherStorage.getLanguageOfUser(
       msg.from?.id,
-      msg.from?.language_code
+      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE)
     );
     if (msg.from?.id && !locale) {
       await this.languageSwitherStorage.setLanguageOfUser(
@@ -70,11 +71,11 @@ export class LanguageSwitherService
       msg.from?.id
     );
     const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
-      this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
       if (
-        this.commandToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           locale
@@ -83,7 +84,7 @@ export class LanguageSwitherService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.commandToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage({
             locale,
             name: this.languageSwitherConfig.title,
             descriptions: this.languageSwitherConfig.descriptions,
@@ -92,7 +93,7 @@ export class LanguageSwitherService
         };
       }
 
-      const preparedText = this.commandToolsService.clearCommands(
+      const preparedText = this.botCommandsToolsService.clearCommands(
         msg.text,
         [
           spyWord,
@@ -125,7 +126,7 @@ export class LanguageSwitherService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, locale: string, text: string) {
     if (
-      this.commandToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [
           LanguageSwitherCommandsEnum.set,
@@ -176,7 +177,7 @@ export class LanguageSwitherService
       );
     }
     if (
-      this.commandToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [LanguageSwitherCommandsEnum.my, LanguageSwitherCommandsEnum.current],
         locale

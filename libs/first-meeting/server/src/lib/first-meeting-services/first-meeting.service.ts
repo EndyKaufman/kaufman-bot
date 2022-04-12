@@ -12,7 +12,7 @@ import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import { FirstMeeting } from '@prisma/client';
 import { getText } from 'class-validator-multi-lang';
-import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
+import { TranslatesService } from 'nestjs-translates';
 import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
@@ -31,7 +31,6 @@ export class FirstMeetingService
     @Inject(FIRST_MEETING_CONFIG)
     private readonly firstMeetingConfig: FirstMeetingConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesStorage: TranslatesStorage,
     private readonly translatesService: TranslatesService,
     private readonly firstMeetingStorage: FirstMeetingStorage
   ) {}
@@ -52,15 +51,11 @@ export class FirstMeetingService
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    let locale = msg.from?.language_code;
-    if (
-      !locale ||
-      !Object.keys(this.translatesStorage.translates).find((key) =>
-        locale?.includes(key)
-      )
-    ) {
-      locale = DEFAULT_LANGUAGE;
-    }
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+
     const contextFirstMeeting: Partial<FirstMeeting> =
       msg.botCommandHandlerContext;
 
@@ -218,17 +213,13 @@ export class FirstMeetingService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    let locale = msg.from?.language_code;
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+
     if (msg.from.id < 0) {
       return null;
-    }
-    if (
-      !locale ||
-      !Object.keys(this.translatesStorage.translates).find((key) =>
-        locale?.includes(key)
-      )
-    ) {
-      locale = DEFAULT_LANGUAGE;
     }
 
     const firstMeeting = await this.firstMeetingStorage.getUserFirstMeeting({

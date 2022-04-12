@@ -7,6 +7,7 @@ import {
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
+import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Injectable } from '@nestjs/common';
 
 const RUSSIAN_LANGUAGE = 'ru';
@@ -30,7 +31,11 @@ export class RuFactsGeneratorService
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    const locale = msg.from?.language_code;
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
@@ -40,7 +45,11 @@ export class RuFactsGeneratorService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = msg.from?.language_code;
+    const locale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LANGUAGE
+    );
+
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }

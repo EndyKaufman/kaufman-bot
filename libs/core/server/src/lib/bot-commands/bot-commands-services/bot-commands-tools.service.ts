@@ -8,6 +8,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider.interface';
 import {
   BotCommandsToolsInterceptor,
   BOT_COMMANDS_TOOLS_INTERCEPTOR,
@@ -199,6 +200,21 @@ export class BotCommandsToolsService {
   capitalizeFirstLetter(text: string | undefined, locale: string) {
     const [first, ...rest] = (text || '').trim();
     return (first || '').toLocaleUpperCase(locale) + rest.join('');
+  }
+
+  getLocale<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg, defaultValue: string) {
+    let locale = msg.from?.language_code;
+    if (
+      !locale ||
+      !Object.keys(this.translatesStorage.translates).find((key) =>
+        locale?.includes(key)
+      )
+    ) {
+      locale = defaultValue;
+    }
+    return locale;
   }
 
   private translateByLowerCase(
