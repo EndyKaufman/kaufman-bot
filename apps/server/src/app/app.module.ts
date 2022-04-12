@@ -26,16 +26,27 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+const TELEGRAM_BOT_WEB_HOOKS_DOMAIN = env
+  .get('TELEGRAM_BOT_WEB_HOOKS_DOMAIN')
+  .asString();
+const TELEGRAM_BOT_WEB_HOOKS_PATH = env
+  .get('TELEGRAM_BOT_WEB_HOOKS_PATH')
+  .asString();
+
 @Module({
   imports: [
     TelegrafModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
       launchOptions: {
         dropPendingUpdates: true,
-        webhook: {
-          domain: 'kaufman-bot.site15.ru',
-          hookPath: '/telegram-webhook',
-        },
+        ...(TELEGRAM_BOT_WEB_HOOKS_DOMAIN && TELEGRAM_BOT_WEB_HOOKS_PATH
+          ? {
+              webhook: {
+                domain: TELEGRAM_BOT_WEB_HOOKS_DOMAIN,
+                hookPath: TELEGRAM_BOT_WEB_HOOKS_PATH,
+              },
+            }
+          : {}),
       },
     }),
     PrismaClientModule.forRoot({
@@ -58,6 +69,8 @@ import { AppService } from './app.service';
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
     }),
+    LanguageSwitherModule.forRoot(),
+    DebugMessagesModule.forRoot(),
     BotInGroupsModule.forRoot({
       botNames: {
         en: ['Endy', 'Kaufman'],
@@ -80,8 +93,6 @@ import { AppService } from './app.service';
         ru: [`Теперь у меня есть доступ, спасибо 😉`],
       },
     }),
-    LanguageSwitherModule.forRoot(),
-    DebugMessagesModule.forRoot(),
     ShortCommandsModule.forRoot({
       commands: {
         en: {
