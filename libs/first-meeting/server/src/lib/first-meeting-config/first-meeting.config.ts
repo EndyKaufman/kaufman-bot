@@ -6,5 +6,5 @@ export interface FirstMeetingConfig {
   descriptions: string;
   usage: string[];
   spyWords: string[];
-  botName: string;
+  botName: { [langCode: string]: string };
 }

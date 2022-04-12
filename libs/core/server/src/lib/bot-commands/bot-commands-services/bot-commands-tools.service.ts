@@ -134,7 +134,7 @@ export class BotCommandsToolsService {
         }
       });
     });
-    return words.join(' ').split('  ').join(' ');
+    return words.join(' ').split('  ').join(' ').trim();
   }
 
   checkCommands(text: string, commands: string[], locale?: string) {
@@ -190,6 +190,15 @@ export class BotCommandsToolsService {
 
   prepareHelpString(text: string) {
     return text.split('*').join('\\*');
+  }
+
+  getRandomItem<T>(items: T[]) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  capitalizeFirstLetter(text: string | undefined, locale: string) {
+    const [first, ...rest] = (text || '').trim();
+    return (first || '').toLocaleUpperCase(locale) + rest.join('');
   }
 
   private translateByLowerCase(

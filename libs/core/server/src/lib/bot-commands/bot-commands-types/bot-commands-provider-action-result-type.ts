@@ -19,4 +19,10 @@ export type BotCommandsProviderActionResultType<T> =
       context?: Record<string, unknown>;
       recursive?: boolean;
     }
+  | {
+      type: 'stop';
+      message: T;
+      context?: Record<string, unknown>;
+      recursive?: boolean;
+    }
   | null;

@@ -10,6 +10,7 @@ export type BotCommandsProviderActionMsg = Update.MessageUpdate['message'] & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   botContext?: Record<string, any>;
   botCommandHandlerId: string | null;
+  botCommandHandlerBreak: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   botCommandHandlerContext: Record<string, any>;
 };

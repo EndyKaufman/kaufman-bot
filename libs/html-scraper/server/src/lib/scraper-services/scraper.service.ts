@@ -145,11 +145,6 @@ export class ScraperService
     }
     const repalcedUri = render(this.scraperConfig.uri, replaceVariables);
 
-    // const replacedText = render(text, replaceVariables);
-
-    // Helper functions to get a random item from an array
-    const sample = (array) => array[Math.floor(Math.random() * array.length)];
-
     const headers = this.scraperConfig.headers || [
       {
         Accept:
@@ -189,7 +184,7 @@ export class ScraperService
 
     try {
       const response = await axiosInstance.get(repalcedUri, {
-        headers: sample(headers),
+        headers: this.botCommandsToolsService.getRandomItem(headers),
       });
 
       const $ = cheerio.load(response.data);

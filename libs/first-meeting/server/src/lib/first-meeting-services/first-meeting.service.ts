@@ -39,6 +39,9 @@ export class FirstMeetingService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
+    if (msg.from.id < 0) {
+      return msg;
+    }
     if (msg.botStart) {
       msg.text = 'meet start';
       msg.botStart = false;
@@ -152,7 +155,7 @@ export class FirstMeetingService
         return {
           type: 'text',
           text: this.translatesService.translate(
-            this.getRandomItem([
+            this.botCommandsToolsService.getRandomItem([
               getText(
                 `Nice to meet you, {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}`
               ),
@@ -163,11 +166,11 @@ export class FirstMeetingService
               vulcan: '🖖',
               ...firstMeeting,
               meetGender: this.mapGenderToMeetGender(firstMeeting, locale),
-              firstname: this.capitalizeFirstLetter(
+              firstname: this.botCommandsToolsService.capitalizeFirstLetter(
                 firstMeeting.firstname,
                 locale
               ),
-              lastname: this.capitalizeFirstLetter(
+              lastname: this.botCommandsToolsService.capitalizeFirstLetter(
                 firstMeeting.lastname,
                 locale
               ),
@@ -216,6 +219,9 @@ export class FirstMeetingService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     let locale = msg.from?.language_code;
+    if (msg.from.id < 0) {
+      return null;
+    }
     if (
       !locale ||
       !Object.keys(this.translatesStorage.translates).find((key) =>
@@ -265,7 +271,7 @@ export class FirstMeetingService
         return {
           type: 'text',
           text: this.translatesService.translate(
-            this.getRandomItem([
+            this.botCommandsToolsService.getRandomItem([
               getText('Your meeting information has been deleted {{unamused}}'),
               getText('I forgot about your existence {{worried}}'),
             ]),
@@ -306,16 +312,13 @@ export class FirstMeetingService
       return {
         type: 'text',
         text: this.translatesService.translate(
-          this.getRandomItem([
+          this.botCommandsToolsService.getRandomItem([
             getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
             getText(`Hey! what's your name?`),
           ]),
           locale,
           {
-            botName: this.translatesService.translate(
-              this.firstMeetingConfig.botName,
-              locale
-            ),
+            botName: this.firstMeetingConfig.botName[locale],
             smile: '🙂',
           }
         ),
@@ -336,7 +339,7 @@ export class FirstMeetingService
         type: 'markdown',
         markdown: this.translatesService
           .translate(
-            this.getRandomItem([
+            this.botCommandsToolsService.getRandomItem([
               getText(
                 `Hello {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}`
               ),
@@ -351,11 +354,11 @@ export class FirstMeetingService
               wink: '😉',
               ...firstMeeting,
               meetGender: this.mapGenderToMeetGender(firstMeeting, locale),
-              firstname: this.capitalizeFirstLetter(
+              firstname: this.botCommandsToolsService.capitalizeFirstLetter(
                 firstMeeting.firstname,
                 locale
               ),
-              lastname: this.capitalizeFirstLetter(
+              lastname: this.botCommandsToolsService.capitalizeFirstLetter(
                 firstMeeting.lastname,
                 locale
               ),
@@ -413,13 +416,5 @@ export class FirstMeetingService
         locale
       )
       .trim();
-  }
-
-  private getRandomItem(items: string[]) {
-    return items[Math.floor(Math.random() * items.length)];
-  }
-  private capitalizeFirstLetter(text: string | undefined, locale: string) {
-    const [first, ...rest] = (text || '').trim();
-    return (first || '').toLocaleUpperCase(locale) + rest.join('');
   }
 }

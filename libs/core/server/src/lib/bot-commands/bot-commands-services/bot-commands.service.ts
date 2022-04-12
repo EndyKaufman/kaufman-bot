@@ -70,7 +70,7 @@ export class BotCommandsService implements BotCommandsProvider {
         await ctx.reply(result.text);
       }
 
-      if (result?.recursive) {
+      if (result?.type !== 'stop' && result?.recursive) {
         recursiveDepth++;
       } else {
         recursiveDepth = 0;
@@ -123,8 +123,17 @@ export class BotCommandsService implements BotCommandsProvider {
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    result = await this.processOnMessage(result, msg, ctx);
-    result = await this.processOnContext(result, msg, ctx);
+    if (!msg.botCommandHandlerBreak) {
+      result = await this.processOnMessage(result, msg, ctx);
+    }
+
+    if (!msg.botCommandHandlerBreak) {
+      result = await this.processOnContext(result, msg, ctx);
+    }
+
+    if (msg.botCommandHandlerBreak) {
+      return { type: 'stop', message: msg };
+    }
 
     if (
       result === null &&
@@ -158,7 +167,10 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
-      if (botCommandsProvider.onBeforeBotCommands)
+      if (
+        botCommandsProvider.onBeforeBotCommands &&
+        !msg.botCommandHandlerBreak
+      )
         msg = await botCommandsProvider.onBeforeBotCommands(msg, ctx);
     }
     return msg;
@@ -205,7 +217,7 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     msg.botCommandHandlerId = null;
     for (let i = 0; i < len; i++) {
-      if (!result) {
+      if (!result && !msg.botCommandHandlerBreak) {
         result = await this.botCommandsProviders[i].onMessage(msg, ctx);
         if (result) {
           msg.botCommandHandlerId =
