@@ -30,7 +30,13 @@ import { AppService } from './app.service';
   imports: [
     TelegrafModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
-      launchOptions: { dropPendingUpdates: true },
+      launchOptions: {
+        dropPendingUpdates: true,
+        webhook: {
+          domain: 'kaufman-bot.site15.ru',
+          hookPath: '/telegram-webhook',
+        },
+      },
     }),
     PrismaClientModule.forRoot({
       databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
