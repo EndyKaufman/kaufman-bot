@@ -23,17 +23,25 @@ export class BotInGroupsProcessorService {
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
-    const dbLocale = ctx?.update?.message?.from?.id
-      ? await this.languageSwitherStorage.getLanguageOfUser(
-          ctx?.update?.message.from.id
-        )
+    const telegramUserId =
+      ctx.update?.message?.chat?.id || ctx?.update?.message?.from?.id;
+
+    const dbLocale = telegramUserId
+      ? await this.languageSwitherStorage.getLanguageOfUser(telegramUserId)
       : null;
+
     const locale =
       dbLocale ||
-      this.botCommandsToolsService.getLocale(
-        ctx?.update?.message,
-        DEFAULT_LANGUAGE
-      );
+      (ctx.update?.message?.chat?.id < 0
+        ? DEFAULT_LANGUAGE
+        : this.botCommandsToolsService.getLocale(
+            ctx?.update?.message,
+            DEFAULT_LANGUAGE
+          ));
+
+    if (ctx.update?.message?.from?.language_code) {
+      ctx.update.message.from.language_code = locale;
+    }
 
     if (ctx.update?.message?.chat?.id > 0) {
       await this.botCommandsService.process(ctx, defaultHandler);

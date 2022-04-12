@@ -75,6 +75,7 @@
     "axios": "^0.26.0",
     "charset": "^1.0.1",
     "cheerio": "^1.0.0-rc.10",
+    "class-transformer": "^0.5.1",
     "class-transformer-global-storage": "^0.4.1-1",
     "class-validator-multi-lang": "^0.130.201",
     "connection-string": "^4.3.5",
