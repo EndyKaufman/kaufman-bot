@@ -41,8 +41,8 @@ export class BotCommandsToolsService {
         String(admin).trim().toLocaleLowerCase()
       ) || [];
     return (
-      admins.includes(msg?.from?.id.toString() || '') ||
-      admins.includes(msg?.from?.username?.toLocaleLowerCase() || '')
+      admins.includes(msg?.chat?.id.toString() || '') ||
+      admins.includes(msg?.from?.id.toString() || '')
     );
   }
 
