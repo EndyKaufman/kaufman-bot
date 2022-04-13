@@ -62,7 +62,7 @@
     "postinstall": "npm run generate",
     "app:build": "npm run generate && npm run build && npm run app:build-changelog",
     "app:release": "standard-version",
-    "app:create-release": "npm run app:build && npm run app:release && git push --follow-tags origin feature/73",
+    "app:create-release": "npm run app:build && npm run app:release && git push --follow-tags origin develop",
     "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md"
   },
   "private": true,

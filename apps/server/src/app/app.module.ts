@@ -33,6 +33,9 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
   .get('TELEGRAM_BOT_WEB_HOOKS_PATH')
   .asString();
 
+const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
+const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
+
 @Module({
   imports: [
     TelegrafModule.forRoot({
@@ -100,12 +103,16 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
     }),
     BotInGroupsModule.forRoot({
       botNames: {
-        en: ['Endy', 'Kaufman'],
-        ru: ['Энди', 'Endy', 'Kaufman', 'Енди', 'Кауфман'],
+        en: BOT_NAMES,
+        ru: BOT_NAMES_RU,
       },
       botMeetingInformation: {
-        en: [`Hello! I'm Endy 😉`, 'Hello!', 'Hello 🖖'],
-        ru: [`Всем привет! я Энди 😉`, `Всем привет!`, 'Всем привет 🖖'],
+        en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+        ru: [
+          `Всем привет! я ${BOT_NAMES_RU[0]} 😉`,
+          `Всем привет!`,
+          'Всем привет 🖖',
+        ],
       },
     }),
     LanguageSwitherModule.forRoot(),
@@ -113,7 +120,9 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
-    FirstMeetingModule.forRoot({ botName: { en: 'Endy', ru: 'Энди' } }),
+    FirstMeetingModule.forRoot({
+      botName: { en: BOT_NAMES[0], ru: BOT_NAMES_RU[0] },
+    }),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),

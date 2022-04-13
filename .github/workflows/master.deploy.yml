@@ -4,12 +4,12 @@ name: 'deploy'
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   migrate:
     runs-on: [self-hosted, develop-vps]
-    environment: dev
+    environment: prod
     steps:
       - name: Cloning repo
         uses: actions/checkout@v2
@@ -32,24 +32,24 @@ jobs:
           export DEPLOY_DATE=$(date +'%Y-%m-%d %H:%M:%S')
           export DEPLOY_COMMIT=$GITHUB_SHA
           export DEPLOY_VERSION=$(node -pe "require('./package.json')['version']")
-          dokku config:set --no-restart develop-kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL
+          dokku config:set --no-restart kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL
           dokku config:set --no-restart --global POSTGRES_HOST=global-postgres
-          dokku config:set --no-restart develop-kaufman-bot GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json
-          dokku config:set --no-restart develop-kaufman-bot GOOGLE_CREDENTIALS=${{secrets.GOOGLE_CREDENTIALS}}
-          dokku config:set --no-restart develop-kaufman-bot DIALOGFLOW_PROJECT_ID=${{secrets.DIALOGFLOW_PROJECT_ID}}
-          dokku config:set --no-restart develop-kaufman-bot TELEGRAM_BOT_WEB_HOOKS_DOMAIN=${{secrets.TELEGRAM_BOT_WEB_HOOKS_DOMAIN}}
-          dokku config:set --no-restart develop-kaufman-bot TELEGRAM_BOT_WEB_HOOKS_PATH=${{secrets.TELEGRAM_BOT_WEB_HOOKS_PATH}}
-          dokku config:set --no-restart develop-kaufman-bot TELEGRAM_BOT_ADMINS=${{secrets.TELEGRAM_BOT_ADMINS}}
-          dokku config:set --no-restart develop-kaufman-bot DEPLOY_DATE="$DEPLOY_DATE"
-          dokku config:set --no-restart develop-kaufman-bot DEPLOY_COMMIT=$DEPLOY_COMMIT
-          dokku config:set --no-restart develop-kaufman-bot DEPLOY_VERSION=$DEPLOY_VERSION
-          dokku config:set --no-restart develop-kaufman-bot BOT_NAMES=${{secrets.BOT_NAMES}}
-          dokku config:set --no-restart develop-kaufman-bot BOT_NAMES_RU=${{secrets.BOT_NAMES_RU}}
+          dokku config:set --no-restart kaufman-bot GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json
+          dokku config:set --no-restart kaufman-bot GOOGLE_CREDENTIALS=${{secrets.GOOGLE_CREDENTIALS}}
+          dokku config:set --no-restart kaufman-bot DIALOGFLOW_PROJECT_ID=${{secrets.DIALOGFLOW_PROJECT_ID}}
+          dokku config:set --no-restart kaufman-bot TELEGRAM_BOT_WEB_HOOKS_DOMAIN=${{secrets.TELEGRAM_BOT_WEB_HOOKS_DOMAIN}}
+          dokku config:set --no-restart kaufman-bot TELEGRAM_BOT_WEB_HOOKS_PATH=${{secrets.TELEGRAM_BOT_WEB_HOOKS_PATH}}
+          dokku config:set --no-restart kaufman-bot TELEGRAM_BOT_ADMINS=${{secrets.TELEGRAM_BOT_ADMINS}}
+          dokku config:set --no-restart kaufman-bot DEPLOY_DATE="$DEPLOY_DATE"
+          dokku config:set --no-restart kaufman-bot DEPLOY_COMMIT=$DEPLOY_COMMIT
+          dokku config:set --no-restart kaufman-bot DEPLOY_VERSION=$DEPLOY_VERSION
+          dokku config:set --no-restart kaufman-bot BOT_NAMES=${{secrets.BOT_NAMES}}
+          dokku config:set --no-restart kaufman-bot BOT_NAMES_RU=${{secrets.BOT_NAMES_RU}}
 
   deploy:
     needs: [migrate]
     runs-on: ubuntu-latest
-    environment: dev
+    environment: prod
     steps:
       - name: Cloning repo
         uses: actions/checkout@v2
@@ -59,6 +59,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: 'develop'
-          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/develop-kaufman-bot'
+          branch: 'master'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/kaufman-bot'
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
