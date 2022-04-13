@@ -1,7 +1,33 @@
 {
   "name": "kaufman-bot",
-  "version": "0.0.0",
+  "version": "1.4.0-alpha.13",
+  "description": "Example of simple bot for telegram",
+  "keywords": [
+    "telegram",
+    "telegram-bot",
+    "nestjs",
+    "custom-injector"
+  ],
   "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7"
+  },
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
   "scripts": {
     "rucken": "rucken",
     "nx": "nx",
@@ -33,7 +59,10 @@
     "prisma:pull": "npm run -- prisma db pull && npm run prisma:generate",
     "prisma:pull:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && export DATABASE_URL=$SERVER_POSTGRES_URL && npm run -- prisma db pull && npm run prisma:generate",
     "prisma:generate": "npm run -- prisma generate",
-    "postinstall": "npm run generate"
+    "postinstall": "npm run generate",
+    "app:release": "standard-version",
+    "app:create-release": "npm run build && npm run app:release && git push --follow-tags origin feature/73",
+    "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md"
   },
   "private": true,
   "devDependencies": {
@@ -54,6 +83,7 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
     "@typescript-eslint/parser": "~5.10.0",
+    "cp-cli": "^2.0.0",
     "eslint": "~8.7.0",
     "eslint-config-prettier": "8.1.0",
     "husky": "^7.0.4",
@@ -63,6 +93,7 @@
     "prettier": "2.5.1",
     "prisma": "^3.11.1",
     "rucken": "^3.5.3",
+    "standard-version": "^9.3.2",
     "ts-jest": "27.0.5",
     "typescript": "~4.3.5"
   },

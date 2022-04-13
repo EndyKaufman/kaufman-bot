@@ -1,5 +1,6 @@
 export * from './lib/bot-commands/bot-commands.module';
 export * from './lib/bot-commands/bot-commands-config/bot-commands.config';
+export * from './lib/bot-commands/bot-commands-services/bot-commands-botinfo.service';
 export * from './lib/bot-commands/bot-commands-services/bot-commands-tools.service';
 export * from './lib/bot-commands/bot-commands-services/bot-commands.service';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-enum';
