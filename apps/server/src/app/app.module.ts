@@ -70,6 +70,9 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
       admins: env.get('TELEGRAM_BOT_ADMINS').default('').asArray(','),
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
+      commit: env.get('DEPLOY_COMMIT').default('').asString(),
+      date: env.get('DEPLOY_DATE').default('').asString(),
+      version: env.get('DEPLOY_VERSION').default('').asString(),
     }),
     ShortCommandsModule.forRoot({
       commands: {

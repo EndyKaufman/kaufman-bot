@@ -5,8 +5,10 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from './bot-commands-config/bot-commands.config';
+import { BotCommandsBotinfoService } from './bot-commands-services/bot-commands-botinfo.service';
 import { BotCommandsToolsService } from './bot-commands-services/bot-commands-tools.service';
 import { BotCommandsService } from './bot-commands-services/bot-commands.service';
+import { BOT_COMMANDS_PROVIDER } from './bot-commands-types/bot-commands-provider.interface';
 
 @Module({
   imports: [CustomInjectorModule, TranslatesModule],
@@ -29,6 +31,10 @@ export class BotCommandsModule {
             maxRecursiveDepth: 5,
             ...(config || {}),
           },
+        },
+        {
+          provide: BOT_COMMANDS_PROVIDER,
+          useClass: BotCommandsBotinfoService,
         },
       ],
       exports: [BOT_COMMANDS_CONFIG],
