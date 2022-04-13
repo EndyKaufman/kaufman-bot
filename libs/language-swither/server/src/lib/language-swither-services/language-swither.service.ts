@@ -48,12 +48,16 @@ export class LanguageSwitherService
           this.botCommandsToolsService.getChatId(msg),
           detectedLocale
         );
-        msg.from.language_code = detectedLocale;
+        if (msg?.from) {
+          msg.from.language_code = detectedLocale;
+        }
       } else {
-        msg.from.language_code = dbLocale;
+        if (msg?.from) {
+          msg.from.language_code = dbLocale;
+        }
       }
     } else {
-      if (msg.from) {
+      if (msg?.from) {
         msg.from.language_code = detectedLocale;
       }
     }
