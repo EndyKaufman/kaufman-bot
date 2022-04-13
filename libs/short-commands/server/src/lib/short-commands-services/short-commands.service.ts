@@ -38,10 +38,12 @@ export class ShortCommandsService
     if (msg?.botContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
       return msg;
     }
-    msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
-      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE),
-      msg.text
-    );
+    if (msg) {
+      msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
+        this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE),
+        msg.text
+      );
+    }
     return msg;
   }
 
