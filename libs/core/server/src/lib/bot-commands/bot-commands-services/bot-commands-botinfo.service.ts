@@ -28,7 +28,7 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
-        ['botinfo', 'bot info'],
+        ['botinfo', 'bot', 'info'],
         'en'
       )
     ) {
