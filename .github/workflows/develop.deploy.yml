@@ -39,7 +39,7 @@ jobs:
           dokku config:set --no-restart kaufman-bot DIALOGFLOW_PROJECT_ID=${{secrets.DIALOGFLOW_PROJECT_ID}}
           dokku config:set --no-restart kaufman-bot TELEGRAM_BOT_WEB_HOOKS_DOMAIN=${{secrets.TELEGRAM_BOT_WEB_HOOKS_DOMAIN}}
           dokku config:set --no-restart kaufman-bot TELEGRAM_BOT_WEB_HOOKS_PATH=${{secrets.TELEGRAM_BOT_WEB_HOOKS_PATH}}
-          dokku config:set --no-restart kaufman-bot DEPLOY_DATE=$DEPLOY_DATE
+          dokku config:set --no-restart kaufman-bot DEPLOY_DATE="$DEPLOY_DATE"
           dokku config:set --no-restart kaufman-bot DEPLOY_COMMIT=$DEPLOY_COMMIT
           dokku config:set --no-restart kaufman-bot DEPLOY_VERSION=$DEPLOY_VERSION
 
