@@ -89,12 +89,13 @@ export class ScraperService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.scraperConfig.title,
             contextUsage: this.scraperConfig.contextUsage,
             descriptions: this.scraperConfig.descriptions,
             usage: this.scraperConfig.usage,
+            category: this.scraperConfig.category,
           }),
         };
       }

@@ -8,6 +8,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { BotCommandsCategory } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider.interface';
 import {
   BotCommandsToolsInterceptor,
@@ -32,7 +33,28 @@ export class BotCommandsToolsService {
     private readonly translatesService: TranslatesService
   ) {}
 
-  generateHelpMessage(options: BotCommandsToolsGenerateHelpMessageOptions) {
+  isAdmin<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const admins =
+      this.botCommandsConfig?.admins.map((admin) =>
+        String(admin).trim().toLocaleLowerCase()
+      ) || [];
+    return (
+      admins.includes(msg?.from?.id.toString() || '') ||
+      admins.includes(msg?.from?.username?.toLocaleLowerCase() || '')
+    );
+  }
+
+  generateHelpMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg, options: BotCommandsToolsGenerateHelpMessageOptions) {
+    const isAdmin = this.isAdmin(msg);
+
+    if (options.category === BotCommandsCategory.system && !isAdmin) {
+      return '';
+    }
+
     if (
       this.botCommandsToolsInterceptors &&
       this.botCommandsToolsInterceptors.length > 0
@@ -74,7 +96,14 @@ export class BotCommandsToolsService {
       : null;
 
     const caption = options.name
-      ? `__${this.translatesService.translate(options.name, options.locale)}__`
+      ? `__${this.translatesService.translate(options.name, options.locale)}${
+          !isAdmin && options.category === BotCommandsCategory.user
+            ? ''
+            : ` \\(${this.translatesService.translate(
+                options.category,
+                options.locale
+              )}\\)`
+        }__`
       : '';
     const descriptions = options.descriptions
       ? this.translatesService.translate(options.descriptions, options.locale)

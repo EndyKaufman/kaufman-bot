@@ -2,6 +2,7 @@ import {
   BotCommandsService,
   BotCommandsToolsService,
 } from '@kaufman-bot/core/server';
+import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow/server';
 import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting/server';
 import {
   DEFAULT_LANGUAGE,
@@ -103,6 +104,7 @@ export class BotInGroupsProcessorService {
       ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
     ) {
       ctx.update.message.text = `${botName} ${ctx.update.message.text}`;
+      ctx.update.message.botContext[DISABLE_DIALOGFLOW_COMMANDS] = true;
       await this.botCommandsService.process(ctx, defaultHandler);
       return;
     }

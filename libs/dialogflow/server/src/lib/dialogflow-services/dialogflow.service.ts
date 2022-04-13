@@ -17,6 +17,8 @@ import {
 } from '../dialogflow-config/dialogflow.config';
 import { DialogflowStorage } from './dialogflow.storage';
 
+export const DISABLE_DIALOGFLOW_COMMANDS = 'DISABLE_DIALOGFLOW_COMMANDS';
+
 @Injectable()
 export class DialogflowService
   implements BotCommandsProvider, OnAfterBotCommands
@@ -39,6 +41,10 @@ export class DialogflowService
     ctx?,
     defaultHandler?: () => Promise<unknown>
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
+    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+      return { result, msg };
+    }
+
     if (!defaultHandler && result === null) {
       msg.text = `dialog ${msg.text}`;
       const dialogResult = await this.onMessage<TMsg>(msg, ctx);
@@ -79,6 +85,10 @@ export class DialogflowService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+      return null;
+    }
+
     const locale = this.botCommandsToolsService.getLocale(
       msg,
       DEFAULT_LANGUAGE
@@ -98,11 +108,12 @@ export class DialogflowService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.dialogflowConfig.title,
             descriptions: this.dialogflowConfig.descriptions,
             usage: this.dialogflowConfig.usage,
+            category: this.dialogflowConfig.category,
           }),
         };
       }

@@ -76,11 +76,12 @@ export class ShortCommandsService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.shortCommandsConfig.title,
             descriptions: this.shortCommandsConfig.descriptions,
             usage: this.shortCommandsConfig.usage,
+            category: this.shortCommandsConfig.category,
           }),
         };
       }

@@ -67,6 +67,7 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
     ),
     DebugMessagesModule.forRoot(),
     BotCommandsModule.forRoot({
+      admins: env.get('TELEGRAM_BOT_ADMINS').default('').asArray(','),
       prepareCommandString: (command?: string) =>
         (command || '').split('ё').join('е'),
     }),

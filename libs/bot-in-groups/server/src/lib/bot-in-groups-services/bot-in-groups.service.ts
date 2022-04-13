@@ -82,11 +82,12 @@ export class BotInGroupsService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.botInGroupsConfig.title,
             descriptions: this.botInGroupsConfig.descriptions,
             usage: this.botInGroupsConfig.usage,
+            category: this.botInGroupsConfig.category,
           }),
         };
       }

@@ -1,4 +1,7 @@
-import { BOT_COMMANDS_PROVIDER } from '@kaufman-bot/core/server';
+import {
+  BotCommandsCategory,
+  BOT_COMMANDS_PROVIDER,
+} from '@kaufman-bot/core/server';
 import { ScraperModule } from '@kaufman-bot/html-scraper/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -21,6 +24,7 @@ export class CurrencyConverterModule {
           spyWords: [getText('convert'), getText('converter')],
           removeWords: [getText('to'), getText('please')],
           uri: 'https://www.xe.com/currencyconverter/convert/?Amount={{TEXT1}}&From={{TEXT2}}&To={{TEXT3}}',
+          category: BotCommandsCategory.user,
         }),
       ],
       providers: [

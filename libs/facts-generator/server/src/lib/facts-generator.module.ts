@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core/server';
@@ -38,6 +39,7 @@ export class FactsGeneratorModule {
               removeWords: [getText('get'), getText('please')],
               uri: 'https://randstuff.ru/fact/',
               contentCodepage: 'utf8',
+              category: BotCommandsCategory.user,
             }),
           ],
           providers: [
@@ -66,6 +68,7 @@ export class FactsGeneratorModule {
               spyWords: [getText('facts'), getText('fact')],
               removeWords: [getText('get'), getText('please')],
               uri: 'http://randomfactgenerator.net/',
+              category: BotCommandsCategory.user,
             }),
           ],
           providers: [

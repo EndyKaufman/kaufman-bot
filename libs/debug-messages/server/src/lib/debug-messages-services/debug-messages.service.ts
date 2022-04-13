@@ -100,11 +100,12 @@ export class DebugMessagesService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.commandToolsService.generateHelpMessage({
+          markdown: this.commandToolsService.generateHelpMessage(msg, {
             locale,
             name: this.debugMessagesConfig.title,
             descriptions: this.debugMessagesConfig.descriptions,
             usage: this.debugMessagesConfig.usage,
+            category: this.debugMessagesConfig.category,
           }),
         };
       }

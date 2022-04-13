@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   BOT_COMMANDS_TOOLS_INTERCEPTOR,
@@ -35,6 +36,7 @@ export class ShortCommandsModule {
             ),
             spyWords: [getText('scmd')],
             commands: config.commands,
+            category: BotCommandsCategory.system,
           },
         },
         {

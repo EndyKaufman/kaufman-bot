@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   PrismaClientModule,
@@ -49,6 +50,7 @@ export class DebugMessagesModule {
                   'Commands for enable and disable debug mode'
                 ),
                 spyWords: [getText('debug')],
+                category: BotCommandsCategory.system,
               },
             },
             {

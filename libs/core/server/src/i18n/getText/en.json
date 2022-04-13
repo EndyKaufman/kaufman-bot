@@ -4,5 +4,7 @@
   "help": "help",
   "state": "state",
   "usage with context": "usage with context",
-  "reset": "reset"
+  "reset": "reset",
+  "system": "system",
+  "user": "user"
 }

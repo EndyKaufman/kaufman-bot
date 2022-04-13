@@ -89,11 +89,12 @@ export class LanguageSwitherService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.languageSwitherConfig.title,
             descriptions: this.languageSwitherConfig.descriptions,
             usage: this.languageSwitherConfig.usage,
+            category: this.languageSwitherConfig.category,
           }),
         };
       }

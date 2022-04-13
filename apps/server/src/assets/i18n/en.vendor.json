@@ -5,7 +5,9 @@
     "help": "help",
     "state": "state",
     "usage with context": "usage with context",
-    "reset": "reset"
+    "reset": "reset",
+    "system": "system",
+    "user": "user"
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -67,7 +69,9 @@
     "help": "help",
     "state": "state",
     "usage with context": "usage with context",
-    "reset": "reset"
+    "reset": "reset",
+    "system": "system",
+    "user": "user"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Command to convert one currency to another",

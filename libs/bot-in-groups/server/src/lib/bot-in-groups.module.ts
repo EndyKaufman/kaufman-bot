@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core/server';
@@ -46,6 +47,7 @@ export class BotInGroupsModule {
             ),
             usage: [getText('groups help'), getText('groups meet')],
             spyWords: [getText('groups')],
+            category: BotCommandsCategory.system,
           },
         },
         {

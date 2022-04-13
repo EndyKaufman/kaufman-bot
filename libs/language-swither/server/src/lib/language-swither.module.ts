@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   PrismaClientModule,
@@ -52,6 +53,7 @@ export class LanguageSwitherModule {
                   getText('to'),
                   getText('to-alt'),
                 ],
+                category: BotCommandsCategory.system,
               },
             },
             {

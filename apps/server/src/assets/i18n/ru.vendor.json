@@ -10,7 +10,9 @@
     "help": "помощь",
     "state": "состояние",
     "usage with context": "использование с контекстом",
-    "reset": "сбросить"
+    "reset": "сбросить",
+    "system": "система",
+    "user": "пользователь"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",

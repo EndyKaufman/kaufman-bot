@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   PrismaClientModule,
@@ -42,6 +43,7 @@ export class DialogflowModule {
             {
               provide: DIALOGFLOW_CONFIG,
               useValue: <DialogflowConfig>{
+                ...config,
                 title: getText('Dialogflow'),
                 name: 'dialogflow',
                 usage: [
@@ -54,7 +56,7 @@ export class DialogflowModule {
                   'Commands for process request with Dialogflow intents'
                 ),
                 spyWords: [getText('dialog'), getText('ai')],
-                ...config,
+                category: BotCommandsCategory.system,
               },
             },
             {

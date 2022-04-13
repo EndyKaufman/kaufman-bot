@@ -205,11 +205,12 @@ export class FirstMeetingService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.generateHelpMessage({
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
             name: this.firstMeetingConfig.title,
             descriptions: this.firstMeetingConfig.descriptions,
             usage: this.firstMeetingConfig.usage,
+            category: this.firstMeetingConfig.category,
           }),
         };
       }

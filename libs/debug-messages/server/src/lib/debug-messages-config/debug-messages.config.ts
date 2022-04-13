@@ -6,4 +6,5 @@ export interface DebugMessagesConfig {
   descriptions: string;
   usage: string[];
   spyWords: string[];
+  category: string;
 }

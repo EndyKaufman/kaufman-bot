@@ -6,3 +6,8 @@ export const BotCommandsEnum = {
   state: getText('state'),
   reset: getText('reset'),
 };
+
+export const BotCommandsCategory = {
+  system: getText('system'),
+  user: getText('user'),
+};

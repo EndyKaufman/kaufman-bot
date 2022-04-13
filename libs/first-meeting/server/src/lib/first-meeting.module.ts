@@ -1,4 +1,5 @@
 import {
+  BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   PrismaClientModule,
@@ -39,6 +40,7 @@ export class FirstMeetingModule {
               getText('meet help'),
             ],
             spyWords: [getText('meet')],
+            category: BotCommandsCategory.system,
           },
         },
         {
