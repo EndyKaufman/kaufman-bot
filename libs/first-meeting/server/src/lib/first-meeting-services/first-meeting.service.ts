@@ -4,8 +4,6 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
-  OnAfterBotCommands,
-  OnBeforeBotCommands,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
@@ -23,11 +21,7 @@ export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 
 @Injectable()
 export class FirstMeetingService
-  implements
-    BotCommandsProvider,
-    OnAfterBotCommands,
-    OnContextBotCommands,
-    OnBeforeBotCommands
+  implements BotCommandsProvider, OnContextBotCommands
 {
   constructor(
     @Inject(FIRST_MEETING_CONFIG)
@@ -36,19 +30,6 @@ export class FirstMeetingService
     private readonly translatesService: TranslatesService,
     private readonly firstMeetingStorage: FirstMeetingStorage
   ) {}
-
-  async onBeforeBotCommands<
-    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<TMsg> {
-    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
-      return msg;
-    }
-    if (msg.botStart) {
-      msg.text = 'meet start';
-      msg.botStart = false;
-    }
-    return msg;
-  }
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
@@ -186,31 +167,6 @@ export class FirstMeetingService
     return null;
   }
 
-  async onAfterBotCommands<
-    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(
-    result: BotCommandsProviderActionResultType<TMsg>,
-    msg: TMsg
-  ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
-    if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
-      return { result, msg };
-    }
-
-    if (msg.botStart) {
-      await this.firstMeetingStorage.removeUserFirstMeeting({
-        telegramUserId: msg.from.id,
-      });
-    }
-    if (result === null) {
-      msg.text = `${this.firstMeetingConfig.name} ${msg.text}`;
-      const newResult = await this.onMessage<TMsg>(msg);
-      if (newResult !== null) {
-        return { result: newResult, msg };
-      }
-    }
-    return { result, msg };
-  }
-
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
@@ -285,54 +241,48 @@ export class FirstMeetingService
           message: msg,
         };
       }
-    }
 
-    if (
-      !this.botCommandsToolsService.checkCommands(
-        msg.text,
-        [BotCommandsEnum.help],
-        locale
-      ) &&
-      ((spyWord &&
+      if (
+        !firstMeeting &&
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [getText('start')],
           locale
-        )) ||
-        firstMeeting?.status === 'StartMeeting')
-    ) {
-      await this.firstMeetingStorage.pathUserFirstMeeting({
-        telegramUserId: msg.from.id,
-        firstMeeting: {
-          status: 'AskFirstname',
-          firstname: '',
-          lastname: '',
-          gender: 'Male',
-        },
-      });
-      return {
-        type: 'text',
-        text: this.translatesService.translate(
-          this.botCommandsToolsService.getRandomItem([
-            getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
-            getText(`Hey! what's your name?`),
-          ]),
-          locale,
-          {
-            botName: this.firstMeetingConfig.botName[locale],
-            smile: '🙂',
-          }
-        ),
-        message: msg,
-        context: <Partial<FirstMeeting>>{ status: 'AskFirstname' },
-      };
+        )
+      ) {
+        await this.firstMeetingStorage.pathUserFirstMeeting({
+          telegramUserId: msg.from.id,
+          firstMeeting: {
+            status: 'AskFirstname',
+            firstname: '',
+            lastname: '',
+            gender: 'Male',
+          },
+        });
+        return {
+          type: 'text',
+          text: this.translatesService.translate(
+            this.botCommandsToolsService.getRandomItem([
+              getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
+              getText(`Hey! what's your name?`),
+            ]),
+            locale,
+            {
+              botName: this.firstMeetingConfig.botName[locale],
+              smile: '🙂',
+            }
+          ),
+          message: msg,
+          context: <Partial<FirstMeeting>>{ status: 'AskFirstname' },
+        };
+      }
     }
 
     if (
-      firstMeeting.status === 'EndMeeting' &&
+      firstMeeting?.status === 'EndMeeting' &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
-        [getText('hi'), getText('hello'), getText('hey')],
+        [getText('hi'), getText('hello'), getText('hey'), getText('start')],
         locale
       )
     ) {

@@ -20,7 +20,6 @@ export class DialogflowStorage {
   async getUserSession({
     telegramUserId,
     projectId,
-    createIfNotExists = true,
   }: {
     telegramUserId: number;
     projectId: string;
@@ -47,18 +46,6 @@ export class DialogflowStorage {
       };
       return this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
     } catch (error) {
-      await this.setUserSession({
-        telegramUserId,
-        projectId,
-        sessionOfUsers: currentSessionOfUsers,
-      });
-      if (createIfNotExists) {
-        return await this.getUserSession({
-          telegramUserId,
-          projectId,
-          createIfNotExists: false,
-        });
-      }
       return null;
     }
   }

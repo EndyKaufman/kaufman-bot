@@ -12,7 +12,7 @@ export class FirstMeetingStorage {
     telegramUserId,
   }: {
     telegramUserId: number;
-  }): Promise<FirstMeeting> {
+  }): Promise<FirstMeeting | null> {
     const currentFirstMeetingOfUsers: FirstMeeting =
       this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
     if (currentFirstMeetingOfUsers) {
@@ -28,27 +28,30 @@ export class FirstMeetingStorage {
           },
           rejectOnNotFound: true,
         });
-    } catch (error) {
-      databaseFirstMeetingOfUsers =
-        await this.prismaClientService.firstMeeting.create({
-          data: {
-            firstname: '',
-            lastname: '',
-            gender: 'Male',
-            status: 'StartMeeting',
-            User: {
-              connectOrCreate: {
-                create: { telegramId: telegramUserId.toString() },
-                where: { telegramId: telegramUserId.toString() },
-              },
-            },
-          },
-        });
-    }
-    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] =
-      databaseFirstMeetingOfUsers;
+      this.firstMeetingOfUsers[this.getKey({ telegramUserId })] =
+        databaseFirstMeetingOfUsers;
 
-    return this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+      return this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async createUserFirstMeeting(telegramUserId: number) {
+    return await this.prismaClientService.firstMeeting.create({
+      data: {
+        firstname: '',
+        lastname: '',
+        gender: 'Male',
+        status: 'StartMeeting',
+        User: {
+          connectOrCreate: {
+            create: { telegramId: telegramUserId.toString() },
+            where: { telegramId: telegramUserId.toString() },
+          },
+        },
+      },
+    });
   }
 
   async removeUserFirstMeeting({ telegramUserId }: { telegramUserId: number }) {
@@ -67,9 +70,14 @@ export class FirstMeetingStorage {
     telegramUserId: number;
     firstMeeting: Partial<FirstMeeting>;
   }) {
-    const currentUserFirstMeeting = await this.getUserFirstMeeting({
+    let currentUserFirstMeeting = await this.getUserFirstMeeting({
       telegramUserId,
     });
+    if (!currentUserFirstMeeting) {
+      currentUserFirstMeeting = await this.createUserFirstMeeting(
+        telegramUserId
+      );
+    }
 
     await this.prismaClientService.firstMeeting.updateMany({
       data: {
