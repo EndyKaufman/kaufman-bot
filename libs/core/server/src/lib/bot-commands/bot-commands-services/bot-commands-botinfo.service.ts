@@ -26,9 +26,16 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     if (
-      this.botCommandsToolsService.checkCommands(msg.text, ['botinfo'], 'en')
+      this.botCommandsToolsService.checkCommands(
+        msg.text,
+        ['botinfo', 'bot info'],
+        'en'
+      )
     ) {
-      if (msg.text.toLowerCase() !== 'botinfo') {
+      if (
+        msg.text.toLowerCase() !== 'botinfo' &&
+        msg.text.toLowerCase() !== 'bot info'
+      ) {
         return {
           type: 'stop',
           message: msg,
@@ -54,7 +61,7 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
         `Date: _${this.botCommandsConfig.date || 'unknown'}_`,
         `Commit: _${this.botCommandsConfig.commit || 'unknown'}_\n`,
         '__Chat__',
-        `ID: _${msg?.chat?.id || msg?.from?.id || 'unknown'}_`,
+        `ID: _${this.botCommandsToolsService.getChatId(msg) || 'unknown'}_`,
       ]
         .join('\n')
         .split('.')

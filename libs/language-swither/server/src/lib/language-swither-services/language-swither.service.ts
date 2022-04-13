@@ -36,16 +36,16 @@ export class LanguageSwitherService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
     const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
-      msg?.chat?.id || msg?.from?.id
+      this.botCommandsToolsService.getChatId(msg)
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(
       msg,
       DEFAULT_LANGUAGE
     );
-    if (msg?.chat?.id || msg?.from?.id) {
+    if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
         await this.languageSwitherStorage.setLanguageOfUser(
-          msg?.chat?.id || msg?.from?.id,
+          this.botCommandsToolsService.getChatId(msg),
           detectedLocale
         );
         msg.from.language_code = detectedLocale;
@@ -73,8 +73,9 @@ export class LanguageSwitherService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale =
-      (await this.languageSwitherStorage.getLanguageOfUser(msg?.from?.id)) ||
-      this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
+      (await this.languageSwitherStorage.getLanguageOfUser(
+        this.botCommandsToolsService.getChatId(msg)
+      )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
     const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
@@ -149,7 +150,7 @@ export class LanguageSwitherService
       ) {
         const currentLocale =
           (await this.languageSwitherStorage.getLanguageOfUser(
-            msg?.chat?.id || msg?.from?.id
+            this.botCommandsToolsService.getChatId(msg)
           )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
         return this.translatesService.translate(
           getText(
@@ -172,7 +173,7 @@ export class LanguageSwitherService
       msg.from.language_code = inputLocale || locale;
 
       await this.languageSwitherStorage.setLanguageOfUser(
-        msg?.chat?.id || msg?.from?.id,
+        this.botCommandsToolsService.getChatId(msg),
         inputLocale || locale
       );
 

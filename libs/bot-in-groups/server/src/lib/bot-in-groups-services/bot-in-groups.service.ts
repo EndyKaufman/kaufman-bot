@@ -31,14 +31,13 @@ export class BotInGroupsService
       msg,
       DEFAULT_LANGUAGE
     );
-    if (msg.from.id !== msg.chat.id) {
+    if (msg?.from?.id !== msg?.chat?.id) {
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           this.botInGroupsConfig.botNames[locale]
         )
       ) {
-        msg.from.id = msg.chat.id;
         msg.text = this.botCommandsToolsService.clearCommands(
           msg.text,
           this.botInGroupsConfig.botNames[locale],

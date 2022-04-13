@@ -68,7 +68,7 @@ export class FirstMeetingService
         )
       ) {
         await this.firstMeetingStorage.pathUserFirstMeeting({
-          telegramUserId: msg.from.id,
+          telegramUserId: this.botCommandsToolsService.getChatId(msg),
           firstMeeting: {
             ...msg.botCommandHandlerContext,
             status: 'EndMeeting',
@@ -131,7 +131,7 @@ export class FirstMeetingService
             : 'Male',
         };
         await this.firstMeetingStorage.pathUserFirstMeeting({
-          telegramUserId: msg.from.id,
+          telegramUserId: this.botCommandsToolsService.getChatId(msg),
           firstMeeting,
         });
         return {
@@ -189,7 +189,7 @@ export class FirstMeetingService
     );
 
     const firstMeeting = await this.firstMeetingStorage.getUserFirstMeeting({
-      telegramUserId: msg.from.id,
+      telegramUserId: this.botCommandsToolsService.getChatId(msg),
     });
     const spyWord = this.firstMeetingConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
@@ -223,7 +223,7 @@ export class FirstMeetingService
         )
       ) {
         await this.firstMeetingStorage.removeUserFirstMeeting({
-          telegramUserId: msg.from.id,
+          telegramUserId: this.botCommandsToolsService.getChatId(msg),
         });
 
         return {
@@ -252,7 +252,7 @@ export class FirstMeetingService
         )
       ) {
         await this.firstMeetingStorage.pathUserFirstMeeting({
-          telegramUserId: msg.from.id,
+          telegramUserId: this.botCommandsToolsService.getChatId(msg),
           firstMeeting: {
             status: 'AskFirstname',
             firstname: '',

@@ -23,7 +23,7 @@ export class BotCommandsToolsService {
   })
   private botCommandsToolsInterceptors?: BotCommandsToolsInterceptor[];
 
-  @CustomInject(BOT_COMMANDS_CONFIG)
+  @CustomInject(BOT_COMMANDS_CONFIG, { static: false })
   private botCommandsConfig?: BotCommandsConfig;
 
   private lowerCaseTranslates?: TranslatesStorage['translates'];
@@ -32,6 +32,12 @@ export class BotCommandsToolsService {
     private readonly translatesStorage: TranslatesStorage,
     private readonly translatesService: TranslatesService
   ) {}
+
+  getChatId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    return msg?.chat?.id || msg?.from?.id;
+  }
 
   isAdmin<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
@@ -156,10 +162,18 @@ export class BotCommandsToolsService {
         if (`/${command}` === word) {
           words[wordIndex] = '';
         }
-        if (this.translateByLowerCase(command, locale) === word) {
+        if (
+          this.prepareCommandString(
+            this.translateByLowerCase(command, locale)
+          ) === this.prepareCommandString(word)
+        ) {
           words[wordIndex] = '';
         }
-        if (`/${this.translateByLowerCase(command, locale)}` === word) {
+        if (
+          `/${this.prepareCommandString(
+            this.translateByLowerCase(command, locale)
+          )}` === this.prepareCommandString(word)
+        ) {
           words[wordIndex] = '';
         }
       });
@@ -171,14 +185,20 @@ export class BotCommandsToolsService {
     const lowerCasedText = this.prepareCommandString(
       (text || '').toLocaleLowerCase()
     );
+    const lowerCasedTextArray = lowerCasedText.split(' ');
     const lowerCasedCommands = commands
       .map((c) => this.prepareCommandString(c).toLocaleLowerCase().split('|'))
       .reduce((acc, val) => acc.concat(val), []);
     if (
       lowerCasedCommands.find(
         (command) =>
-          lowerCasedText.includes(command) ||
-          lowerCasedText.includes(`/${command}`)
+          lowerCasedTextArray.find(
+            (lowerCasedTextArrayItem) => lowerCasedTextArrayItem === command
+          ) ||
+          lowerCasedTextArray.find(
+            (lowerCasedTextArrayItem) =>
+              lowerCasedTextArrayItem === `/${command}`
+          )
       )
     ) {
       return true;
@@ -186,15 +206,19 @@ export class BotCommandsToolsService {
     if (
       lowerCasedCommands.find(
         (command) =>
-          lowerCasedText.includes(
-            this.prepareCommandString(
-              this.translateByLowerCase(command, locale)
-            )
+          lowerCasedTextArray.find(
+            (lowerCasedTextArrayItem) =>
+              lowerCasedTextArrayItem ===
+              this.prepareCommandString(
+                this.translateByLowerCase(command, locale)
+              )
           ) ||
-          lowerCasedText.includes(
-            `/${this.prepareCommandString(
-              this.translateByLowerCase(command, locale)
-            )}`
+          lowerCasedTextArray.find(
+            (lowerCasedTextArrayItem) =>
+              lowerCasedTextArrayItem ===
+              `/${this.prepareCommandString(
+                this.translateByLowerCase(command, locale)
+              )}`
           )
       )
     ) {

@@ -29,7 +29,7 @@ jobs:
           export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
           npm run rucken -- postgres
           export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
-          export DEPLOY_DATE=$(date +'%Y.%m.%d %H:%M:%S')
+          export DEPLOY_DATE=$(date +'%Y-%m-%d %H:%M:%S')
           export DEPLOY_COMMIT=$GITHUB_SHA
           export DEPLOY_VERSION=$(node -pe "require('./package.json')['version']")
           dokku config:set --no-restart kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL

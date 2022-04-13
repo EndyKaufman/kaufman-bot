@@ -237,7 +237,9 @@ export class BotCommandsService implements BotCommandsProvider {
   ) {
     if (
       msg.botCommandHandlerId === null &&
-      this.lastBotCommandRequests[msg.from.id] &&
+      this.lastBotCommandRequests[
+        this.botCommandsToolsService.getChatId(msg)
+      ] &&
       result === null
     ) {
       const len = this.botCommandsProviders.length;
@@ -245,13 +247,15 @@ export class BotCommandsService implements BotCommandsProvider {
         const botCommandsProvider = this.botCommandsProviders[i];
         if (
           !result &&
-          this.lastBotCommandRequests[msg.from.id]?.botCommandHandlerId ===
-            botCommandsProvider.botCommandHandlerId &&
+          this.lastBotCommandRequests[
+            this.botCommandsToolsService.getChatId(msg)
+          ]?.botCommandHandlerId === botCommandsProvider.botCommandHandlerId &&
           botCommandsProvider.onContextBotCommands
         ) {
           msg.botCommandHandlerContext =
-            this.lastBotCommandRequests[msg.from.id]
-              ?.botCommandHandlerContext || {};
+            this.lastBotCommandRequests[
+              this.botCommandsToolsService.getChatId(msg)
+            ]?.botCommandHandlerContext || {};
           result = await botCommandsProvider.onContextBotCommands(msg, ctx);
           if (result && botCommandsProvider.botCommandHandlerId) {
             msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
@@ -259,22 +263,27 @@ export class BotCommandsService implements BotCommandsProvider {
         }
       }
       if (!result) {
-        this.lastBotCommandRequests[msg.from.id] = null;
+        this.lastBotCommandRequests[
+          this.botCommandsToolsService.getChatId(msg)
+        ] = null;
       }
     }
     if (result && msg.botCommandHandlerId) {
-      this.lastBotCommandRequests[msg.from.id] = {
-        botCommandHandlerId: msg.botCommandHandlerId,
-        request: msg.text,
-        response: result,
-        botCommandHandlerContext: {
-          ...(this.lastBotCommandRequests[msg.from.id]
-            ?.botCommandHandlerContext || {}),
-          ...result.context,
-        },
-      };
+      this.lastBotCommandRequests[this.botCommandsToolsService.getChatId(msg)] =
+        {
+          botCommandHandlerId: msg.botCommandHandlerId,
+          request: msg.text,
+          response: result,
+          botCommandHandlerContext: {
+            ...(this.lastBotCommandRequests[
+              this.botCommandsToolsService.getChatId(msg)
+            ]?.botCommandHandlerContext || {}),
+            ...result.context,
+          },
+        };
     } else {
-      this.lastBotCommandRequests[msg.from.id] = null;
+      this.lastBotCommandRequests[this.botCommandsToolsService.getChatId(msg)] =
+        null;
     }
     return result;
   }
