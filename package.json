@@ -60,8 +60,9 @@
     "prisma:pull:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && export DATABASE_URL=$SERVER_POSTGRES_URL && npm run -- prisma db pull && npm run prisma:generate",
     "prisma:generate": "npm run -- prisma generate",
     "postinstall": "npm run generate",
+    "app:build": "npm run generate && npm run build && npm run app:build-changelog",
     "app:release": "standard-version",
-    "app:create-release": "npm run build && npm run app:release && git push --follow-tags origin feature/73",
+    "app:create-release": "npm run app:build && npm run app:release && git push --follow-tags origin feature/73",
     "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md"
   },
   "private": true,
