@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('source-map-support').install();
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import env from 'env-var';
