@@ -216,6 +216,9 @@ export class BotCommandsService implements BotCommandsProvider {
     msg: TMsg,
     ctx: BotCommandsProviderActionContext
   ) {
+    if (!msg) {
+      return result;
+    }
     const len = this.botCommandsProviders.length;
     msg.botCommandHandlerId = null;
     for (let i = 0; i < len; i++) {
@@ -235,6 +238,9 @@ export class BotCommandsService implements BotCommandsProvider {
     msg: TMsg,
     ctx: BotCommandsProviderActionContext
   ) {
+    if (!msg) {
+      return result;
+    }
     if (
       msg.botCommandHandlerId === null &&
       this.lastBotCommandRequests[
