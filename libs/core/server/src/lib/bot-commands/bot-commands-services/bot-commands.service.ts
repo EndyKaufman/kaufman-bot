@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
   BotCommandsConfig,
@@ -20,7 +20,9 @@ import { BotCommandsToolsService } from './bot-commands-tools.service';
 const DEFAULT_MAX_RECURSIVE_DEPTH = 5;
 @Injectable()
 export class BotCommandsService implements BotCommandsProvider {
-  lastBotCommandRequests: {
+  private logger = new Logger(BotCommandsService.name);
+
+  private lastBotCommandRequests: {
     [telegramUserId: string]: {
       botCommandHandlerId: string;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +53,10 @@ export class BotCommandsService implements BotCommandsProvider {
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
+    if (!msg) {
+      this.logger.debug(JSON.stringify(ctx));
+      return;
+    }
 
     let recursiveDepth = 1;
     while (
