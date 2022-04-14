@@ -32,6 +32,9 @@ jobs:
           export DEPLOY_DATE=$(date +'%Y-%m-%d %H:%M:%S')
           export DEPLOY_COMMIT=$GITHUB_SHA
           export DEPLOY_VERSION=$(node -pe "require('./package.json')['version']")
+          export POSTGRES_HOST=dokku-postgres-global-postgres
+          export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
+          export SERVER_POSTGRES_URL=$(npm run --silent rucken env-replacer $SERVER_POSTGRES_URL)
           dokku config:set --no-restart develop-kaufman-bot SERVER_POSTGRES_URL=$SERVER_POSTGRES_URL
           dokku config:set --no-restart --global POSTGRES_HOST=global-postgres
           dokku config:set --no-restart develop-kaufman-bot GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json
