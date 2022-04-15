@@ -8,7 +8,6 @@ import {
   OnAfterBotCommands,
 } from '@kaufman-bot/core/server';
 import { DebugService } from '@kaufman-bot/debug-messages/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { v4 } from 'uuid';
 import {
@@ -89,10 +88,7 @@ export class DialogflowService
       return null;
     }
 
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const spyWord = this.dialogflowConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)

@@ -6,7 +6,6 @@ import {
   BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import charset from 'charset';
@@ -36,10 +35,7 @@ export class ScraperService
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
@@ -68,10 +64,7 @@ export class ScraperService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );

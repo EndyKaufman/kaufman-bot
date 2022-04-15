@@ -7,7 +7,6 @@ import {
   OnAfterBotCommands,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService } from 'nestjs-translates';
@@ -81,10 +80,7 @@ export class DebugMessagesService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const spyWord = this.debugMessagesConfig.spyWords.find((spyWord) =>
       this.commandToolsService.checkCommands(msg.text, [spyWord], locale)

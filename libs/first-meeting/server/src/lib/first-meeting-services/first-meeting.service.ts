@@ -6,7 +6,6 @@ import {
   BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import { FirstMeeting } from '@prisma/client';
 import { getText } from 'class-validator-multi-lang';
@@ -38,10 +37,7 @@ export class FirstMeetingService
       return null;
     }
 
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const contextFirstMeeting: Partial<FirstMeeting> =
       msg.botCommandHandlerContext;
@@ -183,10 +179,7 @@ export class FirstMeetingService
       return null;
     }
 
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const firstMeeting = await this.firstMeetingStorage.getUserFirstMeeting({
       telegramUserId: this.botCommandsToolsService.getChatId(msg),

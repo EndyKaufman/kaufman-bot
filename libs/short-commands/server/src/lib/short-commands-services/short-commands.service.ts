@@ -6,7 +6,6 @@ import {
   BotCommandsToolsService,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService } from 'nestjs-translates';
@@ -40,7 +39,7 @@ export class ShortCommandsService
     }
     if (msg) {
       msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
-        this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE),
+        this.botCommandsToolsService.getLocale(msg, 'en'),
         msg.text
       );
     }
@@ -59,10 +58,7 @@ export class ShortCommandsService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const spyWord = this.shortCommandsConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
@@ -99,7 +95,7 @@ export class ShortCommandsService
           Object.keys(this.shortCommandsConfig.commands).filter(
             (langCode) =>
               this.shortCommandsConfig.commands[langCode] && langCode === locale
-          )[0] || DEFAULT_LANGUAGE;
+          )[0] || 'en';
         const commands = this.shortCommandsConfig.commands[detectedLang] || {};
         const aliases = Object.keys(commands);
 

@@ -4,10 +4,7 @@ import {
 } from '@kaufman-bot/core/server';
 import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow/server';
 import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting/server';
-import {
-  DEFAULT_LANGUAGE,
-  LanguageSwitherStorage,
-} from '@kaufman-bot/language-swither/server';
+import { LanguageSwitherStorage } from '@kaufman-bot/language-swither/server';
 import {
   DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
   ShortCommandsToolsService,
@@ -40,11 +37,8 @@ export class BotInGroupsProcessorService {
     const locale =
       dbLocale ||
       (ctx.update?.message?.chat?.id < 0
-        ? DEFAULT_LANGUAGE
-        : this.botCommandsToolsService.getLocale(
-            ctx?.update?.message,
-            DEFAULT_LANGUAGE
-          ));
+        ? 'en'
+        : this.botCommandsToolsService.getLocale(ctx?.update?.message, 'en'));
 
     const botName = this.botCommandsConfig.botNames[locale][0];
 
