@@ -11,6 +11,3 @@ export * from './lib/bot-commands/bot-commands-types/bot-commands-tools-types.in
 export * from './lib/bot-commands/bot-commands-types/on-after-bot-commands.interface';
 export * from './lib/bot-commands/bot-commands-types/on-before-bot-commands.interface';
 export * from './lib/bot-commands/bot-commands-types/on-context-bot-commands.interface';
-export * from './lib/prisma-client/prisma-client.config';
-export * from './lib/prisma-client/prisma-client.module';
-export * from './lib/prisma-client/prisma-client.service';

@@ -6,10 +6,10 @@ import {
   BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import { FirstMeeting } from '@prisma/client';
 import { getText } from 'class-validator-multi-lang';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
 import {
   FirstMeetingConfig,
@@ -23,12 +23,14 @@ export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 export class FirstMeetingService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  @CustomInject(FirstMeetingStorage)
+  private readonly firstMeetingStorage!: FirstMeetingStorage;
+
   constructor(
     @Inject(FIRST_MEETING_CONFIG)
     private readonly firstMeetingConfig: FirstMeetingConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService,
-    private readonly firstMeetingStorage: FirstMeetingStorage
+    private readonly translatesService: TranslatesService
   ) {}
 
   async onContextBotCommands<
@@ -38,10 +40,7 @@ export class FirstMeetingService
       return null;
     }
 
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const contextFirstMeeting: Partial<FirstMeeting> =
       msg.botCommandHandlerContext;
@@ -183,10 +182,7 @@ export class FirstMeetingService
       return null;
     }
 
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const firstMeeting = await this.firstMeetingStorage.getUserFirstMeeting({
       telegramUserId: this.botCommandsToolsService.getChatId(msg),

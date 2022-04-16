@@ -7,7 +7,6 @@ import {
   OnContextBotCommands,
 } from '@kaufman-bot/core/server';
 import { ScraperService } from '@kaufman-bot/html-scraper/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -35,10 +34,7 @@ export class QuotesGeneratorService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     if (
       this.botCommandsToolsService.checkCommands(

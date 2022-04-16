@@ -12,6 +12,7 @@
     "libs/html-scraper/server",
     "libs/jokes-generator/server",
     "libs/language-swither/server",
+    "libs/prisma/server",
     "libs/quotes-generator/server",
     "libs/short-commands/server"
   ],
@@ -27,6 +28,7 @@
     "libs/html-scraper/server",
     "libs/jokes-generator/server",
     "libs/language-swither/server",
+    "libs/prisma/server",
     "libs/quotes-generator/server",
     "libs/short-commands/server"
   ]

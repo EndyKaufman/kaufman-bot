@@ -1,0 +1,10 @@
+{
+  "i18n": [
+    {
+      "scope": "prisma-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    }
+  ],
+  "version": "2.0.0"
+}

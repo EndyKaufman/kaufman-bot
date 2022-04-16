@@ -2,7 +2,6 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-  PrismaClientModule,
 } from '@kaufman-bot/core/server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
 import { DynamicModule, Module } from '@nestjs/common';
@@ -14,22 +13,19 @@ import {
   DIALOGFLOW_CONFIG,
 } from './dialogflow-config/dialogflow.config';
 import { DialogflowService } from './dialogflow-services/dialogflow.service';
-import { DialogflowStorage } from './dialogflow-services/dialogflow.storage';
+import {
+  DialogflowStorage,
+  DIALOGFLOW_STORAGE,
+} from './dialogflow-services/dialogflow.storage';
 
 @Module({
-  imports: [
-    TranslatesModule,
-    PrismaClientModule,
-    BotCommandsModule,
-    DebugMessagesModule,
-  ],
-  providers: [DialogflowStorage],
+  imports: [TranslatesModule, BotCommandsModule, DebugMessagesModule],
+  providers: [{ provide: DIALOGFLOW_STORAGE, useClass: DialogflowStorage }],
   exports: [
     TranslatesModule,
-    PrismaClientModule,
     BotCommandsModule,
     DebugMessagesModule,
-    DialogflowStorage,
+    DIALOGFLOW_STORAGE,
   ],
 })
 export class DialogflowModule {

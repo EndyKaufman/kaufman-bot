@@ -1,18 +1,13 @@
 import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups/server';
-import {
-  BotCommandsModule,
-  PrismaClientModule,
-} from '@kaufman-bot/core/server';
+import { BotCommandsModule } from '@kaufman-bot/core/server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter/server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
 import { DialogflowModule } from '@kaufman-bot/dialogflow/server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator/server';
 import { FirstMeetingModule } from '@kaufman-bot/first-meeting/server';
 import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator/server';
-import {
-  DEFAULT_LANGUAGE,
-  LanguageSwitherModule,
-} from '@kaufman-bot/language-swither/server';
+import { LanguageSwitherModule } from '@kaufman-bot/language-swither/server';
+import { PrismaClientModule } from '@kaufman-bot/prisma/server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator/server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
 import { Module } from '@nestjs/common';
@@ -25,6 +20,7 @@ import {
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
 
 const TELEGRAM_BOT_WEB_HOOKS_DOMAIN = env
   .get('TELEGRAM_BOT_WEB_HOOKS_DOMAIN')
@@ -57,6 +53,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       logging: 'long_queries',
       maxQueryExecutionTime: 5000,
     }),
+    PrismaIntegrationsModule.forRoot(),
     TranslatesModule.forRoot(
       getDefaultTranslatesModuleOptions({
         localePaths: [
@@ -65,7 +62,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
-        locales: [DEFAULT_LANGUAGE, 'ru'],
+        locales: ['en', 'ru'],
       })
     ),
     DebugMessagesModule.forRoot(),
