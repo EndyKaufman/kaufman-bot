@@ -366,5 +366,6 @@
     "groups help": "groups help",
     "groups meet": "groups meet",
     "meet": "meet"
-  }
+  },
+  "prisma-server": {}
 }

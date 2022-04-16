@@ -9,6 +9,7 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { FirstMeeting } from '@prisma/client';
 import { getText } from 'class-validator-multi-lang';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
 import {
   FirstMeetingConfig,
@@ -22,12 +23,14 @@ export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 export class FirstMeetingService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  @CustomInject(FirstMeetingStorage)
+  private readonly firstMeetingStorage!: FirstMeetingStorage;
+
   constructor(
     @Inject(FIRST_MEETING_CONFIG)
     private readonly firstMeetingConfig: FirstMeetingConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService,
-    private readonly firstMeetingStorage: FirstMeetingStorage
+    private readonly translatesService: TranslatesService
   ) {}
 
   async onContextBotCommands<

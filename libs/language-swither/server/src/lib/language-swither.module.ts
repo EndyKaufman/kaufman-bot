@@ -2,7 +2,6 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-  PrismaClientModule,
 } from '@kaufman-bot/core/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -13,17 +12,18 @@ import {
   LANGUAGE_SWITHER_CONFIG,
 } from './language-swither-config/language-swither.config';
 import { LanguageSwitherService } from './language-swither-services/language-swither.service';
-import { LanguageSwitherStorage } from './language-swither-services/language-swither.storage';
+import {
+  LanguageSwitherStorage,
+  LANGUAGE_SWITHER_STORAGE,
+} from './language-swither-services/language-swither.storage';
 
 @Module({
-  imports: [TranslatesModule, PrismaClientModule, BotCommandsModule],
-  providers: [LanguageSwitherStorage],
-  exports: [
-    TranslatesModule,
-    PrismaClientModule,
-    BotCommandsModule,
+  imports: [TranslatesModule, BotCommandsModule],
+  providers: [
+    { provide: LANGUAGE_SWITHER_STORAGE, useClass: LanguageSwitherStorage },
     LanguageSwitherStorage,
   ],
+  exports: [TranslatesModule, BotCommandsModule, LANGUAGE_SWITHER_STORAGE],
 })
 export class LanguageSwitherModule {
   static forRoot(): DynamicModule {

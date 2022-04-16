@@ -2,7 +2,6 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-  PrismaClientModule,
 } from '@kaufman-bot/core/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -13,17 +12,22 @@ import {
   DEBUG_MESSAGES_CONFIG,
 } from './debug-messages-config/debug-messages.config';
 import { DebugMessagesService } from './debug-messages-services/debug-messages.service';
-import { DebugMessagesStorage } from './debug-messages-services/debug-messages.storage';
+import {
+  DebugMessagesStorage,
+  DEBUG_MESSAGES_STORAGE,
+} from './debug-messages-services/debug-messages.storage';
 import { DebugService } from './debug-messages-services/debug.service';
 
 @Module({
-  imports: [TranslatesModule, PrismaClientModule, BotCommandsModule],
-  providers: [DebugMessagesStorage, DebugService],
+  imports: [TranslatesModule, BotCommandsModule],
+  providers: [
+    { provide: DEBUG_MESSAGES_STORAGE, useClass: DebugMessagesStorage },
+    DebugService,
+  ],
   exports: [
     TranslatesModule,
-    PrismaClientModule,
     BotCommandsModule,
-    DebugMessagesStorage,
+    DEBUG_MESSAGES_STORAGE,
     DebugService,
   ],
 })

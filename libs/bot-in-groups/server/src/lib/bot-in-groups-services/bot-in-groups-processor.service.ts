@@ -4,12 +4,16 @@ import {
 } from '@kaufman-bot/core/server';
 import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow/server';
 import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting/server';
-import { LanguageSwitherStorage } from '@kaufman-bot/language-swither/server';
+import {
+  LanguageSwitherStorage,
+  LANGUAGE_SWITHER_STORAGE,
+} from '@kaufman-bot/language-swither/server';
 import {
   DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
   ShortCommandsToolsService,
 } from '@kaufman-bot/short-commands/server';
 import { Inject, Injectable } from '@nestjs/common';
+import { CustomInject } from 'nestjs-custom-injector';
 import {
   BotInGroupsConfig,
   BOT_IN_GROUPS_CONFIG,
@@ -17,12 +21,14 @@ import {
 
 @Injectable()
 export class BotInGroupsProcessorService {
+  @CustomInject(LANGUAGE_SWITHER_STORAGE)
+  private readonly languageSwitherStorage!: LanguageSwitherStorage;
+
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botCommandsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly botCommandsService: BotCommandsService,
-    private readonly languageSwitherStorage: LanguageSwitherStorage,
     private readonly shortCommandsToolsService: ShortCommandsToolsService
   ) {}
 

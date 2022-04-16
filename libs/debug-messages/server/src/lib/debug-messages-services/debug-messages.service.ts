@@ -9,13 +9,17 @@ import {
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
 import {
   DebugMessagesConfig,
   DEBUG_MESSAGES_CONFIG,
 } from '../debug-messages-config/debug-messages.config';
 import { DebugMessagesCommandsEnum } from '../debug-messages-types/debug-messages-commands';
-import { DebugMessagesStorage } from './debug-messages.storage';
+import {
+  DebugMessagesStorageProvider,
+  DEBUG_MESSAGES_STORAGE,
+} from './debug-messages.storage';
 import { DebugService } from './debug.service';
 
 @Injectable()
@@ -24,11 +28,13 @@ export class DebugMessagesService
 {
   private readonly logger = new Logger(DebugMessagesService.name);
 
+  @CustomInject(DEBUG_MESSAGES_STORAGE)
+  private readonly debugMessagesStorage!: DebugMessagesStorageProvider;
+
   constructor(
     @Inject(DEBUG_MESSAGES_CONFIG)
     private readonly debugMessagesConfig: DebugMessagesConfig,
     private readonly translatesService: TranslatesService,
-    private readonly debugMessagesStorage: DebugMessagesStorage,
     private readonly commandToolsService: BotCommandsToolsService,
     private readonly debugService: DebugService,
     private readonly botCommandsToolsService: BotCommandsToolsService

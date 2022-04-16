@@ -8,13 +8,17 @@ import {
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
   LanguageSwitherConfig,
   LANGUAGE_SWITHER_CONFIG,
 } from '../language-swither-config/language-swither.config';
 import { LanguageSwitherCommandsEnum } from '../language-swither-types/language-swither-commands';
-import { LanguageSwitherStorage } from './language-swither.storage';
+import {
+  LanguageSwitherStorage,
+  LANGUAGE_SWITHER_STORAGE,
+} from './language-swither.storage';
 
 @Injectable()
 export class LanguageSwitherService
@@ -22,12 +26,14 @@ export class LanguageSwitherService
 {
   private readonly logger = new Logger(LanguageSwitherService.name);
 
+  @CustomInject(LANGUAGE_SWITHER_STORAGE)
+  private readonly languageSwitherStorage!: LanguageSwitherStorage;
+
   constructor(
     @Inject(LANGUAGE_SWITHER_CONFIG)
     private readonly languageSwitherConfig: LanguageSwitherConfig,
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
-    private readonly languageSwitherStorage: LanguageSwitherStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 

@@ -9,12 +9,13 @@ import {
 } from '@kaufman-bot/core/server';
 import { DebugService } from '@kaufman-bot/debug-messages/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { CustomInject } from 'nestjs-custom-injector';
 import { v4 } from 'uuid';
 import {
   DialogflowConfig,
   DIALOGFLOW_CONFIG,
 } from '../dialogflow-config/dialogflow.config';
-import { DialogflowStorage } from './dialogflow.storage';
+import { DialogflowStorage, DIALOGFLOW_STORAGE } from './dialogflow.storage';
 
 export const DISABLE_DIALOGFLOW_COMMANDS = 'DISABLE_DIALOGFLOW_COMMANDS';
 
@@ -24,10 +25,12 @@ export class DialogflowService
 {
   private readonly logger = new Logger(DialogflowService.name);
 
+  @CustomInject(DIALOGFLOW_STORAGE)
+  private readonly dialogflowStorage!: DialogflowStorage;
+
   constructor(
     @Inject(DIALOGFLOW_CONFIG)
     private readonly dialogflowConfig: DialogflowConfig,
-    private readonly dialogflowStorage: DialogflowStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly debugService: DebugService
   ) {}
