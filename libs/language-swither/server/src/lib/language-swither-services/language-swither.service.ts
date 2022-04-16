@@ -8,14 +8,17 @@ import {
 } from '@kaufman-bot/core/server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
-  DEFAULT_LANGUAGE,
   LanguageSwitherConfig,
   LANGUAGE_SWITHER_CONFIG,
 } from '../language-swither-config/language-swither.config';
 import { LanguageSwitherCommandsEnum } from '../language-swither-types/language-swither-commands';
-import { LanguageSwitherStorage } from './language-swither.storage';
+import {
+  LanguageSwitherStorage,
+  LANGUAGE_SWITHER_STORAGE,
+} from './language-swither.storage';
 
 @Injectable()
 export class LanguageSwitherService
@@ -23,12 +26,14 @@ export class LanguageSwitherService
 {
   private readonly logger = new Logger(LanguageSwitherService.name);
 
+  @CustomInject(LANGUAGE_SWITHER_STORAGE)
+  private readonly languageSwitherStorage!: LanguageSwitherStorage;
+
   constructor(
     @Inject(LANGUAGE_SWITHER_CONFIG)
     private readonly languageSwitherConfig: LanguageSwitherConfig,
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
-    private readonly languageSwitherStorage: LanguageSwitherStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -38,10 +43,7 @@ export class LanguageSwitherService
     const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
-    const detectedLocale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
         await this.languageSwitherStorage.setLanguageOfUser(
@@ -79,7 +81,7 @@ export class LanguageSwitherService
     const locale =
       (await this.languageSwitherStorage.getLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg)
-      )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
+      )) || this.botCommandsToolsService.getLocale(msg, 'en');
     const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
@@ -155,7 +157,7 @@ export class LanguageSwitherService
         const currentLocale =
           (await this.languageSwitherStorage.getLanguageOfUser(
             this.botCommandsToolsService.getChatId(msg)
-          )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LANGUAGE);
+          )) || this.botCommandsToolsService.getLocale(msg, 'en');
         return this.translatesService.translate(
           getText(
             `locale "{{locale}}" not founded, current locale: "{{currentLocale}}"`

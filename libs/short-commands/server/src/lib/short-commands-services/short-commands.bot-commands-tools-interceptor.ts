@@ -3,7 +3,6 @@ import {
   BotCommandsToolsInterceptor,
   BotCommandsToolsService,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService } from 'nestjs-translates';
@@ -30,7 +29,7 @@ export class ShortCommandsBotCommandsToolsInterceptor
         (langCode) =>
           this.shortCommandsConfig.commands[langCode] &&
           langCode === options.locale
-      )[0] || DEFAULT_LANGUAGE;
+      )[0] || 'en';
     const commands = this.shortCommandsConfig.commands[detectedLang] || {};
     const aliases = Object.keys(commands);
 

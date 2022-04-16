@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.0.0...v2.1.0) (2022-04-16)
+
+### Features
+
+- refactoring monolith application to modules with DI in Telegram bot on NestJS ([#80](https://github.com/EndyKaufman/kaufman-bot/issues/80)) ([a50a1be](https://github.com/EndyKaufman/kaufman-bot/commit/a50a1be57abb0c1e69bfe64c47a2a66cab3ef813))
+
+### Bug Fixes
+
+- add source-map-support for look errors in typescript files ([e648c66](https://github.com/EndyKaufman/kaufman-bot/commit/e648c66e03f3897bb482e001b28066253bc162da))
+- terminate process if message not detected ([e923248](https://github.com/EndyKaufman/kaufman-bot/commit/e923248256eb548e7b80cc796f606148d0c4ef0e))
+- update for correct work with empty message in context ([9674b90](https://github.com/EndyKaufman/kaufman-bot/commit/9674b90d25e49f59d0fb984850c72c23184537bf))
+
 ## [2.0.0](https://github.com/EndyKaufman/kaufman-bot/compare/v1.4.0...v2.0.0) (2022-04-13)
 
 ### ⚠ BREAKING CHANGES

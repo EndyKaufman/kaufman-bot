@@ -49,6 +49,7 @@
       "@kaufman-bot/language-swither/server": [
         "libs/language-swither/server/src/index.ts"
       ],
+      "@kaufman-bot/prisma/server": ["libs/prisma/server/src/index.ts"],
       "@kaufman-bot/quotes-generator/server": [
         "libs/quotes-generator/server/src/index.ts"
       ],

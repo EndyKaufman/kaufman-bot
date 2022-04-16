@@ -6,7 +6,6 @@ import {
   BotCommandsToolsService,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core/server';
-import { DEFAULT_LANGUAGE } from '@kaufman-bot/language-swither/server';
 import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import {
@@ -27,10 +26,7 @@ export class BotInGroupsService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (msg?.from?.id !== msg?.chat?.id) {
       if (
         this.botCommandsToolsService.checkCommands(
@@ -62,10 +58,7 @@ export class BotInGroupsService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(
-      msg,
-      DEFAULT_LANGUAGE
-    );
+    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const spyWord = this.botInGroupsConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)

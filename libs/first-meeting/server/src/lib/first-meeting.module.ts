@@ -2,7 +2,6 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-  PrismaClientModule,
 } from '@kaufman-bot/core/server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
@@ -12,17 +11,22 @@ import {
   FIRST_MEETING_CONFIG,
 } from './first-meeting-config/first-meeting.config';
 import { FirstMeetingService } from './first-meeting-services/first-meeting.service';
-import { FirstMeetingStorage } from './first-meeting-services/first-meeting.storage';
+import {
+  FirstMeetingStorage,
+  FIRST_MEETING_STORAGE,
+} from './first-meeting-services/first-meeting.storage';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
-  exports: [TranslatesModule, BotCommandsModule],
+  providers: [
+    { provide: FIRST_MEETING_STORAGE, useClass: FirstMeetingStorage },
+  ],
+  exports: [TranslatesModule, BotCommandsModule, FIRST_MEETING_STORAGE],
 })
 export class FirstMeetingModule {
   static forRoot(config: Pick<FirstMeetingConfig, 'botName'>): DynamicModule {
     return {
       module: FirstMeetingModule,
-      imports: [PrismaClientModule],
       providers: [
         FirstMeetingStorage,
         {
@@ -48,7 +52,6 @@ export class FirstMeetingModule {
           useClass: FirstMeetingService,
         },
       ],
-      exports: [PrismaClientModule],
     };
   }
 }
