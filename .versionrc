@@ -1,6 +1,10 @@
 {
   "bumpFiles": [
     {
+      "filename": "./libs/prisma/server/package.json",
+      "type": "json"
+    },
+    {
       "filename": "./libs/bot-in-groups/server/package.json",
       "type": "json"
     },
@@ -46,6 +50,10 @@
     },
     {
       "filename": "./libs/short-commands/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/prisma/server/package.json",
       "type": "json"
     },
     {
