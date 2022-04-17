@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.1.0...v2.2.0) (2022-04-17)
+
+### Features
+
+- publish all the libraries in Telegram bot on NestJS to the npm registry ([23b7fe2](https://github.com/EndyKaufman/kaufman-bot/commit/23b7fe21c7db1dbd5af1356cb6d7392c06b755d5))
+
 ## [2.1.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.0.0...v2.1.0) (2022-04-16)
 
 ### Features
