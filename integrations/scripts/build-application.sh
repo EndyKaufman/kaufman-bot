@@ -1,7 +1,7 @@
 #!/bin/bash
 rm -rf ./dist
 
-npm run nx -- run-many --target=build --all
+npm run nx -- run-many --target=build --all --skip-nx-cache
 
 rm -rf ./integrations/app
 mkdir ./integrations/app

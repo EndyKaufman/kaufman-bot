@@ -1,6 +1,102 @@
 {
   "bumpFiles": [
     {
+      "filename": "./libs/bot-in-groups/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/core/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/currency-converter/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/debug-messages/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/dialogflow/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/facts-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/first-meeting/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/html-scraper/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/jokes-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/language-swither/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/quotes-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./libs/short-commands/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/bot-in-groups/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/core/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/currency-converter/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/debug-messages/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/dialogflow/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/facts-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/first-meeting/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/html-scraper/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/jokes-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/language-swither/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/quotes-generator/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/short-commands/server/package.json",
+      "type": "json"
+    },
+    {
       "filename": "./package.json",
       "type": "json"
     }
