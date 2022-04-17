@@ -1,5 +1,3 @@
-import { FirstMeeting } from '@prisma/client';
-
 export const FIRST_MEETING_STORAGE = 'FIRST_MEETING_STORAGE';
 
 export type FirstMeetingStorageProvider = Pick<
@@ -10,6 +8,34 @@ export type FirstMeetingStorageProvider = Pick<
   | 'removeUserFirstMeeting'
 >;
 
+export const FirstMeetingStatus = {
+  StartMeeting: 'StartMeeting',
+  AskFirstname: 'AskFirstname',
+  AskLastname: 'AskLastname',
+  AskGender: 'AskGender',
+  EndMeeting: 'EndMeeting',
+};
+
+export type FirstMeetingStatus =
+  typeof FirstMeetingStatus[keyof typeof FirstMeetingStatus];
+
+export const Gender = {
+  Male: 'Male',
+  Female: 'Female',
+};
+
+export type Gender = typeof Gender[keyof typeof Gender];
+
+export type FirstMeeting = {
+  id: string;
+  userId: string;
+  status: FirstMeetingStatus;
+  firstname: string;
+  lastname: string;
+  gender: Gender;
+  createdAt: Date;
+  updatedAt: Date;
+};
 export class FirstMeetingStorage {
   private readonly firstMeetingOfUsers: Record<number, FirstMeeting> = {};
 

@@ -1,8 +1,8 @@
-import { DEBUG_MESSAGES_STORAGE } from '@kaufman-bot/debug-messages/server';
-import { DIALOGFLOW_STORAGE } from '@kaufman-bot/dialogflow/server';
-import { FIRST_MEETING_STORAGE } from '@kaufman-bot/first-meeting/server';
-import { LANGUAGE_SWITHER_STORAGE } from '@kaufman-bot/language-swither/server';
-import { PrismaClientModule } from '@kaufman-bot/prisma/server';
+import { DEBUG_MESSAGES_STORAGE } from '@kaufman-bot/debug-messages-server';
+import { DIALOGFLOW_STORAGE } from '@kaufman-bot/dialogflow-server';
+import { FIRST_MEETING_STORAGE } from '@kaufman-bot/first-meeting-server';
+import { LANGUAGE_SWITHER_STORAGE } from '@kaufman-bot/language-swither-server';
+import { PrismaClientModule } from '@kaufman-bot/prisma-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { PrismaDebugMessagesStorage } from './prisma-integrations-services/prisma-debug-messages.storage';
 import { PrismaDialogflowStorage } from './prisma-integrations-services/prisma-dialogflow.storage';

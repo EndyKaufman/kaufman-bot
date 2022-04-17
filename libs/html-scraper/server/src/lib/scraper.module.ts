@@ -1,4 +1,4 @@
-import { BotCommandsModule } from '@kaufman-bot/core/server';
+import { BotCommandsModule } from '@kaufman-bot/core-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { TranslatesModule } from 'nestjs-translates';
 import { ScraperConfig, SCRAPER_CONFIG } from './scraper-config/scraper.config';

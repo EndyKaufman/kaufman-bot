@@ -6,7 +6,7 @@ import {
   BotCommandsToolsService,
   OnAfterBotCommands,
   OnBeforeBotCommands,
-} from '@kaufman-bot/core/server';
+} from '@kaufman-bot/core-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';

@@ -6,8 +6,8 @@ import {
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
   OnAfterBotCommands,
-} from '@kaufman-bot/core/server';
-import { DebugService } from '@kaufman-bot/debug-messages/server';
+} from '@kaufman-bot/core-server';
+import { DebugService } from '@kaufman-bot/debug-messages-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import { v4 } from 'uuid';

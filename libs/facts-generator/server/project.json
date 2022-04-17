@@ -3,6 +3,19 @@
   "sourceRoot": "libs/facts-generator/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/facts-generator/server",
+        "tsConfig": "libs/facts-generator/server/tsconfig.lib.json",
+        "packageJson": "libs/facts-generator/server/package.json",
+        "main": "libs/facts-generator/server/src/index.ts",
+        "assets": ["libs/facts-generator/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

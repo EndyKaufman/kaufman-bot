@@ -3,6 +3,19 @@
   "sourceRoot": "libs/html-scraper/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/html-scraper/server",
+        "tsConfig": "libs/html-scraper/server/tsconfig.lib.json",
+        "packageJson": "libs/html-scraper/server/package.json",
+        "main": "libs/html-scraper/server/src/index.ts",
+        "assets": ["libs/html-scraper/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

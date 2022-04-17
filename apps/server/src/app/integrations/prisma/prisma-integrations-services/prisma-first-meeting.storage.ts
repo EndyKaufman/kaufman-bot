@@ -1,5 +1,5 @@
-import { FirstMeetingStorageProvider } from '@kaufman-bot/first-meeting/server';
-import { PrismaClientService } from '@kaufman-bot/prisma/server';
+import { FirstMeetingStorageProvider } from '@kaufman-bot/first-meeting-server';
+import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
 import { FirstMeeting } from '@prisma/client';
 

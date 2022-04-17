@@ -1,4 +1,4 @@
-import { BotCommandsToolsService } from '@kaufman-bot/core/server';
+import { BotCommandsToolsService } from '@kaufman-bot/core-server';
 import { Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {

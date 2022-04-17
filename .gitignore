@@ -43,3 +43,6 @@ Thumbs.db
 *.env.*
 
 google-credentials.json
+
+/integrations/app
+/integrations/lib

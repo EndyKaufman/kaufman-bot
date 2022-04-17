@@ -3,7 +3,7 @@ import {
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
   BOT_COMMANDS_TOOLS_INTERCEPTOR,
-} from '@kaufman-bot/core/server';
+} from '@kaufman-bot/core-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesModule } from 'nestjs-translates';

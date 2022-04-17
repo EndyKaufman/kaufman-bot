@@ -3,6 +3,19 @@
   "sourceRoot": "libs/currency-converter/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/currency-converter/server",
+        "tsConfig": "libs/currency-converter/server/tsconfig.lib.json",
+        "packageJson": "libs/currency-converter/server/package.json",
+        "main": "libs/currency-converter/server/src/index.ts",
+        "assets": ["libs/currency-converter/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

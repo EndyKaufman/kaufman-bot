@@ -1,17 +1,17 @@
 import {
   BotCommandsService,
   BotCommandsToolsService,
-} from '@kaufman-bot/core/server';
-import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow/server';
-import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting/server';
+} from '@kaufman-bot/core-server';
+import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow-server';
+import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting-server';
 import {
   LanguageSwitherStorage,
   LANGUAGE_SWITHER_STORAGE,
-} from '@kaufman-bot/language-swither/server';
+} from '@kaufman-bot/language-swither-server';
 import {
   DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
   ShortCommandsToolsService,
-} from '@kaufman-bot/short-commands/server';
+} from '@kaufman-bot/short-commands-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {

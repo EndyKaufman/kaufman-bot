@@ -3,6 +3,19 @@
   "sourceRoot": "libs/short-commands/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/short-commands/server",
+        "tsConfig": "libs/short-commands/server/tsconfig.lib.json",
+        "packageJson": "libs/short-commands/server/package.json",
+        "main": "libs/short-commands/server/src/index.ts",
+        "assets": ["libs/short-commands/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -2,7 +2,7 @@ import {
   BotCommandsToolsGenerateHelpMessageOptions,
   BotCommandsToolsInterceptor,
   BotCommandsToolsService,
-} from '@kaufman-bot/core/server';
+} from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesService } from 'nestjs-translates';

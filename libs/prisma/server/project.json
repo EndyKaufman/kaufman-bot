@@ -3,6 +3,19 @@
   "sourceRoot": "libs/prisma/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/prisma/server",
+        "tsConfig": "libs/prisma/server/tsconfig.lib.json",
+        "packageJson": "libs/prisma/server/package.json",
+        "main": "libs/prisma/server/src/index.ts",
+        "assets": ["libs/prisma/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

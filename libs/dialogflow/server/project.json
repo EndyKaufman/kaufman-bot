@@ -3,6 +3,19 @@
   "sourceRoot": "libs/dialogflow/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/dialogflow/server",
+        "tsConfig": "libs/dialogflow/server/tsconfig.lib.json",
+        "packageJson": "libs/dialogflow/server/package.json",
+        "main": "libs/dialogflow/server/src/index.ts",
+        "assets": ["libs/dialogflow/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

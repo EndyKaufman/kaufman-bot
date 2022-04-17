@@ -23,37 +23,37 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "paths": {
-      "@kaufman-bot/bot-in-groups/server": [
+      "@kaufman-bot/bot-in-groups-server": [
         "libs/bot-in-groups/server/src/index.ts"
       ],
-      "@kaufman-bot/core/server": ["libs/core/server/src/index.ts"],
-      "@kaufman-bot/currency-converter/server": [
+      "@kaufman-bot/core-server": ["libs/core/server/src/index.ts"],
+      "@kaufman-bot/currency-converter-server": [
         "libs/currency-converter/server/src/index.ts"
       ],
-      "@kaufman-bot/debug-messages/server": [
+      "@kaufman-bot/debug-messages-server": [
         "libs/debug-messages/server/src/index.ts"
       ],
-      "@kaufman-bot/dialogflow/server": ["libs/dialogflow/server/src/index.ts"],
-      "@kaufman-bot/facts-generator/server": [
+      "@kaufman-bot/dialogflow-server": ["libs/dialogflow/server/src/index.ts"],
+      "@kaufman-bot/facts-generator-server": [
         "libs/facts-generator/server/src/index.ts"
       ],
-      "@kaufman-bot/first-meeting/server": [
+      "@kaufman-bot/first-meeting-server": [
         "libs/first-meeting/server/src/index.ts"
       ],
-      "@kaufman-bot/html-scraper/server": [
+      "@kaufman-bot/html-scraper-server": [
         "libs/html-scraper/server/src/index.ts"
       ],
-      "@kaufman-bot/jokes-generator/server": [
+      "@kaufman-bot/jokes-generator-server": [
         "libs/jokes-generator/server/src/index.ts"
       ],
-      "@kaufman-bot/language-swither/server": [
+      "@kaufman-bot/language-swither-server": [
         "libs/language-swither/server/src/index.ts"
       ],
-      "@kaufman-bot/prisma/server": ["libs/prisma/server/src/index.ts"],
-      "@kaufman-bot/quotes-generator/server": [
+      "@kaufman-bot/prisma-server": ["libs/prisma/server/src/index.ts"],
+      "@kaufman-bot/quotes-generator-server": [
         "libs/quotes-generator/server/src/index.ts"
       ],
-      "@kaufman-bot/short-commands/server": [
+      "@kaufman-bot/short-commands-server": [
         "libs/short-commands/server/src/index.ts"
       ]
     }

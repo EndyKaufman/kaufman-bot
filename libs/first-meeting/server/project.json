@@ -3,6 +3,19 @@
   "sourceRoot": "libs/first-meeting/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/first-meeting/server",
+        "tsConfig": "libs/first-meeting/server/tsconfig.lib.json",
+        "packageJson": "libs/first-meeting/server/package.json",
+        "main": "libs/first-meeting/server/src/index.ts",
+        "assets": ["libs/first-meeting/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -1,8 +1,8 @@
 import {
   DialogflowStorageProvider,
   SessionOfUsers,
-} from '@kaufman-bot/dialogflow/server';
-import { PrismaClientService } from '@kaufman-bot/prisma/server';
+} from '@kaufman-bot/dialogflow-server';
+import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

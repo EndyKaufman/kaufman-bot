@@ -3,6 +3,19 @@
   "sourceRoot": "libs/quotes-generator/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/quotes-generator/server",
+        "tsConfig": "libs/quotes-generator/server/tsconfig.lib.json",
+        "packageJson": "libs/quotes-generator/server/package.json",
+        "main": "libs/quotes-generator/server/src/index.ts",
+        "assets": ["libs/quotes-generator/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -3,6 +3,19 @@
   "sourceRoot": "libs/bot-in-groups/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bot-in-groups/server",
+        "tsConfig": "libs/bot-in-groups/server/tsconfig.lib.json",
+        "packageJson": "libs/bot-in-groups/server/package.json",
+        "main": "libs/bot-in-groups/server/src/index.ts",
+        "assets": ["libs/bot-in-groups/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

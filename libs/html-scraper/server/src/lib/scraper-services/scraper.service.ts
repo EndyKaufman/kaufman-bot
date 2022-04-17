@@ -5,7 +5,7 @@ import {
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
   OnContextBotCommands,
-} from '@kaufman-bot/core/server';
+} from '@kaufman-bot/core-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import charset from 'charset';

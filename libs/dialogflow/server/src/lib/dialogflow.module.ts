@@ -2,8 +2,8 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-} from '@kaufman-bot/core/server';
-import { DebugMessagesModule } from '@kaufman-bot/debug-messages/server';
+} from '@kaufman-bot/core-server';
+import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInjectorModule } from 'nestjs-custom-injector';

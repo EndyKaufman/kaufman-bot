@@ -7,11 +7,10 @@ import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
 import { FirstMeetingModule } from '@kaufman-bot/first-meeting-server';
 import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator-server';
 import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
-import { PrismaClientModule } from '@kaufman-bot/prisma-server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator-server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
 import { Module } from '@nestjs/common';
-import env from 'env-var';
+import * as env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
   getDefaultTranslatesModuleOptions,
@@ -20,7 +19,6 @@ import {
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
 
 const TELEGRAM_BOT_WEB_HOOKS_DOMAIN = env
   .get('TELEGRAM_BOT_WEB_HOOKS_DOMAIN')
@@ -48,12 +46,6 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           : {}),
       },
     }),
-    PrismaClientModule.forRoot({
-      databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
-      logging: 'long_queries',
-      maxQueryExecutionTime: 5000,
-    }),
-    PrismaIntegrationsModule.forRoot(),
     TranslatesModule.forRoot(
       getDefaultTranslatesModuleOptions({
         localePaths: [

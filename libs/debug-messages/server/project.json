@@ -3,6 +3,19 @@
   "sourceRoot": "libs/debug-messages/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/debug-messages/server",
+        "tsConfig": "libs/debug-messages/server/tsconfig.lib.json",
+        "packageJson": "libs/debug-messages/server/package.json",
+        "main": "libs/debug-messages/server/src/index.ts",
+        "assets": ["libs/debug-messages/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

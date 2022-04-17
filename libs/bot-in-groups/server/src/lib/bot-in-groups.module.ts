@@ -2,9 +2,9 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-} from '@kaufman-bot/core/server';
-import { LanguageSwitherModule } from '@kaufman-bot/language-swither/server';
-import { ShortCommandsModule } from '@kaufman-bot/short-commands/server';
+} from '@kaufman-bot/core-server';
+import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
+import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesModule } from 'nestjs-translates';

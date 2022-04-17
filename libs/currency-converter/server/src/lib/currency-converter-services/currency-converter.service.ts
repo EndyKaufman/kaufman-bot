@@ -2,8 +2,8 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
-} from '@kaufman-bot/core/server';
-import { ScraperService } from '@kaufman-bot/html-scraper/server';
+} from '@kaufman-bot/core-server';
+import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class CurrencyConverterService implements BotCommandsProvider {

@@ -5,9 +5,8 @@ import {
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
   OnContextBotCommands,
-} from '@kaufman-bot/core/server';
+} from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
-import { FirstMeeting } from '@prisma/client';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
@@ -15,7 +14,7 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../first-meeting-config/first-meeting.config';
-import { FirstMeetingStorage } from './first-meeting.storage';
+import { FirstMeeting, FirstMeetingStorage } from './first-meeting.storage';
 
 export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 

@@ -1,5 +1,5 @@
-import { DebugMessagesStorageProvider } from '@kaufman-bot/debug-messages/server';
-import { PrismaClientService } from '@kaufman-bot/prisma/server';
+import { DebugMessagesStorageProvider } from '@kaufman-bot/debug-messages-server';
+import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

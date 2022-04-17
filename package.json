@@ -63,7 +63,22 @@
     "app:build": "npm run generate && npm run build && npm run app:build-changelog",
     "app:release": "standard-version",
     "app:create-release": "npm run app:build && npm run app:release && git push --follow-tags origin develop",
-    "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md"
+    "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md",
+    "lib:build-all": "npm run nx -- run-many --target=build --all",
+    "test:integrations-build": "sh ./integrations/scripts/build-application.sh",
+    "publish:core": "npm publish ./dist/libs/core/server",
+    "publish:bot-in-groups": "npm publish ./dist/libs/bot-in-groups/server",
+    "publish:currency-converter": "npm publish ./dist/libs/currency-converter/server",
+    "publish:debug-messages": "npm publish ./dist/libs/debug-messages/server",
+    "publish:dialogflow": "npm publish ./dist/libs/dialogflow/server",
+    "publish:facts-generator": "npm publish ./dist/libs/facts-generator/server",
+    "publish:first-meeting": "npm publish ./dist/libs/first-meeting/server",
+    "publish:html-scraper": "npm publish ./dist/libs/html-scraper/server",
+    "publish:jokes-generator": "npm publish ./dist/libs/jokes-generator/server",
+    "publish:language-swither": "npm publish ./dist/libs/language-swither/server",
+    "publish:quotes-generator": "npm publish ./dist/libs/quotes-generator/server",
+    "publish:short-commands": "npm publish ./dist/libs/short-commands/server",
+    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands"
   },
   "private": true,
   "devDependencies": {

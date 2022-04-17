@@ -2,8 +2,8 @@ import {
   BotCommandsCategory,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
-} from '@kaufman-bot/core/server';
-import { ScraperModule } from '@kaufman-bot/html-scraper/server';
+} from '@kaufman-bot/core-server';
+import { ScraperModule } from '@kaufman-bot/html-scraper-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInjectorModule } from 'nestjs-custom-injector';

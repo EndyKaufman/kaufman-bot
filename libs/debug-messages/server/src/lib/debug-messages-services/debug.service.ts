@@ -1,4 +1,4 @@
-import { BotCommandsProviderActionMsg } from '@kaufman-bot/core/server';
+import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
 import { Injectable, Logger } from '@nestjs/common';
 
 const DEBUG_MODE = 'debugMode';

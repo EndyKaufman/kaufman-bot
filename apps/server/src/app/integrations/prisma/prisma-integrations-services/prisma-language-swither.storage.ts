@@ -1,5 +1,5 @@
-import { LanguageSwitherStorageProvider } from '@kaufman-bot/language-swither/server';
-import { PrismaClientService } from '@kaufman-bot/prisma/server';
+import { LanguageSwitherStorageProvider } from '@kaufman-bot/language-swither-server';
+import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

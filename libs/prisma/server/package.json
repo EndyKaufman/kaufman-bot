@@ -1,4 +1,30 @@
 {
+  "name": "@kaufman-bot/prisma-server",
+  "description": "Database prisma client",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "kaufman-bot",
+    "nx",
+    "nests",
+    "telegram",
+    "prisma"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
+  "readme": "README.md",
   "i18n": [
     {
       "scope": "prisma-server",
@@ -6,5 +32,5 @@
       "strategy": "join"
     }
   ],
-  "version": "2.0.0"
+  "version": "2.1.0"
 }

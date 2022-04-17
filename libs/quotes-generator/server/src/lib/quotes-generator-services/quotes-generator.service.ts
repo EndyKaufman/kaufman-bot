@@ -5,8 +5,8 @@ import {
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
   OnContextBotCommands,
-} from '@kaufman-bot/core/server';
-import { ScraperService } from '@kaufman-bot/html-scraper/server';
+} from '@kaufman-bot/core-server';
+import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

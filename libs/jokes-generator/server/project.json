@@ -3,6 +3,19 @@
   "sourceRoot": "libs/jokes-generator/server/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/jokes-generator/server",
+        "tsConfig": "libs/jokes-generator/server/tsconfig.lib.json",
+        "packageJson": "libs/jokes-generator/server/package.json",
+        "main": "libs/jokes-generator/server/src/index.ts",
+        "assets": ["libs/jokes-generator/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
