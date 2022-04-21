@@ -29,6 +29,7 @@
     }
   ],
   "scripts": {
+    "standard-version": "standard-version",
     "rucken": "rucken",
     "nx": "nx",
     "start": "echo $GOOGLE_CREDENTIALS | base64 --decode > ./$GOOGLE_APPLICATION_CREDENTIALS && node dist/apps/server/main.js",
