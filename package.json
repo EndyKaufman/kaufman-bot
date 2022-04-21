@@ -78,15 +78,18 @@
     "publish:language-swither": "npm publish ./dist/libs/language-swither/server",
     "publish:quotes-generator": "npm publish ./dist/libs/quotes-generator/server",
     "publish:short-commands": "npm publish ./dist/libs/short-commands/server",
-    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands"
+    "publish:schematics": "npm publish ./dist/libs/schematics",
+    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands && npm run publish:schematics"
   },
   "private": true,
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@nrwl/cli": "13.8.1",
+    "@nrwl/devkit": "^13.10.2",
     "@nrwl/eslint-plugin-nx": "13.8.1",
     "@nrwl/jest": "13.8.1",
+    "@nrwl/js": "^13.10.2",
     "@nrwl/linter": "13.8.1",
     "@nrwl/nest": "13.8.1",
     "@nrwl/node": "13.8.1",

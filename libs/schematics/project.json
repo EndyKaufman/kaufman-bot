@@ -1,0 +1,79 @@
+{
+  "root": "libs/schematics",
+  "sourceRoot": "libs/schematics",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "libs/schematics/jest.config.js",
+        "passWithNoTests": true
+      },
+      "outputs": ["coverage/libs/schematics"]
+    },
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
+        "outputPath": "dist/libs/schematics",
+        "tsConfig": "libs/schematics/tsconfig.lib.json",
+        "main": "libs/schematics/index.ts",
+        "updateBuildableProjectDepsInPackageJson": false,
+        "assets": [
+          {
+            "input": "libs/schematics",
+            "glob": "**/files/**",
+            "output": "/"
+          },
+          {
+            "input": "libs/schematics",
+            "glob": "**/files/**/.gitkeep",
+            "output": "/"
+          },
+          {
+            "input": "libs/schematics",
+            "glob": "**/*.json",
+            "ignore": ["**/tsconfig*.json", "project.json"],
+            "output": "/"
+          },
+          {
+            "input": "libs/schematics",
+            "glob": "**/*.js",
+            "ignore": ["**/jest.config.js"],
+            "output": "/"
+          },
+          {
+            "input": "libs/schematics",
+            "glob": "**/*.d.ts",
+            "output": "/"
+          },
+          {
+            "input": "",
+            "glob": "LICENSE",
+            "output": "/"
+          },
+          {
+            "input": "libs/schematics",
+            "glob": "**/*.md",
+            "output": "/"
+          }
+        ]
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/schematics/**/*.ts",
+          "libs/schematics/**/*.spec.ts",
+          "libs/schematics/**/*_spec.ts",
+          "libs/schematics/**/*.spec.tsx",
+          "libs/schematics/**/*.spec.js",
+          "libs/schematics/**/*.spec.jsx",
+          "libs/schematics/**/*.d.ts"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}
