@@ -12,7 +12,6 @@
         "packageJson": "libs/prisma/server/package.json",
         "main": "libs/prisma/server/src/index.ts",
         "assets": ["libs/prisma/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

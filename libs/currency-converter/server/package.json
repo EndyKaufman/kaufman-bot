@@ -37,7 +37,7 @@
       "strategy": "join"
     }
   ],
-  "version": "2.2.2",
+  "version": "2.4.0",
   "peerDependencies": {
     "@nestjs/common": "^8.0.0",
     "class-validator-multi-lang": "^0.130.201"

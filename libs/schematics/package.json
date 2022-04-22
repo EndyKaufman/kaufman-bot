@@ -1,0 +1,51 @@
+{
+  "name": "@kaufman-bot/schematics",
+  "description": "The Nx Plugin for Nest that contains executors and generators for allowing your workspace to create KaufmanBot APIs.",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "Monorepo",
+    "Node",
+    "Nest",
+    "CLI",
+    "kaufman-bot",
+    "nx",
+    "schematics",
+    "nests",
+    "telegram"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
+  "readme": "README.md",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
+  "schematics": "./generators.json",
+  "dependencies": {
+    "@nrwl/devkit": "^13.10.2",
+    "@nrwl/linter": "13.8.1",
+    "@nrwl/node": "13.8.1",
+    "@nrwl/js": "^13.10.2",
+    "@nrwl/jest": "13.8.1",
+    "@nestjs/schematics": "^8.0.0"
+  },
+  "version": "2.4.0",
+  "i18n": [
+    {
+      "scope": "schematics",
+      "path": "src/i18n",
+      "strategy": "join"
+    }
+  ]
+}

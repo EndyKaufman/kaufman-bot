@@ -12,7 +12,6 @@
         "packageJson": "libs/language-swither/server/package.json",
         "main": "libs/language-swither/server/src/index.ts",
         "assets": ["libs/language-swither/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

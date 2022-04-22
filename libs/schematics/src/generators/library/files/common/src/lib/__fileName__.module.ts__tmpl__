@@ -1,0 +1,48 @@
+import {
+  BotCommandsCategory,
+  BotCommandsModule,
+  BOT_COMMANDS_PROVIDER,
+} from '@kaufman-bot/core-server';
+import { DynamicModule, Module } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
+import { TranslatesModule } from 'nestjs-translates';
+import {
+  <%= className %>Service,
+  <%= className %>Config,
+  <%= constantName %>_CONFIG,
+} from './<%= fileName %>.service';
+
+@Module({
+    imports: [TranslatesModule, BotCommandsModule],
+	exports: [TranslatesModule, BotCommandsModule],
+})
+export class <%= className %>Module {
+  static forRoot(): DynamicModule {
+    return {
+      module: <%= className %>Module,
+	  providers: [
+	  	{
+	  		provide: <%= constantName %>_CONFIG,
+	  		useValue: <<%= className %>Config>{
+	  	  		title: getText('<%= TitleName %> commands'),
+	  	  		name: '<%= propertyName %>',
+	  	  		usage: [
+	  	  			getText('<%= propertyName %> ping'),
+	  	  			getText('<%= propertyName %> help'),
+	  	  		],
+	  	  		descriptions: getText(
+	  	  			'Commands for <%= titleName %>'
+	  	  		),
+	  	  		spyWords: [getText('<%= propertyName %>')],
+	  	  		category: BotCommandsCategory.user,
+	  		},
+	  	},
+	  	{
+	  		provide: BOT_COMMANDS_PROVIDER,
+	  		useClass: <%= className %>Service,
+	  	},
+	  ],
+	  exports: [<%= constantName %>_CONFIG],
+    };
+  }
+}

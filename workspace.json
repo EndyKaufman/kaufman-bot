@@ -13,6 +13,7 @@
     "language-swither-server": "libs/language-swither/server",
     "prisma-server": "libs/prisma/server",
     "quotes-generator-server": "libs/quotes-generator/server",
+    "schematics": "libs/schematics",
     "server": "apps/server",
     "short-commands-server": "libs/short-commands/server"
   }

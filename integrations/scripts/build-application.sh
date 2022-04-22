@@ -14,7 +14,6 @@ yes | cp -R ./integrations/default/package.json ./integrations/app/package.json
 
 mkdir ./integrations/app/lib
 cp -Rf ./dist/libs/* ./integrations/app/lib
-cp -Rf .env.local ./integrations/app
 cp -Rf google-credentials.json ./integrations/app
 
 cd ./integrations/app
@@ -62,7 +61,14 @@ cd ./integrations/app/lib/quotes-generator/server && npm pack . && cd ../../../.
 npx --yes replace-json-property ./integrations/app/lib/short-commands/server/package.json version 0.0.0
 cd ./integrations/app/lib/short-commands/server && npm pack . && cd ../../../../../
 
+npx --yes replace-json-property ./integrations/app/lib/schematics/package.json version 0.0.0
+cd ./integrations/app/lib/schematics && npm pack . && cd ../../../../
+
 cd ./integrations/app
+npm i --force
+npm install --save-dev ../../integrations/app/lib/schematics/kaufman-bot-schematics-0.0.0.tgz --force
+npm run nx -- g  @kaufman-bot/schematics:application bot --bot-name=Adam
+npm run nx -- g  @kaufman-bot/schematics:library ping-pong
 npm i --force
 npm install --save ../../integrations/app/lib/core/server/kaufman-bot-core-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/debug-messages/server/kaufman-bot-debug-messages-server-0.0.0.tgz --force
@@ -78,5 +84,6 @@ npm install --save ../../integrations/app/lib/first-meeting/server/kaufman-bot-f
 npm install --save ../../integrations/app/lib/bot-in-groups/server/kaufman-bot-bot-in-groups-server-0.0.0.tgz --force
 tsc --noEmit -p tsconfig.base.json
 npm run build
+npm run nx -- build bot
 
 cd ../../

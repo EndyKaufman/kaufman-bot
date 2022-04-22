@@ -2,13 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.2.2](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.0...v2.2.2) (2022-04-17)
+## [2.4.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.3...v2.4.0) (2022-04-22)
 
+### Features
+
+- append store dependencies in build libs ([898eb45](https://github.com/EndyKaufman/kaufman-bot/commit/898eb4572985422e59d2e584adcb2737eff95436))
+
+### [2.3.3](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.2...v2.3.3) (2022-04-22)
 
 ### Bug Fixes
 
-* update versions ([e904d25](https://github.com/EndyKaufman/kaufman-bot/commit/e904d25e2dd0b879ac1b8cc3ec0515e8098cd44e))
-* update versions ([2623145](https://github.com/EndyKaufman/kaufman-bot/commit/2623145a4c5690caeadd8d548ae9dce7e945b916))
+- set default versions for kaufman bot to \* ([72bde2d](https://github.com/EndyKaufman/kaufman-bot/commit/72bde2da359b8f1d8e82633db3885178ce9a2bac))
+
+### [2.3.2](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.1...v2.3.2) (2022-04-22)
+
+### Bug Fixes
+
+- update versions ([9d36e4a](https://github.com/EndyKaufman/kaufman-bot/commit/9d36e4a4ca1f789e306b0120e04fa4d4e904df18))
+
+### [2.3.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.0...v2.3.1) (2022-04-22)
+
+### Bug Fixes
+
+- update versions ([e955d1b](https://github.com/EndyKaufman/kaufman-bot/commit/e955d1bebcdc50468bf2d8cf5864bf6bec899f6e))
+
+## [2.3.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.2...v2.3.0) (2022-04-22)
+
+### Features
+
+- add schematics for create empty kaufman-bot applications and library in Telegram bot on NestJS ([8572135](https://github.com/EndyKaufman/kaufman-bot/commit/8572135b80f808df6e15d93b9b5ed3ab281b7d6a))
+
+### Bug Fixes
+
+- update scripts ([3d361dc](https://github.com/EndyKaufman/kaufman-bot/commit/3d361dcd7325a22453dcf71dd73dfcd398719f4c))
+
+## [2.3.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.2...v2.3.0) (2022-04-22)
+
+### Features
+
+- add schematics for create empty kaufman-bot applications and library in Telegram bot on NestJS ([8572135](https://github.com/EndyKaufman/kaufman-bot/commit/8572135b80f808df6e15d93b9b5ed3ab281b7d6a))
+
+### Bug Fixes
+
+- update scripts ([3d361dc](https://github.com/EndyKaufman/kaufman-bot/commit/3d361dcd7325a22453dcf71dd73dfcd398719f4c))
+
+### [2.2.2](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.0...v2.2.2) (2022-04-17)
+
+### Bug Fixes
+
+- update versions ([e904d25](https://github.com/EndyKaufman/kaufman-bot/commit/e904d25e2dd0b879ac1b8cc3ec0515e8098cd44e))
+- update versions ([2623145](https://github.com/EndyKaufman/kaufman-bot/commit/2623145a4c5690caeadd8d548ae9dce7e945b916))
 
 ### [2.2.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.0...v2.2.1) (2022-04-17)
 

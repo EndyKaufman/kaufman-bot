@@ -39,9 +39,35 @@ export class BotInGroupsService
           this.botInGroupsConfig.botNames[locale],
           locale
         );
+
+        if (
+          this.botCommandsToolsService.checkCommands(
+            this.botCommandsToolsService.clearCommands(
+              msg.text,
+              this.botInGroupsConfig.botNames[locale],
+              locale
+            ),
+            ['start']
+          )
+        ) {
+          msg.text = `${this.botInGroupsConfig.name} meet`;
+        }
       } else {
         msg.botCommandHandlerBreak = true;
       }
+    }
+    if (
+      msg.botStart ||
+      this.botCommandsToolsService.checkCommands(
+        this.botCommandsToolsService.clearCommands(
+          msg.text,
+          this.botInGroupsConfig.botNames[locale],
+          locale
+        ),
+        ['start']
+      )
+    ) {
+      msg.text = `${this.botInGroupsConfig.name} meet`;
     }
     return msg;
   }
@@ -93,8 +119,10 @@ export class BotInGroupsService
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.botCommandsToolsService.getRandomItem(
-            this.botInGroupsConfig.botMeetingInformation[locale]
+          markdown: this.botCommandsToolsService.prepareHelpString(
+            this.botCommandsToolsService.getRandomItem(
+              this.botInGroupsConfig.botMeetingInformation[locale]
+            )
           ),
         };
       }

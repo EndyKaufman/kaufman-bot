@@ -43,9 +43,9 @@ export class ShortCommandsBotCommandsToolsInterceptor
         (alias) =>
           `${this.botCommandsToolsService.prepareHelpString(
             commands[alias]
-          )} \\- ${this.botCommandsToolsService
-            .prepareHelpString(alias)
+          )} \\- ${alias
             .split('|')
+            .map((word) => this.botCommandsToolsService.prepareHelpString(word))
             .join(', ')}`
       );
 

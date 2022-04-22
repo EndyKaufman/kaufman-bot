@@ -10,7 +10,7 @@ import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator-server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
 import { Module } from '@nestjs/common';
-import * as env from 'env-var';
+import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
   getDefaultTranslatesModuleOptions,
@@ -97,11 +97,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       },
       botMeetingInformation: {
         en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
-        ru: [
-          `Всем привет! я ${BOT_NAMES_RU[0]} 😉`,
-          `Всем привет!`,
-          'Всем привет 🖖',
-        ],
+        ru: [`Привет! я ${BOT_NAMES_RU[0]} 😉`, `Привет!`, 'Привет 🖖'],
       },
     }),
     LanguageSwitherModule.forRoot(),

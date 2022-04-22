@@ -2,7 +2,7 @@
 
 The bot is in a state of complete rewrite on NestJS, issue: https://github.com/EndyKaufman/kaufman-bot/issues/73
 
-The current running bot is here: https://telegram.me/DevelopKaufmanBot
+The current running bot is here: https://telegram.me/KaufmanBot
 
 The whole rewriting process can be viewed as posts on https://dev.to/t/kaufmanbot
 

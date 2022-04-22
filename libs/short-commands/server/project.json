@@ -12,7 +12,6 @@
         "packageJson": "libs/short-commands/server/package.json",
         "main": "libs/short-commands/server/src/index.ts",
         "assets": ["libs/short-commands/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

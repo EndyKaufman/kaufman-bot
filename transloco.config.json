@@ -14,6 +14,7 @@
     "libs/language-swither/server",
     "libs/prisma/server",
     "libs/quotes-generator/server",
+    "libs/schematics",
     "libs/short-commands/server"
   ],
   "rootTranslationsPath": "./apps/server/src/assets/i18n/",
@@ -30,6 +31,7 @@
     "libs/language-swither/server",
     "libs/prisma/server",
     "libs/quotes-generator/server",
+    "libs/schematics",
     "libs/short-commands/server"
   ]
 }

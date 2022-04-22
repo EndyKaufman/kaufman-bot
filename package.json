@@ -1,6 +1,6 @@
 {
   "name": "kaufman-bot",
-  "version": "2.2.2",
+  "version": "2.4.0",
   "description": "Example of simple bot for telegram",
   "keywords": [
     "telegram",
@@ -29,10 +29,11 @@
     }
   ],
   "scripts": {
+    "standard-version": "standard-version",
     "rucken": "rucken",
     "nx": "nx",
     "start": "echo $GOOGLE_CREDENTIALS | base64 --decode > ./$GOOGLE_APPLICATION_CREDENTIALS && node dist/apps/server/main.js",
-    "build": "npm run nx -- build server",
+    "build": "npm run lib:build-all && npm run nx -- build server",
     "test": "nx test",
     "serve": "npm run nx -- serve server",
     "serve:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run serve",
@@ -61,7 +62,7 @@
     "prisma:generate": "npm run -- prisma generate",
     "postinstall": "npm run generate",
     "app:build": "npm run generate && npm run build && npm run app:build-changelog",
-    "app:release": "standard-version --no-verify -f",
+    "app:release": "standard-version -a",
     "app:create-release": "npm run app:build && npm run app:release && git push --follow-tags origin develop",
     "app:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/kaufman-bot/CHANGELOG.md",
     "lib:build-all": "npm run nx -- run-many --target=build --all --skip-nx-cache",
@@ -78,15 +79,18 @@
     "publish:language-swither": "npm publish ./dist/libs/language-swither/server",
     "publish:quotes-generator": "npm publish ./dist/libs/quotes-generator/server",
     "publish:short-commands": "npm publish ./dist/libs/short-commands/server",
-    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands"
+    "publish:schematics": "npm publish ./dist/libs/schematics",
+    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands && npm run publish:schematics"
   },
   "private": true,
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@nrwl/cli": "13.8.1",
+    "@nrwl/devkit": "^13.10.2",
     "@nrwl/eslint-plugin-nx": "13.8.1",
     "@nrwl/jest": "13.8.1",
+    "@nrwl/js": "^13.10.2",
     "@nrwl/linter": "13.8.1",
     "@nrwl/nest": "13.8.1",
     "@nrwl/node": "13.8.1",
@@ -147,5 +151,10 @@
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",
     "*.{js,ts,css,scss,md,yml,yaml,prisma}": "prettier --ignore-unknown --write"
+  },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "npm run generate && npm run app:build-changelog && git add ."
+    }
   }
 }

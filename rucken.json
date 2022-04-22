@@ -1,0 +1,18 @@
+{
+  "makeTsList": {
+    "indexFileName": "index",
+    "excludes": [
+      "*node_modules*",
+      "*public_api.ts*",
+      "*.spec*",
+      "environment*",
+      "*test*",
+      "*e2e*",
+      "*.stories.ts",
+      "*.d.ts",
+      "*files*",
+      "*generators*",
+      "*utils*"
+    ]
+  }
+}
