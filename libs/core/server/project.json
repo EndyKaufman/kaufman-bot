@@ -12,7 +12,6 @@
         "packageJson": "libs/core/server/package.json",
         "main": "libs/core/server/src/index.ts",
         "assets": ["libs/core/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

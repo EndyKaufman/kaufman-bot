@@ -57,6 +57,8 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       'env-var': '^7.1.1',
       'nestjs-telegraf': '^2.4.0',
       'nestjs-translates': '^1.0.3',
+      telegraf: '^4.7.0',
+      'nestjs-custom-injector': '^1.0.1',
       rxjs: RXJS,
       tslib: '^2.0.0',
     },

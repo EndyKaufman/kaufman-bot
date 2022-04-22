@@ -12,7 +12,6 @@
         "packageJson": "libs/html-scraper/server/package.json",
         "main": "libs/html-scraper/server/src/index.ts",
         "assets": ["libs/html-scraper/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

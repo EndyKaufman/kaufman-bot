@@ -12,7 +12,6 @@
         "packageJson": "libs/bot-in-groups/server/package.json",
         "main": "libs/bot-in-groups/server/src/index.ts",
         "assets": ["libs/bot-in-groups/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

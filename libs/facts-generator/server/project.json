@@ -12,7 +12,6 @@
         "packageJson": "libs/facts-generator/server/package.json",
         "main": "libs/facts-generator/server/src/index.ts",
         "assets": ["libs/facts-generator/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

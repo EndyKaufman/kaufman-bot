@@ -12,7 +12,6 @@
         "packageJson": "libs/jokes-generator/server/package.json",
         "main": "libs/jokes-generator/server/src/index.ts",
         "assets": ["libs/jokes-generator/server/*.md"],
-        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

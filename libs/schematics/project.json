@@ -17,7 +17,6 @@
         "outputPath": "dist/libs/schematics",
         "tsConfig": "libs/schematics/tsconfig.lib.json",
         "main": "libs/schematics/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "input": "libs/schematics",

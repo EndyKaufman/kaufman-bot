@@ -1,45 +1,45 @@
 {
-    "name": "@kaufman-bot/currency-converter-server",
-    "description": "Command to convert one currency to another",
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "keywords": [
-        "kaufman-bot",
-        "nx",
-        "nests",
-        "telegram",
-        "currency-converter"
-    ],
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-    },
-    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-    },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "readme": "README.md",
-    "i18n": [
-        {
-            "scope": "currency-converter-server",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "currency-converter-server-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        }
-    ],
-    "version": "2.3.3",
-    "peerDependencies": {
-        "@nestjs/common": "^8.0.0",
-        "class-validator-multi-lang": "^0.130.201"
+  "name": "@kaufman-bot/currency-converter-server",
+  "description": "Command to convert one currency to another",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "kaufman-bot",
+    "nx",
+    "nests",
+    "telegram",
+    "currency-converter"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
     }
+  ],
+  "readme": "README.md",
+  "i18n": [
+    {
+      "scope": "currency-converter-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    },
+    {
+      "scope": "currency-converter-server-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    }
+  ],
+  "version": "2.3.3",
+  "peerDependencies": {
+    "@nestjs/common": "^8.0.0",
+    "class-validator-multi-lang": "^0.130.201"
+  }
 }
