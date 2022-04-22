@@ -40,7 +40,7 @@
     "@nrwl/jest": "13.8.1",
     "@nestjs/schematics": "^8.0.0"
   },
-  "version": "2.2.2",
+  "version": "2.3.0",
   "i18n": [
     {
       "scope": "schematics",
