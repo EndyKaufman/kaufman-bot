@@ -1,53 +1,53 @@
 {
-  "name": "@kaufman-bot/html-scraper-server",
-  "description": "Html scraper commands and tools",
-  "license": "MIT",
-  "author": "EndyKaufman <admin@site15.ru>",
-  "keywords": [
-    "kaufman-bot",
-    "nx",
-    "nests",
-    "telegram",
-    "html-scraper"
-  ],
-  "bugs": {
-    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-  },
-  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-  },
-  "maintainers": [
-    {
-      "name": "EndyKaufman",
-      "email": "admin@site15.ru"
-    }
-  ],
-  "readme": "README.md",
-  "i18n": [
-    {
-      "scope": "html-scraper-server",
-      "path": "src/i18n",
-      "strategy": "join"
+    "name": "@kaufman-bot/html-scraper-server",
+    "description": "Html scraper commands and tools",
+    "license": "MIT",
+    "author": "EndyKaufman <admin@site15.ru>",
+    "keywords": [
+        "kaufman-bot",
+        "nx",
+        "nests",
+        "telegram",
+        "html-scraper"
+    ],
+    "bugs": {
+        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
     },
-    {
-      "scope": "html-scraper-server-getText",
-      "path": "src/i18n/getText",
-      "strategy": "join"
+    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+    },
+    "maintainers": [
+        {
+            "name": "EndyKaufman",
+            "email": "admin@site15.ru"
+        }
+    ],
+    "readme": "README.md",
+    "i18n": [
+        {
+            "scope": "html-scraper-server",
+            "path": "src/i18n",
+            "strategy": "join"
+        },
+        {
+            "scope": "html-scraper-server-getText",
+            "path": "src/i18n/getText",
+            "strategy": "join"
+        }
+    ],
+    "version": "2.3.3",
+    "peerDependencies": {
+        "@nestjs/common": "^8.0.0",
+        "nestjs-translates": "^1.0.3",
+        "class-validator-multi-lang": "^0.130.201",
+        "axios": "^0.26.0",
+        "charset": "^1.0.1",
+        "cheerio": "^1.0.0-rc.10",
+        "encoding": "^0.1.13",
+        "html-to-text": "^8.1.0",
+        "jschardet": "^3.0.0",
+        "mustache": "^4.2.0"
     }
-  ],
-  "version": "2.3.2",
-  "peerDependencies": {
-    "@nestjs/common": "^8.0.0",
-    "nestjs-translates": "^1.0.3",
-    "class-validator-multi-lang": "^0.130.201",
-    "axios": "^0.26.0",
-    "charset": "^1.0.1",
-    "cheerio": "^1.0.0-rc.10",
-    "encoding": "^0.1.13",
-    "html-to-text": "^8.1.0",
-    "jschardet": "^3.0.0",
-    "mustache": "^4.2.0"
-  }
 }
