@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.0...v2.3.1) (2022-04-22)
+
+### Bug Fixes
+
+- update versions ([e955d1b](https://github.com/EndyKaufman/kaufman-bot/commit/e955d1bebcdc50468bf2d8cf5864bf6bec899f6e))
+
 ## [2.3.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.2.2...v2.3.0) (2022-04-22)
 
 ### Features
