@@ -33,7 +33,7 @@
     "rucken": "rucken",
     "nx": "nx",
     "start": "echo $GOOGLE_CREDENTIALS | base64 --decode > ./$GOOGLE_APPLICATION_CREDENTIALS && node dist/apps/server/main.js",
-    "build": "npm run nx -- build server",
+    "build": "npm run lib:build-all && npm run nx -- build server",
     "test": "nx test",
     "serve": "npm run nx -- serve server",
     "serve:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && npm run serve",
