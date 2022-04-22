@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.3...v2.4.0) (2022-04-22)
+
+### Features
+
+- append store dependencies in build libs ([898eb45](https://github.com/EndyKaufman/kaufman-bot/commit/898eb4572985422e59d2e584adcb2737eff95436))
+
 ### [2.3.3](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.2...v2.3.3) (2022-04-22)
 
 ### Bug Fixes
