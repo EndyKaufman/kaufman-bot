@@ -53,6 +53,10 @@
       "type": "json"
     },
     {
+      "filename": "./libs/schematics/package.json",
+      "type": "json"
+    },
+    {
       "filename": "./dist/libs/prisma/server/package.json",
       "type": "json"
     },
@@ -102,6 +106,10 @@
     },
     {
       "filename": "./dist/libs/short-commands/server/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./dist/libs/schematics/package.json",
       "type": "json"
     },
     {
