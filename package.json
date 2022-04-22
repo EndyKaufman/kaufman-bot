@@ -151,5 +151,10 @@
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",
     "*.{js,ts,css,scss,md,yml,yaml,prisma}": "prettier --ignore-unknown --write"
+  },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "npm run generate && npm run app:build-changelog"
+    }
   }
 }
