@@ -68,7 +68,7 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       '@nrwl/nest': nxVersion,
       '@ngneat/transloco-keys-manager': '^3.4.1',
       'source-map-support': '^0.5.21',
-      rucken: '^3.5.3',
+      rucken: '^3.6.1',
     }
   );
 }

@@ -26,6 +26,12 @@ export function addScript(tree: Tree, projectName: string) {
       ...json['scripts'],
       rucken: 'rucken',
       nx: 'nx',
+      lint: 'npm run tsc:lint && nx workspace-lint && npm run nx -- run-many --target=lint --all',
+      'lint:fix':
+        'npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all',
+      'tsc:lint': 'tsc --noEmit -p tsconfig.base.json',
+      generate: 'npm run rucken -- prepare && npm run lint:fix',
+      postinstall: 'npm run generate',
     };
     if (!json['scripts'][`serve:${projectName}-local`]) {
       json['scripts'][
