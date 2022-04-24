@@ -25,7 +25,9 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    const isAdmin = this.botCommandsToolsService.isAdmin(msg);
     if (
+      (!this.botCommandsConfig.disableBotInfo || isAdmin) &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
         ['botinfo', 'bot', 'info'],

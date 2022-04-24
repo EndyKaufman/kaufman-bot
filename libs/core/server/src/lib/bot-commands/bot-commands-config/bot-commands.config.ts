@@ -6,5 +6,6 @@ export interface BotCommandsConfig {
   commit: string;
   date: string;
   maxRecursiveDepth?: number;
+  disableBotInfo?: boolean;
   prepareCommandString?: (command: string) => string;
 }
