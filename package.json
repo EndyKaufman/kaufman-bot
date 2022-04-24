@@ -1,7 +1,7 @@
 {
   "name": "kaufman-bot",
   "version": "2.4.0",
-  "description": "Example of simple bot for telegram",
+  "description": "Simple bot for telegram",
   "keywords": [
     "telegram",
     "telegram-bot",
