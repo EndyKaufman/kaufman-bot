@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.4.0...v2.5.0) (2022-04-24)
+
+### Features
+
+- add disableBotInfo options to BotCommandsConfig ([e51288d](https://github.com/EndyKaufman/kaufman-bot/commit/e51288ddd536245e0377d1a47156dd4f6886db45))
+
+### Bug Fixes
+
+- **schematics:** add custom npm scripts and update version of rucken ([886f61e](https://github.com/EndyKaufman/kaufman-bot/commit/886f61e190242b52f1000eed5b6c8165d506d1b8))
+
 ## [2.4.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.3.3...v2.4.0) (2022-04-22)
 
 ### Features
