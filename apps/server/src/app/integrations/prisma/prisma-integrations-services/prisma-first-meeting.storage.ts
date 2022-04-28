@@ -15,7 +15,7 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     telegramUserId: number;
   }): Promise<FirstMeeting | null> {
     const currentFirstMeetingOfUsers: FirstMeeting =
-      this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+      this.firstMeetingOfUsers[telegramUserId.toString()];
     if (currentFirstMeetingOfUsers) {
       return currentFirstMeetingOfUsers;
     }
@@ -29,10 +29,10 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
           },
           rejectOnNotFound: true,
         });
-      this.firstMeetingOfUsers[this.getKey({ telegramUserId })] =
+      this.firstMeetingOfUsers[telegramUserId.toString()] =
         databaseFirstMeetingOfUsers;
 
-      return this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+      return this.firstMeetingOfUsers[telegramUserId.toString()];
     } catch (error) {
       return null;
     }
@@ -56,7 +56,7 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
   }
 
   async removeUserFirstMeeting({ telegramUserId }: { telegramUserId: number }) {
-    delete this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+    delete this.firstMeetingOfUsers[telegramUserId.toString()];
     await this.prismaClientService.firstMeeting.deleteMany({
       where: {
         User: { telegramId: telegramUserId.toString() },
@@ -91,12 +91,8 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
       },
     });
 
-    delete this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
-    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] =
+    delete this.firstMeetingOfUsers[telegramUserId.toString()];
+    this.firstMeetingOfUsers[telegramUserId.toString()] =
       await this.getUserFirstMeeting({ telegramUserId });
-  }
-
-  private getKey({ telegramUserId }: { telegramUserId: number }) {
-    return telegramUserId.toString();
   }
 }

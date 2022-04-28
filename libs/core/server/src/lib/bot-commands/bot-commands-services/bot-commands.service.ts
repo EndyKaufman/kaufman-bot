@@ -54,7 +54,11 @@ export class BotCommandsService implements BotCommandsProvider {
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
     if (!msg) {
-      this.logger.debug(JSON.stringify(ctx));
+      try {
+        this.logger.debug(JSON.stringify(ctx));
+      } catch (error) {
+        this.logger.debug(ctx);
+      }
       return;
     }
 
