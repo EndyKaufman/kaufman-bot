@@ -14,7 +14,11 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../first-meeting-config/first-meeting.config';
-import { FirstMeeting, FirstMeetingStorage } from './first-meeting.storage';
+import {
+  FirstMeeting,
+  FirstMeetingStorage,
+  FIRST_MEETING_STORAGE,
+} from './first-meeting.storage';
 
 export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 
@@ -22,7 +26,7 @@ export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 export class FirstMeetingService
   implements BotCommandsProvider, OnContextBotCommands
 {
-  @CustomInject(FirstMeetingStorage)
+  @CustomInject(FIRST_MEETING_STORAGE)
   private readonly firstMeetingStorage!: FirstMeetingStorage;
 
   constructor(
@@ -278,7 +282,7 @@ export class FirstMeetingService
       firstMeeting?.status === 'EndMeeting' &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
-        [getText('hi'), getText('hello'), getText('hey'), getText('start')],
+        [getText('hi'), getText('hello'), getText('hey')],
         locale
       )
     ) {

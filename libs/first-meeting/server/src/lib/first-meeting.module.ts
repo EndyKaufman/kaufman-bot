@@ -28,7 +28,6 @@ export class FirstMeetingModule {
     return {
       module: FirstMeetingModule,
       providers: [
-        FirstMeetingStorage,
         {
           provide: FIRST_MEETING_CONFIG,
           useValue: <FirstMeetingConfig>{

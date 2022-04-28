@@ -26,7 +26,7 @@ export class BotInGroupsProcessorService {
 
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
-    private readonly botCommandsConfig: BotInGroupsConfig,
+    private readonly botInGroupsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly botCommandsService: BotCommandsService,
     private readonly shortCommandsToolsService: ShortCommandsToolsService
@@ -46,7 +46,7 @@ export class BotInGroupsProcessorService {
         ? 'en'
         : this.botCommandsToolsService.getLocale(ctx?.update?.message, 'en'));
 
-    const botName = this.botCommandsConfig.botNames[locale][0];
+    const botName = this.botInGroupsConfig.botNames[locale][0];
 
     if (ctx.update?.message?.from?.language_code) {
       ctx.update.message.from.language_code = locale;
@@ -69,14 +69,20 @@ export class BotInGroupsProcessorService {
             locale,
             this.botCommandsToolsService.clearCommands(
               ctx.update.message.text,
-              this.botCommandsConfig.botNames[locale],
+              [
+                ...this.botInGroupsConfig.botNames[locale],
+                ...this.botInGroupsConfig.botNames['en'],
+              ],
               locale
             )
           );
         if (
           this.botCommandsToolsService.checkCommands(
             ctx.update.message.text,
-            this.botCommandsConfig.botNames[locale],
+            [
+              ...this.botInGroupsConfig.botNames[locale],
+              ...this.botInGroupsConfig.botNames['en'],
+            ],
             locale
           )
         ) {
@@ -93,7 +99,7 @@ export class BotInGroupsProcessorService {
     ) {
       await ctx.reply(
         this.botCommandsToolsService.getRandomItem(
-          this.botCommandsConfig.botMeetingInformation[locale]
+          this.botInGroupsConfig.botMeetingInformation[locale]
         )
       );
       return;

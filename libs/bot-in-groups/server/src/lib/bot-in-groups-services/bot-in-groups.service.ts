@@ -29,22 +29,27 @@ export class BotInGroupsService
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (msg?.from?.id !== msg?.chat?.id) {
       if (
-        this.botCommandsToolsService.checkCommands(
-          msg.text,
-          this.botInGroupsConfig.botNames[locale]
-        )
+        this.botCommandsToolsService.checkCommands(msg.text, [
+          ...this.botInGroupsConfig.botNames[locale],
+          ...this.botInGroupsConfig.botNames['en'],
+        ])
       ) {
         msg.text = this.botCommandsToolsService.clearCommands(
           msg.text,
-          this.botInGroupsConfig.botNames[locale],
+          [
+            ...this.botInGroupsConfig.botNames[locale],
+            ...this.botInGroupsConfig.botNames['en'],
+          ],
           locale
         );
-
         if (
           this.botCommandsToolsService.checkCommands(
             this.botCommandsToolsService.clearCommands(
               msg.text,
-              this.botInGroupsConfig.botNames[locale],
+              [
+                ...this.botInGroupsConfig.botNames[locale],
+                ...this.botInGroupsConfig.botNames['en'],
+              ],
               locale
             ),
             ['start']
@@ -60,8 +65,11 @@ export class BotInGroupsService
       msg.botStart ||
       this.botCommandsToolsService.checkCommands(
         this.botCommandsToolsService.clearCommands(
-          msg.text,
-          this.botInGroupsConfig.botNames[locale],
+          msg.text.split(' ').join('').trim(),
+          [
+            ...this.botInGroupsConfig.botNames[locale],
+            ...this.botInGroupsConfig.botNames['en'],
+          ],
           locale
         ),
         ['start']
