@@ -16687,3 +16687,37 @@ Generated files your may look in https://github.com/kaufman-bot/schematics-examp
 In next post I append menu for quick run commands for bot...
 
 #kaufmanbot #schematics #nx #nestjs
+
+# [2022-04-29 20:28] Add support use inlineKeyboard in Telegram bot on NestJS
+
+## Links
+
+[https://github.com/EndyKaufman/kaufman-bot](https://github.com/EndyKaufman/kaufman-bot) - source code of bot
+
+[https://telegram.me/KaufmanBot](https://telegram.me/KaufmanBot) - current bot in telegram
+
+[https://kaufman-bot.site15.ru/graph](https://kaufman-bot.site15.ru/graph) - project graph
+
+[https://github.com/kaufman-bot/schematics-example](https://github.com/kaufman-bot/schematics-example) - project generated with [@kaufman-bot/schematics](https://npmjs.org/package/@kaufman-bot/schematics)
+
+[https://dev.to/endykaufman/series/16805](https://dev.to/endykaufman/series/16805) - kaufman-bot series articles in dev.io
+
+## Description of work
+
+In current post I am update exists "FirstMeeting" command to use inlineKeyboard
+
+## Update FirstMeetingService
+
+_libs/first-meeting/server/src/lib/first-meeting-services/first-meeting.service.ts_
+
+## Work before update
+
+{% embed https://youtube.com/shorts/y8KvSxykf90 %}
+
+## Work after update
+
+{% embed https://youtube.com/shorts/U2JCwOWw-LU %}
+
+I'm switching to developing a monetization bot, I will publish general application commands that will be developed in the process of working on a monetization bot, business commands will be in a private repository, the next post will not be soon, thanks for reading...
+
+#kaufmanbot #nestjs #inline #keyboards
