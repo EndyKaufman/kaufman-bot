@@ -11,6 +11,7 @@ import { PrismaClientModule } from '@kaufman-bot/prisma-server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator-server';
 import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import env from 'env-var';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
@@ -18,7 +19,6 @@ import {
   TranslatesModule,
 } from 'nestjs-translates';
 import { join } from 'path';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
 
@@ -34,6 +34,9 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'assets', 'public'),
+    }),
     TelegrafModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
       launchOptions: {
@@ -120,7 +123,6 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

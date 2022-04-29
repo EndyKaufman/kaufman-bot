@@ -2898,7 +2898,7 @@ export const BotCommandsEnum = {
 
 ### Create types of possible return values ​​for bot command handlers
 
-_libs/core/server/src/lib/bot-commands/bot-commands-types/bot-commands-provider-action-result-type.ts_
+_libs/core/server/src/lib/bot-commands/bot-commands-types/bot-commands-provider-action-result-type.interface.ts_
 
 ```ts
 export type BotCommandsProviderActionResultType<T> =
@@ -2915,7 +2915,7 @@ _libs/core/server/src/lib/bot-commands/bot-commands-types/bot-commands-provider.
 ```ts
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 
 export const BOT_COMMANDS_PROVIDER = Symbol('BOT_COMMANDS_PROVIDER');
 
@@ -2967,7 +2967,7 @@ export interface OnBeforeBotCommands {
 _libs/core/server/src/lib/bot-commands/bot-commands-types/on-after-bot-commands.interface.ts_
 
 ```ts
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProviderActionContext,
   BotCommandsProviderActionMsg,
@@ -3131,7 +3131,7 @@ _libs/core/server/src/lib/bot-commands/bot-commands-services/bot-commands.servic
 import { Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionContext,
@@ -6123,7 +6123,7 @@ After hook
 _libs/core/server/src/lib/bot-commands/bot-commands-types/on-after-bot-commands.interface.ts_
 
 ```ts
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface';
 
 export interface OnAfterBotCommands {
@@ -6145,7 +6145,7 @@ _libs/core/server/src/lib/bot-commands/bot-commands-types/bot-commands-provider.
 ```ts
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 
 export const BOT_COMMANDS_PROVIDER = Symbol('BOT_COMMANDS_PROVIDER');
 
@@ -6184,7 +6184,7 @@ _libs/core/server/src/lib/bot-commands/bot-commands-services/bot-commands.servic
 import { Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionContext,
@@ -7071,7 +7071,7 @@ Copy downloaded file to root folder of application and add it file name to .giti
 _libs/core/server/src/lib/bot-commands/bot-commands-types/on-after-bot-commands.interface.ts_
 
 ```ts
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface';
 
 export interface OnAfterBotCommands {
@@ -7094,7 +7094,7 @@ _libs/core/server/src/lib/bot-commands/bot-commands-services/bot-commands.servic
 import { Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionContext,
@@ -11727,7 +11727,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,

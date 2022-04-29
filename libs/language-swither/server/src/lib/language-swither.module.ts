@@ -25,6 +25,12 @@ import {
   ],
   exports: [TranslatesModule, BotCommandsModule, LANGUAGE_SWITHER_STORAGE],
 })
+export class LanguageSwitherModuleCore {}
+
+@Module({
+  imports: [LanguageSwitherModuleCore],
+  exports: [LanguageSwitherModuleCore],
+})
 export class LanguageSwitherModule {
   static forRoot(): DynamicModule {
     return {

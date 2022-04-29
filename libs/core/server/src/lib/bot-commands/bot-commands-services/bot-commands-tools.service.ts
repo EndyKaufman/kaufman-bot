@@ -9,7 +9,7 @@ import {
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
 import { BotCommandsCategory } from '../bot-commands-types/bot-commands-enum';
-import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider.interface';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import {
   BotCommandsToolsInterceptor,
   BOT_COMMANDS_TOOLS_INTERCEPTOR,

@@ -1,0 +1,368 @@
+<html lang="en">
+  <head>
+    <title>README</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <style>
+    body {
+      font: 400 16px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #111;
+      background-color: #fdfdfd;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-feature-settings: 'kern' 1;
+      -moz-font-feature-settings: 'kern' 1;
+      -o-font-feature-settings: 'kern' 1;
+      font-feature-settings: 'kern' 1;
+      font-kerning: normal;
+      padding: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+
+      body > #content {
+        padding: 0 20px 20px 20px !important;
+      }
+    }
+
+    body > #content {
+      max-width: 900px;
+      border: 1px solid #e1e4e8;
+      padding: 10px 40px 20px;
+      border-radius: 2px;
+      margin: 0 auto;
+    }
+
+    hr {
+      color: #bbb;
+      background-color: #bbb;
+      height: 1px;
+      flex: 0 1 auto;
+      margin: 1em 0;
+      padding: 0;
+      border: none;
+    }
+
+    /**
+ * Links
+ */
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+
+    a:visited {
+      color: #0366d6;
+    }
+
+    a:hover {
+      color: #0366d6;
+      text-decoration: underline;
+    }
+
+    pre {
+      background-color: #f6f8fa;
+      border-radius: 3px;
+      font-size: 85%;
+      line-height: 1.45;
+      overflow: auto;
+      padding: 16px;
+    }
+
+    /**
+  * Code blocks
+  */
+
+    code {
+      background-color: rgba(27, 31, 35, 0.05);
+      border-radius: 3px;
+      font-size: 85%;
+      margin: 0;
+      word-wrap: break-word;
+      padding: 0.2em 0.4em;
+      font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
+        monospace;
+    }
+
+    pre > code {
+      background-color: transparent;
+      border: 0;
+      display: inline;
+      line-height: inherit;
+      margin: 0;
+      overflow: visible;
+      padding: 0;
+      word-wrap: normal;
+      font-size: 100%;
+    }
+
+    /**
+ * Blockquotes
+ */
+    blockquote {
+      margin-left: 30px;
+      margin-top: 0;
+      margin-bottom: 16px;
+      border-left-width: 3px;
+      color: #828282;
+      border-left: 4px solid #e8e8e8;
+      padding: 0 1em 0 15px;
+      font-size: 18px;
+      letter-spacing: -1px;
+      font-style: italic;
+    }
+
+    blockquote * {
+      font-style: normal !important;
+      letter-spacing: 0;
+      color: #6a737d !important;
+    }
+
+    /**
+ * Tables
+ */
+    table {
+      border-spacing: 2px;
+      display: block;
+      font-size: 14px;
+      overflow: auto;
+      width: 100%;
+      margin-bottom: 16px;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+
+    th {
+      font-weight: 600;
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+
+    tr {
+      background-color: #fff;
+      border-top: 1px solid #c6cbd1;
+    }
+
+    table tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+
+    /**
+ * Others
+ */
+
+    img {
+      max-width: 100%;
+    }
+
+    p {
+      line-height: 24px;
+      font-weight: 400;
+      font-size: 16px;
+      color: #24292e;
+    }
+
+    ul {
+      margin-top: 0;
+    }
+
+    li {
+      color: #24292e;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    li + li {
+      margin-top: 0.25em;
+    }
+
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+        Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol';
+      color: #24292e;
+    }
+
+    a:visited {
+      color: #0366d6;
+    }
+
+    h1,
+    h2,
+    h3 {
+      border-bottom: 1px solid #eaecef;
+      color: #111;
+    }
+  </style>
+  <body>
+    <div id="content">
+      <h1 id="kaufmanbot">KaufmanBot</h1>
+      <p>Simple bot for telegram</p>
+      <p>
+        <a href="https://npmjs.org/package/@kaufman-bot/core-server"
+          ><img
+            src="https://badgen.net/npm/v/@kaufman-bot/core-server"
+            alt="NPM version"
+        /></a>
+        <a href="https://npmjs.org/package/@kaufman-bot/core-server"
+          ><img
+            src="https://badgen.net/npm/dm/@kaufman-bot/core-server"
+            alt="monthly downloads"
+        /></a>
+        <a href="https://t.me/KaufmanBot"
+          ><img
+            src="https://img.shields.io/badge/bot-telegram-blue.svg?maxAge=2592000"
+            alt="Telegram bot"
+        /></a>
+      </p>
+      <h2 id="links">Links</h2>
+      <p>
+        <a href="https://github.com/EndyKaufman/kaufman-bot"
+          >https://github.com/EndyKaufman/kaufman-bot</a
+        >
+        - source code of bot
+      </p>
+      <p>
+        <a href="https://telegram.me/KaufmanBot"
+          >https://telegram.me/KaufmanBot</a
+        >
+        - current bot in telegram
+      </p>
+      <p>
+        <a href="https://kaufman-bot.site15.ru/graph"
+          >https://kaufman-bot.site15.ru/graph</a
+        >
+        - project graph
+      </p>
+      <p>
+        <a href="https://github.com/kaufman-bot/schematics-example"
+          >https://github.com/kaufman-bot/schematics-example</a
+        >
+        - project generated with
+        <a href="https://npmjs.org/package/@kaufman-bot/schematics"
+          >@kaufman-bot/schematics</a
+        >
+      </p>
+      <p>
+        <a href="https://dev.to/endykaufman/series/16805"
+          >https://dev.to/endykaufman/series/16805</a
+        >
+        - kaufman-bot series articles in dev.io
+      </p>
+      <h1 id="usage">Usage</h1>
+      <h2 id="create-application">Create application</h2>
+      <p>Create empty nx project</p>
+      <blockquote>
+        <p>
+          npx -y create-nx-workspace@13.8.1 --name=kaufman-bot-generated
+          --preset=empty --interactive=false --nx-cloud=false
+        </p>
+      </blockquote>
+      <p>Go to created project</p>
+      <blockquote>
+        <p>cd kaufman-bot-generated</p>
+      </blockquote>
+      <p>Add all need schematics</p>
+      <blockquote>
+        <p>
+          npm install -D <a href="https://github.com/nrwl">@nrwl</a>/nest@13.8.1
+          <a href="https://github.com/kaufman-bot">@kaufman-bot</a>/schematics
+        </p>
+      </blockquote>
+      <p>Create kaufman-bot application</p>
+      <blockquote>
+        <p>
+          npx -y nx@13.8.1 g
+          <a href="https://github.com/kaufman-bot">@kaufman-bot</a
+          >/schematics:app adam-bot --bot-name adam
+        </p>
+      </blockquote>
+      <p>
+        Create telegram bot in
+        <a href="https://github.com/BotFather">@BotFather</a><br />
+        <img
+          src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y42z7xieyso9vfewdygu.png"
+          alt="Create telegram bot in BotFather"
+        />
+      </p>
+      <p>
+        Append token to env file<br />
+        <em>.env.local</em>
+      </p>
+      <pre><code class="sh language-sh">TELEGRAM_BOT_TOKEN=5384981645:AAEKAfqNpZmoN1w5eQL2QxJtvY5h3O-71Zs
+TELEGRAM_BOT_WEB_HOOKS_DOMAIN=
+TELEGRAM_BOT_WEB_HOOKS_PATH=
+TELEGRAM_BOT_ADMINS=
+BOT_NAMES=adam
+</code></pre>
+      <p>Check from telegram</p>
+      <blockquote>
+        <p>npm run serve:adam-bot-local</p>
+      </blockquote>
+      <p>
+        Search new bot<br />
+        <img
+          src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dnxxniwrgixkzxz5wjit.png"
+          alt="Search new bot"
+        />
+      </p>
+      <p>
+        Start work with bot<br />
+        <img
+          src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pcqq79odfdja46rtw11r.png"
+          alt="Start work with bot"
+        />
+      </p>
+      <p>
+        Example of run commands<br />
+        <img
+          src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b3vpxtspkdurinm6rp1l.png"
+          alt="Example of run commands"
+        />
+      </p>
+      <h2 id="create-library">Create library</h2>
+      <p>Create new command</p>
+      <blockquote>
+        <p>
+          npm run nx -- g
+          <a href="https://github.com/kaufman-bot">@kaufman-bot</a
+          >/schematics:lib super<br />
+          <img
+            src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/86px1fnvpu6quinjvojy.png"
+            alt="Create new command"
+          />
+        </p>
+      </blockquote>
+      <p>Update app module</p>
+      <pre><code class="ts language-ts">import { SuperModule } from '@kaufman-bot-generated/super';
+...
+
+@Module({
+  imports: [
+    ...
+    SuperModule.forRoot(),
+  ],
+  providers: [AppService],
+})
+export class AppModule {}
+</code></pre>
+      <p>
+        Restart application and check work in telegram<br />
+        <img
+          src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3w41zhmmq4jayslqphw1.png"
+          alt="Restart application and check work in telegram"
+        />
+      </p>
+      <h1 id="license">License</h1>
+      <p>MIT</p>
+    </div>
+  </body>
+</html>

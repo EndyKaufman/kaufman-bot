@@ -302,7 +302,13 @@
     "Nice to meet you, {{firstname}} {{vulcan}}": "Nice to meet you, {{firstname}} {{vulcan}}",
     "reset": "reset",
     "end": "end",
-    "stop": "stop"
+    "stop": "stop",
+    "Cancel": "Cancel",
+    "Female": "Female",
+    "Male": "Male",
+    "Next": "Next",
+    "f": "f",
+    "Your answer": "Your answer"
   },
   "first-meeting-server-getText": {
     "Example of recursive contextable commands \"first meeting\"": "Example of recursive contextable commands \"first meeting\"",
@@ -349,7 +355,13 @@
     "Nice to meet you, {{firstname}} {{vulcan}}": "Nice to meet you, {{firstname}} {{vulcan}}",
     "reset": "reset",
     "end": "end",
-    "stop": "stop"
+    "stop": "stop",
+    "Cancel": "Cancel",
+    "Female": "Female",
+    "Male": "Male",
+    "Next": "Next",
+    "f": "f",
+    "Your answer": "Your answer"
   },
   "bot-in-groups-server": {
     "Bot in groups": "Bot in groups",

@@ -1,5 +1,5 @@
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type';
-import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface';
+import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
+import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
 
 export interface OnContextBotCommands {
   onContextBotCommands<

@@ -9,7 +9,6 @@ import { BotCommandsBotinfoService } from './bot-commands-services/bot-commands-
 import { BotCommandsToolsService } from './bot-commands-services/bot-commands-tools.service';
 import { BotCommandsService } from './bot-commands-services/bot-commands.service';
 import { BOT_COMMANDS_PROVIDER } from './bot-commands-types/bot-commands-provider.interface';
-
 @Module({
   imports: [CustomInjectorModule, TranslatesModule],
   providers: [BotCommandsToolsService, BotCommandsService],
@@ -19,6 +18,11 @@ import { BOT_COMMANDS_PROVIDER } from './bot-commands-types/bot-commands-provide
     BotCommandsToolsService,
     BotCommandsService,
   ],
+})
+export class BotCommandsModuleCore {}
+@Module({
+  imports: [BotCommandsModuleCore],
+  exports: [BotCommandsModuleCore],
 })
 export class BotCommandsModule {
   static forRoot(config?: BotCommandsConfig): DynamicModule {

@@ -5,13 +5,13 @@ import {
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionContext,
-  BotCommandsProviderActionMsg,
   BOT_COMMANDS_PROVIDER,
 } from '../bot-commands-types/bot-commands-provider.interface';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { OnAfterBotCommands } from '../bot-commands-types/on-after-bot-commands.interface';
 import { OnBeforeBotCommands } from '../bot-commands-types/on-before-bot-commands.interface';
 import { OnContextBotCommands } from '../bot-commands-types/on-context-bot-commands.interface';
@@ -53,6 +53,9 @@ export class BotCommandsService implements BotCommandsProvider {
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
     let msg: BotCommandsProviderActionMsg = ctx.update.message;
+    if (!msg && ctx.update?.callback_query) {
+      msg = ctx.update.callback_query;
+    }
     if (!msg) {
       try {
         this.logger.debug(JSON.stringify(ctx));
@@ -75,10 +78,21 @@ export class BotCommandsService implements BotCommandsProvider {
         msg = result.message;
       }
       if (result?.type === 'markdown') {
-        await ctx.reply(result.markdown, { parse_mode: 'MarkdownV2' });
+        const replyResult = await ctx.reply(result.markdown, {
+          parse_mode: 'MarkdownV2',
+          ...result.custom,
+        });
+        if (result.callback) {
+          await result.callback(replyResult);
+        }
       }
       if (result?.type === 'text') {
-        await ctx.reply(result.text);
+        const replyResult = await ctx.reply(result.text, {
+          ...result.custom,
+        });
+        if (result.callback) {
+          await result.callback(replyResult);
+        }
       }
 
       if (result?.type !== 'stop' && result?.recursive) {

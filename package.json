@@ -32,6 +32,7 @@
     "standard-version": "standard-version",
     "rucken": "rucken",
     "nx": "nx",
+    "toHTML": "toHTML",
     "start": "echo $GOOGLE_CREDENTIALS | base64 --decode > ./$GOOGLE_APPLICATION_CREDENTIALS && node dist/apps/server/main.js",
     "build": "npm run lib:build-all && npm run nx -- build server",
     "test": "nx test",
@@ -41,7 +42,7 @@
     "lint": "npm run tsc:lint && nx workspace-lint && npm run nx -- run-many --target=lint --all",
     "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
-    "generate": "npm run prisma:generate && npm run rucken -- prepare --locales=en,ru && npm run lint:fix",
+    "generate": "npm run prisma:generate && npm run graph:generate && npm run readme:generate && npm run rucken -- prepare --locales=en,ru && npm run lint:fix",
     "docker:dev:down": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-down.sh",
     "docker:dev:restart": "npm run docker:dev:down && npm run docker:dev:up",
     "docker:dev:up": "export $(xargs < ./.env.local) > /dev/null 2>&1 && ./docker/dev/docker-compose-up.sh",
@@ -80,7 +81,9 @@
     "publish:quotes-generator": "npm publish ./dist/libs/quotes-generator/server",
     "publish:short-commands": "npm publish ./dist/libs/short-commands/server",
     "publish:schematics": "npm publish ./dist/libs/schematics",
-    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands && npm run publish:schematics"
+    "publish": "npm run publish:core && npm run publish:bot-in-groups && npm run publish:currency-converter && npm run publish:debug-messages && npm run publish:dialogflow && npm run publish:facts-generator && npm run publish:first-meeting && npm run publish:html-scraper && npm run publish:jokes-generator && npm run publish:language-swither && npm run publish:quotes-generator && npm run publish:short-commands && npm run publish:schematics",
+    "graph:generate": "npm run nx -- graph --file=apps/server/src/assets/public/graph/index.html",
+    "readme:generate": "rm -rf apps/server/src/assets/public/index.html && npm run toHTML -- --input=README.md --output=apps/server/src/assets/public/index.html"
   },
   "private": true,
   "devDependencies": {
@@ -122,6 +125,7 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/serve-static": "^2.2.2",
     "@prisma/client": "^3.11.1",
     "axios": "^0.26.0",
     "charset": "^1.0.1",

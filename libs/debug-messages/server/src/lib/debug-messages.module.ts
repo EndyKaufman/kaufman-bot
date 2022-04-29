@@ -31,6 +31,12 @@ import { DebugService } from './debug-messages-services/debug.service';
     DebugService,
   ],
 })
+export class DebugMessagesModuleCore {}
+
+@Module({
+  imports: [DebugMessagesModuleCore],
+  exports: [DebugMessagesModuleCore],
+})
 export class DebugMessagesModule {
   static forRoot(): DynamicModule {
     return {

@@ -10,6 +10,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
+import { Markup } from 'telegraf';
 import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
@@ -38,7 +39,7 @@ export class FirstMeetingService
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
     if (msg?.botContext?.[DISABLE_FIRST_MEETING_COMMANDS]) {
       return null;
     }
@@ -58,7 +59,7 @@ export class FirstMeetingService
     ) {
       if (
         this.botCommandsToolsService.checkCommands(
-          msg.text,
+          msg.text || msg.data,
           [
             getText('exit'),
             getText('reset'),
@@ -74,6 +75,7 @@ export class FirstMeetingService
           firstMeeting: {
             ...msg.botCommandHandlerContext,
             status: 'EndMeeting',
+            messagesMetadata: { EndMeetingRequest: msg },
           },
         });
         return {
@@ -85,38 +87,142 @@ export class FirstMeetingService
           ),
           message: msg,
           context: { status: 'EndMeeting' },
+          callback: async (result) =>
+            await this.firstMeetingStorage.pathUserFirstMeeting({
+              telegramUserId: this.botCommandsToolsService.getChatId(msg),
+              firstMeeting: {
+                messagesMetadata: { EndMeetingResponse: result },
+              },
+            }),
         };
       }
 
       if (contextFirstMeeting?.status === 'AskFirstname') {
+        const text = this.translatesService.translate(
+          getText(`What is your last name?`),
+          locale
+        );
+        const currentFirstMeeting =
+          await this.firstMeetingStorage.pathUserFirstMeeting({
+            telegramUserId: this.botCommandsToolsService.getChatId(msg),
+            firstMeeting: {
+              messagesMetadata: { AskFirstnameRequest: msg },
+            },
+          });
+        const firstname = this.prepareText(msg.text, locale) || 'Unknown';
+
+        if (currentFirstMeeting?.messagesMetadata?.AskFirstnameResponse) {
+          await ctx.telegram.editMessageText(
+            currentFirstMeeting.messagesMetadata.AskFirstnameResponse.chat.id,
+            currentFirstMeeting.messagesMetadata.AskFirstnameResponse
+              .message_id,
+            undefined,
+            currentFirstMeeting.messagesMetadata.AskFirstnameResponse
+              ? `${
+                  currentFirstMeeting.messagesMetadata.AskFirstnameResponse.text
+                } (${this.translatesService.translate(
+                  getText('Your answer'),
+                  locale
+                )}: ${firstname})`
+              : currentFirstMeeting.messagesMetadata.AskFirstnameResponse
+          );
+        }
         return {
           type: 'text',
-          text: this.translatesService.translate(
-            getText(`What is your last name?`),
-            locale
-          ),
+          text,
           message: msg,
           context: <Partial<FirstMeeting>>{
             ...msg.botCommandHandlerContext,
             status: 'AskLastname',
-            firstname: this.prepareText(msg.text, locale) || 'Unknown',
+            firstname,
           },
+          custom: {
+            ...Markup.inlineKeyboard([
+              Markup.button.callback(
+                '➡️' +
+                  this.translatesService.translate(getText('Next'), locale),
+                'next'
+              ),
+              Markup.button.callback(
+                '❌' +
+                  this.translatesService.translate(getText('Cancel'), locale),
+                'exit'
+              ),
+            ]),
+          },
+          callback: async (result) =>
+            await this.firstMeetingStorage.pathUserFirstMeeting({
+              telegramUserId: this.botCommandsToolsService.getChatId(msg),
+              firstMeeting: {
+                messagesMetadata: { AskLastnameResponse: result },
+              },
+            }),
         };
       }
 
       if (contextFirstMeeting?.status === 'AskLastname') {
+        const text = this.translatesService.translate(
+          getText(`What is your gender?`),
+          locale
+        );
+        const currentFirstMeeting =
+          await this.firstMeetingStorage.pathUserFirstMeeting({
+            telegramUserId: this.botCommandsToolsService.getChatId(msg),
+            firstMeeting: {
+              messagesMetadata: { AskLastnameRequest: msg },
+            },
+          });
+        const lastname = this.prepareText(msg.text, locale);
+        if (currentFirstMeeting?.messagesMetadata?.AskLastnameResponse) {
+          await ctx.telegram.editMessageText(
+            currentFirstMeeting.messagesMetadata.AskLastnameResponse.chat.id,
+            currentFirstMeeting.messagesMetadata.AskLastnameResponse.message_id,
+            undefined,
+            currentFirstMeeting.messagesMetadata.AskLastnameResponse
+              ? `${
+                  currentFirstMeeting.messagesMetadata.AskLastnameResponse.text
+                } (${this.translatesService.translate(
+                  getText('Your answer'),
+                  locale
+                )}: ${lastname})`
+              : currentFirstMeeting.messagesMetadata.AskLastnameResponse
+          );
+        }
         return {
           type: 'text',
-          text: this.translatesService.translate(
-            getText(`What is your gender?`),
-            locale
-          ),
+          text,
           message: msg,
           context: <Partial<FirstMeeting>>{
             ...msg.botCommandHandlerContext,
             status: 'AskGender',
-            lastname: this.prepareText(msg.text, locale),
+            lastname,
           },
+          custom: {
+            ...Markup.inlineKeyboard([
+              Markup.button.callback(
+                '🚹' +
+                  this.translatesService.translate(getText('Male'), locale),
+                'male'
+              ),
+              Markup.button.callback(
+                '🚺' +
+                  this.translatesService.translate(getText('Female'), locale),
+                'female'
+              ),
+              Markup.button.callback(
+                '❌' +
+                  this.translatesService.translate(getText('Cancel'), locale),
+                'exit'
+              ),
+            ]),
+          },
+          callback: async (result) =>
+            await this.firstMeetingStorage.pathUserFirstMeeting({
+              telegramUserId: this.botCommandsToolsService.getChatId(msg),
+              firstMeeting: {
+                messagesMetadata: { AskGenderResponse: result },
+              },
+            }),
         };
       }
 
@@ -125,17 +231,38 @@ export class FirstMeetingService
           ...contextFirstMeeting,
           status: 'EndMeeting',
           gender: this.botCommandsToolsService.checkCommands(
-            this.prepareText(msg.text, locale),
-            [getText('female'), getText('fm')],
+            this.prepareText(msg.data || msg.text, locale),
+            [getText('female'), getText('fm'), getText('f')],
             locale
           )
             ? 'Female'
             : 'Male',
+          messagesMetadata: { AskGenderRequest: msg },
         };
-        await this.firstMeetingStorage.pathUserFirstMeeting({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
-          firstMeeting,
-        });
+        const currentFirstMeeting =
+          await this.firstMeetingStorage.pathUserFirstMeeting({
+            telegramUserId: this.botCommandsToolsService.getChatId(msg),
+            firstMeeting,
+          });
+        if (currentFirstMeeting?.messagesMetadata?.AskGenderResponse) {
+          await ctx.telegram.editMessageText(
+            currentFirstMeeting.messagesMetadata.AskGenderResponse.chat.id,
+            currentFirstMeeting.messagesMetadata.AskGenderResponse.message_id,
+            undefined,
+            currentFirstMeeting.messagesMetadata.AskGenderResponse
+              ? `${
+                  currentFirstMeeting.messagesMetadata.AskGenderResponse.text
+                } (${this.translatesService.translate(
+                  getText('Your answer'),
+                  locale
+                )}: ${this.translatesService.translate(
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  firstMeeting.gender!,
+                  locale
+                )})`
+              : currentFirstMeeting.messagesMetadata.AskGenderResponse
+          );
+        }
         return {
           type: 'text',
           text: this.translatesService.translate(
@@ -162,6 +289,13 @@ export class FirstMeetingService
           ),
           message: msg,
           context: <Partial<FirstMeeting>>{ status: 'EndMeeting' },
+          callback: async (result) =>
+            await this.firstMeetingStorage.pathUserFirstMeeting({
+              telegramUserId: this.botCommandsToolsService.getChatId(msg),
+              firstMeeting: {
+                messagesMetadata: { EndMeetingResponse: result },
+              },
+            }),
         };
       }
     }
@@ -250,6 +384,17 @@ export class FirstMeetingService
           locale
         )
       ) {
+        const text = this.translatesService.translate(
+          this.botCommandsToolsService.getRandomItem([
+            getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
+            getText(`Hey! what's your name?`),
+          ]),
+          locale,
+          {
+            botName: this.firstMeetingConfig.botName[locale],
+            smile: '🙂',
+          }
+        );
         await this.firstMeetingStorage.pathUserFirstMeeting({
           telegramUserId: this.botCommandsToolsService.getChatId(msg),
           firstMeeting: {
@@ -261,19 +406,30 @@ export class FirstMeetingService
         });
         return {
           type: 'text',
-          text: this.translatesService.translate(
-            this.botCommandsToolsService.getRandomItem([
-              getText(`Hey! I'm {{botName}} {{smile}}, what's your name?`),
-              getText(`Hey! what's your name?`),
-            ]),
-            locale,
-            {
-              botName: this.firstMeetingConfig.botName[locale],
-              smile: '🙂',
-            }
-          ),
+          text,
           message: msg,
           context: <Partial<FirstMeeting>>{ status: 'AskFirstname' },
+          custom: {
+            ...Markup.inlineKeyboard([
+              Markup.button.callback(
+                '➡️' +
+                  this.translatesService.translate(getText('Next'), locale),
+                'next'
+              ),
+              Markup.button.callback(
+                '❌' +
+                  this.translatesService.translate(getText('Cancel'), locale),
+                'exit'
+              ),
+            ]),
+          },
+          callback: async (result) =>
+            await this.firstMeetingStorage.pathUserFirstMeeting({
+              telegramUserId: this.botCommandsToolsService.getChatId(msg),
+              firstMeeting: {
+                messagesMetadata: { AskFirstnameResponse: result },
+              },
+            }),
         };
       }
     }

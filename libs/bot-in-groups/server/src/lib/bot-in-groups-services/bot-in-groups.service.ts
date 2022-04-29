@@ -27,7 +27,7 @@ export class BotInGroupsService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    if (msg?.from?.id !== msg?.chat?.id) {
+    if (msg?.chat && msg?.from?.id !== msg?.chat?.id) {
       if (
         this.botCommandsToolsService.checkCommands(msg.text, [
           ...this.botInGroupsConfig.botNames[locale],
@@ -65,7 +65,7 @@ export class BotInGroupsService
       msg.botStart ||
       this.botCommandsToolsService.checkCommands(
         this.botCommandsToolsService.clearCommands(
-          msg.text.split(' ').join('').trim(),
+          msg.text?.split(' ').join('').trim(),
           [
             ...this.botInGroupsConfig.botNames[locale],
             ...this.botInGroupsConfig.botNames['en'],

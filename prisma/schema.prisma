@@ -48,15 +48,16 @@ model DialogflowSession {
 }
 
 model FirstMeeting {
-  id        String             @id(map: "PK_FIRST_MEETING") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId    String             @unique(map: "UQ_FIRST_MEETING") @db.Uuid
-  status    FirstMeetingStatus
-  firstname String             @db.VarChar(100)
-  lastname  String             @db.VarChar(100)
-  gender    Gender
-  createdAt DateTime           @default(now()) @db.Timestamp(6)
-  updatedAt DateTime           @default(now()) @db.Timestamp(6)
-  User      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_FIRST_MEETING__USER_ID")
+  id               String             @id(map: "PK_FIRST_MEETING") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId           String             @unique(map: "UQ_FIRST_MEETING") @db.Uuid
+  status           FirstMeetingStatus
+  firstname        String             @db.VarChar(100)
+  lastname         String             @db.VarChar(100)
+  gender           Gender
+  createdAt        DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime           @default(now()) @db.Timestamp(6)
+  messagesMetadata Json?              @default("{}")
+  User             User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_FIRST_MEETING__USER_ID")
 }
 
 enum FirstMeetingStatus {

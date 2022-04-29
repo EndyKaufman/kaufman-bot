@@ -28,6 +28,12 @@ import {
     DIALOGFLOW_STORAGE,
   ],
 })
+export class DialogflowModuleCore {}
+
+@Module({
+  imports: [DialogflowModuleCore],
+  exports: [DialogflowModuleCore],
+})
 export class DialogflowModule {
   static forRoot(config: Pick<DialogflowConfig, 'projectId'>): DynamicModule {
     return {

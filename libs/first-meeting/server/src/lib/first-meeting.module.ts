@@ -23,6 +23,12 @@ import {
   ],
   exports: [TranslatesModule, BotCommandsModule, FIRST_MEETING_STORAGE],
 })
+export class FirstMeetingModuleCore {}
+
+@Module({
+  imports: [FirstMeetingModuleCore],
+  exports: [FirstMeetingModuleCore],
+})
 export class FirstMeetingModule {
   static forRoot(config: Pick<FirstMeetingConfig, 'botName'>): DynamicModule {
     return {
