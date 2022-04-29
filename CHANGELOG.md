@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.5.1...v2.6.0) (2022-04-29)
+
+### Features
+
+- add support use inlineKeyboard in Telegram bot on NestJS ([b6ff692](https://github.com/EndyKaufman/kaufman-bot/commit/b6ff692c348c7222211c0ff7cf8e9134de0289fc))
+
 ### [2.5.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.5.0...v2.5.1) (2022-04-28)
 
 ### Bug Fixes
