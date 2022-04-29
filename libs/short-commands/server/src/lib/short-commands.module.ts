@@ -20,6 +20,12 @@ import { ShortCommandsService } from './short-commands-services/short-commands.s
   providers: [ShortCommandsToolsService],
   exports: [TranslatesModule, BotCommandsModule, ShortCommandsToolsService],
 })
+export class ShortCommandsModuleCore {}
+
+@Module({
+  imports: [ShortCommandsModuleCore],
+  exports: [ShortCommandsModuleCore],
+})
 export class ShortCommandsModule {
   static forRoot(config: Pick<ShortCommandsConfig, 'commands'>): DynamicModule {
     return {

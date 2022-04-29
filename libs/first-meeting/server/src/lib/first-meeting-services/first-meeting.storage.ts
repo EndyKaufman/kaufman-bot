@@ -1,3 +1,5 @@
+import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
+
 export const FIRST_MEETING_STORAGE = 'FIRST_MEETING_STORAGE';
 
 export type FirstMeetingStorageProvider = Pick<
@@ -33,6 +35,16 @@ export type FirstMeeting = {
   firstname: string;
   lastname: string;
   gender: Gender;
+  messagesMetadata?: {
+    AskGenderRequest?: BotCommandsProviderActionMsg;
+    AskGenderResponse?: BotCommandsProviderActionMsg;
+    AskLastnameRequest?: BotCommandsProviderActionMsg;
+    EndMeetingRequest?: BotCommandsProviderActionMsg;
+    EndMeetingResponse?: BotCommandsProviderActionMsg;
+    AskFirstnameRequest?: BotCommandsProviderActionMsg;
+    AskLastnameResponse?: BotCommandsProviderActionMsg;
+    AskFirstnameResponse?: BotCommandsProviderActionMsg;
+  };
   createdAt: Date;
   updatedAt: Date;
 };
@@ -52,7 +64,9 @@ export class FirstMeetingStorage {
     return null;
   }
 
-  async createUserFirstMeeting(telegramUserId: number) {
+  async createUserFirstMeeting(
+    telegramUserId: number
+  ): Promise<FirstMeeting | null> {
     this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = {
       firstname: '',
       lastname: '',
@@ -73,7 +87,7 @@ export class FirstMeetingStorage {
   }: {
     telegramUserId: number;
     firstMeeting: Partial<FirstMeeting>;
-  }) {
+  }): Promise<Partial<FirstMeeting> | null> {
     let currentUserFirstMeeting = await this.getUserFirstMeeting({
       telegramUserId,
     });
@@ -82,10 +96,16 @@ export class FirstMeetingStorage {
         telegramUserId
       );
     }
-
-    delete this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
-    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] =
-      await this.getUserFirstMeeting({ telegramUserId });
+    const newFirstMeeting = {
+      ...currentUserFirstMeeting,
+      ...firstMeeting,
+      messagesMetadata: {
+        ...(currentUserFirstMeeting?.messagesMetadata || {}),
+        ...firstMeeting.messagesMetadata,
+      },
+    };
+    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = newFirstMeeting;
+    return newFirstMeeting;
   }
 
   private getKey({ telegramUserId }: { telegramUserId: number }) {

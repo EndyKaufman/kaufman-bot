@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-10T18:17:17.268Z\n"
-"PO-Revision-Date: 2022-04-10T18:17:17.268Z\n"
+"POT-Creation-Date: 2022-04-29T11:57:52.291Z\n"
+"PO-Revision-Date: 2022-04-29T11:57:52.291Z\n"
 
 msgid "Example of recursive contextable commands \"first meeting\""
 msgstr "Example of recursive contextable commands \"first meeting\""
@@ -142,3 +142,21 @@ msgstr "end"
 
 msgid "stop"
 msgstr "stop"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Female"
+msgstr "Female"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "f"
+msgstr "f"
+
+msgid "Your answer"
+msgstr "Your answer"

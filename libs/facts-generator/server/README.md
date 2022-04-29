@@ -2,17 +2,19 @@
 
 Simple bot for telegram
 
-[![NPM version][npm-image]][npm-url]
-[![monthly downloads][downloads-image]][downloads-url]
-[![Telegram bot][telegram-image]][telegram-url]
+[![NPM version][npm-image]][npm-url] [![monthly downloads][downloads-image]][downloads-url] [![Telegram bot][telegram-image]][telegram-url]
 
 ## Links
 
-https://github.com/EndyKaufman/kaufman-bot - source code of bot
+[https://github.com/EndyKaufman/kaufman-bot](https://github.com/EndyKaufman/kaufman-bot) - source code of bot
 
-https://telegram.me/KaufmanBot - current bot in telegram
+[https://telegram.me/KaufmanBot](https://telegram.me/KaufmanBot) - current bot in telegram
 
-https://github.com/kaufman-bot/schematics-example - project generated with @kaufman-bot/schematics
+[https://kaufman-bot.site15.ru/graph](https://kaufman-bot.site15.ru/graph) - project graph
+
+[https://github.com/kaufman-bot/schematics-example](https://github.com/kaufman-bot/schematics-example) - project generated with [@kaufman-bot/schematics](https://npmjs.org/package/@kaufman-bot/schematics)
+
+[https://dev.to/endykaufman/series/16805](https://dev.to/endykaufman/series/16805) - kaufman-bot series articles in dev.io
 
 # Usage
 
@@ -35,7 +37,7 @@ Create kaufman-bot application
 > npx -y nx@13.8.1 g @kaufman-bot/schematics:app adam-bot --bot-name adam
 
 Create telegram bot in @BotFather
-![Create telegram bot in @BotFather](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y42z7xieyso9vfewdygu.png)
+![Create telegram bot in BotFather](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y42z7xieyso9vfewdygu.png)
 
 Append token to env file
 _.env.local_

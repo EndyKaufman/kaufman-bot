@@ -184,7 +184,13 @@
     "Nice to meet you, {{firstname}} {{vulcan}}": "Приятно познакомиться, {{firstname}} {{vulcan}}",
     "reset": "сбросить",
     "end": "конец",
-    "stop": "стоп"
+    "stop": "стоп",
+    "Cancel": "Отмена",
+    "Female": "Женский",
+    "Male": "Мужской",
+    "Next": "Следующий",
+    "f": "ж",
+    "Your answer": "Ваш ответ"
   },
   "bot-in-groups-server": {},
   "bot-in-groups-server-getText": {

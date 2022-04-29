@@ -3,11 +3,9 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type';
-import {
-  BotCommandsProvider,
-  BotCommandsProviderActionMsg,
-} from '../bot-commands-types/bot-commands-provider.interface';
+import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
+import { BotCommandsProvider } from '../bot-commands-types/bot-commands-provider.interface';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()

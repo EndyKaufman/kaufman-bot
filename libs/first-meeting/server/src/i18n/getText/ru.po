@@ -6,8 +6,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"POT-Creation-Date: 2022-04-10T18:24:54.252Z\n"
-"PO-Revision-Date: 2022-04-10T18:24:54.252Z\n"
+"POT-Creation-Date: 2022-04-29T12:35:00.291Z\n"
+"PO-Revision-Date: 2022-04-29T12:35:00.291Z\n"
 
 msgid "Example of recursive contextable commands \"first meeting\""
 msgstr "Пример рекурсивных контекстных команд \"первое знакомство\""
@@ -143,3 +143,21 @@ msgstr "конец"
 
 msgid "stop"
 msgstr "стоп"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Female"
+msgstr "Женский"
+
+msgid "Male"
+msgstr "Мужской"
+
+msgid "Next"
+msgstr "Следующий"
+
+msgid "f"
+msgstr "ж"
+
+msgid "Your answer"
+msgstr "Ваш ответ"

@@ -1,7 +1,10 @@
-import { FirstMeetingStorageProvider } from '@kaufman-bot/first-meeting-server';
+import {
+  FirstMeeting,
+  FirstMeetingStorageProvider,
+} from '@kaufman-bot/first-meeting-server';
 import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
-import { FirstMeeting } from '@prisma/client';
+import { FirstMeetingStatus, Gender } from '@prisma/client';
 
 @Injectable()
 export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
@@ -23,12 +26,12 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     let databaseFirstMeetingOfUsers: FirstMeeting | null = null;
     try {
       databaseFirstMeetingOfUsers =
-        await this.prismaClientService.firstMeeting.findFirst({
+        (await this.prismaClientService.firstMeeting.findFirst({
           where: {
             User: { telegramId: telegramUserId.toString() },
           },
           rejectOnNotFound: true,
-        });
+        })) as unknown as FirstMeeting;
       this.firstMeetingOfUsers[telegramUserId.toString()] =
         databaseFirstMeetingOfUsers;
 
@@ -38,8 +41,10 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     }
   }
 
-  async createUserFirstMeeting(telegramUserId: number) {
-    return await this.prismaClientService.firstMeeting.create({
+  async createUserFirstMeeting(
+    telegramUserId: number
+  ): Promise<FirstMeeting | null> {
+    return (await this.prismaClientService.firstMeeting.create({
       data: {
         firstname: '',
         lastname: '',
@@ -52,7 +57,7 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
           },
         },
       },
-    });
+    })) as unknown as Promise<FirstMeeting>;
   }
 
   async removeUserFirstMeeting({ telegramUserId }: { telegramUserId: number }) {
@@ -70,7 +75,7 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
   }: {
     telegramUserId: number;
     firstMeeting: Partial<FirstMeeting>;
-  }) {
+  }): Promise<Partial<FirstMeeting> | null> {
     let currentUserFirstMeeting = await this.getUserFirstMeeting({
       telegramUserId,
     });
@@ -80,19 +85,29 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
       );
     }
 
+    const newFirstMeeting = {
+      ...currentUserFirstMeeting,
+      ...firstMeeting,
+      messagesMetadata: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(currentUserFirstMeeting?.messagesMetadata as any),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(firstMeeting.messagesMetadata as any),
+      },
+      updatedAt: new Date(),
+    };
     await this.prismaClientService.firstMeeting.updateMany({
       data: {
-        ...currentUserFirstMeeting,
-        ...firstMeeting,
-        updatedAt: new Date(),
+        ...newFirstMeeting,
+        status: newFirstMeeting.status as FirstMeetingStatus,
+        gender: newFirstMeeting.gender as Gender,
       },
       where: {
         User: { telegramId: telegramUserId.toString() },
       },
     });
 
-    delete this.firstMeetingOfUsers[telegramUserId.toString()];
-    this.firstMeetingOfUsers[telegramUserId.toString()] =
-      await this.getUserFirstMeeting({ telegramUserId });
+    this.firstMeetingOfUsers[telegramUserId.toString()] = newFirstMeeting;
+    return newFirstMeeting;
   }
 }

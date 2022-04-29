@@ -4,7 +4,8 @@ export * from './lib/bot-commands/bot-commands-services/bot-commands-botinfo.ser
 export * from './lib/bot-commands/bot-commands-services/bot-commands-tools.service';
 export * from './lib/bot-commands/bot-commands-services/bot-commands.service';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-enum';
-export * from './lib/bot-commands/bot-commands-types/bot-commands-provider-action-result-type';
+export * from './lib/bot-commands/bot-commands-types/bot-commands-provider-action-msg.interface';
+export * from './lib/bot-commands/bot-commands-types/bot-commands-provider-action-result-type.interface';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-provider.interface';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-tools-interceptor.interface';
 export * from './lib/bot-commands/bot-commands-types/bot-commands-tools-types.interface';

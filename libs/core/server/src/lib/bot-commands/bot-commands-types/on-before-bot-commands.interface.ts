@@ -1,4 +1,4 @@
-import { BotCommandsProviderActionMsg } from './bot-commands-provider.interface';
+import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
 
 export interface OnBeforeBotCommands {
   onBeforeBotCommands<
