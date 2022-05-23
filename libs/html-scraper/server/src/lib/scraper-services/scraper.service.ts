@@ -112,7 +112,9 @@ export class ScraperService
         };
       }
 
-      this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
+      this.logger.warn(
+        `Unhandled commands for text: "${msg.text}", data: "${msg.data}"`
+      );
       this.logger.debug(msg);
     }
     return null;

@@ -62,7 +62,7 @@ export class BotInGroupsService
       }
     }
     if (
-      msg.botStart ||
+      msg?.botStart ||
       this.botCommandsToolsService.checkCommands(
         this.botCommandsToolsService.clearCommands(
           msg.text?.split(' ').join('').trim(),

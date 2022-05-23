@@ -58,9 +58,9 @@ export class BotCommandsService implements BotCommandsProvider {
     }
     if (!msg) {
       try {
-        this.logger.debug(JSON.stringify(ctx));
+        this.logger.debug(JSON.stringify(ctx.update));
       } catch (error) {
-        this.logger.debug(ctx);
+        console.log(ctx.update);
       }
       return;
     }
