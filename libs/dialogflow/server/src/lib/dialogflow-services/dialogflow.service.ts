@@ -43,7 +43,7 @@ export class DialogflowService
     ctx?,
     defaultHandler?: () => Promise<unknown>
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
-    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.botGlobalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return { result, msg };
     }
 
@@ -87,7 +87,7 @@ export class DialogflowService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.botGlobalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return null;
     }
 

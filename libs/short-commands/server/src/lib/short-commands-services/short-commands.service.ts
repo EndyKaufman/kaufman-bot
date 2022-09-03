@@ -34,7 +34,7 @@ export class ShortCommandsService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    if (msg?.botContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
+    if (msg?.botGlobalContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
       return msg;
     }
     if (msg) {

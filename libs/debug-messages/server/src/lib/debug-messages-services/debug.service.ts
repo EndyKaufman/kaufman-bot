@@ -11,10 +11,10 @@ export class DebugService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, value: boolean) {
     if (msg) {
-      if (!msg.botContext) {
-        msg.botContext = {};
+      if (!msg.botGlobalContext) {
+        msg.botGlobalContext = {};
       }
-      msg.botContext[DEBUG_MODE] = value;
+      msg.botGlobalContext[DEBUG_MODE] = value;
     }
     return msg;
   }
@@ -29,7 +29,7 @@ export class DebugService {
     data: any,
     context: string
   ) {
-    if (msg?.botContext?.[DEBUG_MODE]) {
+    if (msg?.botGlobalContext?.[DEBUG_MODE]) {
       ctx.reply(
         [
           `*${context} \\(${+new Date()}\\):*`,

@@ -8,42 +8,39 @@ import { FirstMeetingStatus, Gender } from '@prisma/client';
 
 @Injectable()
 export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
-  private readonly firstMeetingOfUsers: Record<number, FirstMeeting> = {};
+  private readonly statesOfUsers: Record<number, FirstMeeting> = {};
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
-  async getUserFirstMeeting({
+  async getState({
     telegramUserId,
   }: {
     telegramUserId: number;
   }): Promise<FirstMeeting | null> {
-    const currentFirstMeetingOfUsers: FirstMeeting =
-      this.firstMeetingOfUsers[telegramUserId.toString()];
-    if (currentFirstMeetingOfUsers) {
-      return currentFirstMeetingOfUsers;
+    const currentStatesOfUsers: FirstMeeting =
+      this.statesOfUsers[telegramUserId.toString()];
+    if (currentStatesOfUsers) {
+      return currentStatesOfUsers;
     }
 
-    let databaseFirstMeetingOfUsers: FirstMeeting | null = null;
+    let databaseStatesOfUsers: FirstMeeting | null = null;
     try {
-      databaseFirstMeetingOfUsers =
+      databaseStatesOfUsers =
         (await this.prismaClientService.firstMeeting.findFirst({
           where: {
             User: { telegramId: telegramUserId.toString() },
           },
           rejectOnNotFound: true,
         })) as unknown as FirstMeeting;
-      this.firstMeetingOfUsers[telegramUserId.toString()] =
-        databaseFirstMeetingOfUsers;
+      this.statesOfUsers[telegramUserId.toString()] = databaseStatesOfUsers;
 
-      return this.firstMeetingOfUsers[telegramUserId.toString()];
+      return this.statesOfUsers[telegramUserId.toString()];
     } catch (error) {
       return null;
     }
   }
 
-  async createUserFirstMeeting(
-    telegramUserId: number
-  ): Promise<FirstMeeting | null> {
+  async clearState(telegramUserId: number): Promise<FirstMeeting | null> {
     return (await this.prismaClientService.firstMeeting.create({
       data: {
         firstname: '',
@@ -60,8 +57,8 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     })) as unknown as Promise<FirstMeeting>;
   }
 
-  async removeUserFirstMeeting({ telegramUserId }: { telegramUserId: number }) {
-    delete this.firstMeetingOfUsers[telegramUserId.toString()];
+  async delState({ telegramUserId }: { telegramUserId: number }) {
+    delete this.statesOfUsers[telegramUserId.toString()];
     await this.prismaClientService.firstMeeting.deleteMany({
       where: {
         User: { telegramId: telegramUserId.toString() },
@@ -69,45 +66,43 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     });
   }
 
-  async pathUserFirstMeeting({
+  async pathState({
     telegramUserId,
-    firstMeeting,
+    state,
   }: {
     telegramUserId: number;
-    firstMeeting: Partial<FirstMeeting>;
+    state: Partial<FirstMeeting>;
   }): Promise<Partial<FirstMeeting> | null> {
-    let currentUserFirstMeeting = await this.getUserFirstMeeting({
+    let currentState = await this.getState({
       telegramUserId,
     });
-    if (!currentUserFirstMeeting) {
-      currentUserFirstMeeting = await this.createUserFirstMeeting(
-        telegramUserId
-      );
+    if (!currentState) {
+      currentState = await this.clearState(telegramUserId);
     }
 
-    const newFirstMeeting = {
-      ...currentUserFirstMeeting,
-      ...firstMeeting,
+    const updatedState = {
+      ...currentState,
+      ...state,
       messagesMetadata: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...(currentUserFirstMeeting?.messagesMetadata as any),
+        ...(currentState?.messagesMetadata as any),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...(firstMeeting.messagesMetadata as any),
+        ...(state.messagesMetadata as any),
       },
       updatedAt: new Date(),
     };
     await this.prismaClientService.firstMeeting.updateMany({
       data: {
-        ...newFirstMeeting,
-        status: newFirstMeeting.status as FirstMeetingStatus,
-        gender: newFirstMeeting.gender as Gender,
+        ...updatedState,
+        status: updatedState.status as FirstMeetingStatus,
+        gender: updatedState.gender as Gender,
       },
       where: {
         User: { telegramId: telegramUserId.toString() },
       },
     });
 
-    this.firstMeetingOfUsers[telegramUserId.toString()] = newFirstMeeting;
-    return newFirstMeeting;
+    this.statesOfUsers[telegramUserId.toString()] = updatedState;
+    return updatedState;
   }
 }

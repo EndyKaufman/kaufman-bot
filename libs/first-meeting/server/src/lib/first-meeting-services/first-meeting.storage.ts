@@ -4,10 +4,7 @@ export const FIRST_MEETING_STORAGE = 'FIRST_MEETING_STORAGE';
 
 export type FirstMeetingStorageProvider = Pick<
   FirstMeetingStorage,
-  | 'createUserFirstMeeting'
-  | 'getUserFirstMeeting'
-  | 'pathUserFirstMeeting'
-  | 'removeUserFirstMeeting'
+  'clearState' | 'getState' | 'pathState' | 'delState'
 >;
 
 export const FirstMeetingStatus = {
@@ -51,7 +48,7 @@ export type FirstMeeting = {
 export class FirstMeetingStorage {
   private readonly firstMeetingOfUsers: Record<number, FirstMeeting> = {};
 
-  async getUserFirstMeeting({
+  async getState({
     telegramUserId,
   }: {
     telegramUserId: number;
@@ -64,9 +61,7 @@ export class FirstMeetingStorage {
     return null;
   }
 
-  async createUserFirstMeeting(
-    telegramUserId: number
-  ): Promise<FirstMeeting | null> {
+  async clearState(telegramUserId: number): Promise<FirstMeeting | null> {
     this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = {
       firstname: '',
       lastname: '',
@@ -76,32 +71,30 @@ export class FirstMeetingStorage {
     return this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
   }
 
-  async removeUserFirstMeeting({ telegramUserId }: { telegramUserId: number }) {
+  async delState({ telegramUserId }: { telegramUserId: number }) {
     delete this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
   }
 
-  async pathUserFirstMeeting({
+  async pathState({
     telegramUserId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    firstMeeting,
+    state,
   }: {
     telegramUserId: number;
-    firstMeeting: Partial<FirstMeeting>;
+    state: Partial<FirstMeeting>;
   }): Promise<Partial<FirstMeeting> | null> {
-    let currentUserFirstMeeting = await this.getUserFirstMeeting({
+    let currentState = await this.getState({
       telegramUserId,
     });
-    if (!currentUserFirstMeeting) {
-      currentUserFirstMeeting = await this.createUserFirstMeeting(
-        telegramUserId
-      );
+    if (!currentState) {
+      currentState = await this.clearState(telegramUserId);
     }
     const newFirstMeeting = {
-      ...currentUserFirstMeeting,
-      ...firstMeeting,
+      ...currentState,
+      ...state,
       messagesMetadata: {
-        ...(currentUserFirstMeeting?.messagesMetadata || {}),
-        ...firstMeeting.messagesMetadata,
+        ...(currentState?.messagesMetadata || {}),
+        ...state.messagesMetadata,
       },
     };
     this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = newFirstMeeting;

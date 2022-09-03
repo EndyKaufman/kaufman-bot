@@ -48,7 +48,7 @@ export class DebugMessagesService
     ctx
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { botContext, ...debugData } = msg;
+    const { botGlobalContext, ...debugData } = msg;
     this.debugService.sendDebugInfo(
       msg,
       ctx,
