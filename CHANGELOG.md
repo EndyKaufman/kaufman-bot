@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.6.0...v2.7.0) (2022-09-03)
+
+### Features
+
+- **first-meeting:** move all logic to standalone classes ([cce00cd](https://github.com/EndyKaufman/kaufman-bot/commit/cce00cddbab65e58311ddaa9e098a0e67fe6770a))
+
+### Bug Fixes
+
+- **schematics:** add process exit on SIGTERM ([ac41368](https://github.com/EndyKaufman/kaufman-bot/commit/ac413689132fefebe90075f97db2f4c964a70636))
+
 ## [2.6.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.5.1...v2.6.0) (2022-04-29)
 
 ### Features
