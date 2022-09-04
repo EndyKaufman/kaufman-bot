@@ -10,7 +10,6 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../first-meeting-config/first-meeting.config';
-import { FirstMeeting } from './first-meeting.storage';
 import { AskFirstnameStepService } from './steps/ask-firstname-step.service';
 import { AskGenderStepService } from './steps/ask-gender-step.service';
 import { AskLastnameStateService } from './steps/ask-lastname-step.service';
@@ -79,14 +78,11 @@ export class FirstMeetingService
       }
 
       if (this.askGenderStepService.is({ msg })) {
-        const state: Partial<FirstMeeting> = await this.askGenderStepService.do(
-          {
-            msg,
-            ctx,
-          }
-        );
+        await this.askGenderStepService.do({
+          msg,
+          ctx,
+        });
         return this.askGenderStepService.out<TMsg>({
-          state,
           msg,
         });
       }
@@ -110,7 +106,7 @@ export class FirstMeetingService
       }
 
       if (this.resetStepService.is({ msg })) {
-        await this.resetStepService.processReset<TMsg>(msg);
+        await this.resetStepService.do<TMsg>(msg);
 
         return this.resetStepService.out<TMsg>({ msg });
       }

@@ -72,18 +72,20 @@ export class AskGenderStepService {
     return state;
   }
 
-  out<
+  async out<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({
-    state,
     msg,
   }: {
-    state: Partial<FirstMeeting>;
     msg: TMsg;
-  }):
-    | BotCommandsProviderActionResultType<TMsg>
-    | PromiseLike<BotCommandsProviderActionResultType<TMsg>> {
+  }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
+    const state = await this.storage.getState({
+      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+    });
+    if (!state) {
+      throw new Error('state is not set');
+    }
     return {
       type: 'text',
       text: this.translatesService.translate(

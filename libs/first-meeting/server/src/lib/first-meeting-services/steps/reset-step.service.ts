@@ -32,7 +32,7 @@ export class ResetStepService {
     );
   }
 
-  async processReset<
+  async do<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     await this.storage.delState({
