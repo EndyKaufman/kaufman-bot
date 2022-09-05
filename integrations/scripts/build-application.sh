@@ -7,7 +7,7 @@ rm -rf ./integrations/app
 mkdir ./integrations/app
 
 cd ./integrations
-npx --yes create-nx-workspace@previous --name=app --preset=empty --interactive=false --nx-cloud=false
+npx --yes create-nx-workspace@13.8.1 --name=app --preset=empty --interactive=false --nx-cloud=false
 cd ../
 
 yes | cp -R ./integrations/default/package.json ./integrations/app/package.json
@@ -18,7 +18,7 @@ cp -Rf google-credentials.json ./integrations/app
 
 cd ./integrations/app
 npm i --force
-npm install --save-dev @nrwl/nest@previous @nrwl/node@previous @ngneat/transloco-keys-manager --force
+npm install --save-dev @nrwl/nest@13.8.1 @nrwl/node@13.8.1 @ngneat/transloco-keys-manager --force
 npm install --save env-var nestjs-telegraf @ngneat/transloco @ngneat/transloco-locale class-validator-multi-lang --force
 npm run nx -- g @nrwl/nest:app server
 cd ../../
