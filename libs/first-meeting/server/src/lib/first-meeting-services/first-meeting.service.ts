@@ -10,15 +10,15 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../first-meeting-config/first-meeting.config';
+import { EndMeetingStepContextService } from './steps/ask-end-meeting-step.service';
 import { AskFirstnameStepService } from './steps/ask-firstname-step.service';
-import { AskGenderStepService } from './steps/ask-gender-step.service';
-import { AskLastnameStateService } from './steps/ask-lastname-step.service';
-import { CancelStepService } from './steps/cancel-step.service';
+import { AskGenderStepContextService } from './steps/ask-gender-step.service';
+import { AskLastnameStepContextService } from './steps/ask-lastname-step.service';
+import { CancelStepContextService } from './steps/cancel-step.service';
 import { CommonService } from './steps/common.service';
-import { EndStepService } from './steps/end-step.service';
+import { HelloStepService } from './steps/hello-step.service';
 import { HelpStepService } from './steps/help-step.service';
 import { ResetStepService } from './steps/reset-step.service';
-import { StartStepService } from './steps/start-step.service';
 
 @Injectable()
 export class FirstMeetingService
@@ -28,64 +28,71 @@ export class FirstMeetingService
     @Inject(FIRST_MEETING_CONFIG)
     private readonly config: FirstMeetingConfig,
     private readonly commonService: CommonService,
-    private readonly askFirstnameStepService: AskFirstnameStepService,
-    private readonly askGenderStepService: AskGenderStepService,
-    private readonly askLastnameStateService: AskLastnameStateService,
-    private readonly cancelStepService: CancelStepService,
+    private readonly askLastnameStepContextService: AskLastnameStepContextService,
+    private readonly endMeetingStepContextService: EndMeetingStepContextService,
+    private readonly askGenderStepContextService: AskGenderStepContextService,
+    private readonly cancelStepContextService: CancelStepContextService,
     private readonly resetStepService: ResetStepService,
-    private readonly startStepService: StartStepService,
-    private readonly endStepService: EndStepService,
+    private readonly askFirstnameStepService: AskFirstnameStepService,
+    private readonly helloStepService: HelloStepService,
     private readonly helpStepService: HelpStepService
   ) {}
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (this.commonService.isDisable(msg)) {
+    if (await this.commonService.isDisable({ msg })) {
       return null;
     }
 
-    if (this.commonService.isContextProcess({ msg })) {
-      if (this.cancelStepService.is({ msg })) {
-        await this.cancelStepService.do<TMsg>(msg);
-        return this.cancelStepService.out<TMsg>({ msg });
-      }
+    if (await this.cancelStepContextService.is({ msg })) {
+      await this.cancelStepContextService.do<TMsg>(msg);
+      return await this.cancelStepContextService.out<TMsg>({ msg });
+    }
 
-      if (this.askFirstnameStepService.is({ msg })) {
-        const { text, firstname } = await this.askFirstnameStepService.do<TMsg>(
-          {
-            msg,
-            ctx,
-          }
-        );
-        return this.askFirstnameStepService.out<TMsg>({
-          text,
-          msg,
-          firstname,
-        });
-      }
+    if (
+      await this.askLastnameStepContextService.is({
+        msg,
+        activateStatus: 'AskFirstname',
+      })
+    ) {
+      await this.askLastnameStepContextService.do<TMsg>({
+        msg,
+      });
+      await this.askFirstnameStepService.editMessage({ msg, ctx });
+      return await this.askLastnameStepContextService.out<TMsg>({
+        msg,
+      });
+    }
 
-      if (this.askLastnameStateService.is({ msg })) {
-        const { text, lastname } = await this.askLastnameStateService.do<TMsg>({
-          msg,
-          ctx,
-        });
-        return this.askLastnameStateService.out<TMsg>({
-          text,
-          msg,
-          lastname,
-        });
-      }
+    if (
+      await this.askGenderStepContextService.is({
+        msg,
+        activateStatus: 'AskLastname',
+      })
+    ) {
+      await this.askGenderStepContextService.do<TMsg>({
+        msg,
+      });
+      await this.askLastnameStepContextService.editMessage({ msg, ctx });
+      return await this.askGenderStepContextService.out<TMsg>({
+        msg,
+      });
+    }
 
-      if (this.askGenderStepService.is({ msg })) {
-        await this.askGenderStepService.do({
-          msg,
-          ctx,
-        });
-        return this.askGenderStepService.out<TMsg>({
-          msg,
-        });
-      }
+    if (
+      await this.endMeetingStepContextService.is({
+        msg,
+        activateStatus: 'AskGender',
+      })
+    ) {
+      await this.endMeetingStepContextService.do({
+        msg,
+      });
+      await this.askGenderStepContextService.editMessage({ msg, ctx });
+      return await this.endMeetingStepContextService.out<TMsg>({
+        msg,
+      });
     }
 
     return null;
@@ -94,31 +101,26 @@ export class FirstMeetingService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (this.commonService.isDisable(msg)) {
+    if (await this.commonService.isDisable({ msg })) {
       return null;
     }
 
-    const state = await this.commonService.getState<TMsg>(msg);
-
-    if (this.commonService.checkSpyWords(msg)) {
-      if (this.helpStepService.is({ msg })) {
-        return this.helpStepService.out<TMsg>({ msg });
-      }
-
-      if (this.resetStepService.is({ msg })) {
-        await this.resetStepService.do<TMsg>(msg);
-
-        return this.resetStepService.out<TMsg>({ msg });
-      }
-
-      if (!state && this.startStepService.is({ msg })) {
-        const text = await this.startStepService.do<TMsg>({ msg });
-        return this.startStepService.out<TMsg>({ text, msg });
-      }
+    if (await this.helpStepService.is({ msg })) {
+      return await this.helpStepService.out<TMsg>({ msg });
     }
 
-    if (state && this.endStepService.is({ state, msg })) {
-      return this.endStepService.out<TMsg>({ state, msg });
+    if (await this.resetStepService.is({ msg })) {
+      await this.resetStepService.do<TMsg>(msg);
+      return await this.resetStepService.out<TMsg>({ msg });
+    }
+
+    if (await this.askFirstnameStepService.is({ msg })) {
+      await this.askFirstnameStepService.do<TMsg>({ msg });
+      return await this.askFirstnameStepService.out<TMsg>({ msg });
+    }
+
+    if (await this.helloStepService.is({ msg })) {
+      return await this.helloStepService.out<TMsg>({ msg });
     }
 
     return null;

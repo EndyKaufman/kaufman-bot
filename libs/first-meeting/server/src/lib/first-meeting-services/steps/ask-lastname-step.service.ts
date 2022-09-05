@@ -16,87 +16,98 @@ import {
 import { CommonService } from './common.service';
 
 @Injectable()
-export class AskLastnameStateService {
+export class AskLastnameStepContextService {
   @CustomInject(FIRST_MEETING_STORAGE)
   private readonly storage!: FirstMeetingStorage;
 
   constructor(
-    private readonly commonService: CommonService,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService
+    private readonly translatesService: TranslatesService,
+    private readonly commonService: CommonService
   ) {}
 
-  async do<
+  async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const text = this.translatesService.translate(
-      getText(`What is your gender?`),
-      locale
-    );
-    const currentState = await this.storage.pathState({
+    const state = await this.storage.getState({
       telegramUserId: this.botCommandsToolsService.getChatId(msg),
-      state: {
-        messagesMetadata: { AskLastnameRequest: msg },
-      },
     });
-    const lastname = this.commonService.prepareText(msg.text, locale);
-    if (currentState?.messagesMetadata?.AskLastnameResponse) {
+    const lastname =
+      this.commonService.prepareText(msg.text, locale) || 'Unknown';
+    if (state?.messagesMetadata?.AskLastnameResponse) {
       await ctx.telegram.editMessageText(
-        currentState.messagesMetadata.AskLastnameResponse.chat.id,
-        currentState.messagesMetadata.AskLastnameResponse.message_id,
+        state.messagesMetadata.AskLastnameResponse.chat.id,
+        state.messagesMetadata.AskLastnameResponse.message_id,
         undefined,
-        currentState.messagesMetadata.AskLastnameResponse
+        state.messagesMetadata.AskLastnameResponse
           ? `${
-              currentState.messagesMetadata.AskLastnameResponse.text
+              state.messagesMetadata.AskLastnameResponse.text
             } (${this.translatesService.translate(
               getText('Your answer'),
               locale
             )}: ${lastname})`
-          : currentState.messagesMetadata.AskLastnameResponse
+          : state.messagesMetadata.AskLastnameResponse
       );
     }
-    return { text, lastname };
   }
 
-  is({ msg }: { msg: BotCommandsProviderActionMsg }) {
+  async is({
+    msg,
+    activateStatus,
+  }: {
+    msg: BotCommandsProviderActionMsg;
+    activateStatus: string;
+  }) {
     const botCommandHandlerContext: Partial<FirstMeeting> =
       msg.botCommandHandlerContext;
-    return botCommandHandlerContext?.status === 'AskLastname';
+    return (
+      this.commonService.isContextProcess({ msg }) &&
+      botCommandHandlerContext?.status === activateStatus
+    );
   }
 
-  out<
+  async do<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >({ msg }: { msg: TMsg }) {
+    await this.storage.pathState({
+      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      state: {
+        messagesMetadata: { AskFirstnameRequest: msg },
+      },
+    });
+  }
+
+  async out<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({
-    text,
     msg,
-    lastname,
   }: {
-    text: string;
     msg: TMsg;
-    lastname: string;
-  }):
-    | BotCommandsProviderActionResultType<TMsg>
-    | PromiseLike<BotCommandsProviderActionResultType<TMsg>> {
+  }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
+
+    const text = this.translatesService.translate(
+      getText(`What is your last name?`),
+      locale
+    );
+    const firstname =
+      this.commonService.prepareText(msg.text, locale) || 'Unknown';
+
     return {
       type: 'text',
       text,
       message: msg,
       context: <Partial<FirstMeeting>>{
         ...msg.botCommandHandlerContext,
-        status: 'AskGender',
-        lastname,
+        status: 'AskLastname',
+        firstname,
       },
       custom: {
         ...Markup.inlineKeyboard([
           Markup.button.callback(
-            '🚹' + this.translatesService.translate(getText('Male'), locale),
-            'male'
-          ),
-          Markup.button.callback(
-            '🚺' + this.translatesService.translate(getText('Female'), locale),
-            'female'
+            '➡️' + this.translatesService.translate(getText('Next'), locale),
+            'next'
           ),
           Markup.button.callback(
             '❌' + this.translatesService.translate(getText('Cancel'), locale),
@@ -108,7 +119,7 @@ export class AskLastnameStateService {
         await this.storage.pathState({
           telegramUserId: this.botCommandsToolsService.getChatId(msg),
           state: {
-            messagesMetadata: { AskGenderResponse: result },
+            messagesMetadata: { AskLastnameResponse: result },
           },
         }),
     };

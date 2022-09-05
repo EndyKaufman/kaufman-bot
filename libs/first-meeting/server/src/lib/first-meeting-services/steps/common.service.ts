@@ -10,19 +10,12 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../../first-meeting-config/first-meeting.config';
-import {
-  FirstMeeting,
-  FirstMeetingStorage,
-  FIRST_MEETING_STORAGE,
-} from '../first-meeting.storage';
+import { FirstMeeting } from '../first-meeting.storage';
 
 export const DISABLE_FIRST_MEETING_COMMANDS = 'DISABLE_FIRST_MEETING_COMMANDS';
 
 @Injectable()
 export class CommonService {
-  @CustomInject(FIRST_MEETING_STORAGE)
-  private readonly storage!: FirstMeetingStorage;
-
   @CustomInject(FIRST_MEETING_CONFIG)
   private readonly config!: FirstMeetingConfig;
 
@@ -83,19 +76,11 @@ export class CommonService {
     );
   }
 
-  isDisable(msg: BotCommandsProviderActionMsg) {
+  async isDisable({ msg }: { msg: BotCommandsProviderActionMsg }) {
     return msg?.botGlobalContext?.[DISABLE_FIRST_MEETING_COMMANDS];
   }
 
-  async getState<
-    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg) {
-    return await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
-  }
-
-  checkSpyWords(msg: BotCommandsProviderActionMsg) {
+  checkSpyWords({ msg }: { msg: BotCommandsProviderActionMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return this.config.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)

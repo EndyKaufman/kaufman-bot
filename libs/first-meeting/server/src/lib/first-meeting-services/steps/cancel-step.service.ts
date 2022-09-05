@@ -11,29 +11,34 @@ import {
   FirstMeetingStorage,
   FIRST_MEETING_STORAGE,
 } from '../first-meeting.storage';
+import { CommonService } from './common.service';
 
 @Injectable()
-export class CancelStepService {
+export class CancelStepContextService {
   @CustomInject(FIRST_MEETING_STORAGE)
   private readonly storage!: FirstMeetingStorage;
 
   constructor(
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService
+    private readonly translatesService: TranslatesService,
+    private readonly commonService: CommonService
   ) {}
 
-  is({ msg }: { msg: BotCommandsProviderActionMsg }) {
+  async is({ msg }: { msg: BotCommandsProviderActionMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    return this.botCommandsToolsService.checkCommands(
-      msg.text || msg.data,
-      [
-        getText('exit'),
-        getText('reset'),
-        getText('cancel'),
-        getText('stop'),
-        getText('end'),
-      ],
-      locale
+    return (
+      this.commonService.isContextProcess({ msg }) &&
+      this.botCommandsToolsService.checkCommands(
+        msg.text || msg.data,
+        [
+          getText('exit'),
+          getText('reset'),
+          getText('cancel'),
+          getText('stop'),
+          getText('end'),
+        ],
+        locale
+      )
     );
   }
 
@@ -50,15 +55,13 @@ export class CancelStepService {
     });
   }
 
-  out<
+  async out<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({
     msg,
   }: {
     msg: TMsg;
-  }):
-    | BotCommandsProviderActionResultType<TMsg>
-    | PromiseLike<BotCommandsProviderActionResultType<TMsg>> {
+  }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return {
       type: 'text',

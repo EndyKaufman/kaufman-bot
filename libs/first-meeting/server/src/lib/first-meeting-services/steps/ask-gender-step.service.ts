@@ -7,6 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
+import { Markup } from 'telegraf';
 import {
   FirstMeeting,
   FirstMeetingStorage,
@@ -15,49 +16,31 @@ import {
 import { CommonService } from './common.service';
 
 @Injectable()
-export class AskGenderStepService {
+export class AskGenderStepContextService {
   @CustomInject(FIRST_MEETING_STORAGE)
   private readonly storage!: FirstMeetingStorage;
 
   constructor(
+    private readonly commonService: CommonService,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly translatesService: TranslatesService,
-    private readonly commonService: CommonService
+    private readonly translatesService: TranslatesService
   ) {}
 
-  is({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const botCommandHandlerContext: Partial<FirstMeeting> =
-      msg.botCommandHandlerContext;
-    return botCommandHandlerContext?.status === 'AskGender';
-  }
-
-  async do({ msg, ctx }: { msg: BotCommandsProviderActionMsg; ctx }) {
-    const context: Partial<FirstMeeting> = msg.botCommandHandlerContext;
+  async editMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >({ msg, ctx }: { msg: TMsg; ctx }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state: Partial<FirstMeeting> = {
-      ...context,
-      status: 'EndMeeting',
-      gender: this.botCommandsToolsService.checkCommands(
-        this.commonService.prepareText(msg.data || msg.text, locale),
-        [getText('female'), getText('fm'), getText('f')],
-        locale
-      )
-        ? 'Female'
-        : 'Male',
-      messagesMetadata: { AskGenderRequest: msg },
-    };
-    const currentState = await this.storage.pathState({
+    const state = await this.storage.getState({
       telegramUserId: this.botCommandsToolsService.getChatId(msg),
-      state,
     });
-    if (currentState?.messagesMetadata?.AskGenderResponse) {
+    if (state?.messagesMetadata?.AskGenderResponse) {
       await ctx.telegram.editMessageText(
-        currentState.messagesMetadata.AskGenderResponse.chat.id,
-        currentState.messagesMetadata.AskGenderResponse.message_id,
+        state.messagesMetadata.AskGenderResponse.chat.id,
+        state.messagesMetadata.AskGenderResponse.message_id,
         undefined,
-        currentState.messagesMetadata.AskGenderResponse
+        state.messagesMetadata.AskGenderResponse
           ? `${
-              currentState.messagesMetadata.AskGenderResponse.text
+              state.messagesMetadata.AskGenderResponse.text
             } (${this.translatesService.translate(
               getText('Your answer'),
               locale
@@ -66,10 +49,35 @@ export class AskGenderStepService {
               state.gender!,
               locale
             )})`
-          : currentState.messagesMetadata.AskGenderResponse
+          : state.messagesMetadata.AskGenderResponse
       );
     }
-    return state;
+  }
+
+  async do<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >({ msg }: { msg: TMsg }) {
+    await this.storage.pathState({
+      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      state: {
+        messagesMetadata: { AskLastnameRequest: msg },
+      },
+    });
+  }
+
+  async is({
+    msg,
+    activateStatus,
+  }: {
+    msg: BotCommandsProviderActionMsg;
+    activateStatus: string;
+  }) {
+    const botCommandHandlerContext: Partial<FirstMeeting> =
+      msg.botCommandHandlerContext;
+    return (
+      this.commonService.isContextProcess({ msg }) &&
+      botCommandHandlerContext?.status === activateStatus
+    );
   }
 
   async out<
@@ -80,43 +88,43 @@ export class AskGenderStepService {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
-    if (!state) {
-      throw new Error('state is not set');
-    }
+
+    const text = this.translatesService.translate(
+      getText(`What is your gender?`),
+      locale
+    );
+    const lastname = this.commonService.prepareText(msg.text, locale);
+
     return {
       type: 'text',
-      text: this.translatesService.translate(
-        this.botCommandsToolsService.getRandomItem([
-          getText(
-            `Nice to meet you, {{meetGender}} {{firstname}} {{lastname}} {{vulcan}}`
-          ),
-          getText(`Nice to meet you, {{firstname}} {{vulcan}}`),
-        ]),
-        locale,
-        {
-          vulcan: '🖖',
-          ...state,
-          meetGender: this.commonService.mapGenderToMeetGender(state, locale),
-          firstname: this.botCommandsToolsService.capitalizeFirstLetter(
-            state.firstname,
-            locale
-          ),
-          lastname: this.botCommandsToolsService.capitalizeFirstLetter(
-            state.lastname,
-            locale
-          ),
-        }
-      ),
+      text,
       message: msg,
-      context: <Partial<FirstMeeting>>{ status: 'EndMeeting' },
+      context: <Partial<FirstMeeting>>{
+        ...msg.botCommandHandlerContext,
+        status: 'AskGender',
+        lastname,
+      },
+      custom: {
+        ...Markup.inlineKeyboard([
+          Markup.button.callback(
+            '🚹' + this.translatesService.translate(getText('Male'), locale),
+            'male'
+          ),
+          Markup.button.callback(
+            '🚺' + this.translatesService.translate(getText('Female'), locale),
+            'female'
+          ),
+          Markup.button.callback(
+            '❌' + this.translatesService.translate(getText('Cancel'), locale),
+            'exit'
+          ),
+        ]),
+      },
       callback: async (result) =>
         await this.storage.pathState({
           telegramUserId: this.botCommandsToolsService.getChatId(msg),
           state: {
-            messagesMetadata: { EndMeetingResponse: result },
+            messagesMetadata: { AskGenderResponse: result },
           },
         }),
     };

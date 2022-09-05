@@ -10,6 +10,7 @@ import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
 } from '../../first-meeting-config/first-meeting.config';
+import { CommonService } from './common.service';
 
 @Injectable()
 export class HelpStepService {
@@ -17,27 +18,29 @@ export class HelpStepService {
   private readonly config!: FirstMeetingConfig;
 
   constructor(
+    private readonly commonService: CommonService,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
-  is({ msg }: { msg: BotCommandsProviderActionMsg }) {
+  async is({ msg }: { msg: BotCommandsProviderActionMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    return this.botCommandsToolsService.checkCommands(
-      msg.text,
-      [BotCommandsEnum.help],
-      locale
+    return (
+      this.commonService.checkSpyWords({ msg }) &&
+      this.botCommandsToolsService.checkCommands(
+        msg.text,
+        [BotCommandsEnum.help],
+        locale
+      )
     );
   }
 
-  out<
+  async out<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({
     msg,
   }: {
     msg: TMsg;
-  }):
-    | BotCommandsProviderActionResultType<TMsg>
-    | PromiseLike<BotCommandsProviderActionResultType<TMsg>> {
+  }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return {
       type: 'markdown',

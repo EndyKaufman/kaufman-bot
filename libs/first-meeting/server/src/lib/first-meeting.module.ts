@@ -15,28 +15,28 @@ import {
   FirstMeetingStorage,
   FIRST_MEETING_STORAGE,
 } from './first-meeting-services/first-meeting.storage';
+import { EndMeetingStepContextService } from './first-meeting-services/steps/ask-end-meeting-step.service';
 import { AskFirstnameStepService } from './first-meeting-services/steps/ask-firstname-step.service';
-import { AskGenderStepService } from './first-meeting-services/steps/ask-gender-step.service';
-import { AskLastnameStateService } from './first-meeting-services/steps/ask-lastname-step.service';
-import { CancelStepService } from './first-meeting-services/steps/cancel-step.service';
+import { AskGenderStepContextService } from './first-meeting-services/steps/ask-gender-step.service';
+import { AskLastnameStepContextService } from './first-meeting-services/steps/ask-lastname-step.service';
+import { CancelStepContextService } from './first-meeting-services/steps/cancel-step.service';
 import { CommonService } from './first-meeting-services/steps/common.service';
-import { EndStepService } from './first-meeting-services/steps/end-step.service';
+import { HelloStepService } from './first-meeting-services/steps/hello-step.service';
 import { HelpStepService } from './first-meeting-services/steps/help-step.service';
 import { ResetStepService } from './first-meeting-services/steps/reset-step.service';
-import { StartStepService } from './first-meeting-services/steps/start-step.service';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
   providers: [
     { provide: FIRST_MEETING_STORAGE, useClass: FirstMeetingStorage },
     CommonService,
-    AskFirstnameStepService,
-    AskGenderStepService,
-    AskLastnameStateService,
-    CancelStepService,
+    AskLastnameStepContextService,
+    EndMeetingStepContextService,
+    AskGenderStepContextService,
+    CancelStepContextService,
     ResetStepService,
-    StartStepService,
-    EndStepService,
+    AskFirstnameStepService,
+    HelloStepService,
     HelpStepService,
   ],
   exports: [
@@ -44,13 +44,13 @@ import { StartStepService } from './first-meeting-services/steps/start-step.serv
     BotCommandsModule,
     FIRST_MEETING_STORAGE,
     CommonService,
-    AskFirstnameStepService,
-    AskGenderStepService,
-    AskLastnameStateService,
-    CancelStepService,
+    AskLastnameStepContextService,
+    EndMeetingStepContextService,
+    AskGenderStepContextService,
+    CancelStepContextService,
     ResetStepService,
-    StartStepService,
-    EndStepService,
+    AskFirstnameStepService,
+    HelloStepService,
     HelpStepService,
   ],
 })
