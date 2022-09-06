@@ -2,6 +2,7 @@ import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
 import { BotCommandsModule } from '@kaufman-bot/core-server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
+import { DemoTaxiOrdersModule } from '@kaufman-bot/demo-taxi-orders-server';
 import { DialogflowModule } from '@kaufman-bot/dialogflow-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
 import { FirstMeetingModule } from '@kaufman-bot/first-meeting-server';
@@ -122,6 +123,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
+    DemoTaxiOrdersModule.forRoot(),
   ],
   providers: [AppService],
 })

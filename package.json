@@ -81,10 +81,11 @@
     "prisma:pull:local": "export $(xargs < ./.env.local) > /dev/null 2>&1 && export DATABASE_URL=$SERVER_POSTGRES_URL && npm run -- prisma db pull && npm run prisma:generate",
     "prisma:generate": "npm run -- prisma generate",
     "__________utils__________": "__________utils__________",
-    "generate": "npm run prisma:generate && npm run graph:generate && npm run readme:generate && npm run rucken -- prepare --locales=en,ru && npm run lint:fix",
+    "generate": "npm run prisma:generate && npm run graph:generate && npm run readme:generate && npm run rucken:prepare && npm run lint:fix",
     "flyway": "flyway -c .flyway.js",
     "prisma": "prisma",
     "standard-version": "standard-version",
+    "rucken:prepare": "npm run rucken -- prepare --locales=en,ru",
     "rucken": "rucken",
     "nx": "nx",
     "github-readme-to-html": "github-readme-to-html",
@@ -92,7 +93,7 @@
     "postinstall": "npm run generate",
     "readme:generate": "rm -rf apps/server/src/assets/public/index.html && npm run github-readme-to-html -- --input=README.md --output=../apps/server/src/assets/public/index.html --title=KaufmanBot",
     "graph:generate": "npm run nx -- graph --file=apps/server/src/assets/public/graph/index.html",
-    "local:schematics": ". ./dist/libs/schematics/index.js"
+    "local:schematics": "npm run nx -- g ./dist/libs/schematics:lib"
   },
   "private": true,
   "devDependencies": {

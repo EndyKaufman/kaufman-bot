@@ -10,4 +10,4 @@ export type BotCommandsProviderActionMsg = Update.MessageUpdate['message'] & {
   botCommandHandlerBreak: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   botCommandHandlerContext: Record<string, any>;
-} & { chat: { id: number } };
+} & { chat: { id: number } } & { message: Update.MessageUpdate['message'] };

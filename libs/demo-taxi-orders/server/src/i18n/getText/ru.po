@@ -1,0 +1,80 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+msgid "Commands for demo taxi orders"
+msgstr ""
+
+msgid "Demo taxi orders commands"
+msgstr ""
+
+msgid "taxi"
+msgstr ""
+
+msgid "taxi help"
+msgstr ""
+
+msgid "taxi ping"
+msgstr ""
+
+msgid "ping"
+msgstr ""
+
+msgid "pong"
+msgstr ""
+
+msgid "{{close}} Meeting canceled"
+msgstr ""
+
+msgid "cancel"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "end"
+msgstr ""
+
+msgid "exit"
+msgstr ""
+
+msgid "hello"
+msgstr ""
+
+msgid "hey"
+msgstr ""
+
+msgid "hi"
+msgstr ""
+
+msgid "I forgot about your existence {{worried}}"
+msgstr ""
+
+msgid "next"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "reset"
+msgstr ""
+
+msgid "skip"
+msgstr ""
+
+msgid "start"
+msgstr ""
+
+msgid "stop"
+msgstr ""
+
+msgid "Your answer"
+msgstr ""
+
+msgid "Your meeting information has been deleted {{unamused}}"
+msgstr ""

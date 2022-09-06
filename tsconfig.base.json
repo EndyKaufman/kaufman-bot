@@ -33,6 +33,9 @@
       "@kaufman-bot/debug-messages-server": [
         "libs/debug-messages/server/src/index.ts"
       ],
+      "@kaufman-bot/demo-taxi-orders-server": [
+        "libs/demo-taxi-orders/server/src/index.ts"
+      ],
       "@kaufman-bot/dialogflow-server": ["libs/dialogflow/server/src/index.ts"],
       "@kaufman-bot/facts-generator-server": [
         "libs/facts-generator/server/src/index.ts"

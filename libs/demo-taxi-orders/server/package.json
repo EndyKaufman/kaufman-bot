@@ -1,6 +1,6 @@
 {
-    "name": "@kaufman-bot/core-server",
-    "description": "Core commands and tools",
+    "name": "@kaufman-bot/demo-taxi-orders-server",
+    "description": "Demo taxi orders commands",
     "license": "MIT",
     "author": "EndyKaufman <admin@site15.ru>",
     "keywords": [
@@ -8,7 +8,8 @@
         "nx",
         "nests",
         "telegram",
-        "core"
+        "taxi",
+        "demo"
     ],
     "bugs": {
         "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
@@ -27,12 +28,12 @@
     "readme": "README.md",
     "i18n": [
         {
-            "scope": "core-server",
+            "scope": "demo-taxi-orders-server",
             "path": "src/i18n",
             "strategy": "join"
         },
         {
-            "scope": "core-server-getText",
+            "scope": "demo-taxi-orders-server-getText",
             "path": "src/i18n/getText",
             "strategy": "join"
         }
@@ -42,9 +43,6 @@
         "@nestjs/common": "^8.0.0",
         "nestjs-custom-injector": "^1.0.1",
         "nestjs-translates": "^1.0.3",
-        "class-validator-multi-lang": "^0.130.201",
-        "micromatch": "^4.0.5",
-        "mustache": "^4.2.0",
-        "telegraf": "^4.7.0"
+        "class-validator-multi-lang": "^0.130.201"
     }
 }

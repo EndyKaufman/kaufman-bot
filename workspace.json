@@ -5,6 +5,7 @@
     "core-server": "libs/core/server",
     "currency-converter-server": "libs/currency-converter/server",
     "debug-messages-server": "libs/debug-messages/server",
+    "demo-taxi-orders-server": "libs/demo-taxi-orders/server",
     "dialogflow-server": "libs/dialogflow/server",
     "facts-generator-server": "libs/facts-generator/server",
     "first-meeting-server": "libs/first-meeting/server",

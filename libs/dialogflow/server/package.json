@@ -1,48 +1,48 @@
 {
-  "name": "@kaufman-bot/dialogflow-server",
-  "description": "Commands for process request with Dialogflow intents",
-  "license": "MIT",
-  "author": "EndyKaufman <admin@site15.ru>",
-  "keywords": [
-    "kaufman-bot",
-    "nx",
-    "nests",
-    "telegram",
-    "dialogflow"
-  ],
-  "bugs": {
-    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-  },
-  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-  },
-  "maintainers": [
-    {
-      "name": "EndyKaufman",
-      "email": "admin@site15.ru"
-    }
-  ],
-  "readme": "README.md",
-  "i18n": [
-    {
-      "scope": "dialogflow-server",
-      "path": "src/i18n",
-      "strategy": "join"
+    "name": "@kaufman-bot/dialogflow-server",
+    "description": "Commands for process request with Dialogflow intents",
+    "license": "MIT",
+    "author": "EndyKaufman <admin@site15.ru>",
+    "keywords": [
+        "kaufman-bot",
+        "nx",
+        "nests",
+        "telegram",
+        "dialogflow"
+    ],
+    "bugs": {
+        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
     },
-    {
-      "scope": "dialogflow-server-getText",
-      "path": "src/i18n/getText",
-      "strategy": "join"
+    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+    },
+    "maintainers": [
+        {
+            "name": "EndyKaufman",
+            "email": "admin@site15.ru"
+        }
+    ],
+    "readme": "README.md",
+    "i18n": [
+        {
+            "scope": "dialogflow-server",
+            "path": "src/i18n",
+            "strategy": "join"
+        },
+        {
+            "scope": "dialogflow-server-getText",
+            "path": "src/i18n/getText",
+            "strategy": "join"
+        }
+    ],
+    "version": "2.7.2",
+    "peerDependencies": {
+        "@nestjs/common": "^8.0.0",
+        "nestjs-custom-injector": "^1.0.1",
+        "nestjs-translates": "^1.0.3",
+        "class-validator-multi-lang": "^0.130.201",
+        "@google-cloud/dialogflow": "^4.7.0"
     }
-  ],
-  "version": "2.7.2",
-  "peerDependencies": {
-    "@nestjs/common": "^8.0.0",
-    "nestjs-custom-injector": "^1.0.1",
-    "nestjs-translates": "^1.0.3",
-    "class-validator-multi-lang": "^0.130.201",
-    "@google-cloud/dialogflow": "^4.7.0"
-  }
 }

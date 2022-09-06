@@ -1,0 +1,23 @@
+{
+  "root": "libs/demo-taxi-orders/server",
+  "sourceRoot": "libs/demo-taxi-orders/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/demo-taxi-orders/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/demo-taxi-orders/server"],
+      "options": {
+        "jestConfig": "libs/demo-taxi-orders/server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
