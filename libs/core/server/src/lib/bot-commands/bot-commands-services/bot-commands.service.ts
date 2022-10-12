@@ -74,6 +74,12 @@ export class BotCommandsService implements BotCommandsProvider {
       return;
     }
 
+    const contextMessageId =
+      this.botCommandsToolsService.getContextMessageId(msg);
+    await this.botCommandsStorage.setLatestStateByChildMessageId(
+      contextMessageId
+    );
+
     let recursiveDepth = 1;
     while (
       recursiveDepth > 0 &&
@@ -85,11 +91,16 @@ export class BotCommandsService implements BotCommandsProvider {
 
       if (result?.type === 'message') {
         msg = result.message;
+
+        const contextMessageId =
+          this.botCommandsToolsService.getContextMessageId(msg);
+        await this.botCommandsStorage.setLatestStateByChildMessageId(
+          contextMessageId
+        );
       }
 
       const userId = this.botCommandsToolsService.getChatId(msg);
-      const contextMessageId =
-        this.botCommandsToolsService.getContextMessageId(msg);
+
       const messageId = this.botCommandsToolsService.getMessageId(msg);
       const replyResultMessageId =
         this.botCommandsToolsService.getReplyMessageId(msg);
@@ -99,10 +110,6 @@ export class BotCommandsService implements BotCommandsProvider {
           parse_mode: 'MarkdownV2',
           ...result.custom,
         });
-
-        await this.botCommandsStorage.setLatestStateByChildMessageId(
-          contextMessageId
-        );
 
         const state =
           (await this.botCommandsStorage.getState(userId, messageId)) ||
@@ -129,9 +136,6 @@ export class BotCommandsService implements BotCommandsProvider {
         const replyResult = await ctx.reply(result.text, {
           ...result.custom,
         });
-        await this.botCommandsStorage.setLatestStateByChildMessageId(
-          contextMessageId
-        );
         const state =
           (await this.botCommandsStorage.getState(userId, messageId)) ||
           undefined;
@@ -208,6 +212,12 @@ export class BotCommandsService implements BotCommandsProvider {
     let result: BotCommandsProviderActionResultType<TMsg> = null;
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
+
+    const contextMessageId =
+      this.botCommandsToolsService.getContextMessageId(msg);
+    await this.botCommandsStorage.setLatestStateByChildMessageId(
+      contextMessageId
+    );
 
     if (!msg?.botCommandHandlerBreak) {
       result = await this.processOnMessage(result, msg, ctx);
@@ -342,35 +352,30 @@ export class BotCommandsService implements BotCommandsProvider {
       return result;
     }
     const chatId = this.botCommandsToolsService.getChatId(msg);
-    const contextMessageId =
-      this.botCommandsToolsService.getContextMessageId(msg);
     const messageId = this.botCommandsToolsService.getMessageId(msg);
 
+    const contextMessageId =
+      this.botCommandsToolsService.getContextMessageId(msg);
     await this.botCommandsStorage.setLatestStateByChildMessageId(
       contextMessageId
     );
-    if (
-      (await this.botCommandsStorage.getState(chatId, messageId)) &&
-      result === null
-    ) {
+
+    let state = await this.botCommandsStorage.getState(chatId, messageId);
+
+    if (state && result === null) {
       const len = this.botCommandsProviders.length;
       for (let i = 0; i < len; i++) {
         const botCommandsProvider = this.botCommandsProviders[i];
-
-        await this.botCommandsStorage.setLatestStateByChildMessageId(
-          contextMessageId
-        );
+        state = await this.botCommandsStorage.getState(chatId, messageId);
 
         if (
           !result &&
-          (await this.botCommandsStorage.getState(chatId, messageId))
-            ?.botCommandHandlerId === botCommandsProvider.botCommandHandlerId &&
+          state?.botCommandHandlerId ===
+            botCommandsProvider.botCommandHandlerId &&
           botCommandsProvider.onContextBotCommands &&
           !msg?.botCommandHandlerBreak
         ) {
-          msg.botCommandHandlerContext =
-            (await this.botCommandsStorage.getState(chatId, messageId))
-              ?.botCommandHandlerContext || {};
+          msg.botCommandHandlerContext = state?.botCommandHandlerContext || {};
 
           result = await botCommandsProvider.onContextBotCommands(
             {

@@ -26,7 +26,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
           }),
           {}
         ) || {};
-      const state = messages[0] && this.storage[messages[0]];
+      const state = (messages[0] && this.storage[messages[0]]) || null;
       const [userId] = messages[0].split(':');
       this.patchState(userId, 'latest', {
         ...state,
@@ -51,8 +51,6 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     if (messageIds[0]) {
       await this.patchState(userId, messageIds[0], {
         ...(currentState || {}),
-
-        botCommandHandlerId: currentState?.botCommandHandlerId,
       });
     }
 
@@ -74,9 +72,10 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
       );
       await this.patchState(userId, messageIds[0], {
         ...(currentState || {}),
-
-        botCommandHandlerId: currentState?.botCommandHandlerId,
       });
+      currentState.messageIds = [];
+      state.request = undefined;
+      state.response = undefined;
       state.messageIds = [];
       state.botCommandHandlerContext = {};
     }
