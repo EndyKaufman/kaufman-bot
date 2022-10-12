@@ -8,17 +8,12 @@ import { FirstMeetingStatus, Gender } from '@prisma/client';
 
 @Injectable()
 export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
-  private readonly statesOfUsers: Record<number, FirstMeeting> = {};
+  private readonly statesOfUsers: Record<string, FirstMeeting> = {};
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
-  async getState({
-    telegramUserId,
-  }: {
-    telegramUserId: number;
-  }): Promise<FirstMeeting | null> {
-    const currentStatesOfUsers: FirstMeeting =
-      this.statesOfUsers[telegramUserId.toString()];
+  async getState(userId: string): Promise<FirstMeeting | null> {
+    const currentStatesOfUsers: FirstMeeting = this.statesOfUsers[userId];
     if (currentStatesOfUsers) {
       return currentStatesOfUsers;
     }
@@ -28,19 +23,19 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
       databaseStatesOfUsers =
         (await this.prismaClientService.firstMeeting.findFirst({
           where: {
-            User: { telegramId: telegramUserId.toString() },
+            User: { telegramId: userId },
           },
           rejectOnNotFound: true,
         })) as unknown as FirstMeeting;
-      this.statesOfUsers[telegramUserId.toString()] = databaseStatesOfUsers;
+      this.statesOfUsers[userId] = databaseStatesOfUsers;
 
-      return this.statesOfUsers[telegramUserId.toString()];
+      return this.statesOfUsers[userId];
     } catch (error) {
       return null;
     }
   }
 
-  async clearState(telegramUserId: number): Promise<FirstMeeting | null> {
+  async clearState(userId: string): Promise<FirstMeeting | null> {
     return (await this.prismaClientService.firstMeeting.create({
       data: {
         firstname: '',
@@ -49,35 +44,33 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
         status: 'StartMeeting',
         User: {
           connectOrCreate: {
-            create: { telegramId: telegramUserId.toString() },
-            where: { telegramId: telegramUserId.toString() },
+            create: { telegramId: userId },
+            where: { telegramId: userId },
           },
         },
       },
     })) as unknown as Promise<FirstMeeting>;
   }
 
-  async delState({ telegramUserId }: { telegramUserId: number }) {
-    delete this.statesOfUsers[telegramUserId.toString()];
+  async delState(userId: string) {
+    delete this.statesOfUsers[userId];
     await this.prismaClientService.firstMeeting.deleteMany({
       where: {
-        User: { telegramId: telegramUserId.toString() },
+        User: { telegramId: userId },
       },
     });
   }
 
   async pathState({
-    telegramUserId,
+    userId,
     state,
   }: {
-    telegramUserId: number;
+    userId: string;
     state: Partial<FirstMeeting>;
   }): Promise<Partial<FirstMeeting> | null> {
-    let currentState = await this.getState({
-      telegramUserId,
-    });
+    let currentState = await this.getState(userId);
     if (!currentState) {
-      currentState = await this.clearState(telegramUserId);
+      currentState = await this.clearState(userId);
     }
 
     const updatedState = {
@@ -98,11 +91,11 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
         gender: updatedState.gender as Gender,
       },
       where: {
-        User: { telegramId: telegramUserId.toString() },
+        User: { telegramId: userId },
       },
     });
 
-    this.statesOfUsers[telegramUserId.toString()] = updatedState;
+    this.statesOfUsers[userId] = updatedState as FirstMeeting;
     return updatedState;
   }
 }

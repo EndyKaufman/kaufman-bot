@@ -21,10 +21,10 @@ export class BotCommandsToolsService {
   @CustomInject(BOT_COMMANDS_TOOLS_INTERCEPTOR, {
     multi: true,
   })
-  private botCommandsToolsInterceptors?: BotCommandsToolsInterceptor[];
+  private botCommandsToolsInterceptors!: BotCommandsToolsInterceptor[];
 
-  @CustomInject(BOT_COMMANDS_CONFIG, { static: false })
-  private botCommandsConfig?: BotCommandsConfig;
+  @CustomInject(BOT_COMMANDS_CONFIG)
+  private botCommandsConfig!: BotCommandsConfig;
 
   private lowerCaseTranslates?: TranslatesStorage['translates'];
 
@@ -33,10 +33,38 @@ export class BotCommandsToolsService {
     private readonly translatesService: TranslatesService
   ) {}
 
+  getReplyMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const id = msg?.reply_to_message?.message_id || msg?.message?.message_id;
+    return id ? String(id) : undefined;
+  }
+
+  getContextMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const id =
+      msg?.reply_to_message?.message_id ||
+      msg?.message?.message_id ||
+      msg?.message_id;
+    return id ? String(id) : 'latest';
+  }
+
+  getMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    return 'latest';
+  }
+
   getChatId<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    return msg?.chat?.id || msg?.from?.id;
+    return String(
+      msg?.reply_to_message?.chat?.id ||
+        msg?.message?.chat?.id ||
+        msg?.chat?.id ||
+        msg?.from?.id
+    );
   }
 
   isAdmin<
@@ -47,6 +75,8 @@ export class BotCommandsToolsService {
         String(admin).trim().toLocaleLowerCase()
       ) || [];
     return (
+      admins.includes(msg?.reply_to_message?.chat?.id.toString() || '') ||
+      admins.includes(msg?.message?.chat?.id.toString() || '') ||
       admins.includes(msg?.chat?.id.toString() || '') ||
       admins.includes(msg?.from?.id.toString() || '')
     );

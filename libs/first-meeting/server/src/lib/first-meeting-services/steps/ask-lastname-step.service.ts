@@ -30,9 +30,9 @@ export class AskLastnameStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     const lastname =
       this.commonService.prepareText(msg.text, locale) || 'Unknown';
     if (state?.messagesMetadata?.AskLastnameResponse) {
@@ -71,7 +71,7 @@ export class AskLastnameStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         messagesMetadata: { AskFirstnameRequest: msg },
       },
@@ -117,7 +117,7 @@ export class AskLastnameStepContextService {
       },
       callback: async (result) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: { AskLastnameResponse: result },
           },

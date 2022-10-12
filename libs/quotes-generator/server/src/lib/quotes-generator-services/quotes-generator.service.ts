@@ -28,7 +28,7 @@ export class QuotesGeneratorService
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    return await this.scraperService.onHelp(msg);
+    return await this.scraperService.onHelp(msg, QuotesGeneratorService.name);
   }
 
   async onMessage<
@@ -43,7 +43,10 @@ export class QuotesGeneratorService
         locale
       )
     ) {
-      const result = await this.scraperService.onMessage(msg);
+      const result = await this.scraperService.onMessage(
+        msg,
+        QuotesGeneratorService.name
+      );
       try {
         if (result?.type === 'text') {
           return {

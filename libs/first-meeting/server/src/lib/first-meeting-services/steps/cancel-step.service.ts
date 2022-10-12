@@ -46,7 +46,7 @@ export class CancelStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         ...msg.botCommandHandlerContext,
         status: 'EndMeeting',
@@ -74,7 +74,7 @@ export class CancelStepContextService {
       context: { status: 'EndMeeting' },
       callback: async (result) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: { EndMeetingResponse: result },
           },

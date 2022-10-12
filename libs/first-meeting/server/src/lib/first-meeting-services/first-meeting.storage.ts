@@ -46,48 +46,42 @@ export type FirstMeeting = {
   updatedAt: Date;
 };
 export class FirstMeetingStorage {
-  private readonly firstMeetingOfUsers: Record<number, FirstMeeting> = {};
+  private readonly firstMeetingOfUsers: Record<string, FirstMeeting> = {};
 
-  async getState({
-    telegramUserId,
-  }: {
-    telegramUserId: number;
-  }): Promise<FirstMeeting | null> {
+  async getState(userId: string): Promise<FirstMeeting | null> {
     const currentFirstMeetingOfUsers: FirstMeeting =
-      this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+      this.firstMeetingOfUsers[userId];
     if (currentFirstMeetingOfUsers) {
       return currentFirstMeetingOfUsers;
     }
     return null;
   }
 
-  async clearState(telegramUserId: number): Promise<FirstMeeting | null> {
-    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = {
+  async clearState(userId: string): Promise<FirstMeeting | null> {
+    this.firstMeetingOfUsers[userId] = {
       firstname: '',
       lastname: '',
       gender: 'Male',
       status: 'StartMeeting',
-    };
-    return this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+    } as FirstMeeting;
+    return this.firstMeetingOfUsers[userId];
   }
 
-  async delState({ telegramUserId }: { telegramUserId: number }) {
-    delete this.firstMeetingOfUsers[this.getKey({ telegramUserId })];
+  async delState(userId: string) {
+    delete this.firstMeetingOfUsers[userId];
   }
 
   async pathState({
-    telegramUserId,
+    userId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     state,
   }: {
-    telegramUserId: number;
+    userId: string;
     state: Partial<FirstMeeting>;
   }): Promise<Partial<FirstMeeting> | null> {
-    let currentState = await this.getState({
-      telegramUserId,
-    });
+    let currentState = await this.getState(userId);
     if (!currentState) {
-      currentState = await this.clearState(telegramUserId);
+      currentState = await this.clearState(userId);
     }
     const newFirstMeeting = {
       ...currentState,
@@ -97,11 +91,7 @@ export class FirstMeetingStorage {
         ...state.messagesMetadata,
       },
     };
-    this.firstMeetingOfUsers[this.getKey({ telegramUserId })] = newFirstMeeting;
+    this.firstMeetingOfUsers[userId] = newFirstMeeting as FirstMeeting;
     return newFirstMeeting;
-  }
-
-  private getKey({ telegramUserId }: { telegramUserId: number }) {
-    return telegramUserId.toString();
   }
 }

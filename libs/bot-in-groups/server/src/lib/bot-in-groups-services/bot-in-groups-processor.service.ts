@@ -33,11 +33,11 @@ export class BotInGroupsProcessorService {
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
-    const telegramUserId =
+    const userId =
       ctx.update?.message?.chat?.id || ctx?.update?.message?.from?.id;
 
-    const dbLocale = telegramUserId
-      ? await this.languageSwitherStorage.getLanguageOfUser(telegramUserId)
+    const dbLocale = userId
+      ? await this.languageSwitherStorage.getLanguageOfUser(userId)
       : null;
 
     const locale =

@@ -54,16 +54,25 @@ export class ScraperService
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    return await this.onMessage({
-      ...msg,
-      text: `${this.scraperConfig.name} ${BotCommandsEnum.help}`,
-    });
+  >(
+    msg: TMsg,
+    loggerContext?: string
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
+    return await this.onMessage(
+      {
+        ...msg,
+        text: `${this.scraperConfig.name} ${BotCommandsEnum.help}`,
+      },
+      loggerContext
+    );
   }
 
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    loggerContext?: string
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
@@ -102,7 +111,11 @@ export class ScraperService
         ],
         locale
       );
-      const replayMessage = await this.scrap(locale, preparedText);
+      const replayMessage = await this.scrap(
+        locale,
+        preparedText,
+        loggerContext
+      );
 
       if (replayMessage) {
         return {
@@ -112,13 +125,20 @@ export class ScraperService
         };
       }
 
-      this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
-      this.logger.debug(msg);
+      this.logger.warn(
+        `Unhandled commands for text: "${msg.text}"`,
+        loggerContext || ScraperService.name
+      );
+      this.logger.debug(msg, loggerContext || ScraperService.name);
     }
     return null;
   }
 
-  private async scrap(locale: string, text: string): Promise<string> {
+  private async scrap(
+    locale: string,
+    text: string,
+    loggerContext?: string
+  ): Promise<string> {
     /*const parsedVariables = parse(this.scraperConfig.uri)
       .filter((arr) => arr[0] === 'name')
       .map((arr) => arr[1]);
@@ -205,7 +225,7 @@ export class ScraperService
       }
       return content;
     } catch (err) {
-      this.logger.error(err, err.stack);
+      this.logger.error(err, err.stack, loggerContext || ScraperService.name);
       return err.toString();
     }
   }

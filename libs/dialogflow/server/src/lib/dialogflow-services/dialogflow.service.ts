@@ -64,7 +64,7 @@ export class DialogflowService
       );
       // reset last session if unhandled with dialog commands
       await this.dialogflowStorage.resetUserSession({
-        telegramUserId: this.botCommandsToolsService.getChatId(msg),
+        userId: this.botCommandsToolsService.getChatId(msg),
         projectId: this.dialogflowConfig.projectId,
       });
     }
@@ -147,7 +147,7 @@ export class DialogflowService
   >(msg: TMsg, ctx, locale: string, text: string) {
     const ts = +new Date();
     const current = await this.dialogflowStorage.getUserSession({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       projectId: this.dialogflowConfig.projectId,
     });
     const sessionId = current ? current.sessionId : v4();
@@ -202,7 +202,7 @@ export class DialogflowService
           this.dialogflowConfig.name
         );
         await this.dialogflowStorage.appendToUserSession({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           projectId: this.dialogflowConfig.projectId,
           sessionOfUsers: {
             sessionId,
@@ -218,7 +218,7 @@ export class DialogflowService
           this.dialogflowConfig.name
         );
         await this.dialogflowStorage.setUserSession({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           projectId: this.dialogflowConfig.projectId,
           sessionOfUsers: {
             sessionId,

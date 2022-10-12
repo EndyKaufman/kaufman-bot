@@ -40,9 +40,7 @@ export class ResetStepService {
   async do<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    await this.storage.delState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    await this.storage.delState(this.botCommandsToolsService.getChatId(msg));
   }
 
   async out<

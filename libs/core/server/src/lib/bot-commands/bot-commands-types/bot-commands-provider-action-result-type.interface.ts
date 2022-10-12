@@ -9,8 +9,12 @@ export type BotCommandsProviderActionResultType<T> =
       recursive?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback?: (message: BotCommandsProviderActionMsg) => Promise<any>;
+      callback?: (
+        message: BotCommandsProviderActionMsg,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        botCommandHandlerContext: Record<string, any>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) => Promise<any>;
     }
   | {
       type: 'text';
@@ -20,8 +24,12 @@ export type BotCommandsProviderActionResultType<T> =
       recursive?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback?: (message: BotCommandsProviderActionMsg) => Promise<any>;
+      callback?: (
+        message: BotCommandsProviderActionMsg,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        botCommandHandlerContext: Record<string, any>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) => Promise<any>;
     }
   | {
       type: 'message';
@@ -30,8 +38,12 @@ export type BotCommandsProviderActionResultType<T> =
       recursive?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback?: (message: BotCommandsProviderActionMsg) => Promise<any>;
+      callback?: (
+        message: BotCommandsProviderActionMsg,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        botCommandHandlerContext: Record<string, any>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) => Promise<any>;
     }
   | {
       type: 'stop';
@@ -40,7 +52,11 @@ export type BotCommandsProviderActionResultType<T> =
       recursive?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      callback?: (message: BotCommandsProviderActionMsg) => Promise<any>;
+      callback?: (
+        message: BotCommandsProviderActionMsg,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        botCommandHandlerContext: Record<string, any>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) => Promise<any>;
     }
   | null;

@@ -28,9 +28,9 @@ export class HelloStepService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     return (
       state?.status === 'EndMeeting' &&
       this.botCommandsToolsService.checkCommands(
@@ -49,9 +49,9 @@ export class HelloStepService {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     if (!state) {
       throw new Error('state is not set');
     }

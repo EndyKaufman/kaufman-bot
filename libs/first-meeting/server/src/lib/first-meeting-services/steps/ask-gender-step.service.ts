@@ -30,9 +30,9 @@ export class AskGenderStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     if (state?.messagesMetadata?.AskGenderResponse) {
       await ctx.telegram.editMessageText(
         state.messagesMetadata.AskGenderResponse.chat.id,
@@ -58,7 +58,7 @@ export class AskGenderStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         messagesMetadata: { AskLastnameRequest: msg },
       },
@@ -122,7 +122,7 @@ export class AskGenderStepContextService {
       },
       callback: async (result) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: { AskGenderResponse: result },
           },

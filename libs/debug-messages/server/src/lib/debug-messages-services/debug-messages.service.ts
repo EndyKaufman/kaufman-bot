@@ -64,10 +64,10 @@ export class DebugMessagesService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const telegramUserId = this.botCommandsToolsService.getChatId(msg);
-    if (telegramUserId) {
+    const userId = this.botCommandsToolsService.getChatId(msg);
+    if (userId) {
       const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-        telegramUserId
+        userId
       );
       return this.debugService.setDebugMode(msg, debugMode);
     }

@@ -37,9 +37,9 @@ export class AskFirstnameStepService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     const firstname =
       this.commonService.prepareText(msg.text, locale) || 'Unknown';
 
@@ -64,9 +64,9 @@ export class AskFirstnameStepService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     return (
       this.commonService.checkSpyWords({ msg }) &&
       !state &&
@@ -84,7 +84,7 @@ export class AskFirstnameStepService {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const text = this.getHelloText(locale);
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         status: 'AskFirstname',
         firstname: '',
@@ -137,7 +137,7 @@ export class AskFirstnameStepService {
       },
       callback: async (result) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: { AskFirstnameResponse: result },
           },

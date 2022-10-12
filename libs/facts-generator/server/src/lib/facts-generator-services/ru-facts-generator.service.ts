@@ -35,7 +35,7 @@ export class RuFactsGeneratorService
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
-    return await this.scraperService.onHelp(msg);
+    return await this.scraperService.onHelp(msg, RuFactsGeneratorService.name);
   }
 
   async onMessage<
@@ -53,7 +53,10 @@ export class RuFactsGeneratorService
         locale
       )
     ) {
-      const result = await this.scraperService.onMessage(msg);
+      const result = await this.scraperService.onMessage(
+        msg,
+        RuFactsGeneratorService.name
+      );
       try {
         if (result?.type === 'text') {
           return {

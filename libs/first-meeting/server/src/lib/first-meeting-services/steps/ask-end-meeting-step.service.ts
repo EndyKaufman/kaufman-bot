@@ -56,7 +56,7 @@ export class EndMeetingStepContextService {
       messagesMetadata: { AskGenderRequest: msg },
     };
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state,
     });
   }
@@ -69,9 +69,9 @@ export class EndMeetingStepContextService {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const state = await this.storage.getState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const state = await this.storage.getState(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     if (!state) {
       throw new Error('state is not set');
     }
@@ -103,7 +103,7 @@ export class EndMeetingStepContextService {
       context: <Partial<FirstMeeting>>{ status: 'EndMeeting' },
       callback: async (result) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: { EndMeetingResponse: result },
           },
