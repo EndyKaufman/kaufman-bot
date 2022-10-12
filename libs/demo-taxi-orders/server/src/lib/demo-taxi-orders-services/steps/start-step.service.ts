@@ -28,9 +28,9 @@ export class StartStepService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const { stepKey } = await this.storage.getCurrentStep({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const { stepKey } = await this.storage.getCurrentStep(
+      this.botCommandsToolsService.getChatId(msg)
+    );
 
     return (
       this.commonService.checkSpyWords({ msg }) &&
@@ -46,11 +46,11 @@ export class StartStepService {
   async do<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
-    const { nextStepKey } = await this.storage.getCurrentStep({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
-    });
+    const { nextStepKey } = await this.storage.getCurrentStep(
+      this.botCommandsToolsService.getChatId(msg)
+    );
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         messagesMetadata: [
           {

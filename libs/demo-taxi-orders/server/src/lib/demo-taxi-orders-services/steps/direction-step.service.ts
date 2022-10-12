@@ -29,11 +29,9 @@ export class DirectionStepContextService {
   async is<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx }) {
-    const telegramUserId = this.botCommandsToolsService.getChatId(msg);
+    const userId = this.botCommandsToolsService.getChatId(msg);
     const { state, step, stepKey, nextStepKey } =
-      await this.storage.getCurrentStep({
-        telegramUserId,
-      });
+      await this.storage.getCurrentStep(userId);
     const { request, response } = step || {};
 
     if (
@@ -49,7 +47,7 @@ export class DirectionStepContextService {
         `Direction: ${msg.data}`
       );
       await this.storage.pathState({
-        telegramUserId,
+        userId,
         state: {
           messagesMetadata: [
             {
@@ -79,11 +77,9 @@ export class DirectionStepContextService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const telegramUserId = this.botCommandsToolsService.getChatId(msg);
+    const userId = this.botCommandsToolsService.getChatId(msg);
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const { stepKey } = await this.storage.getCurrentStep({
-      telegramUserId,
-    });
+    const { stepKey, state } = await this.storage.getCurrentStep(userId);
     if (stepKey !== this.currentStepKey) {
       return {
         type: 'message',
@@ -103,30 +99,30 @@ export class DirectionStepContextService {
           [
             Markup.button.callback(
               '🌆' + this.translatesService.translate(getText('City'), locale),
-              Direction.City
+              [state?.id, Direction.City].join('/')
             ),
             Markup.button.callback(
               '🏡' +
                 this.translatesService.translate(getText('Village'), locale),
-              Direction.Village
+              [state?.id, Direction.Village].join('/')
             ),
           ],
           [
             Markup.button.callback(
               '➡️' + this.translatesService.translate(getText('Next'), locale),
-              'next'
+              [state?.id, 'next'].join('/')
             ),
             Markup.button.callback(
               '❌' +
                 this.translatesService.translate(getText('Cancel'), locale),
-              'exit'
+              [state?.id, 'exit'].join('/')
             ),
           ],
         ]),
       },
       callback: async (request) => {
         await this.storage.pathState({
-          telegramUserId,
+          userId,
           state: {
             messagesMetadata: [
               {

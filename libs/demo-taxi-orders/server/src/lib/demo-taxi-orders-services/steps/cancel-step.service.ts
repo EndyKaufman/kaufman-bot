@@ -48,7 +48,7 @@ export class CancelStepContextService {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     await this.storage.pathState({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       state: {
         ...msg.botCommandHandlerContext,
         messagesMetadata: [
@@ -79,7 +79,7 @@ export class CancelStepContextService {
       message: msg,
       callback: async (response) =>
         await this.storage.pathState({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           state: {
             messagesMetadata: [
               {

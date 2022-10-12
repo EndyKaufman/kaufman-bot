@@ -1,4 +1,5 @@
 import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
+import { v4 } from 'uuid';
 
 export const DEMO_TAXI_ORDERS_STORAGE = 'DEMO_TAXI_ORDERS_STORAGE';
 
@@ -37,10 +38,10 @@ export type DemoTaxiOrders = {
 };
 
 export class DemoTaxiOrdersStorage {
-  private readonly demoTaxiOrdersOfUsers: Record<number, DemoTaxiOrders> = {};
+  private readonly demoTaxiOrdersOfUsers: Record<string, DemoTaxiOrders> = {};
 
-  async getCurrentStep({ telegramUserId }: { telegramUserId: number }) {
-    const state = await this.getState({ telegramUserId });
+  async getCurrentStep(userId: string) {
+    const state = await this.getState(userId);
     const step = (state?.messagesMetadata || []).find(
       (item) => !item?.request || !item?.response
     );
@@ -51,44 +52,37 @@ export class DemoTaxiOrdersStorage {
     return { state, step, stepKey, nextStepKey };
   }
 
-  async getState({
-    telegramUserId,
-  }: {
-    telegramUserId: number;
-  }): Promise<DemoTaxiOrders | null> {
-    const state: DemoTaxiOrders =
-      this.demoTaxiOrdersOfUsers[this.getKey({ telegramUserId })];
+  async getState(userId: string): Promise<DemoTaxiOrders | null> {
+    const state: DemoTaxiOrders = this.demoTaxiOrdersOfUsers[userId];
     if (state) {
       return state;
     }
     return null;
   }
 
-  async clearState(telegramUserId: number): Promise<DemoTaxiOrders | null> {
-    this.demoTaxiOrdersOfUsers[this.getKey({ telegramUserId })] = {
+  async clearState(userId: string): Promise<DemoTaxiOrders | null> {
+    this.demoTaxiOrdersOfUsers[userId] = {
       id: '',
       userId: '',
       messagesMetadata: [],
     };
-    return this.demoTaxiOrdersOfUsers[this.getKey({ telegramUserId })];
+    return this.demoTaxiOrdersOfUsers[userId];
   }
 
-  async delState({ telegramUserId }: { telegramUserId: number }) {
-    delete this.demoTaxiOrdersOfUsers[this.getKey({ telegramUserId })];
+  async delState(userId: string) {
+    delete this.demoTaxiOrdersOfUsers[userId];
   }
 
   async pathState({
-    telegramUserId,
+    userId,
     state,
   }: {
-    telegramUserId: number;
+    userId: string;
     state: Partial<DemoTaxiOrders>;
   }): Promise<Partial<DemoTaxiOrders> | null> {
-    let currentState = await this.getState({
-      telegramUserId,
-    });
+    let currentState = await this.getState(userId);
     if (!currentState) {
-      currentState = await this.clearState(telegramUserId);
+      currentState = await this.clearState(userId);
     }
     const newDemoTaxiOrders = {
       ...currentState,
@@ -101,13 +95,12 @@ export class DemoTaxiOrdersStorage {
           {}),
         step: stepKey as DemoTaxiOrdersSteps,
       })),
+      id: currentState?.id || v4(),
     };
-    this.demoTaxiOrdersOfUsers[this.getKey({ telegramUserId })] =
-      newDemoTaxiOrders;
-    return newDemoTaxiOrders;
-  }
+    this.demoTaxiOrdersOfUsers[userId] = newDemoTaxiOrders as DemoTaxiOrders;
 
-  private getKey({ telegramUserId }: { telegramUserId: number }) {
-    return telegramUserId.toString();
+    console.log(newDemoTaxiOrders);
+
+    return newDemoTaxiOrders;
   }
 }

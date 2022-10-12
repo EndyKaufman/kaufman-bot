@@ -404,7 +404,10 @@
     "start": "",
     "stop": "",
     "Your answer": "",
-    "Your meeting information has been deleted {{unamused}}": ""
+    "Your meeting information has been deleted {{unamused}}": "",
+    "City": "",
+    "Please choice direction": "",
+    "Village": ""
   },
   "demo-taxi-orders-server": {
     "Commands for demo taxi orders": "",
@@ -430,6 +433,9 @@
     "start": "",
     "stop": "",
     "Your answer": "",
-    "Your meeting information has been deleted {{unamused}}": ""
+    "Your meeting information has been deleted {{unamused}}": "",
+    "City": "",
+    "Please choice direction": "",
+    "Village": ""
   }
 }

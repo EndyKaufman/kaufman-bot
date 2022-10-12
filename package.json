@@ -151,7 +151,7 @@
     "jschardet": "^3.0.0",
     "micromatch": "^4.0.5",
     "mustache": "^4.2.0",
-    "nestjs-custom-injector": "^1.0.1",
+    "nestjs-custom-injector": "^2.2.3",
     "nestjs-telegraf": "^2.4.0",
     "nestjs-translates": "^1.0.3",
     "pg": "^8.7.3",

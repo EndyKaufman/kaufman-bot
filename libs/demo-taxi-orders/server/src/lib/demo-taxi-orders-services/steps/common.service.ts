@@ -51,7 +51,7 @@ export class CommonService {
         msg.text,
         [this.config.name],
         locale
-      ) || Object.keys(botCommandHandlerContext).length > 0
+      ) || Object.keys(botCommandHandlerContext || {}).length > 0
     );
   }
 

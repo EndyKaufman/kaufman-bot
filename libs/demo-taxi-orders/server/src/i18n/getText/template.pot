@@ -77,3 +77,12 @@ msgstr "Your answer"
 
 msgid "Your meeting information has been deleted {{unamused}}"
 msgstr "Your meeting information has been deleted {{unamused}}"
+
+msgid "City"
+msgstr "City"
+
+msgid "Please choice direction"
+msgstr "Please choice direction"
+
+msgid "Village"
+msgstr "Village"

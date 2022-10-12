@@ -404,7 +404,10 @@
     "start": "start",
     "stop": "stop",
     "Your answer": "Your answer",
-    "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}"
+    "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}",
+    "City": "City",
+    "Please choice direction": "Please choice direction",
+    "Village": "Village"
   },
   "demo-taxi-orders-server": {
     "Commands for demo taxi orders": "Commands for demo taxi orders",
@@ -430,6 +433,9 @@
     "start": "start",
     "stop": "stop",
     "Your answer": "Your answer",
-    "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}"
+    "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}",
+    "City": "City",
+    "Please choice direction": "Please choice direction",
+    "Village": "Village"
   }
 }
