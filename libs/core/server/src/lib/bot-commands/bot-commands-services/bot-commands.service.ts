@@ -74,12 +74,6 @@ export class BotCommandsService implements BotCommandsProvider {
       return;
     }
 
-    const contextMessageId =
-      this.botCommandsToolsService.getContextMessageId(msg);
-    await this.botCommandsStorage.setLatestStateByChildMessageId(
-      contextMessageId
-    );
-
     let recursiveDepth = 1;
     while (
       recursiveDepth > 0 &&
@@ -91,13 +85,10 @@ export class BotCommandsService implements BotCommandsProvider {
 
       if (result?.type === 'message') {
         msg = result.message;
-
-        const contextMessageId =
-          this.botCommandsToolsService.getContextMessageId(msg);
-        await this.botCommandsStorage.setLatestStateByChildMessageId(
-          contextMessageId
-        );
       }
+
+      const contextMessageId =
+        this.botCommandsToolsService.getContextMessageId(msg);
 
       const userId = this.botCommandsToolsService.getChatId(msg);
 
@@ -213,12 +204,6 @@ export class BotCommandsService implements BotCommandsProvider {
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    const contextMessageId =
-      this.botCommandsToolsService.getContextMessageId(msg);
-    await this.botCommandsStorage.setLatestStateByChildMessageId(
-      contextMessageId
-    );
-
     if (!msg?.botCommandHandlerBreak) {
       result = await this.processOnMessage(result, msg, ctx);
     }
@@ -318,9 +303,6 @@ export class BotCommandsService implements BotCommandsProvider {
     if (!msg) {
       return result;
     }
-    const chatId = this.botCommandsToolsService.getChatId(msg);
-    const messageId = this.botCommandsToolsService.getMessageId(msg);
-
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
@@ -333,11 +315,6 @@ export class BotCommandsService implements BotCommandsProvider {
           msg.botCommandHandlerId =
             botCommandsProvider.botCommandHandlerId || null;
         }
-      }
-      if (msg?.botCommandHandlerClearState || msg?.botCommandHandlerBreak) {
-        await this.botCommandsStorage.delState(chatId, messageId);
-        msg.botCommandHandlerClearState = false;
-        msg.botCommandHandlerBreak = false;
       }
     }
     return result;
@@ -353,12 +330,6 @@ export class BotCommandsService implements BotCommandsProvider {
     }
     const chatId = this.botCommandsToolsService.getChatId(msg);
     const messageId = this.botCommandsToolsService.getMessageId(msg);
-
-    const contextMessageId =
-      this.botCommandsToolsService.getContextMessageId(msg);
-    await this.botCommandsStorage.setLatestStateByChildMessageId(
-      contextMessageId
-    );
 
     let state = await this.botCommandsStorage.getState(chatId, messageId);
 
@@ -402,12 +373,6 @@ export class BotCommandsService implements BotCommandsProvider {
         botCommandHandlerContext: result.context || {},
       });
       // }
-    }
-
-    if (msg?.botCommandHandlerClearState || msg?.botCommandHandlerBreak) {
-      await this.botCommandsStorage.delState(chatId, messageId);
-      msg.botCommandHandlerClearState = false;
-      msg.botCommandHandlerBreak = false;
     }
     return result;
   }

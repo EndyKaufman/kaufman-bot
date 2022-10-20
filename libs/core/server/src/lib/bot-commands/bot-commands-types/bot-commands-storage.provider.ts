@@ -19,5 +19,4 @@ export interface BotCommandsStorageProvider {
     messageId: string,
     state: Partial<StorageItem>
   ): Promise<StorageItem | null>;
-  setLatestStateByChildMessageId(messageId: string): Promise<void>;
 }

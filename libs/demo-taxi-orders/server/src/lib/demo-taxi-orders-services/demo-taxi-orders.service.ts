@@ -58,7 +58,6 @@ export class DemoTaxiOrdersService
     }
     if (+msg.text === 1 || msg.data === '>>1') {
       const date = +new Date();
-      msg.botCommandHandlerClearState = true;
       return {
         type: 'text',
         text: '>1:' + date,

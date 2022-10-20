@@ -13,28 +13,6 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
-  async setLatestStateByChildMessageId(messageId: string): Promise<void> {
-    const messages = Object.keys(this.storage).filter((key) =>
-      this.storage[key]?.messageIds.includes(messageId)
-    );
-    if (messages.length > 0) {
-      const context =
-        messages.reduce(
-          (all: StorageItem['botCommandHandlerContext'], cur: string) => ({
-            ...all,
-            ...(this.storage[cur]?.botCommandHandlerContext || {}),
-          }),
-          {}
-        ) || {};
-      const state = (messages[0] && this.storage[messages[0]]) || null;
-      const [userId] = messages[0].split(':');
-      this.patchState(userId, 'latest', {
-        ...state,
-        botCommandHandlerContext: context,
-      });
-    }
-  }
-
   async getState(
     userId: string,
     messageId: string
@@ -43,17 +21,6 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
   }
 
   async delState(userId: string, messageId: string): Promise<void> {
-    const currentState = await this.getState(userId, messageId);
-
-    const messageIds = (currentState?.messageIds || []).filter(
-      (v) => v !== messageId
-    );
-    if (messageIds[0]) {
-      await this.patchState(userId, messageIds[0], {
-        ...(currentState || {}),
-      });
-    }
-
     this.storage[this.getKey(userId, messageId)] = null;
   }
 
@@ -63,22 +30,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     state: Partial<StorageItem>
   ): Promise<StorageItem | null> {
     const currentState = await this.getState(userId, messageId);
-    if (
-      currentState?.botCommandHandlerId &&
-      currentState?.botCommandHandlerId !== state.botCommandHandlerId
-    ) {
-      const messageIds = (currentState?.messageIds || []).filter(
-        (v) => v !== messageId
-      );
-      await this.patchState(userId, messageIds[0], {
-        ...(currentState || {}),
-      });
-      currentState.messageIds = [];
-      state.request = undefined;
-      state.response = undefined;
-      state.messageIds = [];
-      state.botCommandHandlerContext = {};
-    }
+
     const messageIds = [
       ...new Set(
         [
@@ -119,11 +71,13 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     } as StorageItem;
     const newState = await this.getState(userId, messageId);
     // console.log({
+    //   name,
     //   userId,
     //   messageId,
-    //   messageIds,
+    //   messageIds: newMessageIds,
     //   botCommandHandlerId: newState?.botCommandHandlerId,
     // });
+    console.log(this.storage);
     return newState;
   }
 
