@@ -8,15 +8,19 @@ export interface StorageItem {
   botCommandHandlerContext?: Record<string, any>;
   response: BotCommandsProviderActionResultType<unknown>;
   request: BotCommandsProviderActionResultType<unknown>;
-  messageIds: string[];
+  usedMessageIds: string[];
 }
 
 export interface BotCommandsStorageProvider {
+  getStateByUsedMessageId(
+    userId: string,
+    usedMessageId: string
+  ): Promise<StorageItem | null>;
   getState(userId: string, messageId: string): Promise<StorageItem | null>;
   delState(userId: string, messageId: string): Promise<void>;
   patchState(
     userId: string,
     messageId: string,
     state: Partial<StorageItem>
-  ): Promise<StorageItem | null>;
+  ): Promise<void>;
 }

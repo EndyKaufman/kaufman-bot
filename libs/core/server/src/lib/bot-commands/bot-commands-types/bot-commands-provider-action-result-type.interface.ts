@@ -7,6 +7,7 @@ export type BotCommandsProviderActionResultType<T> =
       markdown: string;
       context?: Record<string, unknown>;
       recursive?: boolean;
+      newState?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
       callback?: (
@@ -22,6 +23,7 @@ export type BotCommandsProviderActionResultType<T> =
       text: string;
       context?: Record<string, unknown>;
       recursive?: boolean;
+      newState?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
       callback?: (
@@ -36,6 +38,7 @@ export type BotCommandsProviderActionResultType<T> =
       message: T;
       context?: Record<string, unknown>;
       recursive?: boolean;
+      newState?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
       callback?: (
@@ -50,6 +53,7 @@ export type BotCommandsProviderActionResultType<T> =
       message: T;
       context?: Record<string, unknown>;
       recursive?: boolean;
+      newState?: boolean;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       custom?: any;
       callback?: (

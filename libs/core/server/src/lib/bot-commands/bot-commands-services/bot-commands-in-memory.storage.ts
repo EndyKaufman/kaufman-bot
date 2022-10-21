@@ -13,6 +13,26 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
+  async getStateByUsedMessageId(
+    userId: string,
+    usedMessageId: string
+  ): Promise<StorageItem | null> {
+    const messages = Object.keys(this.storage).filter(
+      (key) =>
+        key.startsWith(`${userId}:`, 0) &&
+        this.storage[key]?.usedMessageIds.includes(usedMessageId)
+    );
+    if (messages.length === 1) {
+      return this.storage[messages[0]];
+    }
+    if (messages.length > 1) {
+      throw new Error(
+        `Founded ${messages.length} states with usedMessageId = ${usedMessageId}`
+      );
+    }
+    return null;
+  }
+
   async getState(
     userId: string,
     messageId: string
@@ -28,14 +48,14 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     userId: string,
     messageId: string,
     state: Partial<StorageItem>
-  ): Promise<StorageItem | null> {
+  ): Promise<void> {
     const currentState = await this.getState(userId, messageId);
 
-    const messageIds = [
+    const usedMessageIds = [
       ...new Set(
         [
-          ...(currentState?.messageIds || []),
-          ...(state.messageIds || []),
+          ...(currentState?.usedMessageIds || []),
+          ...(state.usedMessageIds || []),
           state.request
             ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
               this.botCommandsToolsService.getReplyMessageId<any>(
@@ -67,18 +87,9 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
         ...(currentState?.botCommandHandlerContext || {}),
         ...(state?.botCommandHandlerContext || {}),
       },
-      messageIds,
+      usedMessageIds,
     } as StorageItem;
-    const newState = await this.getState(userId, messageId);
-    // console.log({
-    //   name,
-    //   userId,
-    //   messageId,
-    //   messageIds: newMessageIds,
-    //   botCommandHandlerId: newState?.botCommandHandlerId,
-    // });
     console.log(this.storage);
-    return newState;
   }
 
   private getKey(userId: string, messageId: string) {

@@ -62,6 +62,7 @@ export class DemoTaxiOrdersService
         type: 'text',
         text: '>1:' + date,
         message: msg,
+        newState: true,
         custom: {
           ...Markup.inlineKeyboard([Markup.button.callback('1', '>>1')]),
         },
