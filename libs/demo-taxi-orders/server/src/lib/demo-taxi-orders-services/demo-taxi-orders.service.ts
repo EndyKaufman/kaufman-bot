@@ -16,6 +16,8 @@ import {
 export class DemoTaxiOrdersService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  botCommandHandlerId = DemoTaxiOrdersService.name;
+
   constructor(
     @Inject(DEMO_TAXI_ORDERS_CONFIG)
     private readonly config: DemoTaxiOrdersConfig

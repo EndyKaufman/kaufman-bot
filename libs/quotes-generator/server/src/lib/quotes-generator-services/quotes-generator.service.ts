@@ -13,6 +13,8 @@ import { Injectable } from '@nestjs/common';
 export class QuotesGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  botCommandHandlerId = QuotesGeneratorService.name;
+
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botCommandsToolsService: BotCommandsToolsService

@@ -8,7 +8,7 @@ export const BOT_COMMANDS_PROVIDER = Symbol('BOT_COMMANDS_PROVIDER');
 export type BotCommandsProviderActionContext = Context<Update.MessageUpdate>;
 
 export interface BotCommandsProvider {
-  botCommandHandlerId?: string;
+  botCommandHandlerId: string;
 
   onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg

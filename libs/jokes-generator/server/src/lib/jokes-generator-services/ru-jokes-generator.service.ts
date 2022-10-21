@@ -15,6 +15,8 @@ const RUSSIAN_LANGUAGE = 'ru';
 export class RuJokesGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  botCommandHandlerId = RuJokesGeneratorService.name;
+
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botCommandsToolsService: BotCommandsToolsService

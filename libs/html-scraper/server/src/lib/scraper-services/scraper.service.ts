@@ -24,6 +24,8 @@ import {
 export class ScraperService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  botCommandHandlerId = ScraperService.name;
+
   private readonly logger = new Logger(ScraperService.name);
 
   constructor(
@@ -207,8 +209,7 @@ export class ScraperService
       const response = await axiosInstance.get(repalcedUri, {
         headers: this.botCommandsToolsService.getRandomItem(headers),
       });
-
-      const $ = cheerio.load(response.data);
+      const $ = cheerio.load(String(response.data));
       let content = this.scraperConfig.contentSelector
         .split(',')
         .map((selector: string) => htmlToText.fromString($(selector).html()))
@@ -222,6 +223,17 @@ export class ScraperService
         content = encoding
           .convert(Buffer.from(content, 'binary'), 'utf8', enc, true)
           .toString('utf8');
+      }
+      if (!content) {
+        this.logger.debug(
+          JSON.stringify({
+            scraperConfig: this.scraperConfig,
+            repalcedUri,
+            data: response.data,
+            enc,
+            selectors: this.scraperConfig.contentSelector,
+          })
+        );
       }
       return content;
     } catch (err) {

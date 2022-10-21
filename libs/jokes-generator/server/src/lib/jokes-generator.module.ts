@@ -33,6 +33,7 @@ export class JokesGeneratorModule {
                 getText('get jokes'),
                 getText('jokes help'),
               ],
+              headers: [],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#joke > table > tbody > tr > td',
               spyWords: [getText('jokes'), getText('joke')],

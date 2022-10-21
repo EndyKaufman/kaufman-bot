@@ -26,6 +26,8 @@ import { DebugService } from './debug.service';
 export class DebugMessagesService
   implements BotCommandsProvider, OnBeforeBotCommands, OnAfterBotCommands
 {
+  botCommandHandlerId = DebugMessagesService.name;
+
   private readonly logger = new Logger(DebugMessagesService.name);
 
   @CustomInject(DEBUG_MESSAGES_STORAGE)

@@ -21,6 +21,8 @@ export const DISABLE_SHORT_COMMANDS__BEFORE_HOOK =
 export class ShortCommandsService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
+  botCommandHandlerId = ShortCommandsService.name;
+
   private readonly logger = new Logger(ShortCommandsService.name);
 
   constructor(

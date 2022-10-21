@@ -17,6 +17,8 @@ import {
 export class BotInGroupsService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
+  botCommandHandlerId = BotInGroupsService.name;
+
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,

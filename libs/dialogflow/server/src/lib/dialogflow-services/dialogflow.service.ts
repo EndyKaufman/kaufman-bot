@@ -23,6 +23,8 @@ export const DISABLE_DIALOGFLOW_COMMANDS = 'DISABLE_DIALOGFLOW_COMMANDS';
 export class DialogflowService
   implements BotCommandsProvider, OnAfterBotCommands
 {
+  botCommandHandlerId = DialogflowService.name;
+
   private readonly logger = new Logger(DialogflowService.name);
 
   @CustomInject(DIALOGFLOW_STORAGE)
