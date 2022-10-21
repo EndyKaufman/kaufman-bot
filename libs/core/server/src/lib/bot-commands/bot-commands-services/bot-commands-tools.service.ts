@@ -8,6 +8,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { LATEST_MESSAGE_ID } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsCategory } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import {
@@ -47,13 +48,14 @@ export class BotCommandsToolsService {
       msg?.reply_to_message?.message_id ||
       msg?.message?.message_id ||
       msg?.message_id;
-    return id ? String(id) : 'latest';
+    return id ? String(id) : LATEST_MESSAGE_ID;
   }
 
   getMessageId<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   >(msg: TMsg) {
-    return 'latest';
+    return LATEST_MESSAGE_ID;
   }
 
   getChatId<

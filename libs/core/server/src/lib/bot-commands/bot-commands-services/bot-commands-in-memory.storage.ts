@@ -89,7 +89,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
       },
       usedMessageIds,
     } as StorageItem;
-    console.log(this.storage);
+    // console.log(this.storage);
   }
 
   private getKey(userId: string, messageId: string) {
