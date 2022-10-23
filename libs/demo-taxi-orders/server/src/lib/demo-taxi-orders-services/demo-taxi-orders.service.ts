@@ -3,6 +3,7 @@ import {
   BotCommandsProvider,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
+  BotCommandsToolsService,
   OnContextBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
@@ -20,7 +21,8 @@ export class DemoTaxiOrdersService
 
   constructor(
     @Inject(DEMO_TAXI_ORDERS_CONFIG)
-    private readonly config: DemoTaxiOrdersConfig
+    private readonly config: DemoTaxiOrdersConfig,
+    private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
   async onContextBotCommands<
@@ -36,6 +38,16 @@ export class DemoTaxiOrdersService
       };
     }
     if (+msg.text === 3 || msg.data === '>>3') {
+      if (msg.data === '>>3') {
+        await ctx.telegram.editMessageText(
+          this.botCommandsToolsService.getChatId(msg),
+          this.botCommandsToolsService.getContextMessageId(msg),
+          undefined,
+          'hoi'
+        );
+        msg.botCommandHandlerBreak = true;
+        return { type: 'message', message: msg };
+      }
       return {
         type: 'text',
         text: '>3:' + msg.botCommandHandlerContext.date,

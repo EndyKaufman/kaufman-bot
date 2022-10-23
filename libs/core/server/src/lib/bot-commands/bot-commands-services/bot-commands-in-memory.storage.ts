@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { LATEST_MESSAGE_ID } from '../bot-commands-constants/bot-commands.constants';
 import {
   BotCommandsStorageProvider,
   StorageItem,
@@ -20,6 +21,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     const messages = Object.keys(this.storage).filter(
       (key) =>
         key.startsWith(`${userId}:`, 0) &&
+        !key.startsWith(`${userId}:${LATEST_MESSAGE_ID}`, 0) &&
         this.storage[key]?.usedMessageIds.includes(usedMessageId)
     );
     if (messages.length === 1) {
