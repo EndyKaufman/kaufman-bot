@@ -111,8 +111,8 @@ msgstr "Contact phone - {value}"
 msgid "get"
 msgstr "get"
 
-msgid "Please set contact phone"
-msgstr "Please set contact phone"
+msgid "Please send contact phone"
+msgstr "Please send contact phone"
 
 msgid "Please choice count of passengers (current: {value})"
 msgstr "Please choice count of passengers (current: {value})"
@@ -120,5 +120,5 @@ msgstr "Please choice count of passengers (current: {value})"
 msgid "Please choice direction (current: {value})"
 msgstr "Please choice direction (current: {value})"
 
-msgid "Please set contact phone (current: {value})"
-msgstr "Please set contact phone (current: {value})"
+msgid "Please send contact phone (current: {value})"
+msgstr "Please send contact phone (current: {value})"

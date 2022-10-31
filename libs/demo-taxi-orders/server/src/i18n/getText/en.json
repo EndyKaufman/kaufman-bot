@@ -34,8 +34,8 @@
   "Taxi order:": "Taxi order:",
   "Contact phone - {value}": "Contact phone - {value}",
   "get": "get",
-  "Please set contact phone": "Please set contact phone",
+  "Please send contact phone": "Please send contact phone",
   "Please choice count of passengers (current: {value})": "Please choice count of passengers (current: {value})",
   "Please choice direction (current: {value})": "Please choice direction (current: {value})",
-  "Please set contact phone (current: {value})": "Please set contact phone (current: {value})"
+  "Please send contact phone (current: {value})": "Please send contact phone (current: {value})"
 }

@@ -273,11 +273,12 @@ export class DemoTaxiOrdersService
     if (localContext.currentStep === DemoTaxiOrdersSteps.Direction) {
       mainButtons = [
         Markup.button.callback(
-          '🌆 ' + this.translatesService.translate(getText('City'), locale),
+          '🌆 ' + this.getTranslatedDirectionTextByEnum(Direction.City, locale),
           Direction.City
         ),
         Markup.button.callback(
-          '🏡 ' + this.translatesService.translate(getText('Village'), locale),
+          '🏡 ' +
+            this.getTranslatedDirectionTextByEnum(Direction.Village, locale),
           Direction.Village
         ),
       ];
@@ -362,10 +363,22 @@ export class DemoTaxiOrdersService
                       getText(`Please choice direction (current: {value})`),
                       locale
                     )
-                    .replace('{value}', localContext.direction)
+                    .replace(
+                      '{value}',
+                      this.getTranslatedDirectionTextByEnum(
+                        localContext.direction,
+                        locale
+                      )
+                    )
                 : this.translatesService
                     .translate(getText(`Direction - {value}`), locale)
-                    .replace('{value}', localContext.direction)
+                    .replace(
+                      '{value}',
+                      this.getTranslatedDirectionTextByEnum(
+                        localContext.direction,
+                        locale
+                      )
+                    )
               : localContext.currentStep === DemoTaxiOrdersSteps.Direction
               ? this.translatesService.translate(
                   getText('Please choice direction'),
@@ -401,7 +414,7 @@ export class DemoTaxiOrdersService
               ? localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
                 ? this.translatesService
                     .translate(
-                      getText(`Please set contact phone (current: {value})`),
+                      getText(`Please send contact phone (current: {value})`),
                       locale
                     )
                     .replace('{value}', localContext.contactPhone)
@@ -414,7 +427,7 @@ export class DemoTaxiOrdersService
                   )
               : localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
               ? this.translatesService.translate(
-                  getText('Please set contact phone'),
+                  getText('Please send contact phone'),
                   locale
                 )
               : ''
@@ -427,7 +440,13 @@ export class DemoTaxiOrdersService
                 ),
                 this.translatesService
                   .translate(getText(`Direction - {value}`), locale)
-                  .replace('{value}', localContext.direction || 'null'),
+                  .replace(
+                    '{value}',
+                    this.getTranslatedDirectionTextByEnum(
+                      localContext.direction,
+                      locale
+                    ) || 'null'
+                  ),
                 this.translatesService
                   .translate(getText(`Count of passengers - {value}`), locale)
                   .replace('{value}', localContext.countOfPassengers || 'null'),
@@ -449,6 +468,19 @@ export class DemoTaxiOrdersService
         Object.assign(context, localContext);
       },
     };
+  }
+
+  private getTranslatedDirectionTextByEnum(
+    direction: Direction | undefined,
+    locale: string
+  ) {
+    if (direction === Direction.City) {
+      return this.translatesService.translate(getText('City'), locale);
+    }
+    if (direction === Direction.Village) {
+      return this.translatesService.translate(getText('Village'), locale);
+    }
+    return '';
   }
 
   async onHelp<
