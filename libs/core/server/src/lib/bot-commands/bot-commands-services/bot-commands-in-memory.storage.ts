@@ -7,8 +7,11 @@ import {
 import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()
-export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
-  private readonly storage: Record<string, StorageItem | null> = {};
+export class BotCommandsInMemoryStorage<
+  TMessage extends { context?: Record<string, unknown> }
+> implements BotCommandsStorageProvider<TMessage>
+{
+  private readonly storage: Record<string, StorageItem<TMessage> | null> = {};
 
   constructor(
     private readonly botCommandsToolsService: BotCommandsToolsService
@@ -17,7 +20,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
   async getStateByUsedMessageId(
     userId: string,
     usedMessageId: string
-  ): Promise<StorageItem | null> {
+  ): Promise<StorageItem<TMessage> | null> {
     const messages = Object.keys(this.storage).filter(
       (key) =>
         key.startsWith(`${userId}:`, 0) &&
@@ -38,7 +41,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
   async getState(
     userId: string,
     messageId: string
-  ): Promise<StorageItem | null> {
+  ): Promise<StorageItem<TMessage> | null> {
     return this.storage[this.getKey(userId, messageId)] || null;
   }
 
@@ -49,7 +52,7 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
   async patchState(
     userId: string,
     messageId: string,
-    state: Partial<StorageItem>
+    state: Partial<StorageItem<TMessage>>
   ): Promise<void> {
     const currentState = await this.getState(userId, messageId);
 
@@ -85,12 +88,12 @@ export class BotCommandsInMemoryStorage implements BotCommandsStorageProvider {
     ];
     this.storage[this.getKey(userId, messageId)] = {
       ...state,
-      botCommandHandlerContext: {
-        ...(currentState?.botCommandHandlerContext || {}),
-        ...(state?.botCommandHandlerContext || {}),
+      context: {
+        ...(currentState?.context || {}),
+        ...(state?.context || {}),
       },
       usedMessageIds,
-    } as StorageItem;
+    } as StorageItem<TMessage>;
     // console.log(this.storage);
   }
 

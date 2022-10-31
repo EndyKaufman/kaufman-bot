@@ -9,44 +9,12 @@ import { TranslatesModule } from 'nestjs-translates';
 import {
   DemoTaxiOrdersConfig,
   DEMO_TAXI_ORDERS_CONFIG,
-} from './demo-taxi-orders-config/demo-taxi-orders.config';
-import { DemoTaxiOrdersService } from './demo-taxi-orders-services/demo-taxi-orders.service';
-import {
-  DemoTaxiOrdersStorage,
-  DEMO_TAXI_ORDERS_STORAGE,
-} from './demo-taxi-orders-services/demo-taxi-orders.storage';
-import { CancelStepContextService } from './demo-taxi-orders-services/steps/cancel-step.service';
-import { CommonService } from './demo-taxi-orders-services/steps/common.service';
-import { DirectionStepContextService } from './demo-taxi-orders-services/steps/direction-step.service';
-import { HelpStepService } from './demo-taxi-orders-services/steps/help-step.service';
-import { StartStepService } from './demo-taxi-orders-services/steps/start-step.service';
+} from './demo-taxi-orders.config';
+import { DemoTaxiOrdersService } from './demo-taxi-orders.service';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
-  providers: [
-    { provide: DEMO_TAXI_ORDERS_STORAGE, useClass: DemoTaxiOrdersStorage },
-    CommonService,
-    StartStepService,
-    DirectionStepContextService,
-    CancelStepContextService,
-    HelpStepService,
-  ],
-  exports: [
-    TranslatesModule,
-    BotCommandsModule,
-    DEMO_TAXI_ORDERS_STORAGE,
-    CommonService,
-    StartStepService,
-    DirectionStepContextService,
-    CancelStepContextService,
-    HelpStepService,
-  ],
-})
-export class DemoTaxiOrdersModuleCore {}
-
-@Module({
-  imports: [DemoTaxiOrdersModuleCore],
-  exports: [DemoTaxiOrdersModuleCore],
+  exports: [TranslatesModule, BotCommandsModule],
 })
 export class DemoTaxiOrdersModule {
   static forRoot(): DynamicModule {
@@ -58,7 +26,7 @@ export class DemoTaxiOrdersModule {
           useValue: <DemoTaxiOrdersConfig>{
             title: getText('Demo taxi orders commands'),
             name: 'taxi',
-            usage: [getText('taxi ping'), getText('taxi help')],
+            usage: [getText('get taxi'), getText('taxi help')],
             descriptions: getText('Commands for demo taxi orders'),
             spyWords: [getText('taxi')],
             category: BotCommandsCategory.user,

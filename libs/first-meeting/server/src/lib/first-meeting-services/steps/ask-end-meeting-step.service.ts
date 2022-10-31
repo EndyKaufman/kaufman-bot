@@ -32,16 +32,15 @@ export class EndMeetingStepContextService {
     msg: BotCommandsProviderActionMsg;
     activateStatus: string;
   }) {
-    const botCommandHandlerContext: Partial<FirstMeeting> =
-      msg.botCommandHandlerContext;
+    const context: Partial<FirstMeeting> = msg.context;
     return (
       this.commonService.isContextProcess({ msg }) &&
-      botCommandHandlerContext?.status === activateStatus
+      context?.status === activateStatus
     );
   }
 
   async do({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const context: Partial<FirstMeeting> = msg.botCommandHandlerContext;
+    const context: Partial<FirstMeeting> = msg.context;
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state: Partial<FirstMeeting> = {
       ...context,

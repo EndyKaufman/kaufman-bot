@@ -64,15 +64,14 @@ export class CommonService {
   }
 
   isContextProcess({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const botCommandHandlerContext: Partial<FirstMeeting> =
-      msg.botCommandHandlerContext;
+    const context: Partial<FirstMeeting> = msg.context;
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return (
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [this.config.name],
         locale
-      ) || Object.keys(botCommandHandlerContext).length > 0
+      ) || Object.keys(context).length > 0
     );
   }
 

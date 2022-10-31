@@ -1,15 +1,20 @@
 import { Update } from 'telegraf/typings/core/types/typegram';
 
-export type BotCommandsProviderActionMsg = Update.MessageUpdate['message'] & {
+export type BotCommandsProviderActionMsg<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TLocalContext = Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TGlobalContext = Record<string, any>
+> = Update.MessageUpdate['message'] & {
   text: string;
   data: string;
-  botStart: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  botGlobalContext?: Record<string, any>;
+  isStart: boolean;
+  botGlobalContext?: TGlobalContext;
   botCommandHandlerId?: string;
   botCommandHandlerBreak: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  botCommandHandlerContext: Record<string, any>;
-} & { chat: { id: number } } & { message: Update.MessageUpdate['message'] } & {
+  context: TLocalContext;
+} & { chat: { id: number } } & {
+  message: Update.MessageUpdate['message'];
+} & {
   reply_to_message: Update.MessageUpdate['message'];
 };

@@ -144,7 +144,9 @@ export class BotCommandsToolsService {
         }__`
       : '';
     const descriptions = options.descriptions
-      ? this.translatesService.translate(options.descriptions, options.locale)
+      ? this.prepareHelpString(
+          this.translatesService.translate(options.descriptions, options.locale)
+        )
       : '';
     const usage =
       usageWithLocalized.length > 0

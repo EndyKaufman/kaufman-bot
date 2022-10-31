@@ -8,82 +8,118 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 msgid "Commands for demo taxi orders"
-msgstr ""
+msgstr "Команды для формирования заявок в демо такси"
 
 msgid "Demo taxi orders commands"
-msgstr ""
+msgstr "Команды для заявок в демо такси"
 
 msgid "taxi"
-msgstr ""
+msgstr "такси"
 
 msgid "taxi help"
-msgstr ""
+msgstr "такси помощь"
 
-msgid "taxi ping"
-msgstr ""
+msgid "get taxi"
+msgstr "дай такси"
 
 msgid "ping"
-msgstr ""
+msgstr "пинг"
 
 msgid "pong"
-msgstr ""
+msgstr "понг"
 
 msgid "{{close}} Meeting canceled"
-msgstr ""
+msgstr "{{close}} Знакомство прервано"
 
 msgid "cancel"
-msgstr ""
+msgstr "отмена"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 msgid "end"
-msgstr ""
+msgstr "конец"
 
 msgid "exit"
-msgstr ""
+msgstr "выход"
 
 msgid "hello"
-msgstr ""
+msgstr "здравствуйте"
 
 msgid "hey"
-msgstr ""
+msgstr "привет"
 
 msgid "hi"
-msgstr ""
+msgstr "привет"
 
 msgid "I forgot about your existence {{worried}}"
-msgstr ""
+msgstr "Я забыл о вашем существовании {{worried}}"
 
 msgid "next"
-msgstr ""
+msgstr "дальше"
 
 msgid "Next"
-msgstr ""
+msgstr "Дальше"
 
 msgid "reset"
-msgstr ""
+msgstr "сбросить"
 
 msgid "skip"
-msgstr ""
+msgstr "пропустить"
 
 msgid "start"
-msgstr ""
+msgstr "начать"
 
 msgid "stop"
-msgstr ""
+msgstr "стоп"
 
 msgid "Your answer"
-msgstr ""
+msgstr "Ваш ответ"
 
 msgid "Your meeting information has been deleted {{unamused}}"
-msgstr ""
+msgstr "Сведения о знакомстве были удалены {{unamused}}"
 
 msgid "City"
-msgstr ""
+msgstr "Город"
 
 msgid "Please choice direction"
-msgstr ""
+msgstr "Выберите направление"
 
 msgid "Village"
-msgstr ""
+msgstr "Деревня"
+
+msgid "Count of passengers - {value}"
+msgstr "Количество пассажиров - {value}"
+
+msgid "Direction - {value}"
+msgstr "Направление - {value}"
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Please choice count of passengers"
+msgstr "Укажите кол-во пассажиров"
+
+msgid "Prev"
+msgstr "Назад"
+
+msgid "Taxi order:"
+msgstr "Заявка на такси:"
+
+msgid "Contact phone - {value}"
+msgstr "Телефон - {value}"
+
+msgid "get"
+msgstr "дай"
+
+msgid "Please set contact phone"
+msgstr "Укажите ваш номер телефона"
+
+msgid "Please choice count of passengers (current: {value})"
+msgstr "Укажите кол-во пассажиров (текущее: {value})"
+
+msgid "Please choice direction (current: {value})"
+msgstr "Выберите направление (текущее: {value})"
+
+msgid "Please set contact phone (current: {value})"
+msgstr "Укажите ваш номер телефона (текущий: {value})"

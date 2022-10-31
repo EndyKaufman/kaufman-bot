@@ -18,8 +18,8 @@ msgstr "taxi"
 msgid "taxi help"
 msgstr "taxi help"
 
-msgid "taxi ping"
-msgstr "taxi ping"
+msgid "get taxi"
+msgstr "get taxi"
 
 msgid "ping"
 msgstr "ping"
@@ -86,3 +86,39 @@ msgstr "Please choice direction"
 
 msgid "Village"
 msgstr "Village"
+
+msgid "Count of passengers - {value}"
+msgstr "Count of passengers - {value}"
+
+msgid "Direction - {value}"
+msgstr "Direction - {value}"
+
+msgid "Done"
+msgstr "Done"
+
+msgid "Please choice count of passengers"
+msgstr "Please choice count of passengers"
+
+msgid "Prev"
+msgstr "Prev"
+
+msgid "Taxi order:"
+msgstr "Taxi order:"
+
+msgid "Contact phone - {value}"
+msgstr "Contact phone - {value}"
+
+msgid "get"
+msgstr "get"
+
+msgid "Please set contact phone"
+msgstr "Please set contact phone"
+
+msgid "Please choice count of passengers (current: {value})"
+msgstr "Please choice count of passengers (current: {value})"
+
+msgid "Please choice direction (current: {value})"
+msgstr "Please choice direction (current: {value})"
+
+msgid "Please set contact phone (current: {value})"
+msgstr "Please set contact phone (current: {value})"

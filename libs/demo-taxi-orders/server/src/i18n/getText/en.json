@@ -3,7 +3,7 @@
   "Demo taxi orders commands": "Demo taxi orders commands",
   "taxi": "taxi",
   "taxi help": "taxi help",
-  "taxi ping": "taxi ping",
+  "get taxi": "get taxi",
   "ping": "ping",
   "pong": "pong",
   "{{close}} Meeting canceled": "{{close}} Meeting canceled",
@@ -25,5 +25,17 @@
   "Your meeting information has been deleted {{unamused}}": "Your meeting information has been deleted {{unamused}}",
   "City": "City",
   "Please choice direction": "Please choice direction",
-  "Village": "Village"
+  "Village": "Village",
+  "Count of passengers - {value}": "Count of passengers - {value}",
+  "Direction - {value}": "Direction - {value}",
+  "Done": "Done",
+  "Please choice count of passengers": "Please choice count of passengers",
+  "Prev": "Prev",
+  "Taxi order:": "Taxi order:",
+  "Contact phone - {value}": "Contact phone - {value}",
+  "get": "get",
+  "Please set contact phone": "Please set contact phone",
+  "Please choice count of passengers (current: {value})": "Please choice count of passengers (current: {value})",
+  "Please choice direction (current: {value})": "Please choice direction (current: {value})",
+  "Please set contact phone (current: {value})": "Please set contact phone (current: {value})"
 }

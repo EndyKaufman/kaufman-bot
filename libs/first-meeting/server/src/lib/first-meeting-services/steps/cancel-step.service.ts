@@ -48,7 +48,7 @@ export class CancelStepContextService {
     await this.storage.pathState({
       userId: this.botCommandsToolsService.getChatId(msg),
       state: {
-        ...msg.botCommandHandlerContext,
+        ...msg.context,
         status: 'EndMeeting',
         messagesMetadata: { EndMeetingRequest: msg },
       },

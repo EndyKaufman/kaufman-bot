@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@nestjs/common": "^8.0.0",
     "nestjs-custom-injector": "^2.2.3",
-    "nestjs-translates": "^1.0.3",
+    "nestjs-translates": "^1.1.0",
     "class-validator-multi-lang": "^0.130.201",
     "@google-cloud/dialogflow": "^4.7.0"
   }

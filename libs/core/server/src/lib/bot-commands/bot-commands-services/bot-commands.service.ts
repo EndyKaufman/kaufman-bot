@@ -29,7 +29,9 @@ export class BotCommandsService implements BotCommandsProvider {
   private logger = new Logger(BotCommandsService.name);
 
   @CustomInject(BOT_COMMANDS_STORAGE)
-  private botCommandsStorage!: BotCommandsStorageProvider;
+  private botCommandsStorage!: BotCommandsStorageProvider<{
+    context?: Record<string, unknown>;
+  }>;
 
   @CustomInject(BOT_COMMANDS_PROVIDER, {
     multi: true,
@@ -57,7 +59,7 @@ export class BotCommandsService implements BotCommandsProvider {
 
   async start(ctx) {
     const msg: BotCommandsProviderActionMsg = ctx.update.message;
-    msg.botStart = true;
+    msg.isStart = true;
     await this.process(ctx);
   }
 
@@ -118,11 +120,10 @@ export class BotCommandsService implements BotCommandsProvider {
           undefined;
 
         if (result.callback) {
-          const botCommandHandlerContext =
-            state?.botCommandHandlerContext || {};
-          await result.callback(replyResult, botCommandHandlerContext);
+          const context = state?.context || {};
+          await result.callback(replyResult, context);
           if (state) {
-            state.botCommandHandlerContext = botCommandHandlerContext;
+            state.context = context;
           }
         }
 
@@ -158,7 +159,7 @@ export class BotCommandsService implements BotCommandsProvider {
         {
           ...msg,
           botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
-          botCommandHandlerContext: msg?.botCommandHandlerContext || {},
+          context: msg?.context || {},
         },
         ctx
       );
@@ -282,7 +283,7 @@ export class BotCommandsService implements BotCommandsProvider {
           {
             ...msg,
             botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
-            botCommandHandlerContext: msg?.botCommandHandlerContext || {},
+            context: msg?.context || {},
           },
           ctx
         );
@@ -307,7 +308,7 @@ export class BotCommandsService implements BotCommandsProvider {
             {
               ...msg,
               botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
-              botCommandHandlerContext: msg?.botCommandHandlerContext || {},
+              context: msg?.context || {},
             },
             ctx,
             defaultHandler
@@ -332,7 +333,7 @@ export class BotCommandsService implements BotCommandsProvider {
       const botCommandsProvider = this.botCommandsProviders[i];
       if (!result && !msg?.botCommandHandlerBreak) {
         msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
-        msg.botCommandHandlerContext = msg?.botCommandHandlerContext || {};
+        msg.context = msg?.context || {};
         result = await botCommandsProvider.onMessage(msg, ctx);
 
         if (result) {
@@ -369,13 +370,13 @@ export class BotCommandsService implements BotCommandsProvider {
           botCommandsProvider.onContextBotCommands &&
           !msg?.botCommandHandlerBreak
         ) {
-          msg.botCommandHandlerContext = state?.botCommandHandlerContext || {};
+          msg.context = state?.context || {};
 
           result = await botCommandsProvider.onContextBotCommands(
             {
               ...msg,
               botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
-              botCommandHandlerContext: msg?.botCommandHandlerContext || {},
+              context: msg?.context || {},
             },
             ctx
           );
@@ -466,7 +467,7 @@ export class BotCommandsService implements BotCommandsProvider {
       botCommandHandlerId: msg.botCommandHandlerId,
       request: { type: 'message', message: msg },
       response: result,
-      botCommandHandlerContext: result?.context || {},
+      context: result?.context || {},
     });
   }
 }

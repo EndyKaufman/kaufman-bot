@@ -72,11 +72,10 @@ export class AskGenderStepContextService {
     msg: BotCommandsProviderActionMsg;
     activateStatus: string;
   }) {
-    const botCommandHandlerContext: Partial<FirstMeeting> =
-      msg.botCommandHandlerContext;
+    const context: Partial<FirstMeeting> = msg.context;
     return (
       this.commonService.isContextProcess({ msg }) &&
-      botCommandHandlerContext?.status === activateStatus
+      context?.status === activateStatus
     );
   }
 
@@ -100,7 +99,7 @@ export class AskGenderStepContextService {
       text,
       message: msg,
       context: <Partial<FirstMeeting>>{
-        ...msg.botCommandHandlerContext,
+        ...msg.context,
         status: 'AskGender',
         lastname,
       },
