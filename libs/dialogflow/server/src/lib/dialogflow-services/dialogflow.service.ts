@@ -23,7 +23,7 @@ export const DISABLE_DIALOGFLOW_COMMANDS = 'DISABLE_DIALOGFLOW_COMMANDS';
 export class DialogflowService
   implements BotCommandsProvider, OnAfterBotCommands
 {
-  botCommandHandlerId = DialogflowService.name;
+  handlerId = DialogflowService.name;
 
   private readonly logger = new Logger(DialogflowService.name);
 
@@ -45,7 +45,7 @@ export class DialogflowService
     ctx?,
     defaultHandler?: () => Promise<unknown>
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
-    if (msg?.botGlobalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return { result, msg };
     }
 
@@ -89,7 +89,7 @@ export class DialogflowService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg?.botGlobalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return null;
     }
 

@@ -12,7 +12,7 @@ import { Injectable } from '@nestjs/common';
 export class FactsGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
-  botCommandHandlerId = FactsGeneratorService.name;
+  handlerId = FactsGeneratorService.name;
 
   constructor(
     private readonly scraperService: ScraperService,

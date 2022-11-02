@@ -24,7 +24,7 @@ import { ResetStepService } from './steps/reset-step.service';
 export class FirstMeetingService
   implements BotCommandsProvider, OnContextBotCommands
 {
-  botCommandHandlerId = FirstMeetingService.name;
+  handlerId = FirstMeetingService.name;
 
   constructor(
     @Inject(FIRST_MEETING_CONFIG)

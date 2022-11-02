@@ -10,7 +10,7 @@ import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()
 export class BotCommandsBotinfoService implements BotCommandsProvider {
-  botCommandHandlerId = BotCommandsBotinfoService.name;
+  handlerId = BotCommandsBotinfoService.name;
 
   constructor(
     @Inject(BOT_COMMANDS_CONFIG)

@@ -76,7 +76,7 @@ export class CommonService {
   }
 
   async isDisable({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    return msg?.botGlobalContext?.[DISABLE_FIRST_MEETING_COMMANDS];
+    return msg?.globalContext?.[DISABLE_FIRST_MEETING_COMMANDS];
   }
 
   checkSpyWords({ msg }: { msg: BotCommandsProviderActionMsg }) {

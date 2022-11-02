@@ -26,7 +26,7 @@ import { DebugService } from './debug.service';
 export class DebugMessagesService
   implements BotCommandsProvider, OnBeforeBotCommands, OnAfterBotCommands
 {
-  botCommandHandlerId = DebugMessagesService.name;
+  handlerId = DebugMessagesService.name;
 
   private readonly logger = new Logger(DebugMessagesService.name);
 
@@ -50,7 +50,7 @@ export class DebugMessagesService
     ctx
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { botGlobalContext, ...debugData } = msg;
+    const { globalContext, ...debugData } = msg;
     this.debugService.sendDebugInfo(
       msg,
       ctx,

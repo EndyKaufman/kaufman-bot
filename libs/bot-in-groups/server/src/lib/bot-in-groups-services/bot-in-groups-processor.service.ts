@@ -58,12 +58,11 @@ export class BotInGroupsProcessorService {
     }
 
     if (ctx?.update?.message) {
-      if (!ctx.update.message.botGlobalContext) {
-        ctx.update.message.botGlobalContext = {};
+      if (!ctx.update.message.globalContext) {
+        ctx.update.message.globalContext = {};
       }
-      ctx.update.message.botGlobalContext[DISABLE_FIRST_MEETING_COMMANDS] =
-        true;
-      ctx.update.message.botGlobalContext[DISABLE_SHORT_COMMANDS__BEFORE_HOOK] =
+      ctx.update.message.globalContext[DISABLE_FIRST_MEETING_COMMANDS] = true;
+      ctx.update.message.globalContext[DISABLE_SHORT_COMMANDS__BEFORE_HOOK] =
         true;
       if (ctx.update.message.text) {
         const shortCommand =
@@ -112,7 +111,7 @@ export class BotInGroupsProcessorService {
       ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
     ) {
       ctx.update.message.text = `${botName} ${ctx.update.message.text}`;
-      ctx.update.message.botGlobalContext[DISABLE_DIALOGFLOW_COMMANDS] = true;
+      ctx.update.message.globalContext[DISABLE_DIALOGFLOW_COMMANDS] = true;
       await this.botCommandsService.process(ctx, defaultHandler);
       return;
     }

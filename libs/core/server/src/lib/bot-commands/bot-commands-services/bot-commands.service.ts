@@ -24,7 +24,7 @@ import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()
 export class BotCommandsService implements BotCommandsProvider {
-  botCommandHandlerId = BotCommandsService.name;
+  handlerId = BotCommandsService.name;
 
   private logger = new Logger(BotCommandsService.name);
 
@@ -38,8 +38,8 @@ export class BotCommandsService implements BotCommandsProvider {
     providersFactory: (items) => {
       const len = items.length;
       for (let i = 0; i < len; i++) {
-        if (!items[i].botCommandHandlerId) {
-          items[i].botCommandHandlerId = `botCommandHandler#${i.toString()}`;
+        if (!items[i].handlerId) {
+          items[i].handlerId = `botCommandHandler#${i.toString()}`;
         }
       }
       return items;
@@ -59,7 +59,7 @@ export class BotCommandsService implements BotCommandsProvider {
 
   async start(ctx) {
     const msg: BotCommandsProviderActionMsg = ctx.update.message;
-    msg.isStart = true;
+    msg.start = true;
     await this.process(ctx);
   }
 
@@ -158,7 +158,7 @@ export class BotCommandsService implements BotCommandsProvider {
       const result = await botCommandsProvider.onHelp(
         {
           ...msg,
-          botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
+          handlerId: botCommandsProvider.handlerId,
           context: msg?.context || {},
         },
         ctx
@@ -195,15 +195,15 @@ export class BotCommandsService implements BotCommandsProvider {
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    if (!msg?.botCommandHandlerBreak) {
+    if (!msg?.handlerStop) {
       result = await this.processOnMessage(result, msg, ctx);
     }
 
-    if (!msg?.botCommandHandlerBreak) {
+    if (!msg?.handlerStop) {
       result = await this.processOnContext(result, msg, ctx);
     }
 
-    if (msg?.botCommandHandlerBreak) {
+    if (msg?.handlerStop) {
       return { type: 'stop', message: msg };
     }
 
@@ -275,14 +275,11 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
-      if (
-        botCommandsProvider.onBeforeBotCommands &&
-        !msg?.botCommandHandlerBreak
-      ) {
+      if (botCommandsProvider.onBeforeBotCommands && !msg?.handlerStop) {
         msg = await botCommandsProvider.onBeforeBotCommands(
           {
             ...msg,
-            botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
+            handlerId: botCommandsProvider.handlerId,
             context: msg?.context || {},
           },
           ctx
@@ -307,7 +304,7 @@ export class BotCommandsService implements BotCommandsProvider {
             result,
             {
               ...msg,
-              botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
+              handlerId: botCommandsProvider.handlerId,
               context: msg?.context || {},
             },
             ctx,
@@ -331,13 +328,13 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
-      if (!result && !msg?.botCommandHandlerBreak) {
-        msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
+      if (!result && !msg?.handlerStop) {
+        msg.handlerId = botCommandsProvider.handlerId;
         msg.context = msg?.context || {};
         result = await botCommandsProvider.onMessage(msg, ctx);
 
         if (result) {
-          msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
+          msg.handlerId = botCommandsProvider.handlerId;
         }
       }
     }
@@ -365,24 +362,23 @@ export class BotCommandsService implements BotCommandsProvider {
 
         if (
           !result &&
-          state?.botCommandHandlerId ===
-            botCommandsProvider.botCommandHandlerId &&
+          state?.handlerId === botCommandsProvider.handlerId &&
           botCommandsProvider.onContextBotCommands &&
-          !msg?.botCommandHandlerBreak
+          !msg?.handlerStop
         ) {
           msg.context = state?.context || {};
 
           result = await botCommandsProvider.onContextBotCommands(
             {
               ...msg,
-              botCommandHandlerId: botCommandsProvider.botCommandHandlerId,
+              handlerId: botCommandsProvider.handlerId,
               context: msg?.context || {},
             },
             ctx
           );
 
           if (result) {
-            msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
+            msg.handlerId = botCommandsProvider.handlerId;
           }
         }
       }
@@ -444,7 +440,7 @@ export class BotCommandsService implements BotCommandsProvider {
       messageId
     );
 
-    if (msg.botCommandHandlerId !== currentState?.botCommandHandlerId) {
+    if (msg.handlerId !== currentState?.handlerId) {
       const usedMessageId = currentState?.usedMessageIds[0];
       if (usedMessageId && usedMessageId.length > 0) {
         await this.botCommandsStorage.patchState(chatId, usedMessageId, {
@@ -464,7 +460,7 @@ export class BotCommandsService implements BotCommandsProvider {
     result: BotCommandsProviderActionResultType<TMsg>
   ) {
     await this.botCommandsStorage.patchState(chatId, messageId, {
-      botCommandHandlerId: msg.botCommandHandlerId,
+      handlerId: msg.handlerId,
       request: { type: 'message', message: msg },
       response: result,
       context: result?.context || {},

@@ -5,7 +5,7 @@ export const BOT_COMMANDS_STORAGE = Symbol('BOT_COMMANDS_STORAGE');
 export interface StorageItem<
   TMessage extends { context?: Record<string, unknown> }
 > {
-  botCommandHandlerId: string;
+  handlerId: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: Record<string, any>;
   response: BotCommandsProviderActionResultType<TMessage>;

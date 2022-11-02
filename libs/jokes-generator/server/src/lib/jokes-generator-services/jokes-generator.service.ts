@@ -13,7 +13,7 @@ import { Injectable } from '@nestjs/common';
 export class JokesGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
-  botCommandHandlerId = JokesGeneratorService.name;
+  handlerId = JokesGeneratorService.name;
 
   constructor(
     private readonly scraperService: ScraperService,

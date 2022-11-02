@@ -7,7 +7,7 @@ import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class CurrencyConverterService implements BotCommandsProvider {
-  botCommandHandlerId = CurrencyConverterService.name;
+  handlerId = CurrencyConverterService.name;
 
   constructor(private readonly scraperService: ScraperService) {}
 

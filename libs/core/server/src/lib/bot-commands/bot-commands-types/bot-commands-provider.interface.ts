@@ -14,7 +14,7 @@ export interface BotCommandsProvider<
   TGlobalContext = Record<string, any>,
   TMethodArgs = BotCommandsProviderActionMsg<TLocalContext, TGlobalContext>
 > {
-  botCommandHandlerId: string;
+  handlerId: string;
 
   onHelp<TMsg extends TMethodArgs = TMethodArgs>(
     msg: TMsg,

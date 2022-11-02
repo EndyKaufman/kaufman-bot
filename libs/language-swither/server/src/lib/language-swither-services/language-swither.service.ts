@@ -24,7 +24,7 @@ import {
 export class LanguageSwitherService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
-  botCommandHandlerId = LanguageSwitherService.name;
+  handlerId = LanguageSwitherService.name;
 
   private readonly logger = new Logger(LanguageSwitherService.name);
 

@@ -24,7 +24,7 @@ import {
 export class ScraperService
   implements BotCommandsProvider, OnContextBotCommands
 {
-  botCommandHandlerId = ScraperService.name;
+  handlerId = ScraperService.name;
 
   private readonly logger = new Logger(ScraperService.name);
 

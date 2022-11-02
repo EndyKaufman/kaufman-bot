@@ -28,7 +28,7 @@ export class DemoTaxiOrdersService
     BotCommandsProvider<DemoTaxiLocalContext>,
     OnContextBotCommands<DemoTaxiLocalContext>
 {
-  botCommandHandlerId = DemoTaxiOrdersService.name;
+  handlerId = DemoTaxiOrdersService.name;
 
   constructor(
     @Inject(DEMO_TAXI_ORDERS_CONFIG)
@@ -61,7 +61,7 @@ export class DemoTaxiOrdersService
         this.botCommandsToolsService.getChatId(msg),
         +this.botCommandsToolsService.getContextMessageId(msg)
       );
-      msg.botCommandHandlerBreak = true;
+      msg.handlerStop = true;
       return {
         type: 'stop',
         message: msg,

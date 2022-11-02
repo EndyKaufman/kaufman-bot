@@ -6,12 +6,12 @@ export type BotCommandsProviderActionMsg<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TGlobalContext = Record<string, any>
 > = Update.MessageUpdate['message'] & {
+  start: boolean;
   text: string;
   data: string;
-  isStart: boolean;
-  botGlobalContext?: TGlobalContext;
-  botCommandHandlerId?: string;
-  botCommandHandlerBreak: boolean;
+  handlerId?: string;
+  handlerStop: boolean;
+  globalContext?: TGlobalContext;
   context: TLocalContext;
 } & { chat: { id: number } } & {
   message: Update.MessageUpdate['message'];

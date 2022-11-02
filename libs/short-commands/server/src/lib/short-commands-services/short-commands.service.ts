@@ -21,7 +21,7 @@ export const DISABLE_SHORT_COMMANDS__BEFORE_HOOK =
 export class ShortCommandsService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
-  botCommandHandlerId = ShortCommandsService.name;
+  handlerId = ShortCommandsService.name;
 
   private readonly logger = new Logger(ShortCommandsService.name);
 
@@ -36,7 +36,7 @@ export class ShortCommandsService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    if (msg?.botGlobalContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
+    if (msg?.globalContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
       return msg;
     }
     if (msg) {
