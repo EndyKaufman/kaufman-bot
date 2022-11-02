@@ -13,6 +13,11 @@ export type BotCommandsProviderActionMsg<
   handlerStop: boolean;
   globalContext?: TGlobalContext;
   context: TLocalContext;
+  contact: {
+    phone_number: string;
+    first_name: string;
+    user_id: number;
+  };
 } & { chat: { id: number } } & {
   message: Update.MessageUpdate['message'];
 } & {

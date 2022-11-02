@@ -41,7 +41,7 @@ export class DemoTaxiOrdersService
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(
     msg: TMsg,
-    ctx: { answerCbQuery; telegram: Telegram }
+    ctx: { telegram: Telegram }
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const currentStep = msg.context.currentStep;
@@ -130,8 +130,9 @@ export class DemoTaxiOrdersService
       let renderedData = this.render(locale, {
         ...msg.context,
         currentStep: DemoTaxiOrdersSteps.Finished,
-        contactPhone: !Object.keys(NavigationButtons).includes(msg.text)
-          ? msg.text
+        contact: msg.contact,
+        contactPhone: !Object.keys(NavigationButtons).includes(msg.data)
+          ? msg.text || msg.contact.phone_number
           : msg.context.contactPhone,
         contactPhoneMessageId:
           msg.context.contactPhoneMessageId === undefined
@@ -351,115 +352,15 @@ export class DemoTaxiOrdersService
         ),
       ];
     }
-    // console.log(localContext);
     return {
-      text: this.translatesService.translate(
-        [
-          localContext.currentStep !== DemoTaxiOrdersSteps.Finished
-            ? localContext.direction
-              ? localContext.currentStep === DemoTaxiOrdersSteps.Direction
-                ? this.translatesService
-                    .translate(
-                      getText(`Please choice direction (current: {value})`),
-                      locale
-                    )
-                    .replace(
-                      '{value}',
-                      this.getTranslatedDirectionTextByEnum(
-                        localContext.direction,
-                        locale
-                      )
-                    )
-                : this.translatesService
-                    .translate(getText(`Direction - {value}`), locale)
-                    .replace(
-                      '{value}',
-                      this.getTranslatedDirectionTextByEnum(
-                        localContext.direction,
-                        locale
-                      )
-                    )
-              : localContext.currentStep === DemoTaxiOrdersSteps.Direction
-              ? this.translatesService.translate(
-                  getText('Please choice direction'),
-                  locale
-                )
-              : ''
-            : '',
-          localContext.currentStep !== DemoTaxiOrdersSteps.Finished
-            ? localContext.countOfPassengers
-              ? localContext.currentStep ===
-                DemoTaxiOrdersSteps.CountOfPassengers
-                ? this.translatesService
-                    .translate(
-                      getText(
-                        `Please choice count of passengers (current: {value})`
-                      ),
-                      locale
-                    )
-                    .replace('{value}', localContext.countOfPassengers)
-                : this.translatesService
-                    .translate(getText(`Count of passengers - {value}`), locale)
-                    .replace('{value}', localContext.countOfPassengers)
-              : localContext.currentStep ===
-                DemoTaxiOrdersSteps.CountOfPassengers
-              ? this.translatesService.translate(
-                  getText('Please choice count of passengers'),
-                  locale
-                )
-              : ''
-            : '',
-          localContext.currentStep !== DemoTaxiOrdersSteps.Finished
-            ? localContext.contactPhone
-              ? localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
-                ? this.translatesService
-                    .translate(
-                      getText(`Please send contact phone (current: {value})`),
-                      locale
-                    )
-                    .replace('{value}', localContext.contactPhone)
-                : this.translatesService.translate(
-                    getText(`Contact phone - {value}`).replace(
-                      '{value}',
-                      localContext.contactPhone
-                    ),
-                    locale
-                  )
-              : localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
-              ? this.translatesService.translate(
-                  getText('Please send contact phone'),
-                  locale
-                )
-              : ''
-            : '',
-          localContext.currentStep === DemoTaxiOrdersSteps.Finished
-            ? [
-                this.translatesService.translate(
-                  getText(`Taxi order:`),
-                  locale
-                ),
-                this.translatesService
-                  .translate(getText(`Direction - {value}`), locale)
-                  .replace(
-                    '{value}',
-                    this.getTranslatedDirectionTextByEnum(
-                      localContext.direction,
-                      locale
-                    ) || 'null'
-                  ),
-                this.translatesService
-                  .translate(getText(`Count of passengers - {value}`), locale)
-                  .replace('{value}', localContext.countOfPassengers || 'null'),
-                this.translatesService
-                  .translate(getText(`Contact phone - {value}`), locale)
-                  .replace('{value}', localContext.contactPhone || 'null'),
-              ].join('\n')
-            : '',
-        ]
-          .filter(Boolean)
-          .join('\n'),
-        locale
-      ),
+      text: [
+        this.getFinishedInfo(locale, localContext),
+        this.getDirectionInfo(localContext, locale),
+        this.getCountOfPassengersInfo(localContext, locale),
+        this.getContactPhone(localContext, locale),
+      ]
+        .filter(Boolean)
+        .join('\n'),
       custom: {
         ...Markup.inlineKeyboard([mainButtons, navButtons]),
       },
@@ -468,6 +369,96 @@ export class DemoTaxiOrdersService
         Object.assign(context, localContext);
       },
     };
+  }
+
+  private getDirectionInfo(localContext: DemoTaxiLocalContext, locale: string) {
+    let text = '';
+    if (localContext.currentStep === DemoTaxiOrdersSteps.Direction) {
+      if (localContext.direction) {
+        text = this.translatesService.translate(
+          getText(`Please choice direction (current: {value})`),
+          locale
+        );
+      } else {
+        text = this.translatesService.translate(
+          getText('Please choice direction'),
+          locale
+        );
+      }
+    } else {
+      if (localContext.direction) {
+        text = this.translatesService.translate(
+          getText(`Direction - {value}`),
+          locale
+        );
+      }
+    }
+    return text.replace(
+      '{value}',
+      this.getTranslatedDirectionTextByEnum(localContext.direction, locale)
+    );
+  }
+
+  private getFinishedInfo(locale: string, localContext: DemoTaxiLocalContext) {
+    if (localContext.currentStep !== DemoTaxiOrdersSteps.Finished) {
+      return '';
+    }
+    return [
+      this.translatesService.translate(getText(`Taxi order:`), locale),
+    ].join('\n');
+  }
+
+  private getContactPhone(localContext: DemoTaxiLocalContext, locale: string) {
+    let text = '';
+    if (localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone) {
+      if (localContext.contactPhone) {
+        text = this.translatesService.translate(
+          getText(`Please send contact phone (current: {value})`),
+          locale
+        );
+      } else {
+        text = this.translatesService.translate(
+          getText('Please send contact phone'),
+          locale
+        );
+      }
+    } else {
+      if (localContext.contactPhone) {
+        text = this.translatesService.translate(
+          getText(`Contact phone - {value}`),
+          locale
+        );
+      }
+    }
+    return text.replace('{value}', localContext.contactPhone || '');
+  }
+
+  private getCountOfPassengersInfo(
+    localContext: DemoTaxiLocalContext,
+    locale: string
+  ) {
+    let text = '';
+    if (localContext.currentStep === DemoTaxiOrdersSteps.CountOfPassengers) {
+      if (localContext.countOfPassengers) {
+        text = this.translatesService.translate(
+          getText(`Please choice count of passengers (current: {value})`),
+          locale
+        );
+      } else {
+        text = this.translatesService.translate(
+          getText('Please choice count of passengers'),
+          locale
+        );
+      }
+    } else {
+      if (localContext.countOfPassengers) {
+        text = this.translatesService.translate(
+          getText(`Count of passengers - {value}`),
+          locale
+        );
+      }
+    }
+    return text.replace('{value}', localContext.countOfPassengers || '');
   }
 
   private getTranslatedDirectionTextByEnum(
