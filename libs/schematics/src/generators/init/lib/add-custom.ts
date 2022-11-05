@@ -74,17 +74,21 @@ export function addEnvFilesEntry(host: Tree, botName: string) {
       `BOT_NAMES=${botName}`,
       `BOT_NAMES_RU=${botName}`,
     ];
-    for (
-      let contentRowindex = 0;
-      contentRowindex < contentRows.length;
-      contentRowindex++
-    ) {
-      const contentRow = contentRows[contentRowindex];
-      for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-        const row = rows[rowIndex];
-        if ((contentRow || '').split('=')[0] !== (row || '').split('=')[0]) {
-          newRows.push(row);
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      const row = rows[rowIndex];
+      let founded = false;
+      for (
+        let contentRowindex = 0;
+        contentRowindex < contentRows.length;
+        contentRowindex++
+      ) {
+        const contentRow = contentRows[contentRowindex];
+        if ((contentRow || '').split('=')[0] === (row || '').split('=')[0]) {
+          founded = true;
         }
+      }
+      if (!founded) {
+        newRows.push(row);
       }
     }
     host.write(
