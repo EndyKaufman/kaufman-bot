@@ -21,11 +21,10 @@ export class PrismaFirstMeetingStorage implements FirstMeetingStorageProvider {
     let databaseStatesOfUsers: FirstMeeting | null = null;
     try {
       databaseStatesOfUsers =
-        (await this.prismaClientService.firstMeeting.findFirst({
+        (await this.prismaClientService.firstMeeting.findFirstOrThrow({
           where: {
             User: { telegramId: userId },
           },
-          rejectOnNotFound: true,
         })) as unknown as FirstMeeting;
       this.statesOfUsers[userId] = databaseStatesOfUsers;
 

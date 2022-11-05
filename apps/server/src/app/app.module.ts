@@ -1,8 +1,14 @@
 import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
-import { BotCommandsModule } from '@kaufman-bot/core-server';
+import {
+  BotCommandsModule,
+  BotCommandsProviderActionMsg,
+} from '@kaufman-bot/core-server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
-import { DemoTaxiOrdersModule } from '@kaufman-bot/demo-taxi-orders-server';
+import {
+  DemoTaxiLocalContext,
+  DemoTaxiOrdersModule,
+} from '@kaufman-bot/demo-taxi-orders-server';
 import { DialogflowModule } from '@kaufman-bot/dialogflow-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
 import { FirstMeetingModule } from '@kaufman-bot/first-meeting-server';
@@ -20,6 +26,7 @@ import {
   TranslatesModule,
 } from 'nestjs-translates';
 import { join } from 'path';
+import { Telegram } from 'telegraf';
 import { AppService } from './app.service';
 import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
 
@@ -123,7 +130,19 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
-    DemoTaxiOrdersModule.forRoot(),
+    DemoTaxiOrdersModule.forRoot({
+      onComplete: async (
+        msg: BotCommandsProviderActionMsg<DemoTaxiLocalContext>,
+        ctx: { telegram: Telegram },
+        message: string
+      ) => {
+        const admins = env.get('TELEGRAM_BOT_ADMINS').default('').asArray(',');
+        for (let index = 0; index < admins.length; index++) {
+          const admin = admins[index];
+          await ctx.telegram.sendMessage(admin, message);
+        }
+      },
+    }),
   ],
   providers: [AppService],
 })

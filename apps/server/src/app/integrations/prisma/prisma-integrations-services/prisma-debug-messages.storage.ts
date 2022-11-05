@@ -17,9 +17,8 @@ export class PrismaDebugMessagesStorage
     }
     try {
       const currentDebugModeFromDatabase =
-        await this.prismaClientService.user.findFirst({
+        await this.prismaClientService.user.findFirstOrThrow({
           where: { telegramId: userId },
-          rejectOnNotFound: true,
         });
       this.debugModeOfUsers[userId] = currentDebugModeFromDatabase.debugMode;
       return this.debugModeOfUsers[userId];

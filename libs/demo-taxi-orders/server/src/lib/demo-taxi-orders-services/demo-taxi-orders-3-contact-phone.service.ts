@@ -28,7 +28,7 @@ export class DemoTaxiOrders3ContactPhoneService {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     let renderedData = this.demoTaxiOrdersRenderService.render(locale, {
       ...msg.context,
-      currentStep: DemoTaxiOrdersSteps.Finished,
+      currentStep: DemoTaxiOrdersSteps.Complete,
       contact: msg.contact,
       contactPhone: !Object.keys(NavigationButtons).includes(msg.data)
         ? msg.text || msg.contact.phone_number

@@ -1,3 +1,6 @@
+import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
+import { Telegram } from 'telegraf';
+
 export const DEMO_TAXI_ORDERS_CONFIG = Symbol('DEMO_TAXI_ORDERS_CONFIG');
 
 export interface DemoTaxiOrdersConfig {
@@ -8,4 +11,12 @@ export interface DemoTaxiOrdersConfig {
   spyWords: string[];
   botName: { [langCode: string]: string };
   category: string;
+  onComplete?: <
+    TDemoTaxiLocalContext,
+    TMsg extends BotCommandsProviderActionMsg<TDemoTaxiLocalContext> = BotCommandsProviderActionMsg<TDemoTaxiLocalContext>
+  >(
+    msg: TMsg,
+    ctx: { telegram: Telegram },
+    message: string
+  ) => Promise<unknown>;
 }

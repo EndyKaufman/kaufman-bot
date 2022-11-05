@@ -37,5 +37,8 @@
   "Please send contact phone": "Please send contact phone",
   "Please choice count of passengers (current: {value})": "Please choice count of passengers (current: {value})",
   "Please choice direction (current: {value})": "Please choice direction (current: {value})",
-  "Please send contact phone (current: {value})": "Please send contact phone (current: {value})"
+  "Please send contact phone (current: {value})": "Please send contact phone (current: {value})",
+  "Parameters:": "Parameters:",
+  "Skip": "Skip",
+  "Taxi order was completed": "Taxi order was completed"
 }

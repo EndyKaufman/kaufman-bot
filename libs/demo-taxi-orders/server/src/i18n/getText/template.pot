@@ -122,3 +122,12 @@ msgstr "Please choice direction (current: {value})"
 
 msgid "Please send contact phone (current: {value})"
 msgstr "Please send contact phone (current: {value})"
+
+msgid "Parameters:"
+msgstr "Parameters:"
+
+msgid "Skip"
+msgstr "Skip"
+
+msgid "Taxi order was completed"
+msgstr "Taxi order was completed"

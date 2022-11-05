@@ -28,12 +28,11 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
     }
     try {
       const currentFromDatabase =
-        await this.prismaClientService.dialogflowSession.findFirst({
+        await this.prismaClientService.dialogflowSession.findFirstOrThrow({
           where: {
             User: { telegramId: userId },
             projectId,
           },
-          rejectOnNotFound: true,
         });
       this.sessionOfUsers[this.getKey({ userId, projectId })] = {
         sessionId: currentFromDatabase.sessionId,
@@ -192,10 +191,9 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
   private async getUser(userId: string) {
     let user;
     try {
-      user = await this.prismaClientService.user.findFirst({
+      user = await this.prismaClientService.user.findFirstOrThrow({
         select: { id: true },
         where: { telegramId: userId },
-        rejectOnNotFound: true,
       });
     } catch (error) {
       user = await this.prismaClientService.user.create({

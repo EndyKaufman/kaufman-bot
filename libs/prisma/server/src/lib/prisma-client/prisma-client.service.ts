@@ -30,7 +30,6 @@ export class PrismaClientService
           ).databaseUrl,
         },
       },
-      rejectOnNotFound: true,
       log: [
         {
           emit: 'event',

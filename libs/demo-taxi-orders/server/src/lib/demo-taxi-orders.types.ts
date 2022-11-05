@@ -10,7 +10,8 @@ export enum DemoTaxiOrdersSteps {
   Direction = 'Direction',
   CountOfPassengers = 'CountOfPassengers',
   ContactPhone = 'ContactPhone',
-  Finished = 'Finished',
+  Complete = 'Complete',
+  End = 'End',
 }
 
 export enum Direction {

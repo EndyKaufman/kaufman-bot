@@ -37,5 +37,8 @@
   "Please send contact phone": "Отправьте контактный номер телефона",
   "Please choice count of passengers (current: {value})": "Укажите кол-во пассажиров (текущее: {value})",
   "Please choice direction (current: {value})": "Выберите направление (текущее: {value})",
-  "Please send contact phone (current: {value})": "Отправьте контактный номер телефона (текущий: {value})"
+  "Please send contact phone (current: {value})": "Отправьте контактный номер телефона (текущий: {value})",
+  "Parameters:": "Параметры:",
+  "Skip": "Пропустить",
+  "Taxi order was completed": "Заявка на такси оформлена"
 }

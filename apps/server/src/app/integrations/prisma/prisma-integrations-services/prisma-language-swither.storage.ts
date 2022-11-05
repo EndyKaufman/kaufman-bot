@@ -17,9 +17,8 @@ export class PrismaLanguageSwitherStorage
     }
     try {
       const currentLanguageCodeFromDatabase =
-        await this.prismaClientService.user.findFirst({
+        await this.prismaClientService.user.findFirstOrThrow({
           where: { telegramId: userId },
-          rejectOnNotFound: true,
         });
       this.languageOfUsers[userId] = currentLanguageCodeFromDatabase.langCode;
       return this.languageOfUsers[userId];

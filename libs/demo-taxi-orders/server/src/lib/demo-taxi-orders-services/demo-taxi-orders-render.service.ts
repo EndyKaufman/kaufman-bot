@@ -41,7 +41,7 @@ export class DemoTaxiOrdersRenderService {
     }
 
     if (
-      localContext.currentStep === DemoTaxiOrdersSteps.Finished ||
+      localContext.currentStep === DemoTaxiOrdersSteps.Complete ||
       localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
     ) {
       mainButtons = [];
@@ -56,7 +56,7 @@ export class DemoTaxiOrdersRenderService {
           NavigationButtons.Cancel
         ),
         Markup.button.callback(
-          '➡️ ' + this.translatesService.translate(getText('Next'), locale),
+          '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
           NavigationButtons.Next
         ),
       ];
@@ -76,13 +76,13 @@ export class DemoTaxiOrdersRenderService {
           NavigationButtons.Prev
         ),
         Markup.button.callback(
-          '➡️ ' + this.translatesService.translate(getText('Next'), locale),
+          '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
           NavigationButtons.Next
         ),
       ];
     }
 
-    if (localContext.currentStep === DemoTaxiOrdersSteps.Finished) {
+    if (localContext.currentStep === DemoTaxiOrdersSteps.Complete) {
       navButtons = [
         Markup.button.callback(
           '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
@@ -100,7 +100,7 @@ export class DemoTaxiOrdersRenderService {
     }
     return {
       text: [
-        this.getFinishedInfo(locale, localContext),
+        this.getCompleteInfo(locale, localContext),
         this.getDirectionInfo(localContext, locale),
         this.getCountOfPassengersInfo(localContext, locale),
         this.getContactPhone(localContext, locale),
@@ -145,13 +145,22 @@ export class DemoTaxiOrdersRenderService {
     );
   }
 
-  private getFinishedInfo(locale: string, localContext: DemoTaxiLocalContext) {
-    if (localContext.currentStep !== DemoTaxiOrdersSteps.Finished) {
-      return '';
+  private getCompleteInfo(locale: string, localContext: DemoTaxiLocalContext) {
+    if (localContext.currentStep === DemoTaxiOrdersSteps.Complete) {
+      return [
+        this.translatesService.translate(getText(`Taxi order:`), locale),
+      ].join('\n');
     }
-    return [
-      this.translatesService.translate(getText(`Taxi order:`), locale),
-    ].join('\n');
+    if (localContext.currentStep === DemoTaxiOrdersSteps.End) {
+      return [
+        this.translatesService.translate(
+          getText(`Taxi order was completed`),
+          locale
+        ),
+        this.translatesService.translate(getText(`Parameters:`), locale),
+      ].join('\n');
+    }
+    return '';
   }
 
   private getContactPhone(localContext: DemoTaxiLocalContext, locale: string) {

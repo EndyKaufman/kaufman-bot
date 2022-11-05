@@ -22,7 +22,7 @@ import { DemoTaxiOrders0CancelService } from './demo-taxi-orders-0-cancel.servic
 import { DemoTaxiOrders1DirectionService } from './demo-taxi-orders-1-direction.service';
 import { DemoTaxiOrders2CountOfPassengersService } from './demo-taxi-orders-2-count-of-passengers.service';
 import { DemoTaxiOrders3ContactPhoneService } from './demo-taxi-orders-3-contact-phone.service';
-import { DemoTaxiOrders4FinishedService } from './demo-taxi-orders-4-finished.service';
+import { DemoTaxiOrders4CompleteService } from './demo-taxi-orders-4-complete.service';
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-render.service';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class DemoTaxiOrdersService
     private readonly demoTaxiOrders1DirectionProcessorService: DemoTaxiOrders1DirectionService,
     private readonly demoTaxiOrders2CountOfPassengersService: DemoTaxiOrders2CountOfPassengersService,
     private readonly demoTaxiOrders3ContactPhoneService: DemoTaxiOrders3ContactPhoneService,
-    private readonly demoTaxiOrders4FinishedService: DemoTaxiOrders4FinishedService
+    private readonly demoTaxiOrders4CompleteService: DemoTaxiOrders4CompleteService
   ) {}
 
   async onContextBotCommands<
@@ -52,40 +52,39 @@ export class DemoTaxiOrdersService
     ctx: { telegram: Telegram }
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const currentStep = msg.context.currentStep;
+
+    if (currentStep === DemoTaxiOrdersSteps.End) {
+      return null;
+    }
+
     if (
       currentStep &&
       Object.keys(DemoTaxiOrdersSteps).includes(currentStep) &&
       msg.data === NavigationButtons.Cancel
     ) {
-      return await this.demoTaxiOrders0CancelProcessorService.process<TMsg>(
-        msg,
-        ctx
-      );
+      return await this.demoTaxiOrders0CancelProcessorService.process(msg, ctx);
     }
 
     if (currentStep === DemoTaxiOrdersSteps.Direction) {
-      return await this.demoTaxiOrders1DirectionProcessorService.process<TMsg>(
+      return await this.demoTaxiOrders1DirectionProcessorService.process(
         msg,
         ctx
       );
     }
 
     if (currentStep === DemoTaxiOrdersSteps.CountOfPassengers) {
-      return await this.demoTaxiOrders2CountOfPassengersService.process<TMsg>(
+      return await this.demoTaxiOrders2CountOfPassengersService.process(
         msg,
         ctx
       );
     }
 
     if (currentStep === DemoTaxiOrdersSteps.ContactPhone) {
-      return await this.demoTaxiOrders3ContactPhoneService.process<TMsg>(
-        msg,
-        ctx
-      );
+      return await this.demoTaxiOrders3ContactPhoneService.process(msg, ctx);
     }
 
-    if (currentStep === DemoTaxiOrdersSteps.Finished) {
-      return await this.demoTaxiOrders4FinishedService.process<TMsg>(msg, ctx);
+    if (currentStep === DemoTaxiOrdersSteps.Complete) {
+      return await this.demoTaxiOrders4CompleteService.process(msg, ctx);
     }
     return null;
   }

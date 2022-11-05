@@ -3,8 +3,12 @@ import {
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Telegram } from 'telegraf';
+import {
+  DemoTaxiOrdersConfig,
+  DEMO_TAXI_ORDERS_CONFIG,
+} from '../demo-taxi-orders.config';
 import {
   DemoTaxiLocalContext,
   DemoTaxiOrdersSteps,
@@ -13,8 +17,10 @@ import {
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-render.service';
 
 @Injectable()
-export class DemoTaxiOrders4FinishedService {
+export class DemoTaxiOrders4CompleteService {
   constructor(
+    @Inject(DEMO_TAXI_ORDERS_CONFIG)
+    private readonly config: DemoTaxiOrdersConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly demoTaxiOrdersRenderService: DemoTaxiOrdersRenderService
   ) {}
@@ -36,7 +42,7 @@ export class DemoTaxiOrders4FinishedService {
           })
         : this.demoTaxiOrdersRenderService.render(locale, {
             ...msg.context,
-            currentStep: DemoTaxiOrdersSteps.Finished,
+            currentStep: DemoTaxiOrdersSteps.End,
           });
 
     await ctx.telegram.editMessageText(
@@ -46,6 +52,10 @@ export class DemoTaxiOrders4FinishedService {
       renderedData.text,
       msg.data === NavigationButtons.Done ? undefined : renderedData.custom
     );
+
+    if (this.config.onComplete) {
+      await this.config.onComplete(msg, ctx, renderedData.text);
+    }
 
     return {
       type: 'message',

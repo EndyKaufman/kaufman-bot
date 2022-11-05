@@ -123,3 +123,12 @@ msgstr "Выберите направление (текущее: {value})"
 
 msgid "Please send contact phone (current: {value})"
 msgstr "Отправьте контактный номер телефона (текущий: {value})"
+
+msgid "Parameters:"
+msgstr "Параметры:"
+
+msgid "Skip"
+msgstr "Пропустить"
+
+msgid "Taxi order was completed"
+msgstr "Заявка на такси оформлена"
