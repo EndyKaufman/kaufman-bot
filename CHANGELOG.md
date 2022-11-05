@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.10.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.9.1...v2.10.0) (2022-11-05)
+
+### Features
+
+- **bot-in-groups:** add defaultGroupGlobalContext and defaultGlobalContext, remove usage imports from this commands in bot-in-groups ([97abcc7](https://github.com/EndyKaufman/kaufman-bot/commit/97abcc79ab894b29b37606eb7d1712abc0c8bc98))
+
 ### [2.9.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.9.0...v2.9.1) (2022-11-05)
 
 ### Bug Fixes
