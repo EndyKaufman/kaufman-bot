@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.9.0...v2.9.1) (2022-11-05)
+
+### Bug Fixes
+
+- remove create duplicated envs ([cbcb5fa](https://github.com/EndyKaufman/kaufman-bot/commit/cbcb5fa32c272cf29fb063ed5a415bd2483ed66f))
+
 ## [2.9.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.8.0...v2.9.0) (2022-11-05)
 
 ### Features
