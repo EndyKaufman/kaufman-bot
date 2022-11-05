@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.7.2...v2.8.0) (2022-11-05)
+
+### Features
+
+- add support collect phone number from input ([047fb3a](https://github.com/EndyKaufman/kaufman-bot/commit/047fb3a3451fe636abc671e66ec37a89ad923f80))
+- add use prisma as storage for BOT_COMMANDS_STORAGE, add support send message about new taxi order to admins ([f98459c](https://github.com/EndyKaufman/kaufman-bot/commit/f98459cc994003b78720d38125e332cc6fc63074))
+- **demo-taxi-orders:** add support use contacts for detect contact phone ([c104aba](https://github.com/EndyKaufman/kaufman-bot/commit/c104aba655f75419fed846e7faa646c5ce695db7))
+- extract all logic into different services ([70ea8fc](https://github.com/EndyKaufman/kaufman-bot/commit/70ea8fc99d0cd31cae4b22d7542bceaf334d297a))
+- remove all not needed codes ([8fe3cfe](https://github.com/EndyKaufman/kaufman-bot/commit/8fe3cfe8d0d7097a9cbdf2b49e7802b1cab3aeb4))
+- rename botCommandHandlerId to handlerId, botGlobalContext to globalContext, botCommandHandlerBreak to handlerStop, isStart to start ([4cd0f2b](https://github.com/EndyKaufman/kaufman-bot/commit/4cd0f2bd912ce403d1e8ded997322cbc1c907555))
+- start add demo-taxi-orders ([#77](https://github.com/EndyKaufman/kaufman-bot/issues/77)) ([ab678d6](https://github.com/EndyKaufman/kaufman-bot/commit/ab678d6d993598a8fbbf1d85df9310a37f1e430b))
+
+### Bug Fixes
+
+- update for correct wor k context and other commands ([8c26130](https://github.com/EndyKaufman/kaufman-bot/commit/8c26130bb36610a43dd56c500f2b68f0beff1575))
+- update for correct work getStateByUsedMessageId ([fa96678](https://github.com/EndyKaufman/kaufman-bot/commit/fa96678215ba536da4436dd7fdbfc1a8db93cf3a))
+
 ### [2.7.2](https://github.com/EndyKaufman/kaufman-bot/compare/v2.7.1...v2.7.2) (2022-09-05)
 
 ### [2.7.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.7.0...v2.7.1) (2022-09-05)
