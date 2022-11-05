@@ -38,7 +38,7 @@
       "strategy": "join"
     }
   ],
-  "version": "2.9.0",
+  "version": "2.9.1",
   "peerDependencies": {
     "@nestjs/common": "^8.0.0",
     "nestjs-custom-injector": "^2.2.3",
