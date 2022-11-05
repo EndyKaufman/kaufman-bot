@@ -2,16 +2,11 @@ import {
   BotCommandsService,
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
-import { DISABLE_DIALOGFLOW_COMMANDS } from '@kaufman-bot/dialogflow-server';
-import { DISABLE_FIRST_MEETING_COMMANDS } from '@kaufman-bot/first-meeting-server';
 import {
   LanguageSwitherStorage,
   LANGUAGE_SWITHER_STORAGE,
 } from '@kaufman-bot/language-swither-server';
-import {
-  DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
-  ShortCommandsToolsService,
-} from '@kaufman-bot/short-commands-server';
+import { ShortCommandsToolsService } from '@kaufman-bot/short-commands-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
@@ -61,9 +56,24 @@ export class BotInGroupsProcessorService {
       if (!ctx.update.message.globalContext) {
         ctx.update.message.globalContext = {};
       }
-      ctx.update.message.globalContext[DISABLE_FIRST_MEETING_COMMANDS] = true;
-      ctx.update.message.globalContext[DISABLE_SHORT_COMMANDS__BEFORE_HOOK] =
-        true;
+      if (
+        ctx.update?.message?.chat?.id < 0 &&
+        ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
+      ) {
+        if (this.botInGroupsConfig.defaultGroupGlobalContext) {
+          Object.assign(
+            ctx.update.message.globalContext,
+            this.botInGroupsConfig.defaultGroupGlobalContext
+          );
+        }
+      } else {
+        if (this.botInGroupsConfig.defaultGlobalContext) {
+          Object.assign(
+            ctx.update.message.globalContext,
+            this.botInGroupsConfig.defaultGlobalContext
+          );
+        }
+      }
       if (ctx.update.message.text) {
         const shortCommand =
           this.shortCommandsToolsService.updateTextWithShortCommands(
@@ -111,7 +121,6 @@ export class BotInGroupsProcessorService {
       ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
     ) {
       ctx.update.message.text = `${botName} ${ctx.update.message.text}`;
-      ctx.update.message.globalContext[DISABLE_DIALOGFLOW_COMMANDS] = true;
       await this.botCommandsService.process(ctx, defaultHandler);
       return;
     }

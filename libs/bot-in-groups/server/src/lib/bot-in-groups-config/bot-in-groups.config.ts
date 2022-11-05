@@ -9,4 +9,8 @@ export interface BotInGroupsConfig {
   botNames: { [langCode: string]: string[] };
   botMeetingInformation: { [langCode: string]: string[] };
   category: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultGroupGlobalContext?: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultGlobalContext?: Record<string, any>;
 }

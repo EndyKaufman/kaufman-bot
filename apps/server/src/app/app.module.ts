@@ -9,14 +9,23 @@ import {
   DemoTaxiLocalContext,
   DemoTaxiOrdersModule,
 } from '@kaufman-bot/demo-taxi-orders-server';
-import { DialogflowModule } from '@kaufman-bot/dialogflow-server';
+import {
+  DialogflowModule,
+  DISABLE_DIALOGFLOW_COMMANDS,
+} from '@kaufman-bot/dialogflow-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
-import { FirstMeetingModule } from '@kaufman-bot/first-meeting-server';
+import {
+  DISABLE_FIRST_MEETING_COMMANDS,
+  FirstMeetingModule,
+} from '@kaufman-bot/first-meeting-server';
 import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator-server';
 import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
 import { PrismaClientModule } from '@kaufman-bot/prisma-server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator-server';
-import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
+import {
+  DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
+  ShortCommandsModule,
+} from '@kaufman-bot/short-commands-server';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import env from 'env-var';
@@ -112,6 +121,11 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       },
     }),
     BotInGroupsModule.forRoot({
+      defaultGroupGlobalContext: {
+        [DISABLE_FIRST_MEETING_COMMANDS]: true,
+        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
+        [DISABLE_DIALOGFLOW_COMMANDS]: true,
+      },
       botNames: {
         en: BOT_NAMES,
         ru: BOT_NAMES_RU,
