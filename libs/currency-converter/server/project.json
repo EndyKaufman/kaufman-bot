@@ -12,6 +12,7 @@
         "packageJson": "libs/currency-converter/server/package.json",
         "main": "libs/currency-converter/server/src/index.ts",
         "assets": ["libs/currency-converter/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

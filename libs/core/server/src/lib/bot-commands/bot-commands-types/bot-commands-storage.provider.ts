@@ -1,6 +1,6 @@
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 
-export const BOT_COMMANDS_STORAGE = Symbol('BOT_COMMANDS_STORAGE');
+export const BOT_COMMANDS_STORAGE = 'BOT_COMMANDS_STORAGE';
 
 export interface StorageItem<
   TMessage extends { context?: Record<string, unknown> }

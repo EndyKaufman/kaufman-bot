@@ -1,7 +1,7 @@
 import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
 import { Telegram } from 'telegraf';
 
-export const DEMO_TAXI_ORDERS_CONFIG = Symbol('DEMO_TAXI_ORDERS_CONFIG');
+export const DEMO_TAXI_ORDERS_CONFIG = 'DEMO_TAXI_ORDERS_CONFIG';
 
 export interface DemoTaxiOrdersConfig {
   title: string;

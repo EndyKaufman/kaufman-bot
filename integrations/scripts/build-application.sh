@@ -68,7 +68,6 @@ cd ./integrations/app
 npm i --force
 npm install --save-dev ../../integrations/app/lib/schematics/kaufman-bot-schematics-0.0.0.tgz --force
 npm run nx -- g  @kaufman-bot/schematics:application bot --bot-name=Adam
-npm run nx -- g  @kaufman-bot/schematics:library ping-pong
 npm i --force
 npm install --save ../../integrations/app/lib/core/server/kaufman-bot-core-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/debug-messages/server/kaufman-bot-debug-messages-server-0.0.0.tgz --force
@@ -82,6 +81,7 @@ npm install --save ../../integrations/app/lib/jokes-generator/server/kaufman-bot
 npm install --save ../../integrations/app/lib/quotes-generator/server/kaufman-bot-quotes-generator-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/first-meeting/server/kaufman-bot-first-meeting-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/bot-in-groups/server/kaufman-bot-bot-in-groups-server-0.0.0.tgz --force
+npm run nx -- g  @kaufman-bot/schematics:library ping-pong
 tsc --noEmit -p tsconfig.base.json
 npm run build
 npm run nx -- build bot

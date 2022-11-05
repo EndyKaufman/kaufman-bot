@@ -12,6 +12,7 @@
         "packageJson": "libs/dialogflow/server/package.json",
         "main": "libs/dialogflow/server/src/index.ts",
         "assets": ["libs/dialogflow/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

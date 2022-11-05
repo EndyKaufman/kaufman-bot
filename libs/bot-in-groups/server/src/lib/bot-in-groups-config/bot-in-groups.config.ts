@@ -1,4 +1,4 @@
-export const BOT_IN_GROUPS_CONFIG = Symbol('BOT_IN_GROUPS_CONFIG');
+export const BOT_IN_GROUPS_CONFIG = 'BOT_IN_GROUPS_CONFIG';
 
 export interface BotInGroupsConfig {
   title: string;

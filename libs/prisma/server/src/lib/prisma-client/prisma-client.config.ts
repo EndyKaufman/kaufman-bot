@@ -1,4 +1,4 @@
-export const PRISMA_CLIENT_CONFIG = Symbol('PRISMA_CLIENT_CONFIG');
+export const PRISMA_CLIENT_CONFIG = 'PRISMA_CLIENT_CONFIG';
 
 export interface PrismaClientConfig {
   databaseUrl: string;

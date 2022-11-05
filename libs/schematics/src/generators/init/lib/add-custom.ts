@@ -72,6 +72,7 @@ export function addEnvFilesEntry(host: Tree, botName: string) {
       `TELEGRAM_BOT_WEB_HOOKS_PATH=`,
       `TELEGRAM_BOT_ADMINS=`,
       `BOT_NAMES=${botName}`,
+      `BOT_NAMES_RU=${botName}`,
     ];
     for (
       let contentRowindex = 0;

@@ -20,6 +20,7 @@ import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import env from 'env-var';
+import { CustomInjectorModule } from 'nestjs-custom-injector';
 import { TelegrafModule } from 'nestjs-telegraf';
 import {
   getDefaultTranslatesModuleOptions,
@@ -42,6 +43,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
 
 @Module({
   imports: [
+    CustomInjectorModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'assets', 'public'),
     }),

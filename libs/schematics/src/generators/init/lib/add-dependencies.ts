@@ -54,11 +54,11 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       'class-validator-multi-lang': '^0.130.201',
       'class-transformer': '^0.5.1',
       'class-transformer-global-storage': '^0.4.1-1',
-      'env-var': '^7.1.1',
+      'env-var': '^7.3.0',
       'nestjs-telegraf': '^2.4.0',
       'nestjs-translates': '^1.0.3',
       telegraf: '^4.7.0',
-      'nestjs-custom-injector': '^1.0.1',
+      'nestjs-custom-injector': '^2.2.3',
       rxjs: RXJS,
       tslib: '^2.0.0',
     },
@@ -66,9 +66,10 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       '@nestjs/schematics': nestJsSchematicsVersion,
       '@nestjs/testing': NEST_VERSION,
       '@nrwl/nest': nxVersion,
-      '@ngneat/transloco-keys-manager': '^3.4.1',
+      '@ngneat/transloco-keys-manager': '^3.4.2',
       'source-map-support': '^0.5.21',
-      rucken: '^3.6.1',
+      rucken: '^4.4.4',
+      nx: '^13.8.1',
     }
   );
 }
