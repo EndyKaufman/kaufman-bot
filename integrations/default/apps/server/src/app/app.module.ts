@@ -91,6 +91,11 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       },
     }),
     BotInGroupsModule.forRoot({
+      defaultGroupGlobalContext: {
+        [DISABLE_FIRST_MEETING_COMMANDS]: true,
+        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
+        [DISABLE_DIALOGFLOW_COMMANDS]: true,
+      },
       botNames: {
         en: BOT_NAMES,
         ru: BOT_NAMES_RU,

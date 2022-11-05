@@ -3,7 +3,10 @@ import { BotCommandsModule } from '@kaufman-bot/core-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
 import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
-import { ShortCommandsModule } from '@kaufman-bot/short-commands-server';
+import {
+  DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
+  ShortCommandsModule,
+} from '@kaufman-bot/short-commands-server';
 import { CustomInjectorModule } from 'nestjs-custom-injector';
 import { Module } from '@nestjs/common';
 import env from 'env-var';
@@ -70,6 +73,9 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
       },
     }),
     BotInGroupsModule.forRoot({
+      defaultGroupGlobalContext: {
+        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true
+      },
       botNames: {
         en: BOT_NAMES,
       },

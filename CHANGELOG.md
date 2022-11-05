@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.10.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.10.0...v2.10.1) (2022-11-05)
+
+### Bug Fixes
+
+- **schematics:** update app template ([312c21f](https://github.com/EndyKaufman/kaufman-bot/commit/312c21f2c35cff78bfeb0a71a85a889fbdbe63a5))
+
 ## [2.10.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.9.1...v2.10.0) (2022-11-05)
 
 ### Features

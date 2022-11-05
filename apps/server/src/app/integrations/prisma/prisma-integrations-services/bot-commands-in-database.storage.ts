@@ -47,9 +47,9 @@ export class BotCommandsInDatabaseStorage<
       return {
         handlerId: state.handlerId || undefined,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        request: state.request as any,
+        request: (state.request || {}) as any,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        response: state.response as any,
+        response: (state.request || {}) as any,
         usedMessageIds: state.usedMessageIds,
         context: state.context as Prisma.JsonObject,
       };
@@ -127,9 +127,9 @@ export class BotCommandsInDatabaseStorage<
         data: {
           handlerId: state.handlerId,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          request: state.request as any,
+          request: (state.request || {}) as any,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          response: state.response as any,
+          response: (state.request || {}) as any,
           context: {
             ...(currentState?.context || {}),
             ...(state?.context || {}),
