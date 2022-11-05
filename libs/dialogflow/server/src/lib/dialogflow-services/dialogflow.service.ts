@@ -23,6 +23,8 @@ export const DISABLE_DIALOGFLOW_COMMANDS = 'DISABLE_DIALOGFLOW_COMMANDS';
 export class DialogflowService
   implements BotCommandsProvider, OnAfterBotCommands
 {
+  handlerId = DialogflowService.name;
+
   private readonly logger = new Logger(DialogflowService.name);
 
   @CustomInject(DIALOGFLOW_STORAGE)
@@ -43,7 +45,7 @@ export class DialogflowService
     ctx?,
     defaultHandler?: () => Promise<unknown>
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
-    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return { result, msg };
     }
 
@@ -64,7 +66,7 @@ export class DialogflowService
       );
       // reset last session if unhandled with dialog commands
       await this.dialogflowStorage.resetUserSession({
-        telegramUserId: this.botCommandsToolsService.getChatId(msg),
+        userId: this.botCommandsToolsService.getChatId(msg),
         projectId: this.dialogflowConfig.projectId,
       });
     }
@@ -87,7 +89,7 @@ export class DialogflowService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg?.botContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+    if (msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
       return null;
     }
 
@@ -149,7 +151,7 @@ export class DialogflowService
   >(msg: TMsg, ctx, locale: string, text: string) {
     const ts = +new Date();
     const current = await this.dialogflowStorage.getUserSession({
-      telegramUserId: this.botCommandsToolsService.getChatId(msg),
+      userId: this.botCommandsToolsService.getChatId(msg),
       projectId: this.dialogflowConfig.projectId,
     });
     const sessionId = current ? current.sessionId : v4();
@@ -204,7 +206,7 @@ export class DialogflowService
           this.dialogflowConfig.name
         );
         await this.dialogflowStorage.appendToUserSession({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           projectId: this.dialogflowConfig.projectId,
           sessionOfUsers: {
             sessionId,
@@ -220,7 +222,7 @@ export class DialogflowService
           this.dialogflowConfig.name
         );
         await this.dialogflowStorage.setUserSession({
-          telegramUserId: this.botCommandsToolsService.getChatId(msg),
+          userId: this.botCommandsToolsService.getChatId(msg),
           projectId: this.dialogflowConfig.projectId,
           sessionOfUsers: {
             sessionId,

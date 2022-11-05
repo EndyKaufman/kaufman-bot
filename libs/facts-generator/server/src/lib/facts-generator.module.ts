@@ -35,6 +35,7 @@ export class FactsGeneratorModule {
               ],
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#fact > table > tbody > tr > td',
+              headers: [],
               spyWords: [getText('facts'), getText('fact')],
               removeWords: [getText('get'), getText('please')],
               uri: 'https://randstuff.ru/fact/',

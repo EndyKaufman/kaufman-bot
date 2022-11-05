@@ -37,11 +37,11 @@
       "strategy": "join"
     }
   ],
-  "version": "2.6.0",
+  "version": "2.9.0",
   "peerDependencies": {
     "@nestjs/common": "^8.0.0",
-    "nestjs-custom-injector": "^1.0.1",
-    "nestjs-translates": "^1.0.3",
+    "nestjs-custom-injector": "^2.2.3",
+    "nestjs-translates": "^1.1.0",
     "class-validator-multi-lang": "^0.130.201"
   }
 }

@@ -26,6 +26,8 @@ import { DebugService } from './debug.service';
 export class DebugMessagesService
   implements BotCommandsProvider, OnBeforeBotCommands, OnAfterBotCommands
 {
+  handlerId = DebugMessagesService.name;
+
   private readonly logger = new Logger(DebugMessagesService.name);
 
   @CustomInject(DEBUG_MESSAGES_STORAGE)
@@ -48,7 +50,7 @@ export class DebugMessagesService
     ctx
   ): Promise<{ result: BotCommandsProviderActionResultType<TMsg>; msg: TMsg }> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { botContext, ...debugData } = msg;
+    const { globalContext, ...debugData } = msg;
     this.debugService.sendDebugInfo(
       msg,
       ctx,
@@ -64,10 +66,10 @@ export class DebugMessagesService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const telegramUserId = this.botCommandsToolsService.getChatId(msg);
-    if (telegramUserId) {
+    const userId = this.botCommandsToolsService.getChatId(msg);
+    if (userId) {
       const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
-        telegramUserId
+        userId
       );
       return this.debugService.setDebugMode(msg, debugMode);
     }

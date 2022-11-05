@@ -12,6 +12,8 @@ import { Injectable } from '@nestjs/common';
 export class FactsGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  handlerId = FactsGeneratorService.name;
+
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botCommandsToolsService: BotCommandsToolsService
@@ -31,7 +33,7 @@ export class FactsGeneratorService
     if (!locale?.includes('en')) {
       return null;
     }
-    return await this.scraperService.onHelp(msg);
+    return await this.scraperService.onHelp(msg, FactsGeneratorService.name);
   }
 
   async onMessage<
@@ -48,7 +50,10 @@ export class FactsGeneratorService
         locale
       )
     ) {
-      const result = await this.scraperService.onMessage(msg);
+      const result = await this.scraperService.onMessage(
+        msg,
+        FactsGeneratorService.name
+      );
       try {
         if (result?.type === 'text') {
           return {

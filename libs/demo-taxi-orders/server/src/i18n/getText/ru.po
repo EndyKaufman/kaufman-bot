@@ -1,0 +1,134 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+msgid "Commands for demo taxi orders"
+msgstr "Команды для формирования заявок в демо такси"
+
+msgid "Demo taxi orders commands"
+msgstr "Команды для заявок в демо такси"
+
+msgid "taxi"
+msgstr "такси"
+
+msgid "taxi help"
+msgstr "такси помощь"
+
+msgid "get taxi"
+msgstr "дай такси"
+
+msgid "ping"
+msgstr "пинг"
+
+msgid "pong"
+msgstr "понг"
+
+msgid "{{close}} Meeting canceled"
+msgstr "{{close}} Знакомство прервано"
+
+msgid "cancel"
+msgstr "отмена"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "end"
+msgstr "конец"
+
+msgid "exit"
+msgstr "выход"
+
+msgid "hello"
+msgstr "здравствуйте"
+
+msgid "hey"
+msgstr "привет"
+
+msgid "hi"
+msgstr "привет"
+
+msgid "I forgot about your existence {{worried}}"
+msgstr "Я забыл о вашем существовании {{worried}}"
+
+msgid "next"
+msgstr "дальше"
+
+msgid "Next"
+msgstr "Дальше"
+
+msgid "reset"
+msgstr "сбросить"
+
+msgid "skip"
+msgstr "пропустить"
+
+msgid "start"
+msgstr "начать"
+
+msgid "stop"
+msgstr "стоп"
+
+msgid "Your answer"
+msgstr "Ваш ответ"
+
+msgid "Your meeting information has been deleted {{unamused}}"
+msgstr "Сведения о знакомстве были удалены {{unamused}}"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Please choice direction"
+msgstr "Выберите направление"
+
+msgid "Village"
+msgstr "Деревня"
+
+msgid "Count of passengers - {value}"
+msgstr "Количество пассажиров - {value}"
+
+msgid "Direction - {value}"
+msgstr "Направление - {value}"
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Please choice count of passengers"
+msgstr "Укажите кол-во пассажиров"
+
+msgid "Prev"
+msgstr "Назад"
+
+msgid "Taxi order:"
+msgstr "Заявка на такси:"
+
+msgid "Contact phone - {value}"
+msgstr "Телефон - {value}"
+
+msgid "get"
+msgstr "дай"
+
+msgid "Please send contact phone"
+msgstr "Отправьте контактный номер телефона"
+
+msgid "Please choice count of passengers (current: {value})"
+msgstr "Укажите кол-во пассажиров (текущее: {value})"
+
+msgid "Please choice direction (current: {value})"
+msgstr "Выберите направление (текущее: {value})"
+
+msgid "Please send contact phone (current: {value})"
+msgstr "Отправьте контактный номер телефона (текущий: {value})"
+
+msgid "Parameters:"
+msgstr "Параметры:"
+
+msgid "Skip"
+msgstr "Пропустить"
+
+msgid "Taxi order was completed"
+msgstr "Заявка на такси оформлена"

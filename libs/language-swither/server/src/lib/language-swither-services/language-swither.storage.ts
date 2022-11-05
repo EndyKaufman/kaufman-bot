@@ -6,20 +6,17 @@ export type LanguageSwitherStorageProvider = Pick<
 >;
 
 export class LanguageSwitherStorage {
-  private readonly languageOfUsers: Record<number, string> = {};
+  private readonly languageOfUsers: Record<string, string> = {};
 
-  async getLanguageOfUser(telegramUserId: number): Promise<string | null> {
-    const currentLanguageCode = this.languageOfUsers[telegramUserId];
+  async getLanguageOfUser(userId: string): Promise<string | null> {
+    const currentLanguageCode = this.languageOfUsers[userId];
     if (currentLanguageCode) {
       return currentLanguageCode;
     }
     return null;
   }
 
-  async setLanguageOfUser(
-    telegramUserId: number,
-    langCode: string
-  ): Promise<void> {
-    this.languageOfUsers[telegramUserId] = langCode;
+  async setLanguageOfUser(userId: string, langCode: string): Promise<void> {
+    this.languageOfUsers[userId] = langCode;
   }
 }

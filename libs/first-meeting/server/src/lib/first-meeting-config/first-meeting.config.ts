@@ -1,4 +1,4 @@
-export const FIRST_MEETING_CONFIG = Symbol('FIRST_MEETING_CONFIG');
+export const FIRST_MEETING_CONFIG = 'FIRST_MEETING_CONFIG';
 
 export interface FirstMeetingConfig {
   title: string;

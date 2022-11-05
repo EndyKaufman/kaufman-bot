@@ -15,6 +15,8 @@ const RUSSIAN_LANGUAGE = 'ru';
 export class RuJokesGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  handlerId = RuJokesGeneratorService.name;
+
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botCommandsToolsService: BotCommandsToolsService
@@ -34,7 +36,7 @@ export class RuJokesGeneratorService
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
-    return await this.scraperService.onHelp(msg);
+    return await this.scraperService.onHelp(msg, RuJokesGeneratorService.name);
   }
 
   async onMessage<
@@ -51,7 +53,10 @@ export class RuJokesGeneratorService
         locale
       )
     ) {
-      const result = await this.scraperService.onMessage(msg);
+      const result = await this.scraperService.onMessage(
+        msg,
+        RuJokesGeneratorService.name
+      );
       try {
         if (result?.type === 'text') {
           return {

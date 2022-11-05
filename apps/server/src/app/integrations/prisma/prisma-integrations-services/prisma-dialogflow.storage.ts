@@ -1,4 +1,6 @@
 import {
+  DialogflowSessionRequestsMetadata,
+  DialogflowSessionResponsesMetadata,
   DialogflowStorageProvider,
   SessionOfUsers,
 } from '@kaufman-bot/dialogflow-server';
@@ -7,56 +9,57 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PrismaDialogflowStorage implements DialogflowStorageProvider {
-  private readonly sessionOfUsers: Record<number, SessionOfUsers> = {};
+  private readonly sessionOfUsers: Record<string, SessionOfUsers> = {};
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
   async getUserSession({
-    telegramUserId,
+    userId,
     projectId,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     createIfNotExists?: boolean;
   }): Promise<SessionOfUsers | null> {
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
+      this.sessionOfUsers[this.getKey({ userId, projectId })];
     if (currentSessionOfUsers) {
       return currentSessionOfUsers;
     }
     try {
       const currentFromDatabase =
-        await this.prismaClientService.dialogflowSession.findFirst({
+        await this.prismaClientService.dialogflowSession.findFirstOrThrow({
           where: {
-            User: { telegramId: telegramUserId.toString() },
+            User: { telegramId: userId },
             projectId,
           },
-          rejectOnNotFound: true,
         });
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+      this.sessionOfUsers[this.getKey({ userId, projectId })] = {
         sessionId: currentFromDatabase.sessionId,
-        requestsMetadata: currentFromDatabase.requestsMetadata,
-        responsesMetadata: currentFromDatabase.responsesMetadata,
+        requestsMetadata:
+          currentFromDatabase.requestsMetadata as unknown as DialogflowSessionRequestsMetadata,
+        responsesMetadata:
+          currentFromDatabase.responsesMetadata as unknown as DialogflowSessionResponsesMetadata,
       };
-      return this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
+      return this.sessionOfUsers[this.getKey({ userId, projectId })];
     } catch (error) {
       return null;
     }
   }
 
   async appendToUserSession({
-    telegramUserId,
+    userId,
     projectId,
     sessionOfUsers,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     sessionOfUsers: SessionOfUsers;
   }): Promise<void> {
-    const user = await this.getUser(telegramUserId);
+    const user = await this.getUser(userId);
 
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
+      this.sessionOfUsers[this.getKey({ userId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
       ...(currentSessionOfUsers.requestsMetadata || []),
       ...(sessionOfUsers.requestsMetadata || []),
@@ -90,7 +93,7 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
         },
       },
     });
-    this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+    this.sessionOfUsers[this.getKey({ userId, projectId })] = {
       sessionId: sessionOfUsers.sessionId,
       requestsMetadata: currentSessionOfUsers.requestsMetadata,
       responsesMetadata: currentSessionOfUsers.responsesMetadata,
@@ -98,18 +101,18 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
   }
 
   async setUserSession({
-    telegramUserId,
+    userId,
     projectId,
     sessionOfUsers,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     sessionOfUsers: SessionOfUsers;
   }): Promise<void> {
-    const user = await this.getUser(telegramUserId);
+    const user = await this.getUser(userId);
 
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
+      this.sessionOfUsers[this.getKey({ userId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
       ...(sessionOfUsers?.requestsMetadata || []),
     ];
@@ -141,7 +144,7 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
         },
       },
     });
-    this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+    this.sessionOfUsers[this.getKey({ userId, projectId })] = {
       sessionId: sessionOfUsers.sessionId,
       requestsMetadata: currentSessionOfUsers.requestsMetadata,
       responsesMetadata: currentSessionOfUsers.responsesMetadata,
@@ -149,17 +152,17 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
   }
 
   async resetUserSession({
-    telegramUserId,
+    userId,
     projectId,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
   }) {
     try {
       const defaultUserSession =
         await this.prismaClientService.dialogflowSession.findFirst({
           where: {
-            User: { telegramId: telegramUserId.toString() },
+            User: { telegramId: userId },
             projectId,
           },
         });
@@ -174,7 +177,7 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
             projectId,
           },
         });
-        this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+        this.sessionOfUsers[this.getKey({ userId, projectId })] = {
           sessionId: defaultUserSession.sessionId,
           requestsMetadata: [],
           responsesMetadata: [],
@@ -185,29 +188,22 @@ export class PrismaDialogflowStorage implements DialogflowStorageProvider {
     }
   }
 
-  private async getUser(telegramUserId: number) {
+  private async getUser(userId: string) {
     let user;
     try {
-      user = await this.prismaClientService.user.findFirst({
+      user = await this.prismaClientService.user.findFirstOrThrow({
         select: { id: true },
-        where: { telegramId: telegramUserId.toString() },
-        rejectOnNotFound: true,
+        where: { telegramId: userId },
       });
     } catch (error) {
       user = await this.prismaClientService.user.create({
-        data: { telegramId: telegramUserId.toString() },
+        data: { telegramId: userId },
       });
     }
     return user;
   }
 
-  private getKey({
-    telegramUserId,
-    projectId,
-  }: {
-    telegramUserId: number;
-    projectId: string;
-  }) {
-    return `${telegramUserId}_${projectId}`;
+  private getKey({ userId, projectId }: { userId: string; projectId: string }) {
+    return `${userId}_${projectId}`;
   }
 }

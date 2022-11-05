@@ -12,6 +12,7 @@
         "packageJson": "libs/quotes-generator/server/package.json",
         "main": "libs/quotes-generator/server/src/index.ts",
         "assets": ["libs/quotes-generator/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

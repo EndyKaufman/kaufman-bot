@@ -13,6 +13,8 @@ import { Injectable } from '@nestjs/common';
 export class JokesGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
 {
+  handlerId = JokesGeneratorService.name;
+
   constructor(
     private readonly scraperService: ScraperService,
     private readonly botCommandsToolsService: BotCommandsToolsService
@@ -32,7 +34,7 @@ export class JokesGeneratorService
     if (!locale?.includes('en')) {
       return null;
     }
-    return await this.scraperService.onHelp(msg);
+    return await this.scraperService.onHelp(msg, JokesGeneratorService.name);
   }
 
   async onMessage<
@@ -49,7 +51,10 @@ export class JokesGeneratorService
         locale
       )
     ) {
-      const result = await this.scraperService.onMessage(msg);
+      const result = await this.scraperService.onMessage(
+        msg,
+        JokesGeneratorService.name
+      );
       try {
         if (result?.type === 'text') {
           return {

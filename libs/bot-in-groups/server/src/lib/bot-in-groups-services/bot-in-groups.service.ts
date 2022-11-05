@@ -17,6 +17,8 @@ import {
 export class BotInGroupsService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
+  handlerId = BotInGroupsService.name;
+
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,
@@ -58,11 +60,11 @@ export class BotInGroupsService
           msg.text = `${this.botInGroupsConfig.name} meet`;
         }
       } else {
-        msg.botCommandHandlerBreak = true;
+        msg.handlerStop = true;
       }
     }
     if (
-      msg?.botStart ||
+      msg.start ||
       this.botCommandsToolsService.checkCommands(
         this.botCommandsToolsService.clearCommands(
           msg.text?.split(' ').join('').trim(),

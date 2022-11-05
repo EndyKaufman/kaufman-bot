@@ -8,6 +8,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { LATEST_MESSAGE_ID } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsCategory } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import {
@@ -21,10 +22,10 @@ export class BotCommandsToolsService {
   @CustomInject(BOT_COMMANDS_TOOLS_INTERCEPTOR, {
     multi: true,
   })
-  private botCommandsToolsInterceptors?: BotCommandsToolsInterceptor[];
+  private botCommandsToolsInterceptors!: BotCommandsToolsInterceptor[];
 
-  @CustomInject(BOT_COMMANDS_CONFIG, { static: false })
-  private botCommandsConfig?: BotCommandsConfig;
+  @CustomInject(BOT_COMMANDS_CONFIG)
+  private botCommandsConfig!: BotCommandsConfig;
 
   private lowerCaseTranslates?: TranslatesStorage['translates'];
 
@@ -33,10 +34,39 @@ export class BotCommandsToolsService {
     private readonly translatesService: TranslatesService
   ) {}
 
+  getReplyMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const id = msg?.reply_to_message?.message_id || msg?.message?.message_id;
+    return id ? String(id) : undefined;
+  }
+
+  getContextMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const id =
+      msg?.reply_to_message?.message_id ||
+      msg?.message?.message_id ||
+      msg?.message_id;
+    return id ? String(id) : LATEST_MESSAGE_ID;
+  }
+
+  getMessageId<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  >(msg: TMsg) {
+    return LATEST_MESSAGE_ID;
+  }
+
   getChatId<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
-    return msg?.chat?.id || msg?.from?.id;
+    return String(
+      msg?.reply_to_message?.chat?.id ||
+        msg?.message?.chat?.id ||
+        msg?.chat?.id ||
+        msg?.from?.id
+    );
   }
 
   isAdmin<
@@ -47,6 +77,8 @@ export class BotCommandsToolsService {
         String(admin).trim().toLocaleLowerCase()
       ) || [];
     return (
+      admins.includes(msg?.reply_to_message?.chat?.id.toString() || '') ||
+      admins.includes(msg?.message?.chat?.id.toString() || '') ||
       admins.includes(msg?.chat?.id.toString() || '') ||
       admins.includes(msg?.from?.id.toString() || '')
     );
@@ -112,7 +144,9 @@ export class BotCommandsToolsService {
         }__`
       : '';
     const descriptions = options.descriptions
-      ? this.translatesService.translate(options.descriptions, options.locale)
+      ? this.prepareHelpString(
+          this.translatesService.translate(options.descriptions, options.locale)
+        )
       : '';
     const usage =
       usageWithLocalized.length > 0

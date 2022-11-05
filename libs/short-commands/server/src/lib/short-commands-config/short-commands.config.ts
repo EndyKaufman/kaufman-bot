@@ -1,4 +1,4 @@
-export const SHORT_COMMANDS_CONFIG = Symbol('SHORT_COMMANDS_CONFIG');
+export const SHORT_COMMANDS_CONFIG = 'SHORT_COMMANDS_CONFIG';
 
 export interface ShortCommandsConfig {
   title: string;

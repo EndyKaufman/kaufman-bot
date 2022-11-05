@@ -6,34 +6,32 @@ import { Injectable } from '@nestjs/common';
 export class PrismaDebugMessagesStorage
   implements DebugMessagesStorageProvider
 {
-  private readonly debugModeOfUsers: Record<number, boolean> = {};
+  private readonly debugModeOfUsers: Record<string, boolean> = {};
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
-  async getDebugModeOfUser(telegramUserId: number): Promise<boolean> {
-    const currentDebugMode = this.debugModeOfUsers[telegramUserId];
+  async getDebugModeOfUser(userId: string): Promise<boolean> {
+    const currentDebugMode = this.debugModeOfUsers[userId];
     if (currentDebugMode) {
       return currentDebugMode;
     }
     try {
       const currentDebugModeFromDatabase =
-        await this.prismaClientService.user.findFirst({
-          where: { telegramId: telegramUserId.toString() },
-          rejectOnNotFound: true,
+        await this.prismaClientService.user.findFirstOrThrow({
+          where: { telegramId: userId },
         });
-      this.debugModeOfUsers[telegramUserId] =
-        currentDebugModeFromDatabase.debugMode;
-      return this.debugModeOfUsers[telegramUserId];
+      this.debugModeOfUsers[userId] = currentDebugModeFromDatabase.debugMode;
+      return this.debugModeOfUsers[userId];
     } catch (error) {
       return false;
     }
   }
 
-  async setDebugModeOfUser(userId: number, debugMode: boolean): Promise<void> {
+  async setDebugModeOfUser(userId: string, debugMode: boolean): Promise<void> {
     await this.prismaClientService.user.upsert({
-      create: { telegramId: userId.toString(), debugMode },
+      create: { telegramId: userId, debugMode },
       update: { debugMode },
-      where: { telegramId: userId.toString() },
+      where: { telegramId: userId },
     });
     this.debugModeOfUsers[userId] = debugMode;
   }

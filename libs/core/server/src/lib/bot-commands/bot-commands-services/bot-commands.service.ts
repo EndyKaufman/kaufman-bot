@@ -4,35 +4,47 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { DEFAULT_MAX_RECURSIVE_DEPTH } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import {
   BotCommandsProvider,
   BotCommandsProviderActionContext,
   BOT_COMMANDS_PROVIDER,
 } from '../bot-commands-types/bot-commands-provider.interface';
-import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
+import {
+  BotCommandsStorageProvider,
+  BOT_COMMANDS_STORAGE,
+} from '../bot-commands-types/bot-commands-storage.provider';
 import { OnAfterBotCommands } from '../bot-commands-types/on-after-bot-commands.interface';
 import { OnBeforeBotCommands } from '../bot-commands-types/on-before-bot-commands.interface';
 import { OnContextBotCommands } from '../bot-commands-types/on-context-bot-commands.interface';
 import { BotCommandsToolsService } from './bot-commands-tools.service';
 
-const DEFAULT_MAX_RECURSIVE_DEPTH = 5;
 @Injectable()
 export class BotCommandsService implements BotCommandsProvider {
+  handlerId = BotCommandsService.name;
+
   private logger = new Logger(BotCommandsService.name);
 
-  private lastBotCommandRequests: {
-    [telegramUserId: string]: {
-      botCommandHandlerId: string;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      botCommandHandlerContext: Record<string, any>;
-      request: string;
-      response: BotCommandsProviderActionResultType<unknown>;
-    } | null;
-  } = {};
+  @CustomInject(BOT_COMMANDS_STORAGE)
+  private botCommandsStorage!: BotCommandsStorageProvider<{
+    context?: Record<string, unknown>;
+  }>;
 
-  @CustomInject(BOT_COMMANDS_PROVIDER, { multi: true })
+  @CustomInject(BOT_COMMANDS_PROVIDER, {
+    multi: true,
+    providersFactory: (items) => {
+      const len = items.length;
+      for (let i = 0; i < len; i++) {
+        if (!items[i].handlerId) {
+          items[i].handlerId = `botCommandHandler#${i.toString()}`;
+        }
+      }
+      return items;
+    },
+  })
   private botCommandsProviders!: (BotCommandsProvider &
     Partial<OnBeforeBotCommands> &
     Partial<OnAfterBotCommands> &
@@ -47,7 +59,7 @@ export class BotCommandsService implements BotCommandsProvider {
 
   async start(ctx) {
     const msg: BotCommandsProviderActionMsg = ctx.update.message;
-    msg.botStart = true;
+    msg.start = true;
     await this.process(ctx);
   }
 
@@ -77,21 +89,49 @@ export class BotCommandsService implements BotCommandsProvider {
       if (result?.type === 'message') {
         msg = result.message;
       }
-      if (result?.type === 'markdown') {
-        const replyResult = await ctx.reply(result.markdown, {
-          parse_mode: 'MarkdownV2',
-          ...result.custom,
-        });
-        if (result.callback) {
-          await result.callback(replyResult);
+
+      const contextMessageId =
+        this.botCommandsToolsService.getContextMessageId(msg);
+
+      const userId = this.botCommandsToolsService.getChatId(msg);
+
+      const messageId = this.botCommandsToolsService.getMessageId(msg);
+      const replyResultMessageId =
+        this.botCommandsToolsService.getReplyMessageId(msg);
+
+      if (result?.type === 'markdown' || result?.type === 'text') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let replyResult: any;
+
+        if (result?.type === 'markdown') {
+          replyResult = await ctx.reply(result.markdown, {
+            parse_mode: 'MarkdownV2',
+            ...result.custom,
+          });
         }
-      }
-      if (result?.type === 'text') {
-        const replyResult = await ctx.reply(result.text, {
-          ...result.custom,
-        });
+        if (result?.type === 'text') {
+          replyResult = await ctx.reply(result.text, {
+            ...result.custom,
+          });
+        }
+
+        const state =
+          (await this.botCommandsStorage.getState(userId, messageId)) ||
+          undefined;
+
         if (result.callback) {
-          await result.callback(replyResult);
+          const context = state?.context || {};
+          await result.callback(replyResult, context);
+          if (state) {
+            state.context = context;
+          }
+        }
+
+        if (replyResultMessageId !== contextMessageId) {
+          await this.botCommandsStorage.patchState(userId, messageId, {
+            ...(state || {}),
+            response: { type: 'message', message: replyResult },
+          });
         }
       }
 
@@ -107,8 +147,6 @@ export class BotCommandsService implements BotCommandsProvider {
     msg: TMsg,
     ctx: BotCommandsProviderActionContext
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    this.initBotCommandHandlerId();
-
     const allResults: string[] = [];
     const len = this.botCommandsProviders.length;
 
@@ -117,7 +155,14 @@ export class BotCommandsService implements BotCommandsProvider {
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
 
-      const result = await botCommandsProvider.onHelp(msg, ctx);
+      const result = await botCommandsProvider.onHelp(
+        {
+          ...msg,
+          handlerId: botCommandsProvider.handlerId,
+          context: msg?.context || {},
+        },
+        ctx
+      );
 
       if (result !== null && result.type === 'text') {
         allResults.push(result.text);
@@ -144,19 +189,21 @@ export class BotCommandsService implements BotCommandsProvider {
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     let result: BotCommandsProviderActionResultType<TMsg> = null;
 
-    this.initBotCommandHandlerId();
+    await this.checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplaedNumericState<TMsg>(
+      msg
+    );
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    if (!msg?.botCommandHandlerBreak) {
+    if (!msg?.handlerStop) {
       result = await this.processOnMessage(result, msg, ctx);
     }
 
-    if (!msg?.botCommandHandlerBreak) {
+    if (!msg?.handlerStop) {
       result = await this.processOnContext(result, msg, ctx);
     }
 
-    if (msg?.botCommandHandlerBreak) {
+    if (msg?.handlerStop) {
       return { type: 'stop', message: msg };
     }
 
@@ -185,6 +232,42 @@ export class BotCommandsService implements BotCommandsProvider {
     return afterBotCommand.result;
   }
 
+  private async checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplaedNumericState<
+    TMsg extends BotCommandsProviderActionMsg
+  >(msg: TMsg) {
+    const chatId = this.botCommandsToolsService.getChatId(msg);
+    const messageId = this.botCommandsToolsService.getMessageId(msg);
+    const replyMessageId = this.botCommandsToolsService.getReplyMessageId(msg);
+
+    const currentState = await this.botCommandsStorage.getState(
+      chatId,
+      messageId
+    );
+
+    if (replyMessageId) {
+      const stateByUsedMessage =
+        await this.botCommandsStorage.getStateByUsedMessageId(
+          chatId,
+          replyMessageId
+        );
+
+      if ((stateByUsedMessage?.usedMessageIds || []).includes(replyMessageId)) {
+        if (currentState) {
+          const usedMessageId = currentState?.usedMessageIds[0];
+          if (usedMessageId && usedMessageId.length > 0) {
+            await this.botCommandsStorage.patchState(chatId, usedMessageId, {
+              ...currentState,
+            });
+            await this.botCommandsStorage.delState(chatId, messageId);
+            await this.botCommandsStorage.patchState(chatId, messageId, {
+              ...stateByUsedMessage,
+            });
+          }
+        }
+      }
+    }
+  }
+
   async processOnBeforeBotCommands<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
     ctx?: BotCommandsProviderActionContext
@@ -192,11 +275,15 @@ export class BotCommandsService implements BotCommandsProvider {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
-      if (
-        botCommandsProvider.onBeforeBotCommands &&
-        !msg?.botCommandHandlerBreak
-      ) {
-        msg = await botCommandsProvider.onBeforeBotCommands(msg, ctx);
+      if (botCommandsProvider.onBeforeBotCommands && !msg?.handlerStop) {
+        msg = await botCommandsProvider.onBeforeBotCommands(
+          {
+            ...msg,
+            handlerId: botCommandsProvider.handlerId,
+            context: msg?.context || {},
+          },
+          ctx
+        );
       }
     }
     return msg;
@@ -215,7 +302,11 @@ export class BotCommandsService implements BotCommandsProvider {
         const afterBotCommand =
           await botCommandsProvider.onAfterBotCommands<TMsg>(
             result,
-            msg,
+            {
+              ...msg,
+              handlerId: botCommandsProvider.handlerId,
+              context: msg?.context || {},
+            },
             ctx,
             defaultHandler
           );
@@ -224,15 +315,6 @@ export class BotCommandsService implements BotCommandsProvider {
       }
     }
     return { result, msg };
-  }
-
-  private async initBotCommandHandlerId() {
-    const len = this.botCommandsProviders.length;
-    for (let i = 0; i < len; i++) {
-      if (!this.botCommandsProviders[i].botCommandHandlerId) {
-        this.botCommandsProviders[i].botCommandHandlerId = i.toString();
-      }
-    }
   }
 
   private async processOnMessage<TMsg extends BotCommandsProviderActionMsg>(
@@ -244,13 +326,15 @@ export class BotCommandsService implements BotCommandsProvider {
       return result;
     }
     const len = this.botCommandsProviders.length;
-    msg.botCommandHandlerId = null;
     for (let i = 0; i < len; i++) {
-      if (!result && !msg?.botCommandHandlerBreak) {
-        result = await this.botCommandsProviders[i].onMessage(msg, ctx);
+      const botCommandsProvider = this.botCommandsProviders[i];
+      if (!result && !msg?.handlerStop) {
+        msg.handlerId = botCommandsProvider.handlerId;
+        msg.context = msg?.context || {};
+        result = await botCommandsProvider.onMessage(msg, ctx);
+
         if (result) {
-          msg.botCommandHandlerId =
-            this.botCommandsProviders[i].botCommandHandlerId || i.toString();
+          msg.handlerId = botCommandsProvider.handlerId;
         }
       }
     }
@@ -265,56 +349,121 @@ export class BotCommandsService implements BotCommandsProvider {
     if (!msg) {
       return result;
     }
-    if (
-      msg.botCommandHandlerId === null &&
-      this.lastBotCommandRequests[
-        this.botCommandsToolsService.getChatId(msg)
-      ] &&
-      result === null
-    ) {
+    const chatId = this.botCommandsToolsService.getChatId(msg);
+    const messageId = this.botCommandsToolsService.getMessageId(msg);
+
+    let state = await this.botCommandsStorage.getState(chatId, messageId);
+
+    if (state && result === null) {
       const len = this.botCommandsProviders.length;
       for (let i = 0; i < len; i++) {
         const botCommandsProvider = this.botCommandsProviders[i];
+        state = await this.botCommandsStorage.getState(chatId, messageId);
+
         if (
           !result &&
-          this.lastBotCommandRequests[
-            this.botCommandsToolsService.getChatId(msg)
-          ]?.botCommandHandlerId === botCommandsProvider.botCommandHandlerId &&
-          botCommandsProvider.onContextBotCommands
+          state?.handlerId === botCommandsProvider.handlerId &&
+          botCommandsProvider.onContextBotCommands &&
+          !msg?.handlerStop
         ) {
-          msg.botCommandHandlerContext =
-            this.lastBotCommandRequests[
-              this.botCommandsToolsService.getChatId(msg)
-            ]?.botCommandHandlerContext || {};
-          result = await botCommandsProvider.onContextBotCommands(msg, ctx);
-          if (result && botCommandsProvider.botCommandHandlerId) {
-            msg.botCommandHandlerId = botCommandsProvider.botCommandHandlerId;
+          msg.context = state?.context || {};
+
+          result = await botCommandsProvider.onContextBotCommands(
+            {
+              ...msg,
+              handlerId: botCommandsProvider.handlerId,
+              context: msg?.context || {},
+            },
+            ctx
+          );
+
+          if (result) {
+            msg.handlerId = botCommandsProvider.handlerId;
           }
         }
       }
-      if (!result) {
-        this.lastBotCommandRequests[
-          this.botCommandsToolsService.getChatId(msg)
-        ] = null;
-      }
     }
-    if (result && msg.botCommandHandlerId) {
-      this.lastBotCommandRequests[this.botCommandsToolsService.getChatId(msg)] =
-        {
-          botCommandHandlerId: msg.botCommandHandlerId,
-          request: msg.text,
-          response: result,
-          botCommandHandlerContext: {
-            ...(this.lastBotCommandRequests[
-              this.botCommandsToolsService.getChatId(msg)
-            ]?.botCommandHandlerContext || {}),
-            ...result.context,
-          },
-        };
-    } else {
-      this.lastBotCommandRequests[this.botCommandsToolsService.getChatId(msg)] =
-        null;
+
+    if (result) {
+      await this.saveLatestStateIfCurrentResultSendNewStateOptionsAndClearLatestState<TMsg>(
+        result,
+        msg
+      );
+
+      await this.saveLatestStateOnChangeSuccessCommandHandlerIdAndClearLatestState(
+        chatId,
+        messageId,
+        msg
+      );
+
+      await this.saveSuccessProcessOnContext<TMsg>(
+        chatId,
+        messageId,
+        msg,
+        result
+      );
     }
     return result;
+  }
+
+  private async saveLatestStateIfCurrentResultSendNewStateOptionsAndClearLatestState<
+    TMsg extends BotCommandsProviderActionMsg
+  >(result: BotCommandsProviderActionResultType<TMsg>, msg: TMsg) {
+    if (result?.newState) {
+      const chatId = this.botCommandsToolsService.getChatId(msg);
+      const messageId = this.botCommandsToolsService.getMessageId(msg);
+
+      const currentState = await this.botCommandsStorage.getState(
+        chatId,
+        messageId
+      );
+
+      if (currentState) {
+        const usedMessageId = currentState?.usedMessageIds[0];
+        if (usedMessageId && usedMessageId.length > 0) {
+          await this.botCommandsStorage.patchState(chatId, usedMessageId, {
+            ...currentState,
+          });
+          await this.botCommandsStorage.delState(chatId, messageId);
+        }
+      }
+    }
+  }
+
+  private async saveLatestStateOnChangeSuccessCommandHandlerIdAndClearLatestState(
+    chatId: string,
+    messageId: string,
+    msg: BotCommandsProviderActionMsg
+  ) {
+    const currentState = await this.botCommandsStorage.getState(
+      chatId,
+      messageId
+    );
+
+    if (msg.handlerId !== currentState?.handlerId) {
+      const usedMessageId = currentState?.usedMessageIds[0];
+      if (usedMessageId && usedMessageId.length > 0) {
+        await this.botCommandsStorage.patchState(chatId, usedMessageId, {
+          ...currentState,
+        });
+        await this.botCommandsStorage.delState(chatId, messageId);
+      }
+    }
+  }
+
+  private async saveSuccessProcessOnContext<
+    TMsg extends BotCommandsProviderActionMsg
+  >(
+    chatId: string,
+    messageId: string,
+    msg: BotCommandsProviderActionMsg,
+    result: BotCommandsProviderActionResultType<TMsg>
+  ) {
+    await this.botCommandsStorage.patchState(chatId, messageId, {
+      handlerId: msg.handlerId,
+      request: { type: 'message', message: msg },
+      response: result,
+      context: result?.context || {},
+    });
   }
 }

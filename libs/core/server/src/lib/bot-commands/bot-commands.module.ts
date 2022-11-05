@@ -6,9 +6,11 @@ import {
   BOT_COMMANDS_CONFIG,
 } from './bot-commands-config/bot-commands.config';
 import { BotCommandsBotinfoService } from './bot-commands-services/bot-commands-botinfo.service';
+import { BotCommandsInMemoryStorage } from './bot-commands-services/bot-commands-in-memory.storage';
 import { BotCommandsToolsService } from './bot-commands-services/bot-commands-tools.service';
 import { BotCommandsService } from './bot-commands-services/bot-commands.service';
 import { BOT_COMMANDS_PROVIDER } from './bot-commands-types/bot-commands-provider.interface';
+import { BOT_COMMANDS_STORAGE } from './bot-commands-types/bot-commands-storage.provider';
 @Module({
   imports: [CustomInjectorModule, TranslatesModule],
   providers: [BotCommandsToolsService, BotCommandsService],
@@ -37,11 +39,15 @@ export class BotCommandsModule {
           },
         },
         {
+          provide: BOT_COMMANDS_STORAGE,
+          useClass: BotCommandsInMemoryStorage,
+        },
+        {
           provide: BOT_COMMANDS_PROVIDER,
           useClass: BotCommandsBotinfoService,
         },
       ],
-      exports: [BOT_COMMANDS_CONFIG],
+      exports: [BOT_COMMANDS_CONFIG, BOT_COMMANDS_STORAGE],
     };
   }
 }

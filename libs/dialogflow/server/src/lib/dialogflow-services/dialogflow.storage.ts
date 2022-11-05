@@ -21,18 +21,18 @@ export type DialogflowStorageProvider = Pick<
 
 @Injectable()
 export class DialogflowStorage {
-  private readonly sessionOfUsers: Record<number, SessionOfUsers> = {};
+  private readonly sessionOfUsers: Record<string, SessionOfUsers> = {};
 
   async getUserSession({
-    telegramUserId,
+    userId,
     projectId,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     createIfNotExists?: boolean;
   }): Promise<SessionOfUsers | null> {
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })];
+      this.sessionOfUsers[this.getKey({ userId, projectId })];
     if (currentSessionOfUsers) {
       return currentSessionOfUsers;
     }
@@ -40,16 +40,16 @@ export class DialogflowStorage {
   }
 
   async appendToUserSession({
-    telegramUserId,
+    userId,
     projectId,
     sessionOfUsers,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     sessionOfUsers: SessionOfUsers;
   }): Promise<void> {
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
+      this.sessionOfUsers[this.getKey({ userId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
       ...(currentSessionOfUsers.requestsMetadata || []),
       ...(sessionOfUsers.requestsMetadata || []),
@@ -59,7 +59,7 @@ export class DialogflowStorage {
       ...sessionOfUsers.responsesMetadata,
     ];
 
-    this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+    this.sessionOfUsers[this.getKey({ userId, projectId })] = {
       sessionId: sessionOfUsers.sessionId,
       requestsMetadata: currentSessionOfUsers.requestsMetadata,
       responsesMetadata: currentSessionOfUsers.responsesMetadata,
@@ -67,16 +67,16 @@ export class DialogflowStorage {
   }
 
   async setUserSession({
-    telegramUserId,
+    userId,
     projectId,
     sessionOfUsers,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
     sessionOfUsers: SessionOfUsers;
   }): Promise<void> {
     const currentSessionOfUsers: SessionOfUsers =
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] || {};
+      this.sessionOfUsers[this.getKey({ userId, projectId })] || {};
     currentSessionOfUsers.requestsMetadata = [
       ...(sessionOfUsers?.requestsMetadata || []),
     ];
@@ -84,7 +84,7 @@ export class DialogflowStorage {
       ...(sessionOfUsers.responsesMetadata || []),
     ];
 
-    this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+    this.sessionOfUsers[this.getKey({ userId, projectId })] = {
       sessionId: sessionOfUsers.sessionId,
       requestsMetadata: currentSessionOfUsers.requestsMetadata,
       responsesMetadata: currentSessionOfUsers.responsesMetadata,
@@ -92,14 +92,14 @@ export class DialogflowStorage {
   }
 
   async resetUserSession({
-    telegramUserId,
+    userId,
     projectId,
   }: {
-    telegramUserId: number;
+    userId: string;
     projectId: string;
   }) {
     try {
-      this.sessionOfUsers[this.getKey({ telegramUserId, projectId })] = {
+      this.sessionOfUsers[this.getKey({ userId, projectId })] = {
         sessionId: 'sessionId',
         requestsMetadata: [],
         responsesMetadata: [],
@@ -109,13 +109,7 @@ export class DialogflowStorage {
     }
   }
 
-  private getKey({
-    telegramUserId,
-    projectId,
-  }: {
-    telegramUserId: number;
-    projectId: string;
-  }) {
-    return `${telegramUserId}_${projectId}`;
+  private getKey({ userId, projectId }: { userId: string; projectId: string }) {
+    return `${userId}_${projectId}`;
   }
 }

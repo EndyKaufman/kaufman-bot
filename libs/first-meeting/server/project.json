@@ -12,6 +12,7 @@
         "packageJson": "libs/first-meeting/server/package.json",
         "main": "libs/first-meeting/server/src/index.ts",
         "assets": ["libs/first-meeting/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }
     },

@@ -6,38 +6,33 @@ import { Injectable } from '@nestjs/common';
 export class PrismaLanguageSwitherStorage
   implements LanguageSwitherStorageProvider
 {
-  private readonly languageOfUsers: Record<number, string> = {};
+  private readonly languageOfUsers: Record<string, string> = {};
 
   constructor(private readonly prismaClientService: PrismaClientService) {}
 
-  async getLanguageOfUser(telegramUserId: number): Promise<string | null> {
-    const currentLanguageCode = this.languageOfUsers[telegramUserId];
+  async getLanguageOfUser(userId: string): Promise<string | null> {
+    const currentLanguageCode = this.languageOfUsers[userId];
     if (currentLanguageCode) {
       return currentLanguageCode;
     }
     try {
       const currentLanguageCodeFromDatabase =
-        await this.prismaClientService.user.findFirst({
-          where: { telegramId: telegramUserId.toString() },
-          rejectOnNotFound: true,
+        await this.prismaClientService.user.findFirstOrThrow({
+          where: { telegramId: userId },
         });
-      this.languageOfUsers[telegramUserId] =
-        currentLanguageCodeFromDatabase.langCode;
-      return this.languageOfUsers[telegramUserId];
+      this.languageOfUsers[userId] = currentLanguageCodeFromDatabase.langCode;
+      return this.languageOfUsers[userId];
     } catch (error) {
       return null;
     }
   }
 
-  async setLanguageOfUser(
-    telegramUserId: number,
-    langCode: string
-  ): Promise<void> {
+  async setLanguageOfUser(userId: string, langCode: string): Promise<void> {
     await this.prismaClientService.user.upsert({
-      create: { telegramId: telegramUserId.toString(), langCode },
+      create: { telegramId: userId, langCode },
       update: { langCode },
-      where: { telegramId: telegramUserId.toString() },
+      where: { telegramId: userId },
     });
-    this.languageOfUsers[telegramUserId] = langCode;
+    this.languageOfUsers[userId] = langCode;
   }
 }

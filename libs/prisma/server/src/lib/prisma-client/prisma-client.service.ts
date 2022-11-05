@@ -25,12 +25,11 @@ export class PrismaClientService
     super({
       datasources: {
         db: {
-          url: customInjectorService.getProviders<PrismaClientConfig>(
+          url: customInjectorService.getProvider<PrismaClientConfig>(
             PRISMA_CLIENT_CONFIG
           ).databaseUrl,
         },
       },
-      rejectOnNotFound: true,
       log: [
         {
           emit: 'event',

@@ -6,17 +6,17 @@ export type DebugMessagesStorageProvider = Pick<
 >;
 
 export class DebugMessagesStorage {
-  private readonly debugModeOfUsers: Record<number, boolean> = {};
+  private readonly debugModeOfUsers: Record<string, boolean> = {};
 
-  async getDebugModeOfUser(telegramUserId: number): Promise<boolean> {
-    const currentDebugMode = this.debugModeOfUsers[telegramUserId];
+  async getDebugModeOfUser(userId: string): Promise<boolean> {
+    const currentDebugMode = this.debugModeOfUsers[userId];
     if (currentDebugMode) {
       return currentDebugMode;
     }
     return false;
   }
 
-  async setDebugModeOfUser(userId: number, debugMode: boolean): Promise<void> {
+  async setDebugModeOfUser(userId: string, debugMode: boolean): Promise<void> {
     this.debugModeOfUsers[userId] = debugMode;
   }
 }

@@ -12,7 +12,8 @@
         "packageJson": "libs/bot-in-groups/server/package.json",
         "main": "libs/bot-in-groups/server/src/index.ts",
         "assets": ["libs/bot-in-groups/server/*.md"],
-        "deleteOutputPath": true
+        "deleteOutputPath": true,
+        "updateBuildableProjectDepsInPackageJson": false
       }
     },
     "lint": {

@@ -7,7 +7,7 @@ rm -rf ./integrations/app
 mkdir ./integrations/app
 
 cd ./integrations
-npx --yes create-nx-workspace@previous --name=app --preset=empty --interactive=false --nx-cloud=false
+npx --yes create-nx-workspace@13.8.1 --name=app --preset=empty --interactive=false --nx-cloud=false
 cd ../
 
 yes | cp -R ./integrations/default/package.json ./integrations/app/package.json
@@ -18,7 +18,7 @@ cp -Rf google-credentials.json ./integrations/app
 
 cd ./integrations/app
 npm i --force
-npm install --save-dev @nrwl/nest@previous @nrwl/node@previous @ngneat/transloco-keys-manager --force
+npm install --save-dev @nrwl/nest@13.8.1 @nrwl/node@13.8.1 @ngneat/transloco-keys-manager --force
 npm install --save env-var nestjs-telegraf @ngneat/transloco @ngneat/transloco-locale class-validator-multi-lang --force
 npm run nx -- g @nrwl/nest:app server
 cd ../../
@@ -68,7 +68,6 @@ cd ./integrations/app
 npm i --force
 npm install --save-dev ../../integrations/app/lib/schematics/kaufman-bot-schematics-0.0.0.tgz --force
 npm run nx -- g  @kaufman-bot/schematics:application bot --bot-name=Adam
-npm run nx -- g  @kaufman-bot/schematics:library ping-pong
 npm i --force
 npm install --save ../../integrations/app/lib/core/server/kaufman-bot-core-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/debug-messages/server/kaufman-bot-debug-messages-server-0.0.0.tgz --force
@@ -82,6 +81,7 @@ npm install --save ../../integrations/app/lib/jokes-generator/server/kaufman-bot
 npm install --save ../../integrations/app/lib/quotes-generator/server/kaufman-bot-quotes-generator-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/first-meeting/server/kaufman-bot-first-meeting-server-0.0.0.tgz --force
 npm install --save ../../integrations/app/lib/bot-in-groups/server/kaufman-bot-bot-in-groups-server-0.0.0.tgz --force
+npm run nx -- g  @kaufman-bot/schematics:library ping-pong
 tsc --noEmit -p tsconfig.base.json
 npm run build
 npm run nx -- build bot
