@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.8.0...v2.9.0) (2022-11-05)
+
+### Features
+
+- update deps, change symbols token types to strings ([b94c906](https://github.com/EndyKaufman/kaufman-bot/commit/b94c906f9db3cd8b73fcee076bd0a1dcaa78e815))
+
 ## [2.8.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.7.2...v2.8.0) (2022-11-05)
 
 ### Features

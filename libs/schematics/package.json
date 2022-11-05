@@ -39,9 +39,9 @@
     "@nrwl/js": "^13.10.2",
     "@nrwl/jest": "13.8.1",
     "@nestjs/schematics": "^8.0.0",
-    "nx":"^13.8.1"
+    "nx": "^13.8.1"
   },
-  "version": "2.8.0",
+  "version": "2.9.0",
   "i18n": [
     {
       "scope": "schematics",
