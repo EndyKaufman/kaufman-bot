@@ -65,6 +65,7 @@ export class ShortCommandsService
     const spyWord = this.shortCommandsConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
+    console.log({ spyWord });
     if (spyWord) {
       if (
         this.botCommandsToolsService.checkCommands(
@@ -112,10 +113,12 @@ export class ShortCommandsService
                   `${this.translatesService.translate(
                     getText('aliases'),
                     locale
-                  )}: ${this.botCommandsToolsService
-                    .prepareHelpString(alias)
+                  )}: ${alias
                     .split('|')
-                    .map((u) => `_${u}_`)
+                    .map(
+                      (u) =>
+                        `_${this.botCommandsToolsService.prepareHelpString(u)}_`
+                    )
                     .join(', ')}`,
                   `${this.translatesService.translate(
                     getText('command'),
@@ -129,6 +132,7 @@ export class ShortCommandsService
         ]
           .filter(Boolean)
           .join('\n');
+        console.log(markdown);
         return {
           type: 'markdown',
           message: msg,
