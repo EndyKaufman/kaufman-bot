@@ -95,7 +95,7 @@
     "readme:generate": "rm -rf apps/server/src/assets/public/index.html && npm run github-readme-to-html -- --input=README.md --output=../apps/server/src/assets/public/index.html --title=KaufmanBot",
     "graph:generate": "npm run nx -- graph --file=apps/server/src/assets/public/graph/index.html",
     "graph:serve": "npm run nx -- graph",
-    "graph:affected-serve": "npm run nx -- affected:graph",
+    "graph:affected-serve": "npm run nx -- affected:graph --base=develop --head=HEAD",
     "local:schematics": "npm run nx -- g ./dist/libs/schematics:lib"
   },
   "private": true,

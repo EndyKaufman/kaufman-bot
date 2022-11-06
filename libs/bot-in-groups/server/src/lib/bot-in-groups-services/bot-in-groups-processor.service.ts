@@ -6,7 +6,6 @@ import {
   LanguageSwitherStorage,
   LANGUAGE_SWITHER_STORAGE,
 } from '@kaufman-bot/language-swither-server';
-import { ShortCommandsToolsService } from '@kaufman-bot/short-commands-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
@@ -23,8 +22,7 @@ export class BotInGroupsProcessorService {
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly botCommandsService: BotCommandsService,
-    private readonly shortCommandsToolsService: ShortCommandsToolsService
+    private readonly botCommandsService: BotCommandsService
   ) {}
 
   async process(ctx, defaultHandler?: () => Promise<unknown>) {
@@ -75,18 +73,21 @@ export class BotInGroupsProcessorService {
         }
       }
       if (ctx.update.message.text) {
-        const shortCommand =
-          this.shortCommandsToolsService.updateTextWithShortCommands(
-            locale,
-            this.botCommandsToolsService.clearCommands(
-              ctx.update.message.text,
-              [
-                ...this.botInGroupsConfig.botNames[locale],
-                ...this.botInGroupsConfig.botNames['en'],
-              ],
-              locale
+        const originalMessageText = this.botCommandsToolsService.clearCommands(
+          ctx.update.message.text,
+          [
+            ...this.botInGroupsConfig.botNames[locale],
+            ...this.botInGroupsConfig.botNames['en'],
+          ],
+          locale
+        );
+        const messageText = this.botInGroupsConfig.transformMessageText
+          ? this.botInGroupsConfig.transformMessageText(
+              locale,
+              originalMessageText
             )
-          );
+          : originalMessageText;
+
         if (
           this.botCommandsToolsService.checkCommands(
             ctx.update.message.text,
@@ -97,9 +98,9 @@ export class BotInGroupsProcessorService {
             locale
           )
         ) {
-          ctx.update.message.text = `${botName} ${shortCommand}`;
+          ctx.update.message.text = `${botName} ${messageText}`;
         } else {
-          ctx.update.message.text = shortCommand;
+          ctx.update.message.text = messageText;
         }
       }
     }
