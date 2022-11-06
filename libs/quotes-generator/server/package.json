@@ -39,7 +39,7 @@
   ],
   "version": "2.10.1",
   "peerDependencies": {
-    "@nestjs/common": "^8.0.0",
+    "@nestjs/common": "^9.1.6",
     "nestjs-translates": "^1.1.0",
     "class-validator-multi-lang": "^0.130.201"
   }
