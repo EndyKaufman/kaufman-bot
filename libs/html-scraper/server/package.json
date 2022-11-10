@@ -37,7 +37,7 @@
       "strategy": "join"
     }
   ],
-  "version": "2.10.1",
+  "version": "3.0.0",
   "peerDependencies": {
     "@nestjs/common": "^9.1.6",
     "nestjs-translates": "^1.1.0",

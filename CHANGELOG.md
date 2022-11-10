@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.10.1...v3.0.0) (2022-11-10)
+
+### ⚠ BREAKING CHANGES
+
+- changed the main library for working with telegram from https://telegraf.js.org to https://grammy.dev
+
+### Features
+
+- **bot-in-groups:** remove imports ShortCommandsModule from BotInGroupsModule ([f03f5c0](https://github.com/EndyKaufman/kaufman-bot/commit/f03f5c0a5f48293fc4c42be5e2b9fedf1fc5c126))
+- changed the main library for working with telegram from https://telegraf.js.org to https://grammy.dev, updated the source code for better work with typings ([98e4698](https://github.com/EndyKaufman/kaufman-bot/commit/98e469800a2b341c84303359bdd301fc6bb33c48))
+- update nest to 9 [ci skip] ([8330e21](https://github.com/EndyKaufman/kaufman-bot/commit/8330e2160c129c75c12e3f432b7f9c79c3f3ddc3))
+
+### Bug Fixes
+
+- **short-commands:** update render state ([5ed6e61](https://github.com/EndyKaufman/kaufman-bot/commit/5ed6e61ce924aad9fdaccc6c83625409390edc1e))
+
 ### [2.10.1](https://github.com/EndyKaufman/kaufman-bot/compare/v2.10.0...v2.10.1) (2022-11-05)
 
 ### Bug Fixes
