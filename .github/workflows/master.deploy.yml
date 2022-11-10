@@ -23,7 +23,7 @@ jobs:
           nvm --version
           nvm install v16.13.2
           nvm use v16.13.2
-          npm i --force
+          npm ci
           export POSTGRES_HOST=$(dokku postgres:info global-postgres --internal-ip)
           export ROOT_POSTGRES_URL=postgres://postgres:${{secrets.ROOT_POSTGRES_PASSWORD}}@${POSTGRES_HOST}:5432/postgres?schema=public
           export SERVER_POSTGRES_URL=${{secrets.SERVER_POSTGRES_URL}}
