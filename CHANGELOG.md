@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.0.0...v3.1.0) (2022-11-10)
+
+### Features
+
+- **deps:** update nx to 15.0.13, update nest to 9.2.0 ([ddd615b](https://github.com/EndyKaufman/kaufman-bot/commit/ddd615b60253ee9962037dcbff5115c471495082))
+
 ## [3.0.0](https://github.com/EndyKaufman/kaufman-bot/compare/v2.10.1...v3.0.0) (2022-11-10)
 
 ### ⚠ BREAKING CHANGES
