@@ -20,7 +20,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Packages
-        run: npm ci
+        run: npm i --force
 
       - name: Build
         run: npm run build
