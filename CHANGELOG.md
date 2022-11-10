@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.1.2...v3.2.0) (2022-11-10)
+
+### Features
+
+- add botMeetingInformation to main BotCommandsService ([204d1e6](https://github.com/EndyKaufman/kaufman-bot/commit/204d1e6796165fea75785d21d073d11708f406ed))
+
 ### [3.1.2](https://github.com/EndyKaufman/kaufman-bot/compare/v3.1.1...v3.1.2) (2022-11-10)
 
 ### Bug Fixes

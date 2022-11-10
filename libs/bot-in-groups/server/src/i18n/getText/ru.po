@@ -24,3 +24,12 @@ msgstr "группы знакомство"
 
 msgid "meet"
 msgstr "знакомство"
+
+msgid "Hello 🖖"
+msgstr ""
+
+msgid "Hello!"
+msgstr ""
+
+msgid "Hello! I'm Robot 😉"
+msgstr ""

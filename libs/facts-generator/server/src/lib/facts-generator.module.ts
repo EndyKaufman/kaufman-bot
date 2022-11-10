@@ -2,7 +2,7 @@ import {
   BotCommandsCategory,
   BotCommandsEnum,
   BotCommandsModule,
-  BOT_COMMANDS_PROVIDER
+  BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core-server';
 import { ScraperModule } from '@kaufman-bot/html-scraper-server';
 import { DynamicModule, Module } from '@nestjs/common';

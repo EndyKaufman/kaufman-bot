@@ -33,3 +33,18 @@ msgstr "пользователь"
 
 msgid "group"
 msgstr "группа"
+
+msgid "Hello 🖖"
+msgstr ""
+
+msgid "Hello!"
+msgstr ""
+
+msgid "Hello! I'm Robot 😉"
+msgstr ""
+
+msgid "meet"
+msgstr ""
+
+msgid "start"
+msgstr ""
