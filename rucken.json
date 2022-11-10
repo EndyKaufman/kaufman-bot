@@ -3,6 +3,7 @@
     "indexFileName": "index",
     "excludes": [
       "*node_modules*",
+      "*node_modules2*",
       "*public_api.ts*",
       "*.spec*",
       "environment*",

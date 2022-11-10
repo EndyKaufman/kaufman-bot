@@ -36,6 +36,10 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       'nestjs-translates': '^1.0.3',
       grammy: '^1.12.0',
       'nestjs-custom-injector': '^2.2.3',
+      'html-to-text': '^8.2.1',
+      jschardet: '^3.0.0',
+      charset: '^1.0.1',
+      cheerio: '^1.0.0-rc.12',
     },
     {
       '@nestjs/schematics': '9.0.3',
