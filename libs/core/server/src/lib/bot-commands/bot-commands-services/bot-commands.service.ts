@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable, Logger } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
@@ -60,8 +61,6 @@ export class BotCommandsService implements BotCommandsProvider {
   ) {}
 
   async start(ctx: Context) {
-    const msg: BotCommandsProviderActionMsg = ctx.message!;
-    msg.start = true;
     await this.process(ctx);
   }
 
@@ -86,20 +85,11 @@ export class BotCommandsService implements BotCommandsProvider {
       msg.globalContext = {};
     }
 
-    if (this.botCommandsToolsService.isGroupMessage(msg)) {
-      if (this.botCommandsConfig.defaultGroupGlobalContext) {
-        Object.assign(
-          msg.globalContext,
-          this.botCommandsConfig.defaultGroupGlobalContext
-        );
-      }
-    } else {
-      if (this.botCommandsConfig.defaultGlobalContext) {
-        Object.assign(
-          msg.globalContext,
-          this.botCommandsConfig.defaultGlobalContext
-        );
-      }
+    if (this.botCommandsConfig.defaultGlobalContext) {
+      Object.assign(
+        msg.globalContext,
+        this.botCommandsConfig.defaultGlobalContext
+      );
     }
 
     let recursiveDepth = 1;
@@ -242,6 +232,33 @@ export class BotCommandsService implements BotCommandsProvider {
       )
     ) {
       return this.onHelp(msg, ctx);
+    }
+
+    if (
+      result === null &&
+      this.botCommandsToolsService.checkCommands(
+        msg.text,
+        [BotCommandsEnum.meet, BotCommandsEnum.start],
+        msg.from?.language_code
+      )
+    ) {
+      return {
+        type: 'markdown',
+        message: msg,
+        markdown: this.botCommandsToolsService.prepareHelpString(
+          this.botCommandsToolsService.getRandomItem(
+            this.botCommandsConfig.botMeetingInformation
+              ? this.botCommandsConfig.botMeetingInformation[
+                  msg.from?.language_code || 'en'
+                ]
+              : [
+                  getText(`Hello! I'm Robot 😉`),
+                  getText('Hello!'),
+                  getText('Hello 🖖'),
+                ]
+          )
+        ),
+      };
     }
 
     const afterBotCommand = await this.processOnAfterBotCommands(

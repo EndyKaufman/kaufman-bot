@@ -53,6 +53,10 @@
       "type": "json"
     },
     {
+      "filename": "./libs/demo-taxi-orders/server/package.json",
+      "type": "json"
+    },
+    {
       "filename": "./libs/schematics/package.json",
       "type": "json"
     },

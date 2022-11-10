@@ -49,7 +49,11 @@ export class BotInGroupsService
               locale
             )
           : undefined;
-        if (this.botCommandsToolsService.checkCommands(msg.text, ['start'])) {
+        if (
+          this.botCommandsToolsService.checkCommands(msg.text, [
+            BotCommandsEnum.start,
+          ])
+        ) {
           msg.text = `${this.botInGroupsConfig.name} meet`;
           this.logger.debug(
             `Message from chat to bot: ${msg?.chat?.id}, message: "${msg.text}", callbackQueryData: "${msg.callbackQueryData}"`
@@ -67,7 +71,7 @@ export class BotInGroupsService
           msg,
           locale
         ),
-        ['start']
+        [BotCommandsEnum.start]
       )
     ) {
       msg.text = `${this.botInGroupsConfig.name} meet`;
@@ -118,7 +122,7 @@ export class BotInGroupsService
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
-          [getText('meet')],
+          [BotCommandsEnum.meet],
           locale
         )
       ) {
@@ -127,7 +131,13 @@ export class BotInGroupsService
           message: msg,
           markdown: this.botCommandsToolsService.prepareHelpString(
             this.botCommandsToolsService.getRandomItem(
-              this.botInGroupsConfig.botMeetingInformation[locale]
+              this.botInGroupsConfig.botMeetingInformation
+                ? this.botInGroupsConfig.botMeetingInformation[locale]
+                : [
+                    getText(`Hello! I'm Robot 😉`),
+                    getText('Hello!'),
+                    getText('Hello 🖖'),
+                  ]
             )
           ),
         };

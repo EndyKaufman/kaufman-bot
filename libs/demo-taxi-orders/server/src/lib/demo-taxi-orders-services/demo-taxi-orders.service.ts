@@ -147,7 +147,7 @@ export class DemoTaxiOrdersService
         !msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS] &&
         this.botCommandsToolsService.checkCommands(
           msg.text,
-          [getText('start'), getText('get')],
+          [BotCommandsEnum.start, BotCommandsEnum.get],
           locale
         )
       ) {

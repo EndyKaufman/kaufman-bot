@@ -56,8 +56,8 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
       commit: env.get('DEPLOY_COMMIT').default('').asString(),
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
-      defaultGroupGlobalContext: {
-        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
+      botMeetingInformation: {
+        en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
       },
     }),
     ShortCommandsModule.forRoot({

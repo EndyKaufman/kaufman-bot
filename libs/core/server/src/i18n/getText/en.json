@@ -7,5 +7,10 @@
   "reset": "reset",
   "system": "system",
   "user": "user",
-  "group": "group"
+  "group": "group",
+  "Hello 🖖": "Hello 🖖",
+  "Hello!": "Hello!",
+  "Hello! I'm Robot 😉": "Hello! I'm Robot 😉",
+  "meet": "meet",
+  "start": "start"
 }

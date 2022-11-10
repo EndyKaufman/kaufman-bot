@@ -8,7 +8,12 @@
     "reset": "reset",
     "system": "system",
     "user": "user",
-    "group": "group"
+    "group": "group",
+    "Hello 🖖": "Hello 🖖",
+    "Hello!": "Hello!",
+    "Hello! I'm Robot 😉": "Hello! I'm Robot 😉",
+    "meet": "meet",
+    "start": "start"
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -73,7 +78,12 @@
     "reset": "reset",
     "system": "system",
     "user": "user",
-    "group": "group"
+    "group": "group",
+    "Hello 🖖": "Hello 🖖",
+    "Hello!": "Hello!",
+    "Hello! I'm Robot 😉": "Hello! I'm Robot 😉",
+    "meet": "meet",
+    "start": "start"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Command to convert one currency to another",
@@ -371,7 +381,10 @@
     "groups": "groups",
     "groups help": "groups help",
     "groups meet": "groups meet",
-    "meet": "meet"
+    "meet": "meet",
+    "Hello 🖖": "Hello 🖖",
+    "Hello!": "Hello!",
+    "Hello! I'm Robot 😉": "Hello! I'm Robot 😉"
   },
   "bot-in-groups-server-getText": {
     "Bot in groups": "Bot in groups",
@@ -379,7 +392,10 @@
     "groups": "groups",
     "groups help": "groups help",
     "groups meet": "groups meet",
-    "meet": "meet"
+    "meet": "meet",
+    "Hello 🖖": "Hello 🖖",
+    "Hello!": "Hello!",
+    "Hello! I'm Robot 😉": "Hello! I'm Robot 😉"
   },
   "prisma-server": {},
   "demo-taxi-orders-server-getText": {

@@ -23,3 +23,12 @@ msgstr "groups meet"
 
 msgid "meet"
 msgstr "meet"
+
+msgid "Hello 🖖"
+msgstr "Hello 🖖"
+
+msgid "Hello!"
+msgstr "Hello!"
+
+msgid "Hello! I'm Robot 😉"
+msgstr "Hello! I'm Robot 😉"

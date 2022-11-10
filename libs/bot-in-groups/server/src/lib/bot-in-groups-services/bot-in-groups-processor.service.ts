@@ -9,6 +9,7 @@ import {
   LANGUAGE_SWITHER_STORAGE,
 } from '@kaufman-bot/language-swither-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
@@ -66,7 +67,13 @@ export class BotInGroupsProcessorService {
     if (this.botCommandsToolsService.checkJoinNewMember(msg, ctx)) {
       await ctx.reply(
         this.botCommandsToolsService.getRandomItem(
-          this.botInGroupsConfig.botMeetingInformation[locale]
+          this.botInGroupsConfig.botMeetingInformation
+            ? this.botInGroupsConfig.botMeetingInformation[locale]
+            : [
+                getText(`Hello! I'm ${botName} 😉`),
+                getText('Hello!'),
+                getText('Hello 🖖'),
+              ]
         )
       );
       return;
@@ -89,20 +96,14 @@ export class BotInGroupsProcessorService {
     if (!msg.globalContext) {
       msg.globalContext = {};
     }
-    if (this.botCommandsToolsService.isGroupMessage(msg)) {
-      if (this.botInGroupsConfig.defaultGroupGlobalContext) {
-        Object.assign(
-          msg.globalContext,
-          this.botInGroupsConfig.defaultGroupGlobalContext
-        );
-      }
-    } else {
-      if (this.botInGroupsConfig.defaultGlobalContext) {
-        Object.assign(
-          msg.globalContext,
-          this.botInGroupsConfig.defaultGlobalContext
-        );
-      }
+    if (
+      this.botCommandsToolsService.isGroupMessage(msg) &&
+      this.botInGroupsConfig.defaultGroupGlobalContext
+    ) {
+      Object.assign(
+        msg.globalContext,
+        this.botInGroupsConfig.defaultGroupGlobalContext
+      );
     }
 
     if (

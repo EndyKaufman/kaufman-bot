@@ -62,5 +62,5 @@
       ]
     }
   },
-  "exclude": ["node_modules", "tmp", "integrations"]
+  "exclude": ["node_modules", "node_modules2", "tmp", "integrations"]
 }

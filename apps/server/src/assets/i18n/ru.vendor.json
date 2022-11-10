@@ -8,7 +8,12 @@
     "reset": "сбросить",
     "system": "система",
     "user": "пользователь",
-    "group": "группа"
+    "group": "группа",
+    "Hello 🖖": "",
+    "Hello!": "",
+    "Hello! I'm Robot 😉": "",
+    "meet": "",
+    "start": ""
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
@@ -73,7 +78,12 @@
     "reset": "сбросить",
     "system": "система",
     "user": "пользователь",
-    "group": "группа"
+    "group": "группа",
+    "Hello 🖖": "",
+    "Hello!": "",
+    "Hello! I'm Robot 😉": "",
+    "meet": "",
+    "start": ""
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
@@ -371,7 +381,10 @@
     "groups": "группы",
     "groups help": "группы помощь",
     "groups meet": "группы знакомство",
-    "meet": "знакомство"
+    "meet": "знакомство",
+    "Hello 🖖": "",
+    "Hello!": "",
+    "Hello! I'm Robot 😉": ""
   },
   "bot-in-groups-server-getText": {
     "Bot in groups": "Бот в группах",
@@ -379,7 +392,10 @@
     "groups": "группы",
     "groups help": "группы помощь",
     "groups meet": "группы знакомство",
-    "meet": "знакомство"
+    "meet": "знакомство",
+    "Hello 🖖": "",
+    "Hello!": "",
+    "Hello! I'm Robot 😉": ""
   },
   "prisma-server": {},
   "demo-taxi-orders-server-getText": {
