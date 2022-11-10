@@ -7,27 +7,7 @@ on:
       - develop
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js 16.x to publish to npmjs.org
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install Packages
-        run: npm i --force
-
-      - name: Build
-        run: npm run build
-
   migrate:
-    needs: [build]
     runs-on: [self-hosted, develop-vps]
     environment: dev
     steps:
