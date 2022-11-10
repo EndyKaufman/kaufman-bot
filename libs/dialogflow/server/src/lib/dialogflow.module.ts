@@ -58,7 +58,7 @@ export class DialogflowModule {
                   'Commands for process request with Dialogflow intents'
                 ),
                 spyWords: [getText('dialog'), getText('ai')],
-                category: BotCommandsCategory.system,
+                category: [BotCommandsCategory.system],
               },
             },
             {

@@ -5,5 +5,5 @@ export interface BotCommandsToolsGenerateHelpMessageOptions {
   usage: string[];
   contextUsage?: string[];
   customHelpFields?: { [field: string]: string[] };
-  category: string;
+  category: string[];
 }

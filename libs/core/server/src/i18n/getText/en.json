@@ -6,5 +6,6 @@
   "usage with context": "usage with context",
   "reset": "reset",
   "system": "system",
-  "user": "user"
+  "user": "user",
+  "group": "group"
 }

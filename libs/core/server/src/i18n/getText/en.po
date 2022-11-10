@@ -29,3 +29,6 @@ msgstr "system"
 
 msgid "user"
 msgstr "user"
+
+msgid "group"
+msgstr "group"

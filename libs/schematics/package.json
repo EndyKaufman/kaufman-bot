@@ -38,7 +38,7 @@
     "@nrwl/node": "13.8.1",
     "@nrwl/js": "^13.10.2",
     "@nrwl/jest": "13.8.1",
-    "@nestjs/schematics": "^8.0.0",
+    "@nestjs/schematics": "^9.0.3",
     "nx": "^13.8.1"
   },
   "version": "2.10.1",

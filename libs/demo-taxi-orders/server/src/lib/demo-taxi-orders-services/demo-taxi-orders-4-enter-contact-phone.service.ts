@@ -13,7 +13,7 @@ import {
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-render.service';
 
 @Injectable()
-export class DemoTaxiOrders3ContactPhoneService {
+export class DemoTaxiOrders4EnterContactPhoneService {
   constructor(
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly demoTaxiOrdersRenderService: DemoTaxiOrdersRenderService
@@ -34,17 +34,37 @@ export class DemoTaxiOrders3ContactPhoneService {
           })
         : this.demoTaxiOrdersRenderService.render(locale, {
             ...msg.context,
-            contactPhone: undefined,
-            contact: undefined,
             currentStep: DemoTaxiOrdersSteps.Complete,
+            contact: msg.contact,
+            contactPhone: msg.text,
           });
 
-    await ctx.api.editMessageText(
-      this.botCommandsToolsService.getChatId(msg),
-      +this.botCommandsToolsService.getContextMessageId(msg),
-      renderedData.text,
-      renderedData.custom
-    );
+    if (renderedData.context?.currentStep === DemoTaxiOrdersSteps.Complete) {
+      if (renderedData.context.stateMessageId) {
+        await ctx.api.editMessageText(
+          this.botCommandsToolsService.getChatId(msg),
+          +renderedData.context.stateMessageId,
+          this.demoTaxiOrdersRenderService.render(locale, {
+            currentStep: DemoTaxiOrdersSteps.ContactPhone,
+          }).text,
+          {}
+        );
+      }
+      if (msg.callbackQueryData !== NavigationButtons.Prev) {
+        await ctx.api.sendMessage(
+          this.botCommandsToolsService.getChatId(msg),
+          renderedData.text,
+          renderedData.custom
+        );
+      }
+    } else {
+      await ctx.api.editMessageText(
+        this.botCommandsToolsService.getChatId(msg),
+        +this.botCommandsToolsService.getContextMessageId(msg),
+        renderedData.text,
+        renderedData.custom
+      );
+    }
 
     return {
       type: 'message',

@@ -42,7 +42,7 @@ export class ShortCommandsModule {
             ),
             spyWords: [getText('scmd')],
             commands: config.commands,
-            category: BotCommandsCategory.system,
+            category: [BotCommandsCategory.system],
           },
         },
         {

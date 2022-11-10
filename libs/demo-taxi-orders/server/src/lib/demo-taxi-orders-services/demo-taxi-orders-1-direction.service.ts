@@ -4,7 +4,7 @@ import {
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
 import { Injectable } from '@nestjs/common';
-import { Telegram } from 'telegraf';
+import { Context } from 'grammy';
 import {
   DemoTaxiLocalContext,
   DemoTaxiOrdersSteps,
@@ -23,21 +23,21 @@ export class DemoTaxiOrders1DirectionService {
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(
     msg: TMsg,
-    ctx: { telegram: Telegram }
+    ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const renderedData = this.demoTaxiOrdersRenderService.render(locale, {
       ...msg.context,
       currentStep: DemoTaxiOrdersSteps.CountOfPassengers,
-      direction: (Object.keys(Direction).includes(msg.data)
-        ? msg.data || msg.context.direction
+      direction: (msg?.callbackQueryData &&
+      Object.keys(Direction).includes(msg.callbackQueryData)
+        ? msg.callbackQueryData || msg.context?.direction
         : undefined) as Direction,
     });
 
-    await ctx.telegram.editMessageText(
+    await ctx.api.editMessageText(
       this.botCommandsToolsService.getChatId(msg),
       +this.botCommandsToolsService.getContextMessageId(msg),
-      undefined,
       renderedData.text,
       renderedData.custom
     );

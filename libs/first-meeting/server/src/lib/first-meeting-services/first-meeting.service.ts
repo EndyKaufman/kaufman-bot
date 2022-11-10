@@ -6,6 +6,7 @@ import {
   OnContextBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
+import { Context } from 'grammy';
 import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
@@ -42,7 +43,10 @@ export class FirstMeetingService
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     if (await this.commonService.isDisable({ msg })) {
       return null;
     }

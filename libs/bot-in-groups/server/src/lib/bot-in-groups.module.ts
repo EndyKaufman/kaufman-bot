@@ -14,11 +14,18 @@ import {
   BOT_IN_GROUPS_OPTIONS_TYPE,
 } from './bot-in-groups-config/bot-in-groups.config';
 import { BotInGroupsProcessorService } from './bot-in-groups-services/bot-in-groups-processor.service';
+import { BotInGroupsToolsService } from './bot-in-groups-services/bot-in-groups-tools.service';
 import { BotInGroupsService } from './bot-in-groups-services/bot-in-groups.service';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule, LanguageSwitherModule],
-  exports: [TranslatesModule, BotCommandsModule, LanguageSwitherModule],
+  providers: [BotInGroupsToolsService],
+  exports: [
+    TranslatesModule,
+    BotCommandsModule,
+    LanguageSwitherModule,
+    BotInGroupsToolsService,
+  ],
 })
 export class BotInGroupsModule extends BotInGroupsConfigurableModuleClass {
   static forRoot(options: typeof BOT_IN_GROUPS_OPTIONS_TYPE): DynamicModule {
@@ -79,7 +86,7 @@ export class BotInGroupsModule extends BotInGroupsConfigurableModuleClass {
       descriptions: getText('Commands for support work the bot in groups'),
       usage: [getText('groups help'), getText('groups meet')],
       spyWords: [getText('groups')],
-      category: BotCommandsCategory.system,
+      category: [BotCommandsCategory.system],
     };
   }
 }

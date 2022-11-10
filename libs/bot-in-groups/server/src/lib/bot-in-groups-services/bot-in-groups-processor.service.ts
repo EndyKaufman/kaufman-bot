@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
+  BotCommandsProviderActionMsg,
   BotCommandsService,
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
@@ -6,15 +8,19 @@ import {
   LanguageSwitherStorage,
   LANGUAGE_SWITHER_STORAGE,
 } from '@kaufman-bot/language-swither-server';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import {
   BotInGroupsConfig,
   BOT_IN_GROUPS_CONFIG,
 } from '../bot-in-groups-config/bot-in-groups.config';
+import { BotInGroupsToolsService } from './bot-in-groups-tools.service';
 
 @Injectable()
 export class BotInGroupsProcessorService {
+  private logger = new Logger(BotInGroupsProcessorService.name);
+
   @CustomInject(LANGUAGE_SWITHER_STORAGE)
   private readonly languageSwitherStorage!: LanguageSwitherStorage;
 
@@ -22,93 +28,42 @@ export class BotInGroupsProcessorService {
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
-    private readonly botCommandsService: BotCommandsService
+    private readonly botCommandsService: BotCommandsService,
+    private readonly botInGroupsToolsService: BotInGroupsToolsService
   ) {}
 
-  async process(ctx, defaultHandler?: () => Promise<unknown>) {
-    const userId =
-      ctx.update?.message?.chat?.id || ctx?.update?.message?.from?.id;
-
-    const dbLocale = userId
-      ? await this.languageSwitherStorage.getLanguageOfUser(userId)
-      : null;
-
-    const locale =
-      dbLocale ||
-      (ctx.update?.message?.chat?.id < 0
-        ? 'en'
-        : this.botCommandsToolsService.getLocale(ctx?.update?.message, 'en'));
-
-    const botName = this.botInGroupsConfig.botNames[locale][0];
-
-    if (ctx.update?.message?.from?.language_code) {
-      ctx.update.message.from.language_code = locale;
+  async process(ctx: Context, defaultHandler?: () => Promise<unknown>) {
+    if (!this.botCommandsToolsService.isGroupMessage(ctx.message)) {
+      return await this.botCommandsService.process(ctx, defaultHandler);
     }
 
-    if (ctx.update?.message?.chat?.id > 0) {
-      await this.botCommandsService.process(ctx, defaultHandler);
+    let msg: BotCommandsProviderActionMsg = ctx.message!;
+    if (!msg && ctx.callbackQuery) {
+      msg = {
+        message: ctx.message,
+        callbackQueryData: ctx.callbackQuery.data,
+        ...ctx.callbackQuery.message!,
+      };
+    }
+
+    if (!msg) {
+      try {
+        this.logger.debug(JSON.stringify(ctx));
+      } catch (error) {
+        this.logger.debug(ctx);
+      }
       return;
     }
 
-    if (ctx?.update?.message) {
-      if (!ctx.update.message.globalContext) {
-        ctx.update.message.globalContext = {};
-      }
-      if (
-        ctx.update?.message?.chat?.id < 0 &&
-        ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
-      ) {
-        if (this.botInGroupsConfig.defaultGroupGlobalContext) {
-          Object.assign(
-            ctx.update.message.globalContext,
-            this.botInGroupsConfig.defaultGroupGlobalContext
-          );
-        }
-      } else {
-        if (this.botInGroupsConfig.defaultGlobalContext) {
-          Object.assign(
-            ctx.update.message.globalContext,
-            this.botInGroupsConfig.defaultGlobalContext
-          );
-        }
-      }
-      if (ctx.update.message.text) {
-        const originalMessageText = this.botCommandsToolsService.clearCommands(
-          ctx.update.message.text,
-          [
-            ...this.botInGroupsConfig.botNames[locale],
-            ...this.botInGroupsConfig.botNames['en'],
-          ],
-          locale
-        );
-        const messageText = this.botInGroupsConfig.transformMessageText
-          ? this.botInGroupsConfig.transformMessageText(
-              locale,
-              originalMessageText
-            )
-          : originalMessageText;
+    const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
+      this.botCommandsToolsService.getChatId(msg)
+    );
+    const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');
+    const locale = dbLocale || detectedLocale;
 
-        if (
-          this.botCommandsToolsService.checkCommands(
-            ctx.update.message.text,
-            [
-              ...this.botInGroupsConfig.botNames[locale],
-              ...this.botInGroupsConfig.botNames['en'],
-            ],
-            locale
-          )
-        ) {
-          ctx.update.message.text = `${botName} ${messageText}`;
-        } else {
-          ctx.update.message.text = messageText;
-        }
-      }
-    }
+    const botName = this.botInGroupsConfig.botNames[locale][0];
 
-    if (
-      ctx.update?.message?.chat?.id < 0 &&
-      ctx.update?.message?.new_chat_member?.id === ctx.botInfo.id
-    ) {
+    if (this.botCommandsToolsService.checkJoinNewMember(msg, ctx)) {
       await ctx.reply(
         this.botCommandsToolsService.getRandomItem(
           this.botInGroupsConfig.botMeetingInformation[locale]
@@ -117,15 +72,60 @@ export class BotInGroupsProcessorService {
       return;
     }
 
-    if (
-      ctx.update?.message?.chat?.id < 0 &&
-      ctx.update?.message?.reply_to_message?.from?.id === ctx.botInfo.id
-    ) {
-      ctx.update.message.text = `${botName} ${ctx.update.message.text}`;
-      await this.botCommandsService.process(ctx, defaultHandler);
-      return;
+    const messageTextWithoutBotNames =
+      this.botInGroupsToolsService.removePartialAllBotNamesFormMessage(
+        msg.text,
+        locale
+      ) || '';
+
+    const transformedMessageTextWithoutBotNames = this.botInGroupsConfig
+      .transformMessageText
+      ? this.botInGroupsConfig.transformMessageText(
+          locale,
+          messageTextWithoutBotNames
+        )
+      : messageTextWithoutBotNames;
+
+    if (!msg.globalContext) {
+      msg.globalContext = {};
+    }
+    if (this.botCommandsToolsService.isGroupMessage(msg)) {
+      if (this.botInGroupsConfig.defaultGroupGlobalContext) {
+        Object.assign(
+          msg.globalContext,
+          this.botInGroupsConfig.defaultGroupGlobalContext
+        );
+      }
+    } else {
+      if (this.botInGroupsConfig.defaultGlobalContext) {
+        Object.assign(
+          msg.globalContext,
+          this.botInGroupsConfig.defaultGlobalContext
+        );
+      }
     }
 
-    await this.botCommandsService.process(ctx, defaultHandler);
+    if (
+      this.botInGroupsToolsService.checkPartialContainBotNamesInMessage(
+        msg.text,
+        locale
+      )
+    ) {
+      msg.text = `${botName} ${transformedMessageTextWithoutBotNames}`;
+
+      ctx = new Context(
+        {
+          ...ctx.update,
+          message: msg,
+        },
+        ctx.api,
+        ctx.me
+      );
+
+      this.logger.debug(
+        `Message from chat to bot: ${ctx.message?.chat?.id}, message: "${msg?.text}", callbackQueryData: "${msg?.callbackQueryData}"`
+      );
+      return await this.botCommandsService.process(ctx, defaultHandler);
+    }
   }
 }

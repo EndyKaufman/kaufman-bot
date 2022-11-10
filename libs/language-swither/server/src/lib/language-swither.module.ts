@@ -59,7 +59,7 @@ export class LanguageSwitherModule {
                   getText('to'),
                   getText('to-alt'),
                 ],
-                category: BotCommandsCategory.system,
+                category: [BotCommandsCategory.system],
               },
             },
             {

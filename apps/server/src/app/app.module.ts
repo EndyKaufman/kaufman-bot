@@ -1,3 +1,4 @@
+import { InjectBot, NestjsGrammyModule } from '@grammyjs/nestjs';
 import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
 import {
   BotCommandsModule,
@@ -8,6 +9,7 @@ import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import {
   DemoTaxiLocalContext,
   DemoTaxiOrdersModule,
+  DISABLE_DEMO_TAXI_ORDERS_COMMANDS,
 } from '@kaufman-bot/demo-taxi-orders-server';
 import {
   DialogflowModule,
@@ -27,17 +29,16 @@ import {
   ShortCommandsModule,
   ShortCommandsToolsService,
 } from '@kaufman-bot/short-commands-server';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import env from 'env-var';
+import { Bot, Context, webhookCallback } from 'grammy';
 import { CustomInjectorModule } from 'nestjs-custom-injector';
-import { TelegrafModule } from 'nestjs-telegraf';
 import {
   getDefaultTranslatesModuleOptions,
   TranslatesModule,
 } from 'nestjs-translates';
 import { join } from 'path';
-import { Telegram } from 'telegraf';
 import { AppService } from './app.service';
 import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
 
@@ -57,19 +58,13 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'assets', 'public'),
     }),
-    TelegrafModule.forRoot({
+    NestjsGrammyModule.forRoot({
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
-      launchOptions: {
-        dropPendingUpdates: true,
-        ...(TELEGRAM_BOT_WEB_HOOKS_DOMAIN && TELEGRAM_BOT_WEB_HOOKS_PATH
-          ? {
-              webhook: {
-                domain: TELEGRAM_BOT_WEB_HOOKS_DOMAIN,
-                hookPath: TELEGRAM_BOT_WEB_HOOKS_PATH,
-              },
-            }
-          : {}),
-      },
+      ...(TELEGRAM_BOT_WEB_HOOKS_DOMAIN && TELEGRAM_BOT_WEB_HOOKS_PATH
+        ? {
+            useWebhook: true,
+          }
+        : {}),
     }),
     PrismaClientModule.forRoot({
       databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
@@ -96,6 +91,12 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       commit: env.get('DEPLOY_COMMIT').default('').asString(),
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
+      defaultGroupGlobalContext: {
+        [DISABLE_FIRST_MEETING_COMMANDS]: true,
+        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
+        [DISABLE_DIALOGFLOW_COMMANDS]: true,
+        [DISABLE_DEMO_TAXI_ORDERS_COMMANDS]: true,
+      },
     }),
     ShortCommandsModule.forRoot({
       commands: {
@@ -130,6 +131,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           [DISABLE_FIRST_MEETING_COMMANDS]: true,
           [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
           [DISABLE_DIALOGFLOW_COMMANDS]: true,
+          [DISABLE_DEMO_TAXI_ORDERS_COMMANDS]: true,
         },
         botNames: {
           en: BOT_NAMES,
@@ -162,17 +164,29 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     DemoTaxiOrdersModule.forRoot({
       onComplete: async (
         msg: BotCommandsProviderActionMsg<DemoTaxiLocalContext>,
-        ctx: { telegram: Telegram },
+        ctx: Context,
         message: string
       ) => {
         const admins = env.get('TELEGRAM_BOT_ADMINS').default('').asArray(',');
         for (let index = 0; index < admins.length; index++) {
           const admin = admins[index];
-          await ctx.telegram.sendMessage(admin, message);
+          await ctx.api.sendMessage(admin, message);
         }
       },
     }),
   ],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor(
+    @InjectBot()
+    private readonly bot: Bot<Context>
+  ) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    const webhook = env.get('TELEGRAM_BOT_WEB_HOOKS_PATH').asString();
+    if (webhook) {
+      consumer.apply(webhookCallback(this.bot, 'express')).forRoutes(webhook);
+    }
+  }
+}

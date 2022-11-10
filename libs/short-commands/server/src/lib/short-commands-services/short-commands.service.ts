@@ -39,7 +39,7 @@ export class ShortCommandsService
     if (msg?.globalContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
       return msg;
     }
-    if (msg) {
+    if (msg?.text) {
       msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
         this.botCommandsToolsService.getLocale(msg, 'en'),
         msg.text
@@ -65,7 +65,6 @@ export class ShortCommandsService
     const spyWord = this.shortCommandsConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
-    console.log({ spyWord });
     if (spyWord) {
       if (
         this.botCommandsToolsService.checkCommands(
@@ -132,7 +131,6 @@ export class ShortCommandsService
         ]
           .filter(Boolean)
           .join('\n');
-        console.log(markdown);
         return {
           type: 'markdown',
           message: msg,

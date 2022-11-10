@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
@@ -5,9 +6,9 @@ import {
 } from '@kaufman-bot/core-server';
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { Context, InlineKeyboard } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
-import { Markup } from 'telegraf';
 import {
   FirstMeeting,
   FirstMeetingStorage,
@@ -28,18 +29,20 @@ export class AskLastnameStepContextService {
 
   async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >({ msg, ctx }: { msg: TMsg; ctx }) {
+  >({ msg, ctx }: { msg: TMsg; ctx: Context }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
     const lastname =
-      this.commonService.prepareText(msg.text, locale) || 'Unknown';
+      (msg.text &&
+        !msg.callbackQueryData &&
+        this.commonService.prepareText(msg.text, locale)) ||
+      'Unknown';
     if (state?.messagesMetadata?.AskLastnameResponse) {
-      await ctx.telegram.editMessageText(
+      await ctx.api.editMessageText(
         state.messagesMetadata.AskLastnameResponse.chat.id,
         state.messagesMetadata.AskLastnameResponse.message_id,
-        undefined,
         state.messagesMetadata.AskLastnameResponse
           ? `${
               state.messagesMetadata.AskLastnameResponse.text
@@ -59,7 +62,7 @@ export class AskLastnameStepContextService {
     msg: BotCommandsProviderActionMsg;
     activateStatus: string;
   }) {
-    const context: Partial<FirstMeeting> = msg.context;
+    const context: Partial<FirstMeeting> = msg.context!;
     return (
       this.commonService.isContextProcess({ msg }) &&
       context?.status === activateStatus
@@ -91,7 +94,10 @@ export class AskLastnameStepContextService {
       locale
     );
     const firstname =
-      this.commonService.prepareText(msg.text, locale) || 'Unknown';
+      (msg.text &&
+        !msg.callbackQueryData &&
+        this.commonService.prepareText(msg.text, locale)) ||
+      'Unknown';
 
     return {
       type: 'text',
@@ -103,16 +109,15 @@ export class AskLastnameStepContextService {
         firstname,
       },
       custom: {
-        ...Markup.inlineKeyboard([
-          Markup.button.callback(
+        reply_markup: new InlineKeyboard()
+          .text(
             '➡️' + this.translatesService.translate(getText('Next'), locale),
             'next'
-          ),
-          Markup.button.callback(
+          )
+          .text(
             '❌' + this.translatesService.translate(getText('Cancel'), locale),
             'exit'
           ),
-        ]),
       },
       callback: async (result) =>
         await this.storage.pathState({

@@ -4,7 +4,7 @@ import {
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
-import { Telegram } from 'telegraf';
+import { Context } from 'grammy';
 import {
   DemoTaxiOrdersConfig,
   DEMO_TAXI_ORDERS_CONFIG,
@@ -17,7 +17,7 @@ import {
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-render.service';
 
 @Injectable()
-export class DemoTaxiOrders4CompleteService {
+export class DemoTaxiOrders5CompleteService {
   constructor(
     @Inject(DEMO_TAXI_ORDERS_CONFIG)
     private readonly config: DemoTaxiOrdersConfig,
@@ -29,11 +29,11 @@ export class DemoTaxiOrders4CompleteService {
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(
     msg: TMsg,
-    ctx: { telegram: Telegram }
+    ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const renderedData =
-      msg.data === NavigationButtons.Prev
+      msg.callbackQueryData === NavigationButtons.Prev
         ? this.demoTaxiOrdersRenderService.render(locale, {
             ...msg.context,
             stateMessageId:
@@ -45,15 +45,19 @@ export class DemoTaxiOrders4CompleteService {
             currentStep: DemoTaxiOrdersSteps.End,
           });
 
-    await ctx.telegram.editMessageText(
+    await ctx.api.editMessageText(
       this.botCommandsToolsService.getChatId(msg),
       +this.botCommandsToolsService.getContextMessageId(msg),
-      undefined,
       renderedData.text,
-      msg.data === NavigationButtons.Done ? undefined : renderedData.custom
+      msg.callbackQueryData === NavigationButtons.Done
+        ? undefined
+        : renderedData.custom
     );
 
-    if (this.config.onComplete) {
+    if (
+      msg.callbackQueryData === NavigationButtons.Done &&
+      this.config.onComplete
+    ) {
       await this.config.onComplete(msg, ctx, renderedData.text);
     }
 

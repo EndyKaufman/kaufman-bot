@@ -5,9 +5,9 @@ import {
 } from '@kaufman-bot/core-server';
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { Context, InlineKeyboard } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
-import { Markup } from 'telegraf';
 import {
   FirstMeetingConfig,
   FIRST_MEETING_CONFIG,
@@ -35,19 +35,21 @@ export class AskFirstnameStepService {
 
   async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >({ msg, ctx }: { msg: TMsg; ctx }) {
+  >({ msg, ctx }: { msg: TMsg; ctx: Context }) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
     const firstname =
-      this.commonService.prepareText(msg.text, locale) || 'Unknown';
+      (msg.text &&
+        !msg.callbackQueryData &&
+        this.commonService.prepareText(msg.text, locale)) ||
+      'Unknown';
 
     if (state?.messagesMetadata?.AskFirstnameResponse) {
-      await ctx.telegram.editMessageText(
+      await ctx.api.editMessageText(
         state.messagesMetadata.AskFirstnameResponse.chat.id,
         state.messagesMetadata.AskFirstnameResponse.message_id,
-        undefined,
         state.messagesMetadata.AskFirstnameResponse
           ? `${
               state.messagesMetadata.AskFirstnameResponse.text
@@ -124,16 +126,15 @@ export class AskFirstnameStepService {
       message: msg,
       context: <Partial<FirstMeeting>>{ status: 'AskFirstname' },
       custom: {
-        ...Markup.inlineKeyboard([
-          Markup.button.callback(
+        reply_markup: new InlineKeyboard()
+          .text(
             '➡️' + this.translatesService.translate(getText('Next'), locale),
             'next'
-          ),
-          Markup.button.callback(
+          )
+          .text(
             '❌' + this.translatesService.translate(getText('Cancel'), locale),
             'exit'
           ),
-        ]),
       },
       callback: async (result) =>
         await this.storage.pathState({

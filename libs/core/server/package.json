@@ -45,6 +45,6 @@
     "class-validator-multi-lang": "^0.130.201",
     "micromatch": "^4.0.5",
     "mustache": "^4.2.0",
-    "telegraf": "^4.10.0"
+    "grammy": "^1.12.0"
   }
 }

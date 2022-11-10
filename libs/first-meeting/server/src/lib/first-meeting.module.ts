@@ -80,7 +80,7 @@ export class FirstMeetingModule {
               getText('meet help'),
             ],
             spyWords: [getText('meet')],
-            category: BotCommandsCategory.system,
+            category: [BotCommandsCategory.user],
           },
         },
         {

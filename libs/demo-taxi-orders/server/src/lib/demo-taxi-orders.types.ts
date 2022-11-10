@@ -1,3 +1,5 @@
+import { Contact } from 'grammy/out/types.node';
+
 export enum NavigationButtons {
   Prev = 'Prev',
   Next = 'Next',
@@ -10,6 +12,7 @@ export enum DemoTaxiOrdersSteps {
   Direction = 'Direction',
   CountOfPassengers = 'CountOfPassengers',
   ContactPhone = 'ContactPhone',
+  EnterContactPhone = 'EnterContactPhone',
   Complete = 'Complete',
   End = 'End',
 }
@@ -32,10 +35,5 @@ export type DemoTaxiLocalContext = {
   countOfPassengers?: CountOfPassengers;
   contactPhone?: string;
   stateMessageId?: string;
-  contactPhoneMessageId?: string;
-  contact?: {
-    phone_number: string;
-    first_name: string;
-    user_id: number;
-  };
+  contact?: Contact;
 };

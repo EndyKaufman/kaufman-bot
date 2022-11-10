@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   BotCommandsProviderActionMsg,
   BotCommandsToolsService,
@@ -64,7 +65,7 @@ export class CommonService {
   }
 
   isContextProcess({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const context: Partial<FirstMeeting> = msg.context;
+    const context: Partial<FirstMeeting> = msg.context!;
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return (
       this.botCommandsToolsService.checkCommands(

@@ -8,7 +8,7 @@ import {
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
-import { Telegram } from 'telegraf';
+import { Context } from 'grammy';
 import {
   DemoTaxiOrdersConfig,
   DEMO_TAXI_ORDERS_CONFIG,
@@ -22,8 +22,12 @@ import { DemoTaxiOrders0CancelService } from './demo-taxi-orders-0-cancel.servic
 import { DemoTaxiOrders1DirectionService } from './demo-taxi-orders-1-direction.service';
 import { DemoTaxiOrders2CountOfPassengersService } from './demo-taxi-orders-2-count-of-passengers.service';
 import { DemoTaxiOrders3ContactPhoneService } from './demo-taxi-orders-3-contact-phone.service';
-import { DemoTaxiOrders4CompleteService } from './demo-taxi-orders-4-complete.service';
+import { DemoTaxiOrders4EnterContactPhoneService } from './demo-taxi-orders-4-enter-contact-phone.service';
+import { DemoTaxiOrders5CompleteService } from './demo-taxi-orders-5-complete.service';
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-render.service';
+
+export const DISABLE_DEMO_TAXI_ORDERS_COMMANDS =
+  'DISABLE_DEMO_TAXI_ORDERS_COMMANDS';
 
 @Injectable()
 export class DemoTaxiOrdersService
@@ -42,16 +46,21 @@ export class DemoTaxiOrdersService
     private readonly demoTaxiOrders1DirectionProcessorService: DemoTaxiOrders1DirectionService,
     private readonly demoTaxiOrders2CountOfPassengersService: DemoTaxiOrders2CountOfPassengersService,
     private readonly demoTaxiOrders3ContactPhoneService: DemoTaxiOrders3ContactPhoneService,
-    private readonly demoTaxiOrders4CompleteService: DemoTaxiOrders4CompleteService
+    private readonly demoTaxiOrders4EnterContactPhoneService: DemoTaxiOrders4EnterContactPhoneService,
+    private readonly demoTaxiOrders4CompleteService: DemoTaxiOrders5CompleteService
   ) {}
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(
     msg: TMsg,
-    ctx: { telegram: Telegram }
+    ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const currentStep = msg.context.currentStep;
+    if (msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS]) {
+      return null;
+    }
+
+    let currentStep = msg.context?.currentStep;
 
     if (currentStep === DemoTaxiOrdersSteps.End) {
       return null;
@@ -60,7 +69,7 @@ export class DemoTaxiOrdersService
     if (
       currentStep &&
       Object.keys(DemoTaxiOrdersSteps).includes(currentStep) &&
-      msg.data === NavigationButtons.Cancel
+      msg.callbackQueryData === NavigationButtons.Cancel
     ) {
       return await this.demoTaxiOrders0CancelProcessorService.process(msg, ctx);
     }
@@ -80,7 +89,26 @@ export class DemoTaxiOrdersService
     }
 
     if (currentStep === DemoTaxiOrdersSteps.ContactPhone) {
-      return await this.demoTaxiOrders3ContactPhoneService.process(msg, ctx);
+      if (
+        msg.context &&
+        !Object.values(NavigationButtons).includes(
+          msg.callbackQueryData as NavigationButtons
+        ) &&
+        (msg.text || msg.contact?.phone_number)
+      ) {
+        msg.context.currentStep = DemoTaxiOrdersSteps.EnterContactPhone;
+        msg.text = msg.text || msg.contact?.phone_number;
+        currentStep = msg.context?.currentStep;
+      } else {
+        return await this.demoTaxiOrders3ContactPhoneService.process(msg, ctx);
+      }
+    }
+
+    if (currentStep === DemoTaxiOrdersSteps.EnterContactPhone) {
+      return await this.demoTaxiOrders4EnterContactPhoneService.process(
+        msg,
+        ctx
+      );
     }
 
     if (currentStep === DemoTaxiOrdersSteps.Complete) {
@@ -116,6 +144,7 @@ export class DemoTaxiOrdersService
       }
 
       if (
+        !msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS] &&
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [getText('start'), getText('get')],
@@ -123,7 +152,7 @@ export class DemoTaxiOrdersService
         )
       ) {
         const currentStep =
-          msg.context.currentStep || DemoTaxiOrdersSteps.Start;
+          msg.context?.currentStep || DemoTaxiOrdersSteps.Start;
         if (currentStep === DemoTaxiOrdersSteps.Start) {
           return {
             newState: true,

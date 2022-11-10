@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { Context } from 'grammy';
 import { isMatch } from 'micromatch';
 import { render } from 'mustache';
 import { CustomInject } from 'nestjs-custom-injector';
@@ -51,7 +52,7 @@ export class BotCommandsToolsService {
     return id ? String(id) : LATEST_MESSAGE_ID;
   }
 
-  getMessageId<
+  geConstantLatestMessageId<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   >(msg: TMsg) {
@@ -84,12 +85,48 @@ export class BotCommandsToolsService {
     );
   }
 
+  isMineMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg | undefined) {
+    return msg?.chat && msg?.from?.id === msg?.chat?.id;
+  }
+
+  isGroupMessage<
+    TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
+  >(msg: TMsg | undefined) {
+    return (msg?.chat?.id || 0) < 0;
+  }
+
+  checkReplayToBotMessage(msg: BotCommandsProviderActionMsg, ctx: Context) {
+    return (
+      this.isGroupMessage(msg) && msg.reply_to_message?.from?.id === ctx.me.id
+    );
+  }
+
+  checkJoinNewMember(msg: BotCommandsProviderActionMsg, ctx: Context) {
+    return (
+      (msg.chat.id || 0) < 0 &&
+      msg.new_chat_members?.find((m) => m.id === ctx.me.id)
+    );
+  }
+
   generateHelpMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, options: BotCommandsToolsGenerateHelpMessageOptions) {
     const isAdmin = this.isAdmin(msg);
 
-    if (options.category === BotCommandsCategory.system && !isAdmin) {
+    if (
+      this.isGroupMessage(msg) &&
+      !options.category.includes(BotCommandsCategory.group)
+    ) {
+      return '';
+    }
+
+    if (
+      !this.isGroupMessage(msg) &&
+      !options.category.includes(BotCommandsCategory.user) &&
+      !isAdmin
+    ) {
       return '';
     }
 
@@ -135,12 +172,13 @@ export class BotCommandsToolsService {
 
     const caption = options.name
       ? `__${this.translatesService.translate(options.name, options.locale)}${
-          !isAdmin && options.category === BotCommandsCategory.user
+          !isAdmin &&
+          (options.category.includes(BotCommandsCategory.user) ||
+            options.category.includes(BotCommandsCategory.group))
             ? ''
-            : ` \\(${this.translatesService.translate(
-                options.category,
-                options.locale
-              )}\\)`
+            : ` \\(${options.category
+                .map((c) => this.translatesService.translate(c, options.locale))
+                .join(', ')}\\)`
         }__`
       : '';
     const descriptions = options.descriptions

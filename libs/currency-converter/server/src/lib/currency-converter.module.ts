@@ -24,7 +24,7 @@ export class CurrencyConverterModule {
           spyWords: [getText('convert'), getText('converter')],
           removeWords: [getText('to'), getText('please')],
           uri: 'https://www.xe.com/currencyconverter/convert/?Amount={{TEXT1}}&From={{TEXT2}}&To={{TEXT3}}',
-          category: BotCommandsCategory.user,
+          category: [BotCommandsCategory.user, BotCommandsCategory.group],
         }),
       ],
       providers: [

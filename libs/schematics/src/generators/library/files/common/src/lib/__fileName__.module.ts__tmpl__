@@ -34,7 +34,7 @@ export class <%= className %>Module {
 	  	  			'Commands for <%= titleName %>'
 	  	  		),
 	  	  		spyWords: [getText('<%= propertyName %>')],
-	  	  		category: BotCommandsCategory.user,
+	  	  		category: [BotCommandsCategory.user, BotCommandsCategory.group],
 	  		},
 	  	},
 	  	{

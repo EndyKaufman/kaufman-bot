@@ -40,7 +40,7 @@ export class JokesGeneratorModule {
               removeWords: [getText('get'), getText('please')],
               uri: 'https://randstuff.ru/joke/',
               contentCodepage: 'utf8',
-              category: BotCommandsCategory.user,
+              category: [BotCommandsCategory.user, BotCommandsCategory.group],
             }),
           ],
           providers: [
@@ -70,7 +70,7 @@ export class JokesGeneratorModule {
               removeWords: [getText('get'), getText('please')],
               uri: 'https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single&format=xml',
               contentCodepage: 'utf8',
-              category: BotCommandsCategory.user,
+              category: [BotCommandsCategory.user, BotCommandsCategory.group],
             }),
           ],
           providers: [

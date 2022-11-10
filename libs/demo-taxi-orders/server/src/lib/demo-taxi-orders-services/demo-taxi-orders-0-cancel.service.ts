@@ -4,7 +4,7 @@ import {
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
 import { Injectable } from '@nestjs/common';
-import { Telegram } from 'telegraf';
+import { Context } from 'grammy';
 import { DemoTaxiLocalContext } from '../demo-taxi-orders.types';
 
 @Injectable()
@@ -17,9 +17,9 @@ export class DemoTaxiOrders0CancelService {
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(
     msg: TMsg,
-    ctx: { telegram: Telegram }
+    ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    await ctx.telegram.deleteMessage(
+    await ctx.api.deleteMessage(
       this.botCommandsToolsService.getChatId(msg),
       +this.botCommandsToolsService.getContextMessageId(msg)
     );

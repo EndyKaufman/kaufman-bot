@@ -6,78 +6,74 @@ import {
   BotCommandsToolsService,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core-server';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import {
   BotInGroupsConfig,
   BOT_IN_GROUPS_CONFIG,
 } from '../bot-in-groups-config/bot-in-groups.config';
+import { BotInGroupsToolsService } from './bot-in-groups-tools.service';
 
 @Injectable()
 export class BotInGroupsService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
+  logger = new Logger(BotInGroupsService.name);
+
   handlerId = BotInGroupsService.name;
 
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,
-    private readonly botCommandsToolsService: BotCommandsToolsService
+    private readonly botCommandsToolsService: BotCommandsToolsService,
+    private readonly botInGroupsToolsService: BotInGroupsToolsService
   ) {}
 
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
+    if (!this.botCommandsToolsService.isGroupMessage(msg)) {
+      return msg;
+    }
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    if (msg?.chat && msg?.from?.id !== msg?.chat?.id) {
+    if (!this.botCommandsToolsService.isMineMessage(msg)) {
       if (
-        this.botCommandsToolsService.checkCommands(msg.text, [
-          ...this.botInGroupsConfig.botNames[locale],
-          ...this.botInGroupsConfig.botNames['en'],
-        ])
-      ) {
-        msg.text = this.botCommandsToolsService.clearCommands(
+        this.botInGroupsToolsService.checkPartialContainBotNamesInMessage(
           msg.text,
-          [
-            ...this.botInGroupsConfig.botNames[locale],
-            ...this.botInGroupsConfig.botNames['en'],
-          ],
           locale
-        );
-        if (
-          this.botCommandsToolsService.checkCommands(
-            this.botCommandsToolsService.clearCommands(
+        )
+      ) {
+        msg.text = msg.text
+          ? this.botInGroupsToolsService.removePartialAllBotNamesFormMessage(
               msg.text,
-              [
-                ...this.botInGroupsConfig.botNames[locale],
-                ...this.botInGroupsConfig.botNames['en'],
-              ],
               locale
-            ),
-            ['start']
-          )
-        ) {
+            )
+          : undefined;
+        if (this.botCommandsToolsService.checkCommands(msg.text, ['start'])) {
           msg.text = `${this.botInGroupsConfig.name} meet`;
+          this.logger.debug(
+            `Message from chat to bot: ${msg?.chat?.id}, message: "${msg.text}", callbackQueryData: "${msg.callbackQueryData}"`
+          );
         }
       } else {
         msg.handlerStop = true;
+        this.logger.debug(`Stop signal from chat to bot`);
       }
     }
     if (
       msg.start ||
       this.botCommandsToolsService.checkCommands(
-        this.botCommandsToolsService.clearCommands(
-          msg.text?.split(' ').join('').trim(),
-          [
-            ...this.botInGroupsConfig.botNames[locale],
-            ...this.botInGroupsConfig.botNames['en'],
-          ],
+        this.botInGroupsToolsService.removeAllBotNamesFormMessage<TMsg>(
+          msg,
           locale
         ),
         ['start']
       )
     ) {
       msg.text = `${this.botInGroupsConfig.name} meet`;
+      this.logger.debug(
+        `Message from chat to bot: ${msg?.chat?.id}, message: "${msg.text}", callbackQueryData: "${msg.callbackQueryData}"`
+      );
     }
     return msg;
   }

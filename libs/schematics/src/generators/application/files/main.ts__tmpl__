@@ -4,7 +4,6 @@ require('source-map-support').install();
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import env from 'env-var';
-import { getBotToken } from 'nestjs-telegraf';
 import { AppModule } from './app/app.module';
 
 const logger = new Logger('Application');
@@ -30,14 +29,6 @@ process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  const TELEGRAM_BOT_WEB_HOOKS_PATH = env
-    .get('TELEGRAM_BOT_WEB_HOOKS_PATH')
-    .asString();
-  if (TELEGRAM_BOT_WEB_HOOKS_PATH) {
-    const bot = app.get(getBotToken());
-    app.use(bot.webhookCallback(TELEGRAM_BOT_WEB_HOOKS_PATH));
-  }
 
   const port = env.get('PORT').default(3333).asPortNumber();
   await app.listen(port);
