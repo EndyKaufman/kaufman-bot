@@ -1,10 +1,9 @@
 {
-  "root": "libs/html-scraper/server",
   "sourceRoot": "libs/html-scraper/server/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/html-scraper/server",
@@ -27,7 +26,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/html-scraper/server"],
       "options": {
-        "jestConfig": "libs/html-scraper/server/jest.config.js",
+        "jestConfig": "libs/html-scraper/server/jest.config.ts",
         "passWithNoTests": true
       }
     }

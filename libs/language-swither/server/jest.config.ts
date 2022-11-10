@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'short-commands-server',
+/* eslint-disable */
+export default {
+  displayName: 'language-swither-server',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/short-commands/server',
+  coverageDirectory: '../../../coverage/libs/language-swither/server',
 };

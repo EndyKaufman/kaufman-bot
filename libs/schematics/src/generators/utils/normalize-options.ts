@@ -1,6 +1,5 @@
 import type { Tree } from '@nrwl/devkit';
 import { names, readProjectConfiguration } from '@nrwl/devkit';
-import assert from 'assert';
 import type {
   NestGeneratorOptions,
   NormalizedOptions,
@@ -12,7 +11,9 @@ export function normalizeOptions(
   options: NestGeneratorOptions
 ): NormalizedOptions {
   const { sourceRoot } = readProjectConfiguration(tree, options.project);
-  assert(sourceRoot);
+  if (!sourceRoot) {
+    throw new Error('sourceRoot not set');
+  }
 
   const normalizedOptions: NormalizedOptions = {
     ...options,

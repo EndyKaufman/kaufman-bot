@@ -30,3 +30,6 @@ msgstr "система"
 
 msgid "user"
 msgstr "пользователь"
+
+msgid "group"
+msgstr "группа"

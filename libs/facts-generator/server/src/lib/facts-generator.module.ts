@@ -40,7 +40,7 @@ export class FactsGeneratorModule {
               removeWords: [getText('get'), getText('please')],
               uri: 'https://randstuff.ru/fact/',
               contentCodepage: 'utf8',
-              category: BotCommandsCategory.user,
+              category: [BotCommandsCategory.user, BotCommandsCategory.group],
             }),
           ],
           providers: [
@@ -69,7 +69,7 @@ export class FactsGeneratorModule {
               spyWords: [getText('facts'), getText('fact')],
               removeWords: [getText('get'), getText('please')],
               uri: 'http://randomfactgenerator.net/',
-              category: BotCommandsCategory.user,
+              category: [BotCommandsCategory.user, BotCommandsCategory.group],
             }),
           ],
           providers: [

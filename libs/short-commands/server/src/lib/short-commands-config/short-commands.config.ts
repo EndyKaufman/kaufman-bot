@@ -7,5 +7,5 @@ export interface ShortCommandsConfig {
   usage: string[];
   spyWords: string[];
   commands: { [langCode: string]: { [text: string]: string } };
-  category: string;
+  category: string[];
 }

@@ -1,20 +1,19 @@
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
+import { BotCommandsContextType } from './bot-commands-context-type.interface';
 
 export const BOT_COMMANDS_STORAGE = 'BOT_COMMANDS_STORAGE';
 
-export interface StorageItem<
-  TMessage extends { context?: Record<string, unknown> }
-> {
+export interface StorageItem<TMessage extends BotCommandsContextType> {
   handlerId?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context?: Record<string, any>;
+  context?: BotCommandsContextType['context'];
   response: BotCommandsProviderActionResultType<TMessage>;
   request: BotCommandsProviderActionResultType<TMessage>;
   usedMessageIds: string[];
 }
 
 export interface BotCommandsStorageProvider<
-  TMessage extends { context?: Record<string, unknown> }
+  TMessage extends BotCommandsContextType
 > {
   getStateByUsedMessageId(
     userId: string,

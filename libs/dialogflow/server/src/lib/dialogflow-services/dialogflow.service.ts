@@ -9,6 +9,7 @@ import {
 } from '@kaufman-bot/core-server';
 import { DebugService } from '@kaufman-bot/debug-messages-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
 import { v4 } from 'uuid';
 import {
@@ -76,7 +77,10 @@ export class DialogflowService
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     return await this.onMessage(
       {
         ...msg,
@@ -88,11 +92,10 @@ export class DialogflowService
 
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, ctx): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
-      return null;
-    }
-
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
 
     const spyWord = this.dialogflowConfig.spyWords.find((spyWord) =>
@@ -118,32 +121,30 @@ export class DialogflowService
           }),
         };
       }
+      if (!msg?.globalContext?.[DISABLE_DIALOGFLOW_COMMANDS]) {
+        const preparedText = this.botCommandsToolsService.clearCommands(
+          msg.text,
+          [spyWord],
+          locale
+        );
 
-      const preparedText = this.botCommandsToolsService.clearCommands(
-        msg.text,
-        [spyWord],
-        locale
-      );
+        const processedMsg = await this.process(msg, ctx, locale, preparedText);
 
-      const processedMsg = await this.process(msg, ctx, locale, preparedText);
+        if (typeof processedMsg === 'string') {
+          return {
+            type: 'text',
+            message: msg,
+            text: processedMsg,
+          };
+        }
+        if (processedMsg) {
+          return { type: 'message', message: processedMsg };
+        }
 
-      if (typeof processedMsg === 'string') {
-        return {
-          type: 'text',
-          message: msg,
-          text: processedMsg,
-        };
+        this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
+        this.logger.debug(msg);
       }
-      if (processedMsg) {
-        return { type: 'message', message: processedMsg };
-      }
-
-      this.logger.warn(
-        `Unhandled commands for text: "${msg.text}", data: "${msg.data}"`
-      );
-      this.logger.debug(msg);
     }
-    return null;
   }
 
   private async process<

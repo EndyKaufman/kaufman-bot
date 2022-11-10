@@ -37,7 +37,7 @@ export class QuotesGeneratorModule {
           uri: 'https://api.forismatic.com/api/1.0/?method=getQuote&format=xml&lang={{locale}}',
           contentCodepage: 'utf8',
           headers: [{}],
-          category: BotCommandsCategory.user,
+          category: [BotCommandsCategory.user, BotCommandsCategory.group],
         }),
       ],
       providers: [

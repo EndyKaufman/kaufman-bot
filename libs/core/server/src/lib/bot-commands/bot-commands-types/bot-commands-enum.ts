@@ -10,4 +10,5 @@ export const BotCommandsEnum = {
 export const BotCommandsCategory = {
   system: getText('system'),
   user: getText('user'),
+  group: getText('group'),
 };

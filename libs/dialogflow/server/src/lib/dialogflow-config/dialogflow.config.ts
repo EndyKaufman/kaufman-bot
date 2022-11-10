@@ -7,5 +7,5 @@ export interface DialogflowConfig {
   usage: string[];
   spyWords: string[];
   projectId: string;
-  category: string;
+  category: string[];
 }

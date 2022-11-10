@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'dialogflow-server',
+/* eslint-disable */
+export default {
+  displayName: 'short-commands-server',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/dialogflow/server',
+  coverageDirectory: '../../../coverage/libs/short-commands/server',
 };

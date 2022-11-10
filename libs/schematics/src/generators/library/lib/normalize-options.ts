@@ -25,6 +25,7 @@ export function normalizeOptions(
   const normalized: NormalizedOptions = {
     ...options,
     fileName,
+    global: options.global ?? false,
     linter: options.linter ?? Linter.EsLint,
     parsedTags,
     prefix: npmScope, // we could also allow customizing this

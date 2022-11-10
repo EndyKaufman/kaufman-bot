@@ -8,6 +8,7 @@ import {
 } from '@kaufman-bot/core-server';
 import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
+import { Context } from 'grammy';
 
 const RUSSIAN_LANGUAGE = 'ru';
 
@@ -24,24 +25,34 @@ export class RuJokesGeneratorService
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const contextMsg = await this.scraperService.onContextBotCommands(msg);
-    return contextMsg ? this.onMessage(contextMsg.message) : null;
+    return contextMsg ? this.onMessage(contextMsg.message, ctx) : null;
   }
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg) {
+  >(msg: TMsg, ctx: Context) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
-    return await this.scraperService.onHelp(msg, RuJokesGeneratorService.name);
+    return await this.scraperService.onHelp(
+      msg,
+      ctx,
+      RuJokesGeneratorService.name
+    );
   }
 
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (!locale?.includes(RUSSIAN_LANGUAGE)) {
       return null;
@@ -55,6 +66,7 @@ export class RuJokesGeneratorService
     ) {
       const result = await this.scraperService.onMessage(
         msg,
+        ctx,
         RuJokesGeneratorService.name
       );
       try {

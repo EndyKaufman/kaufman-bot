@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'jokes-generator-server',
+/* eslint-disable */
+export default {
+  displayName: 'quotes-generator-server',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/jokes-generator/server',
+  coverageDirectory: '../../../coverage/libs/quotes-generator/server',
 };

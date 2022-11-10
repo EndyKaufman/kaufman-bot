@@ -7,5 +7,5 @@ export interface LanguageSwitherConfig {
   usage: string[];
   spyWords: string[];
   removeWords?: string[];
-  category: string;
+  category: string[];
 }

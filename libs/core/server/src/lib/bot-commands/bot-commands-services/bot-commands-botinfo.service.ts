@@ -35,8 +35,8 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
       )
     ) {
       if (
-        msg.text.toLowerCase() !== 'botinfo' &&
-        msg.text.toLowerCase() !== 'bot info'
+        msg.text?.toLowerCase() !== 'botinfo' &&
+        msg.text?.toLowerCase() !== 'bot info'
       ) {
         return {
           type: 'stop',

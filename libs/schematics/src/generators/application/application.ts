@@ -23,9 +23,10 @@ export async function applicationGenerator(
     unitTestRunner: options.unitTestRunner,
     skipFormat: true,
   });
-  const nodeApplicationTask = await nodeApplicationGenerator(tree, {
-    ...toNodeApplicationGeneratorOptions(options),
-  });
+  const nodeApplicationTask = await nodeApplicationGenerator(
+    tree,
+    toNodeApplicationGeneratorOptions(options)
+  );
   createFiles(tree, options);
   updateTsConfig(tree, options);
 

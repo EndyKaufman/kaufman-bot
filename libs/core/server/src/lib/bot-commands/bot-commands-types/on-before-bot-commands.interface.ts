@@ -1,3 +1,4 @@
+import { Context } from 'grammy';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
 
 export interface OnBeforeBotCommands {
@@ -5,6 +6,6 @@ export interface OnBeforeBotCommands {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(
     msg: TMsg,
-    ctx?
+    ctx?: Context
   ): Promise<TMsg>;
 }

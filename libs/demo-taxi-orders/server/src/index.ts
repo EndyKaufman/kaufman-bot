@@ -5,6 +5,7 @@ export * from './lib/demo-taxi-orders-services/demo-taxi-orders-0-cancel.service
 export * from './lib/demo-taxi-orders-services/demo-taxi-orders-1-direction.service';
 export * from './lib/demo-taxi-orders-services/demo-taxi-orders-2-count-of-passengers.service';
 export * from './lib/demo-taxi-orders-services/demo-taxi-orders-3-contact-phone.service';
-export * from './lib/demo-taxi-orders-services/demo-taxi-orders-4-complete.service';
+export * from './lib/demo-taxi-orders-services/demo-taxi-orders-4-enter-contact-phone.service';
+export * from './lib/demo-taxi-orders-services/demo-taxi-orders-5-complete.service';
 export * from './lib/demo-taxi-orders-services/demo-taxi-orders-render.service';
 export * from './lib/demo-taxi-orders-services/demo-taxi-orders.service';

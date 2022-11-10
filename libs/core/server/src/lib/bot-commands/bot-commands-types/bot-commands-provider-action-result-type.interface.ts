@@ -1,7 +1,9 @@
+import { BotCommandsContextType } from './bot-commands-context-type.interface';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
 
 export type BotCommandsProviderActionResultType<
-  TMessage extends { context?: Record<string, unknown> }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TMessage extends BotCommandsContextType
 > =
   | {
       type: 'markdown';

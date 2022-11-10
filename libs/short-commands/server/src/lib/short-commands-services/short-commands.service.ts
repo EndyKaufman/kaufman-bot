@@ -39,7 +39,7 @@ export class ShortCommandsService
     if (msg?.globalContext?.[DISABLE_SHORT_COMMANDS__BEFORE_HOOK]) {
       return msg;
     }
-    if (msg) {
+    if (msg?.text) {
       msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
         this.botCommandsToolsService.getLocale(msg, 'en'),
         msg.text
@@ -112,10 +112,12 @@ export class ShortCommandsService
                   `${this.translatesService.translate(
                     getText('aliases'),
                     locale
-                  )}: ${this.botCommandsToolsService
-                    .prepareHelpString(alias)
+                  )}: ${alias
                     .split('|')
-                    .map((u) => `_${u}_`)
+                    .map(
+                      (u) =>
+                        `_${this.botCommandsToolsService.prepareHelpString(u)}_`
+                    )
                     .join(', ')}`,
                   `${this.translatesService.translate(
                     getText('command'),

@@ -180,7 +180,9 @@ export class LanguageSwitherService
             .find((key) => key.toLowerCase() === lang.toLowerCase())
         ) || locale;
       locale = inputLocale || locale;
-      msg.from.language_code = inputLocale || locale;
+      if (msg.from) {
+        msg.from.language_code = inputLocale || locale;
+      }
 
       await this.languageSwitherStorage.setLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg),

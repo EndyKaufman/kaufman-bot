@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
+import { InlineKeyboard } from 'grammy';
+import { InlineKeyboardButton } from 'grammy/out/types.node';
 import { TranslatesService } from 'nestjs-translates';
-import { Markup } from 'telegraf';
 import {
   CountOfPassengers,
   DemoTaxiLocalContext,
@@ -16,27 +17,30 @@ export class DemoTaxiOrdersRenderService {
 
   render(locale: string, localContext: DemoTaxiLocalContext) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let mainButtons: any[] = [];
+    let mainButtons: InlineKeyboardButton[] = [];
     if (localContext.currentStep === DemoTaxiOrdersSteps.Direction) {
       mainButtons = [
-        Markup.button.callback(
-          '🌆 ' + this.getTranslatedDirectionTextByEnum(Direction.City, locale),
-          Direction.City
-        ),
-        Markup.button.callback(
-          '🏡 ' +
+        {
+          text:
+            '🌆 ' +
+            this.getTranslatedDirectionTextByEnum(Direction.City, locale),
+          callback_data: Direction.City,
+        },
+        {
+          text:
+            '🏡 ' +
             this.getTranslatedDirectionTextByEnum(Direction.Village, locale),
-          Direction.Village
-        ),
+          callback_data: Direction.Village,
+        },
       ];
     }
 
     if (localContext.currentStep === DemoTaxiOrdersSteps.CountOfPassengers) {
       mainButtons = [
-        Markup.button.callback('1️⃣', CountOfPassengers.P1),
-        Markup.button.callback('2️⃣', CountOfPassengers.P2),
-        Markup.button.callback('3️⃣', CountOfPassengers.P3),
-        Markup.button.callback('4️⃣', CountOfPassengers.P4),
+        { text: '1️⃣', callback_data: CountOfPassengers.P1 },
+        { text: '2️⃣', callback_data: CountOfPassengers.P2 },
+        { text: '3️⃣', callback_data: CountOfPassengers.P3 },
+        { text: '4️⃣', callback_data: CountOfPassengers.P4 },
       ];
     }
 
@@ -48,17 +52,19 @@ export class DemoTaxiOrdersRenderService {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let navButtons: any[] = [];
+    let navButtons: InlineKeyboardButton[] = [];
     if (localContext.currentStep === DemoTaxiOrdersSteps.Direction) {
       navButtons = [
-        Markup.button.callback(
-          '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
-          NavigationButtons.Cancel
-        ),
-        Markup.button.callback(
-          '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
-          NavigationButtons.Next
-        ),
+        {
+          text:
+            '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
+          callback_data: NavigationButtons.Cancel,
+        },
+        {
+          text:
+            '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
+          callback_data: NavigationButtons.Next,
+        },
       ];
     }
 
@@ -67,37 +73,48 @@ export class DemoTaxiOrdersRenderService {
       localContext.currentStep === DemoTaxiOrdersSteps.ContactPhone
     ) {
       navButtons = [
-        Markup.button.callback(
-          '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
-          NavigationButtons.Cancel
-        ),
-        Markup.button.callback(
-          '⬅️ ' + this.translatesService.translate(getText('Prev'), locale),
-          NavigationButtons.Prev
-        ),
-        Markup.button.callback(
-          '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
-          NavigationButtons.Next
-        ),
+        {
+          text:
+            '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
+          callback_data: NavigationButtons.Cancel,
+        },
+        {
+          text:
+            '⬅️ ' + this.translatesService.translate(getText('Prev'), locale),
+          callback_data: NavigationButtons.Prev,
+        },
+        {
+          text:
+            '➡️ ' + this.translatesService.translate(getText('Skip'), locale),
+          callback_data: NavigationButtons.Next,
+        },
       ];
     }
 
     if (localContext.currentStep === DemoTaxiOrdersSteps.Complete) {
       navButtons = [
-        Markup.button.callback(
-          '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
-          NavigationButtons.Cancel
-        ),
-        Markup.button.callback(
-          '⬅️ ' + this.translatesService.translate(getText('Prev'), locale),
-          NavigationButtons.Prev
-        ),
-        Markup.button.callback(
-          '✅ ' + this.translatesService.translate(getText('Done'), locale),
-          NavigationButtons.Done
-        ),
+        {
+          text:
+            '❌ ' + this.translatesService.translate(getText('Cancel'), locale),
+          callback_data: NavigationButtons.Cancel,
+        },
+        {
+          text:
+            '⬅️ ' + this.translatesService.translate(getText('Prev'), locale),
+          callback_data: NavigationButtons.Prev,
+        },
+        {
+          text:
+            '✅ ' + this.translatesService.translate(getText('Done'), locale),
+          callback_data: NavigationButtons.Done,
+        },
       ];
     }
+
+    if (localContext.currentStep === DemoTaxiOrdersSteps.EnterContactPhone) {
+      navButtons = [];
+    }
+
     return {
       text: [
         this.getCompleteInfo(locale, localContext),
@@ -108,7 +125,7 @@ export class DemoTaxiOrdersRenderService {
         .filter(Boolean)
         .join('\n'),
       custom: {
-        ...Markup.inlineKeyboard([mainButtons, navButtons]),
+        reply_markup: new InlineKeyboard([mainButtons, navButtons]),
       },
       context: localContext,
       callback: async (result, context) => {

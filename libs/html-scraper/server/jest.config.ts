@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'currency-converter-server',
+/* eslint-disable */
+export default {
+  displayName: 'html-scraper-server',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/currency-converter/server',
+  coverageDirectory: '../../../coverage/libs/html-scraper/server',
 };

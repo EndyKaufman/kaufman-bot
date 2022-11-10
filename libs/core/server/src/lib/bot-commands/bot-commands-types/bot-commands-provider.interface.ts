@@ -1,11 +1,9 @@
-import { Context } from 'telegraf';
-import { Update } from 'telegraf/typings/core/types/typegram';
+import { Context } from 'grammy';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
 
 export const BOT_COMMANDS_PROVIDER = 'BOT_COMMANDS_PROVIDER';
 
-export type BotCommandsProviderActionContext = Context<Update.MessageUpdate>;
+export type BotCommandsProviderActionContext = Context;
 
 export interface BotCommandsProvider<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,11 +16,15 @@ export interface BotCommandsProvider<
 
   onHelp<TMsg extends TMethodArgs = TMethodArgs>(
     msg: TMsg,
-    ctx
-  ): Promise<BotCommandsProviderActionResultType<TMsg>>;
+    ctx: Context
+    // todo: fix output types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any>;
 
   onMessage<TMsg extends TMethodArgs = TMethodArgs>(
     msg: TMsg,
-    ctx
-  ): Promise<BotCommandsProviderActionResultType<TMsg>>;
+    ctx: Context
+    // todo: fix output types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any>;
 }

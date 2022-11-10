@@ -10,7 +10,8 @@ import { DemoTaxiOrders0CancelService } from './demo-taxi-orders-services/demo-t
 import { DemoTaxiOrders1DirectionService } from './demo-taxi-orders-services/demo-taxi-orders-1-direction.service';
 import { DemoTaxiOrders2CountOfPassengersService } from './demo-taxi-orders-services/demo-taxi-orders-2-count-of-passengers.service';
 import { DemoTaxiOrders3ContactPhoneService } from './demo-taxi-orders-services/demo-taxi-orders-3-contact-phone.service';
-import { DemoTaxiOrders4CompleteService } from './demo-taxi-orders-services/demo-taxi-orders-4-complete.service';
+import { DemoTaxiOrders4EnterContactPhoneService } from './demo-taxi-orders-services/demo-taxi-orders-4-enter-contact-phone.service';
+import { DemoTaxiOrders5CompleteService } from './demo-taxi-orders-services/demo-taxi-orders-5-complete.service';
 import { DemoTaxiOrdersRenderService } from './demo-taxi-orders-services/demo-taxi-orders-render.service';
 import { DemoTaxiOrdersService } from './demo-taxi-orders-services/demo-taxi-orders.service';
 import {
@@ -37,7 +38,7 @@ export class DemoTaxiOrdersModule {
             usage: [getText('get taxi'), getText('taxi help')],
             descriptions: getText('Commands for demo taxi orders'),
             spyWords: [getText('taxi')],
-            category: BotCommandsCategory.user,
+            category: [BotCommandsCategory.user],
             ...config,
           },
         },
@@ -45,7 +46,8 @@ export class DemoTaxiOrdersModule {
         DemoTaxiOrders1DirectionService,
         DemoTaxiOrders2CountOfPassengersService,
         DemoTaxiOrders3ContactPhoneService,
-        DemoTaxiOrders4CompleteService,
+        DemoTaxiOrders4EnterContactPhoneService,
+        DemoTaxiOrders5CompleteService,
         DemoTaxiOrdersRenderService,
         {
           provide: BOT_COMMANDS_PROVIDER,

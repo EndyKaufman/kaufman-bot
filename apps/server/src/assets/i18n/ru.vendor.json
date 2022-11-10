@@ -7,7 +7,8 @@
     "usage with context": "использование с контекстом",
     "reset": "сбросить",
     "system": "система",
-    "user": "пользователь"
+    "user": "пользователь",
+    "group": "группа"
   },
   "currency-converter-server": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
@@ -71,7 +72,8 @@
     "usage with context": "использование с контекстом",
     "reset": "сбросить",
     "system": "система",
-    "user": "пользователь"
+    "user": "пользователь",
+    "group": "группа"
   },
   "currency-converter-server-getText": {
     "Command to convert one currency to another": "Команда для конвертации одной валюты в другую",
@@ -244,7 +246,7 @@
     "Shortened versions of commands for quick launch": "Сокращённые версии команд для быстрого запуска",
     "scmd": "кмд",
     "scmd help": "кмд помощь",
-    "scmd state": "кмд состяние",
+    "scmd state": "кмд состояние",
     "List of short commands:": "Список коротких команд:"
   },
   "short-commands-server-getText": {
@@ -254,7 +256,7 @@
     "Shortened versions of commands for quick launch": "Сокращённые версии команд для быстрого запуска",
     "scmd": "кмд",
     "scmd help": "кмд помощь",
-    "scmd state": "кмд состяние",
+    "scmd state": "кмд состояние",
     "List of short commands:": "Список коротких команд:"
   },
   "first-meeting-server": {
@@ -467,5 +469,6 @@
     "Parameters:": "Параметры:",
     "Skip": "Пропустить",
     "Taxi order was completed": "Заявка на такси оформлена"
-  }
+  },
+  "schematics": {}
 }

@@ -1,8 +1,8 @@
+import { On, Start, Update } from '@grammyjs/nestjs';
 import { BotInGroupsProcessorService } from '@kaufman-bot/bot-in-groups-server';
 import { BotCommandsService } from '@kaufman-bot/core-server';
 import { Injectable, Logger } from '@nestjs/common';
-import { On, Start, Update, Use } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
+import { Context } from 'grammy';
 
 @Update()
 @Injectable()
@@ -23,8 +23,8 @@ export class AppService {
     await this.botCommandsService.start(ctx);
   }
 
-  @Use()
-  async use(ctx) {
+  @On(['message', 'callback_query', 'chat_member'])
+  async onMessage(ctx: Context) {
     try {
       await this.botInGroupsProcessorService.process(ctx);
     } catch (err) {
@@ -32,21 +32,12 @@ export class AppService {
     }
   }
 
-  @On('sticker')
-  async onSticker(ctx) {
-    try {
-      await this.botCommandsService.process(ctx);
-    } catch (err) {
-      this.logger.error(err, err.stack);
-    }
-  }
-
-  @On('text')
-  async onMessage(ctx) {
-    try {
-      await this.botCommandsService.process(ctx);
-    } catch (err) {
-      this.logger.error(err, err.stack);
-    }
-  }
+  // @On(['message', 'callback_query', 'chat_member'])
+  // async onMessage(ctx: Context) {
+  //   try {
+  //     await this.botCommandsService.process(ctx);
+  //   } catch (err) {
+  //     this.logger.error(err, err.stack);
+  //   }
+  // }
 }

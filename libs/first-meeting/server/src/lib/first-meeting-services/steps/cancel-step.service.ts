@@ -29,7 +29,7 @@ export class CancelStepContextService {
     return (
       this.commonService.isContextProcess({ msg }) &&
       this.botCommandsToolsService.checkCommands(
-        msg.text || msg.data,
+        msg.text || msg.callbackQueryData,
         [
           getText('exit'),
           getText('reset'),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
@@ -32,7 +33,7 @@ export class EndMeetingStepContextService {
     msg: BotCommandsProviderActionMsg;
     activateStatus: string;
   }) {
-    const context: Partial<FirstMeeting> = msg.context;
+    const context: Partial<FirstMeeting> = msg.context!;
     return (
       this.commonService.isContextProcess({ msg }) &&
       context?.status === activateStatus
@@ -40,18 +41,21 @@ export class EndMeetingStepContextService {
   }
 
   async do({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const context: Partial<FirstMeeting> = msg.context;
+    const context: Partial<FirstMeeting> = msg.context!;
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
+    const text = msg.callbackQueryData || msg.text;
     const state: Partial<FirstMeeting> = {
       ...context,
       status: 'EndMeeting',
-      gender: this.botCommandsToolsService.checkCommands(
-        this.commonService.prepareText(msg.data || msg.text, locale),
-        [getText('female'), getText('fm'), getText('f')],
-        locale
-      )
-        ? 'Female'
-        : 'Male',
+      gender:
+        text &&
+        this.botCommandsToolsService.checkCommands(
+          this.commonService.prepareText(text, locale),
+          [getText('female'), getText('fm'), getText('f')],
+          locale
+        )
+          ? 'Female'
+          : 'Male',
       messagesMetadata: { AskGenderRequest: msg },
     };
     await this.storage.pathState({
