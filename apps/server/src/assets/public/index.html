@@ -362,7 +362,7 @@
       <p>Create empty nx project</p>
       <blockquote>
         <p>
-          npx -y create-nx-workspace@13.8.1 --name=kaufman-bot-generated
+          npx -y create-nx-workspace@15.0.13 --name=kaufman-bot-generated
           --preset=empty --interactive=false --nx-cloud=false
         </p>
       </blockquote>
@@ -373,14 +373,15 @@
       <p>Add all need schematics</p>
       <blockquote>
         <p>
-          npm install -D <a href="https://github.com/nrwl">@nrwl</a>/nest@13.8.1
+          npm install -D
+          <a href="https://github.com/nrwl">@nrwl</a>/nest@15.0.13
           <a href="https://github.com/kaufman-bot">@kaufman-bot</a>/schematics
         </p>
       </blockquote>
       <p>Create kaufman-bot application</p>
       <blockquote>
         <p>
-          npx -y nx@13.8.1 g
+          npx -y nx@15.0.13 g
           <a href="https://github.com/kaufman-bot">@kaufman-bot</a
           >/schematics:app adam-bot --bot-name adam
         </p>
