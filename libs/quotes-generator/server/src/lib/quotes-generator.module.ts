@@ -1,5 +1,6 @@
 import {
   BotCommandsCategory,
+  BotCommandsEnum,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core-server';
@@ -33,7 +34,7 @@ export class QuotesGeneratorModule {
           contentSelector:
             'forismatic > quote > quotetext, forismatic > quote > quoteauthor',
           spyWords: [getText('quotes'), getText('quote')],
-          removeWords: [getText('get'), getText('please')],
+          removeWords: [BotCommandsEnum.get, getText('please')],
           uri: 'https://api.forismatic.com/api/1.0/?method=getQuote&format=xml&lang={{locale}}',
           contentCodepage: 'utf8',
           headers: [{}],

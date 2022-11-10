@@ -1,4 +1,5 @@
 import {
+  BotCommandsEnum,
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
@@ -74,7 +75,7 @@ export class AskFirstnameStepService {
       !state &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
-        [getText('start')],
+        [BotCommandsEnum.start],
         locale
       )
     );

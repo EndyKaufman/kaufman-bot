@@ -90,11 +90,9 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       commit: env.get('DEPLOY_COMMIT').default('').asString(),
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
-      defaultGroupGlobalContext: {
-        [DISABLE_FIRST_MEETING_COMMANDS]: true,
-        [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
-        [DISABLE_DIALOGFLOW_COMMANDS]: true,
-        [DISABLE_DEMO_TAXI_ORDERS_COMMANDS]: true,
+      botMeetingInformation: {
+        en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+        ru: [`Привет! я ${BOT_NAMES_RU[0]} 😉`, `Привет!`, 'Привет 🖖'],
       },
     }),
     ShortCommandsModule.forRoot({

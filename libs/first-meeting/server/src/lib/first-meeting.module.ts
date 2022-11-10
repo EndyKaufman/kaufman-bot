@@ -1,5 +1,6 @@
 import {
   BotCommandsCategory,
+  BotCommandsEnum,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core-server';
@@ -70,7 +71,7 @@ export class FirstMeetingModule {
           useValue: <FirstMeetingConfig>{
             ...config,
             title: getText('First meeting'),
-            name: 'meet',
+            name: BotCommandsEnum.meet,
             descriptions: getText(
               'Example of recursive contextable commands "first meeting"'
             ),
@@ -79,7 +80,7 @@ export class FirstMeetingModule {
               getText('meet reset'),
               getText('meet help'),
             ],
-            spyWords: [getText('meet')],
+            spyWords: [BotCommandsEnum.meet],
             category: [BotCommandsCategory.user],
           },
         },

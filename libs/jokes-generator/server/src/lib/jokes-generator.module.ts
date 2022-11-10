@@ -1,5 +1,6 @@
 import {
   BotCommandsCategory,
+  BotCommandsEnum,
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core-server';
@@ -37,7 +38,7 @@ export class JokesGeneratorModule {
               contextUsage: [getText('more'), getText('next')],
               contentSelector: '#joke > table > tbody > tr > td',
               spyWords: [getText('jokes'), getText('joke')],
-              removeWords: [getText('get'), getText('please')],
+              removeWords: [BotCommandsEnum.get, getText('please')],
               uri: 'https://randstuff.ru/joke/',
               contentCodepage: 'utf8',
               category: [BotCommandsCategory.user, BotCommandsCategory.group],
@@ -67,7 +68,7 @@ export class JokesGeneratorModule {
               contextUsage: [getText('more'), getText('next')],
               contentSelector: 'data > joke',
               spyWords: [getText('jokes'), getText('joke')],
-              removeWords: [getText('get'), getText('please')],
+              removeWords: [BotCommandsEnum.get, getText('please')],
               uri: 'https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single&format=xml',
               contentCodepage: 'utf8',
               category: [BotCommandsCategory.user, BotCommandsCategory.group],
