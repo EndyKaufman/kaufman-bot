@@ -132,7 +132,7 @@ export class ScraperService
       }
 
       this.logger.warn(
-        `Unhandled commands for text: "${msg.text}", data: "${msg.data}"`,
+        `Unhandled commands for text: "${msg.text}"`,
         loggerContext || ScraperService.name
       );
       this.logger.debug(msg, loggerContext || ScraperService.name);

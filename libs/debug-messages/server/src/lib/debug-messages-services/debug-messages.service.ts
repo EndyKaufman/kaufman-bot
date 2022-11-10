@@ -127,9 +127,7 @@ export class DebugMessagesService
         return { type: 'message', message: processedMsg };
       }
 
-      this.logger.warn(
-        `Unhandled commands for text: "${msg.text}", data: "${msg.data}"`
-      );
+      this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
       this.logger.debug(msg);
     }
     return null;

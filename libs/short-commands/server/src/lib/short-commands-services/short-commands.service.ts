@@ -138,9 +138,7 @@ export class ShortCommandsService
         };
       }
 
-      this.logger.warn(
-        `Unhandled commands for text: "${msg.text}", data: "${msg.data}"`
-      );
+      this.logger.warn(`Unhandled commands for text: "${msg.text}"`);
       this.logger.debug(msg);
     }
     return null;

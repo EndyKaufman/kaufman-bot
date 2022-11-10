@@ -145,6 +145,7 @@ export class DialogflowService
         this.logger.debug(msg);
       }
     }
+    return null;
   }
 
   private async process<
