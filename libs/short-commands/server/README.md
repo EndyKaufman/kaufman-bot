@@ -22,7 +22,7 @@ Simple bot for telegram
 
 Create empty nx project
 
-> npx -y create-nx-workspace@13.8.1 --name=kaufman-bot-generated --preset=empty --interactive=false --nx-cloud=false
+> npx -y create-nx-workspace@15.0.13 --name=kaufman-bot-generated --preset=empty --interactive=false --nx-cloud=false
 
 Go to created project
 
@@ -30,11 +30,11 @@ Go to created project
 
 Add all need schematics
 
-> npm install -D @nrwl/nest@13.8.1 @kaufman-bot/schematics
+> npm install -D @nrwl/nest@15.0.13 @kaufman-bot/schematics
 
 Create kaufman-bot application
 
-> npx -y nx@13.8.1 g @kaufman-bot/schematics:app adam-bot --bot-name adam
+> npx -y nx@15.0.13 g @kaufman-bot/schematics:app adam-bot --bot-name adam
 
 Create telegram bot in @BotFather
 ![Create telegram bot in BotFather](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y42z7xieyso9vfewdygu.png)
