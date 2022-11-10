@@ -5,8 +5,9 @@ export interface LibraryGeneratorOptions {
   name: string;
   buildable?: boolean;
   directory?: string;
+  global?: boolean;
   importPath?: string;
-  linter?: Exclude<Linter, Linter.TsLint>;
+  linter?: Linter;
   publishable?: boolean;
   skipFormat?: boolean;
   skipTsConfig?: boolean;

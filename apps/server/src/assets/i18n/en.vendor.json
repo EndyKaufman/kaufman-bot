@@ -469,5 +469,6 @@
     "Parameters:": "Parameters:",
     "Skip": "Skip",
     "Taxi order was completed": "Taxi order was completed"
-  }
+  },
+  "schematics": {}
 }

@@ -1,4 +1,4 @@
-import { BotCommandsProviderActionResultType } from './bot-commands-provider-action-result-type.interface';
+import { Context } from 'grammy';
 import { BotCommandsProviderActionMsg } from './bot-commands-provider-action-msg.interface';
 
 export interface OnContextBotCommands<
@@ -10,6 +10,8 @@ export interface OnContextBotCommands<
 > {
   onContextBotCommands<TMsg extends TMethodArgs = TMethodArgs>(
     msg: TMsg,
-    ctx
-  ): Promise<BotCommandsProviderActionResultType<TMsg>>;
+    ctx: Context
+    // todo: fix output types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any>;
 }

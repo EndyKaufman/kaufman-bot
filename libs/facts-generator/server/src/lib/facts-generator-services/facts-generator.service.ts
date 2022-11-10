@@ -8,6 +8,7 @@ import {
 } from '@kaufman-bot/core-server';
 import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
+import { Context } from 'grammy';
 @Injectable()
 export class FactsGeneratorService
   implements BotCommandsProvider, OnContextBotCommands
@@ -21,24 +22,34 @@ export class FactsGeneratorService
 
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const contextMsg = await this.scraperService.onContextBotCommands(msg);
-    return contextMsg ? this.onMessage(contextMsg.message) : null;
+    return contextMsg ? this.onMessage(contextMsg.message, ctx) : null;
   }
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg) {
+  >(msg: TMsg, ctx: Context) {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (!locale?.includes('en')) {
       return null;
     }
-    return await this.scraperService.onHelp(msg, FactsGeneratorService.name);
+    return await this.scraperService.onHelp(
+      msg,
+      ctx,
+      FactsGeneratorService.name
+    );
   }
 
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (!locale?.includes('en')) {
       return null;
@@ -52,6 +63,7 @@ export class FactsGeneratorService
     ) {
       const result = await this.scraperService.onMessage(
         msg,
+        ctx,
         FactsGeneratorService.name
       );
       try {

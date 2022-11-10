@@ -5,6 +5,7 @@ import {
 } from '@kaufman-bot/core-server';
 import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
+import { Context } from 'grammy';
 @Injectable()
 export class CurrencyConverterService implements BotCommandsProvider {
   handlerId = CurrencyConverterService.name;
@@ -13,15 +14,23 @@ export class CurrencyConverterService implements BotCommandsProvider {
 
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg) {
-    return await this.scraperService.onHelp(msg, CurrencyConverterService.name);
+  >(msg: TMsg, ctx: Context) {
+    return await this.scraperService.onHelp(
+      msg,
+      ctx,
+      CurrencyConverterService.name
+    );
   }
 
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
+  >(
+    msg: TMsg,
+    ctx: Context
+  ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const result = await this.scraperService.onMessage(
       msg,
+      ctx,
       CurrencyConverterService.name
     );
     if (

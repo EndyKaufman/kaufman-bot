@@ -1,4 +1,4 @@
-name: "deploy"
+name: 'deploy'
 
 # yamllint disable-line rule:truthy
 on:
@@ -17,16 +17,17 @@ jobs:
       - name: Setup Node.js 16.x to publish to npmjs.org
         uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Packages
         run: npm ci
 
       - name: Build
         run: npm run build
-        
+
   migrate:
+    needs: [build]
     runs-on: [self-hosted, develop-vps]
     environment: dev
     steps:
@@ -82,6 +83,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          branch: "develop"
-          git_remote_url: "ssh://dokku@${{secrets.HOST}}:22/develop-kaufman-bot"
+          branch: 'develop'
+          git_remote_url: 'ssh://dokku@${{secrets.HOST}}:22/develop-kaufman-bot'
           ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}

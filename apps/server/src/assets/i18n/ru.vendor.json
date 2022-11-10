@@ -469,5 +469,6 @@
     "Parameters:": "Параметры:",
     "Skip": "Пропустить",
     "Taxi order was completed": "Заявка на такси оформлена"
-  }
+  },
+  "schematics": {}
 }

@@ -6,7 +6,7 @@ npm run nx -- run-many --target=build --all --skip-nx-cache
 rm -rf ./integrations/app
 
 cd ./integrations
-npx --yes create-nx-workspace@13.8.1 --name=app --preset=empty --interactive=false --nx-cloud=false
+npx --yes create-nx-workspace@15.0.13 --name=app --preset=empty --interactive=false --nx-cloud=false
 cd ../
 
 yes | cp -R ./integrations/default/package.json ./integrations/app/package.json
@@ -18,8 +18,9 @@ cp -Rf google-credentials.json ./integrations/app
 
 cd ./integrations/app
 npm i --force
-npm install --save-dev @nrwl/nest@13.8.1 @nrwl/node@13.8.1 @ngneat/transloco-keys-manager --force
+npm install --save-dev @nrwl/nest@15.0.13 @nrwl/node@15.0.13 @ngneat/transloco-keys-manager --force
 npm install --save env-var grammy @ngneat/transloco @ngneat/transloco-locale class-validator-multi-lang --force
+npm run nx -- g @nrwl/nest:app server
 cd ../../
 
 npx --yes replace-json-property ./integrations/app/lib/bot-in-groups/server/package.json version 0.0.0

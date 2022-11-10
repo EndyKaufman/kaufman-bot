@@ -1,13 +1,7 @@
-export const nxVersion = '*';
-
-export const nestJsVersion7 = '^9.1.6';
-export const nestJsVersion8 = '^9.1.6';
-
-export const nestJsSchematicsVersion = '^9.0.3';
-
-export const rxjsVersion6 = '~6.6.3';
-export const rxjsVersion7 = '^7.0.0';
+export const nxVersion = '15.0.13';
 
 export const reflectMetadataVersion = '^0.1.13';
-
 export const kaufmanBotVersion = '*';
+export const nestJsVersion = '^9.0.0';
+export const rxjsVersion = '^7.0.0';
+export const tsLibVersion = '^2.3.0';

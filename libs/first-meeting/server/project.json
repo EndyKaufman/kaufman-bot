@@ -1,10 +1,9 @@
 {
-  "root": "libs/first-meeting/server",
   "sourceRoot": "libs/first-meeting/server/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/first-meeting/server",
@@ -27,7 +26,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/first-meeting/server"],
       "options": {
-        "jestConfig": "libs/first-meeting/server/jest.config.js",
+        "jestConfig": "libs/first-meeting/server/jest.config.ts",
         "passWithNoTests": true
       }
     }

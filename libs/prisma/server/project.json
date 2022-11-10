@@ -1,10 +1,9 @@
 {
-  "root": "libs/prisma/server",
   "sourceRoot": "libs/prisma/server/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/prisma/server",
@@ -27,7 +26,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/prisma/server"],
       "options": {
-        "jestConfig": "libs/prisma/server/jest.config.js",
+        "jestConfig": "libs/prisma/server/jest.config.ts",
         "passWithNoTests": true
       }
     }

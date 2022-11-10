@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'demo-taxi-orders-server',
   preset: '../../../jest.preset.js',
   globals: {

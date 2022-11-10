@@ -76,11 +76,6 @@
       "type": "boolean",
       "default": false
     },
-    "controller": {
-      "description": "Include a controller with the library.",
-      "type": "boolean",
-      "default": false
-    },
     "testEnvironment": {
       "description": "The test environment for jest, for node applications this should stay as node unless doing DOM testing.",
       "type": "string",

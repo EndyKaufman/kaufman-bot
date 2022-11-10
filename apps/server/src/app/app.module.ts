@@ -7,7 +7,6 @@ import {
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import {
-  DemoTaxiLocalContext,
   DemoTaxiOrdersModule,
   DISABLE_DEMO_TAXI_ORDERS_COMMANDS,
 } from '@kaufman-bot/demo-taxi-orders-server';
@@ -162,7 +161,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
     }),
     DemoTaxiOrdersModule.forRoot({
-      onComplete: async (
+      onComplete: async <DemoTaxiLocalContext>(
         msg: BotCommandsProviderActionMsg<DemoTaxiLocalContext>,
         ctx: Context,
         message: string

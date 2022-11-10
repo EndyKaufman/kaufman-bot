@@ -1,10 +1,9 @@
 {
-  "root": "libs/debug-messages/server",
   "sourceRoot": "libs/debug-messages/server/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/debug-messages/server",
@@ -27,7 +26,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/debug-messages/server"],
       "options": {
-        "jestConfig": "libs/debug-messages/server/jest.config.js",
+        "jestConfig": "libs/debug-messages/server/jest.config.ts",
         "passWithNoTests": true
       }
     }

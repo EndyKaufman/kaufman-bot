@@ -1,47 +1,24 @@
 import type { GeneratorCallback, Tree } from '@nrwl/devkit';
-import { addDependenciesToPackageJson, readJson } from '@nrwl/devkit';
-import { satisfies } from 'semver';
+import { addDependenciesToPackageJson } from '@nrwl/devkit';
 import {
   kaufmanBotVersion,
-  nestJsSchematicsVersion,
-  nestJsVersion7,
-  nestJsVersion8,
+  nestJsVersion,
   nxVersion,
   reflectMetadataVersion,
-  rxjsVersion6,
-  rxjsVersion7,
+  rxjsVersion,
+  tsLibVersion,
 } from '../../../utils/versions';
 
 export function addDependencies(tree: Tree): GeneratorCallback {
-  // Old nest 7 and rxjs 6 by default
-  let NEST_VERSION = nestJsVersion7;
-  let RXJS = rxjsVersion6;
-
-  const packageJson = readJson(tree, 'package.json');
-
-  if (packageJson.dependencies['@angular/core']) {
-    let rxjs = packageJson.dependencies['rxjs'];
-
-    if (rxjs.startsWith('~') || rxjs.startsWith('^')) {
-      rxjs = rxjs.substring(1);
-    }
-
-    if (satisfies(rxjs, rxjsVersion7)) {
-      NEST_VERSION = nestJsVersion8;
-      RXJS = packageJson.dependencies['rxjs'];
-    }
-  } else {
-    NEST_VERSION = nestJsVersion8;
-    RXJS = rxjsVersion7;
-  }
-
   return addDependenciesToPackageJson(
     tree,
     {
-      '@nestjs/common': NEST_VERSION,
-      '@nestjs/core': NEST_VERSION,
-      '@nestjs/platform-express': NEST_VERSION,
+      '@nestjs/common': nestJsVersion,
+      '@nestjs/core': nestJsVersion,
+      '@nestjs/platform-express': nestJsVersion,
       'reflect-metadata': reflectMetadataVersion,
+      rxjs: rxjsVersion,
+      tslib: tsLibVersion,
       '@kaufman-bot/bot-in-groups-server': kaufmanBotVersion,
       '@kaufman-bot/core-server': kaufmanBotVersion,
       '@kaufman-bot/debug-messages-server': kaufmanBotVersion,
@@ -59,17 +36,15 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       'nestjs-translates': '^1.0.3',
       grammy: '^1.12.0',
       'nestjs-custom-injector': '^2.2.3',
-      rxjs: RXJS,
-      tslib: '^2.0.0',
     },
     {
-      '@nestjs/schematics': nestJsSchematicsVersion,
-      '@nestjs/testing': NEST_VERSION,
+      '@nestjs/schematics': '9.0.3',
+      '@nestjs/testing': nestJsVersion,
       '@nrwl/nest': nxVersion,
       '@ngneat/transloco-keys-manager': '^3.4.2',
       'source-map-support': '^0.5.21',
       rucken: '^4.4.4',
-      nx: '^13.8.1',
+      nx: nxVersion,
     }
   );
 }

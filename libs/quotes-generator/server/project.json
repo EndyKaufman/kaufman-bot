@@ -1,10 +1,9 @@
 {
-  "root": "libs/quotes-generator/server",
   "sourceRoot": "libs/quotes-generator/server/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/quotes-generator/server",
@@ -27,7 +26,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/quotes-generator/server"],
       "options": {
-        "jestConfig": "libs/quotes-generator/server/jest.config.js",
+        "jestConfig": "libs/quotes-generator/server/jest.config.ts",
         "passWithNoTests": true
       }
     }

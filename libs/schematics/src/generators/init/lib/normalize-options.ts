@@ -2,7 +2,7 @@ import type { InitGeneratorOptions } from '../schema';
 
 export function normalizeOptions(
   options: InitGeneratorOptions
-): InitGeneratorOptions & Pick<Required<InitGeneratorOptions>, 'botName'> {
+): InitGeneratorOptions& Pick<Required<InitGeneratorOptions>, 'botName'> {
   return {
     ...options,
     unitTestRunner: options.unitTestRunner ?? 'jest',

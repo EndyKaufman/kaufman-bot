@@ -22,7 +22,6 @@ export function normalizeOptions(
     appProjectRoot,
     linter: options.linter ?? Linter.EsLint,
     unitTestRunner: options.unitTestRunner ?? 'jest',
-    botName: options.botName,
   };
 }
 

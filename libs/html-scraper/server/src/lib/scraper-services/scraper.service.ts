@@ -12,6 +12,7 @@ import charset from 'charset';
 import cheerio from 'cheerio';
 import { getText } from 'class-validator-multi-lang';
 import encoding from 'encoding';
+import { Context } from 'grammy';
 import htmlToText from 'html-to-text';
 import jschardet from 'jschardet';
 import { render } from 'mustache';
@@ -58,6 +59,7 @@ export class ScraperService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(
     msg: TMsg,
+    ctx: Context,
     loggerContext?: string
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     return await this.onMessage(
@@ -65,6 +67,7 @@ export class ScraperService
         ...msg,
         text: `${this.scraperConfig.name} ${BotCommandsEnum.help}`,
       },
+      ctx,
       loggerContext
     );
   }
@@ -73,6 +76,7 @@ export class ScraperService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(
     msg: TMsg,
+    ctx: Context,
     loggerContext?: string
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale = this.botCommandsToolsService.getLocale(msg, 'en');

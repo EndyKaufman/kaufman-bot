@@ -1,16 +1,17 @@
 {
-  "root": "apps/server",
   "sourceRoot": "apps/server/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:build",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/server",
         "main": "apps/server/src/main.ts",
         "tsConfig": "apps/server/tsconfig.app.json",
-        "assets": ["apps/server/src/assets"]
+        "assets": ["apps/server/src/assets"],
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -27,7 +28,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/node:execute",
+      "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "server:build"
       }
@@ -43,7 +44,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/server"],
       "options": {
-        "jestConfig": "apps/server/jest.config.js",
+        "jestConfig": "apps/server/jest.config.ts",
         "passWithNoTests": true
       }
     }
