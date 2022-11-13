@@ -25,7 +25,7 @@ msgstr "помощь"
 msgid "lang"
 msgstr "язык"
 
-msgid "Language swither"
+msgid "Language switcher"
 msgstr "Переключатель языков"
 
 msgid "locale"

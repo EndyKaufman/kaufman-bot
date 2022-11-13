@@ -5,7 +5,7 @@
   "current": "текущий",
   "help": "помощь",
   "lang": "язык",
-  "Language swither": "Переключатель языков",
+  "Language switcher": "Переключатель языков",
   "locale": "локаль",
   "locale changed, current locale: {{locale}}": "язык изменен, текущий язык: {{locale}}",
   "locale help": "язык помощь",

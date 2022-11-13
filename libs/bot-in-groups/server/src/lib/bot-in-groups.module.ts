@@ -3,7 +3,7 @@ import {
   BotCommandsModule,
   BOT_COMMANDS_PROVIDER,
 } from '@kaufman-bot/core-server';
-import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
+import { LanguageSwitcherModule } from '@kaufman-bot/language-switcher-server';
 import { DynamicModule, Module } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { TranslatesModule } from 'nestjs-translates';
@@ -18,12 +18,12 @@ import { BotInGroupsToolsService } from './bot-in-groups-services/bot-in-groups-
 import { BotInGroupsService } from './bot-in-groups-services/bot-in-groups.service';
 
 @Module({
-  imports: [TranslatesModule, BotCommandsModule, LanguageSwitherModule],
+  imports: [TranslatesModule, BotCommandsModule, LanguageSwitcherModule],
   providers: [BotInGroupsToolsService],
   exports: [
     TranslatesModule,
     BotCommandsModule,
-    LanguageSwitherModule,
+    LanguageSwitcherModule,
     BotInGroupsToolsService,
   ],
 })

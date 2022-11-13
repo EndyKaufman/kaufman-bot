@@ -11,29 +11,29 @@ import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
-  LanguageSwitherConfig,
-  LANGUAGE_SWITHER_CONFIG,
-} from '../language-swither-config/language-swither.config';
-import { LanguageSwitherCommandsEnum } from '../language-swither-types/language-swither-commands';
+  LanguageSwitcherConfig,
+  LANGUAGE_SWITCHER_CONFIG,
+} from '../language-switcher-config/language-switcher.config';
+import { LanguageSwitcherCommandsEnum } from '../language-switcher-types/language-switcher-commands';
 import {
-  LanguageSwitherStorage,
-  LANGUAGE_SWITHER_STORAGE,
-} from './language-swither.storage';
+  LanguageSwitcherStorage,
+  LANGUAGE_SWITCHER_STORAGE,
+} from './language-switcher.storage';
 
 @Injectable()
-export class LanguageSwitherService
+export class LanguageSwitcherService
   implements BotCommandsProvider, OnBeforeBotCommands
 {
-  handlerId = LanguageSwitherService.name;
+  handlerId = LanguageSwitcherService.name;
 
-  private readonly logger = new Logger(LanguageSwitherService.name);
+  private readonly logger = new Logger(LanguageSwitcherService.name);
 
-  @CustomInject(LANGUAGE_SWITHER_STORAGE)
-  private readonly languageSwitherStorage!: LanguageSwitherStorage;
+  @CustomInject(LANGUAGE_SWITCHER_STORAGE)
+  private readonly languageSwitcherStorage!: LanguageSwitcherStorage;
 
   constructor(
-    @Inject(LANGUAGE_SWITHER_CONFIG)
-    private readonly languageSwitherConfig: LanguageSwitherConfig,
+    @Inject(LANGUAGE_SWITCHER_CONFIG)
+    private readonly languageSwitcherConfig: LanguageSwitcherConfig,
     private readonly translatesService: TranslatesService,
     private readonly translatesStorage: TranslatesStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
@@ -42,13 +42,13 @@ export class LanguageSwitherService
   async onBeforeBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<TMsg> {
-    const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
+    const dbLocale = await this.languageSwitcherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
-        await this.languageSwitherStorage.setLanguageOfUser(
+        await this.languageSwitcherStorage.setLanguageOfUser(
           this.botCommandsToolsService.getChatId(msg),
           detectedLocale
         );
@@ -73,7 +73,7 @@ export class LanguageSwitherService
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     return await this.onMessage({
       ...msg,
-      text: `${this.languageSwitherConfig.name} ${BotCommandsEnum.help}`,
+      text: `${this.languageSwitcherConfig.name} ${BotCommandsEnum.help}`,
     });
   }
 
@@ -81,10 +81,10 @@ export class LanguageSwitherService
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
     const locale =
-      (await this.languageSwitherStorage.getLanguageOfUser(
+      (await this.languageSwitcherStorage.getLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg)
       )) || this.botCommandsToolsService.getLocale(msg, 'en');
-    const spyWord = this.languageSwitherConfig.spyWords.find((spyWord) =>
+    const spyWord = this.languageSwitcherConfig.spyWords.find((spyWord) =>
       this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
     );
     if (spyWord) {
@@ -100,10 +100,10 @@ export class LanguageSwitherService
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale,
-            name: this.languageSwitherConfig.title,
-            descriptions: this.languageSwitherConfig.descriptions,
-            usage: this.languageSwitherConfig.usage,
-            category: this.languageSwitherConfig.category,
+            name: this.languageSwitcherConfig.title,
+            descriptions: this.languageSwitcherConfig.descriptions,
+            usage: this.languageSwitcherConfig.usage,
+            category: this.languageSwitcherConfig.category,
           }),
         };
       }
@@ -112,8 +112,8 @@ export class LanguageSwitherService
         msg.text,
         [
           spyWord,
-          ...Object.keys(LanguageSwitherCommandsEnum),
-          ...(this.languageSwitherConfig.removeWords || []),
+          ...Object.keys(LanguageSwitcherCommandsEnum),
+          ...(this.languageSwitcherConfig.removeWords || []),
         ],
         locale
       );
@@ -144,9 +144,9 @@ export class LanguageSwitherService
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [
-          LanguageSwitherCommandsEnum.set,
-          LanguageSwitherCommandsEnum.change,
-          LanguageSwitherCommandsEnum['quick change'],
+          LanguageSwitcherCommandsEnum.set,
+          LanguageSwitcherCommandsEnum.change,
+          LanguageSwitcherCommandsEnum['quick change'],
         ],
         locale
       )
@@ -157,7 +157,7 @@ export class LanguageSwitherService
           .includes(text.trim().toLowerCase())
       ) {
         const currentLocale =
-          (await this.languageSwitherStorage.getLanguageOfUser(
+          (await this.languageSwitcherStorage.getLanguageOfUser(
             this.botCommandsToolsService.getChatId(msg)
           )) || this.botCommandsToolsService.getLocale(msg, 'en');
         return this.translatesService.translate(
@@ -182,7 +182,7 @@ export class LanguageSwitherService
         msg.from.language_code = inputLocale || locale;
       }
 
-      await this.languageSwitherStorage.setLanguageOfUser(
+      await this.languageSwitcherStorage.setLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg),
         inputLocale || locale
       );
@@ -198,7 +198,7 @@ export class LanguageSwitherService
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
-        [LanguageSwitherCommandsEnum.my, LanguageSwitherCommandsEnum.current],
+        [LanguageSwitcherCommandsEnum.my, LanguageSwitcherCommandsEnum.current],
         locale
       )
     ) {

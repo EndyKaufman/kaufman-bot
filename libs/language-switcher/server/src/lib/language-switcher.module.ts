@@ -8,41 +8,41 @@ import { getText } from 'class-validator-multi-lang';
 import { CustomInjectorModule } from 'nestjs-custom-injector';
 import { TranslatesModule } from 'nestjs-translates';
 import {
-  LanguageSwitherConfig,
-  LANGUAGE_SWITHER_CONFIG,
-} from './language-swither-config/language-swither.config';
-import { LanguageSwitherService } from './language-swither-services/language-swither.service';
+  LanguageSwitcherConfig,
+  LANGUAGE_SWITCHER_CONFIG,
+} from './language-switcher-config/language-switcher.config';
+import { LanguageSwitcherService } from './language-switcher-services/language-switcher.service';
 import {
-  LanguageSwitherStorage,
-  LANGUAGE_SWITHER_STORAGE,
-} from './language-swither-services/language-swither.storage';
+  LanguageSwitcherStorage,
+  LANGUAGE_SWITCHER_STORAGE,
+} from './language-switcher-services/language-switcher.storage';
 
 @Module({
   imports: [TranslatesModule, BotCommandsModule],
   providers: [
-    { provide: LANGUAGE_SWITHER_STORAGE, useClass: LanguageSwitherStorage },
-    LanguageSwitherStorage,
+    { provide: LANGUAGE_SWITCHER_STORAGE, useClass: LanguageSwitcherStorage },
+    LanguageSwitcherStorage,
   ],
-  exports: [TranslatesModule, BotCommandsModule, LANGUAGE_SWITHER_STORAGE],
+  exports: [TranslatesModule, BotCommandsModule, LANGUAGE_SWITCHER_STORAGE],
 })
-export class LanguageSwitherModuleCore {}
+export class LanguageSwitcherModuleCore {}
 
 @Module({
-  imports: [LanguageSwitherModuleCore],
-  exports: [LanguageSwitherModuleCore],
+  imports: [LanguageSwitcherModuleCore],
+  exports: [LanguageSwitcherModuleCore],
 })
-export class LanguageSwitherModule {
+export class LanguageSwitcherModule {
   static forRoot(): DynamicModule {
     return {
-      module: LanguageSwitherModule,
+      module: LanguageSwitcherModule,
       imports: [
         CustomInjectorModule.forFeature({
-          imports: [LanguageSwitherModule],
+          imports: [LanguageSwitcherModule],
           providers: [
             {
-              provide: LANGUAGE_SWITHER_CONFIG,
-              useValue: <LanguageSwitherConfig>{
-                title: getText('Language swither'),
+              provide: LANGUAGE_SWITCHER_CONFIG,
+              useValue: <LanguageSwitcherConfig>{
+                title: getText('Language switcher'),
                 name: 'locale',
                 usage: [
                   getText('my locale'),
@@ -64,10 +64,10 @@ export class LanguageSwitherModule {
             },
             {
               provide: BOT_COMMANDS_PROVIDER,
-              useClass: LanguageSwitherService,
+              useClass: LanguageSwitcherService,
             },
           ],
-          exports: [LANGUAGE_SWITHER_CONFIG],
+          exports: [LANGUAGE_SWITCHER_CONFIG],
         }),
       ],
     };

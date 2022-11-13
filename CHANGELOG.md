@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/EndyKaufman/kaufman-bot/compare/v3.2.0...v3.2.1) (2022-11-13)
+
+### Bug Fixes
+
+- fixed errors in class names swither=>switcher ([939df24](https://github.com/EndyKaufman/kaufman-bot/commit/939df244026e98fd2222b52e65c2b27f6dcc201f))
+
 ## [3.2.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.1.2...v3.2.0) (2022-11-10)
 
 ### Features

@@ -1,6 +1,6 @@
-export const LANGUAGE_SWITHER_CONFIG = 'LANGUAGE_SWITHER_CONFIG';
+export const LANGUAGE_SWITCHER_CONFIG = 'LANGUAGE_SWITCHER_CONFIG';
 
-export interface LanguageSwitherConfig {
+export interface LanguageSwitcherConfig {
   title: string;
   name: string;
   descriptions: string;

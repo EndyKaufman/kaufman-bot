@@ -46,14 +46,14 @@
     "more": "ещё",
     "next": "дальше"
   },
-  "language-swither-server": {
+  "language-switcher-server": {
     "change": "измени",
     "change locale to ru": "измени язык на ru",
     "Commands for setting and changing the current user language": "Команды для настройки и изменения текущего языка пользователя",
     "current": "текущий",
     "help": "помощь",
     "lang": "язык",
-    "Language swither": "Переключатель языков",
+    "Language switcher": "Переключатель языков",
     "locale": "локаль",
     "locale changed, current locale: {{locale}}": "язык изменен, текущий язык: {{locale}}",
     "locale help": "язык помощь",
@@ -116,14 +116,14 @@
     "more": "ещё",
     "next": "дальше"
   },
-  "language-swither-server-getText": {
+  "language-switcher-server-getText": {
     "change": "измени",
     "change locale to ru": "измени язык на ru",
     "Commands for setting and changing the current user language": "Команды для настройки и изменения текущего языка пользователя",
     "current": "текущий",
     "help": "помощь",
     "lang": "язык",
-    "Language swither": "Переключатель языков",
+    "Language switcher": "Переключатель языков",
     "locale": "локаль",
     "locale changed, current locale: {{locale}}": "язык изменен, текущий язык: {{locale}}",
     "locale help": "язык помощь",
