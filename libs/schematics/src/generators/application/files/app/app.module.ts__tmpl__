@@ -3,7 +3,7 @@ import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
 import { BotCommandsModule } from '@kaufman-bot/core-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
-import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
+import { LanguageSwitcherModule } from '@kaufman-bot/language-switcher-server';
 import {
   DISABLE_SHORT_COMMANDS__BEFORE_HOOK,
   ShortCommandsModule,
@@ -81,7 +81,7 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
         en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
       },
     }),
-    LanguageSwitherModule.forRoot(),
+    LanguageSwitcherModule.forRoot(),
     FactsGeneratorModule.forRoot(),
   ],
   providers: [AppService],

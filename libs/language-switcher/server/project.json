@@ -1,0 +1,35 @@
+{
+  "sourceRoot": "libs/language-switcher/server/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/language-switcher/server",
+        "tsConfig": "libs/language-switcher/server/tsconfig.lib.json",
+        "packageJson": "libs/language-switcher/server/package.json",
+        "main": "libs/language-switcher/server/src/index.ts",
+        "assets": ["libs/language-switcher/server/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/language-switcher/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/language-switcher/server"],
+      "options": {
+        "jestConfig": "libs/language-switcher/server/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

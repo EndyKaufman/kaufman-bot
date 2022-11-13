@@ -50,8 +50,8 @@ cd ./integrations/app/lib/html-scraper/server && npm pack . && cd ../../../../..
 npx --yes replace-json-property ./integrations/app/lib/jokes-generator/server/package.json version 0.0.0
 cd ./integrations/app/lib/jokes-generator/server && npm pack . && cd ../../../../../
 
-npx --yes replace-json-property ./integrations/app/lib/language-swither/server/package.json version 0.0.0
-cd ./integrations/app/lib/language-swither/server && npm pack . && cd ../../../../../
+npx --yes replace-json-property ./integrations/app/lib/language-switcher/server/package.json version 0.0.0
+cd ./integrations/app/lib/language-switcher/server && npm pack . && cd ../../../../../
 
 npx --yes replace-json-property ./integrations/app/lib/quotes-generator/server/package.json version 0.0.0
 cd ./integrations/app/lib/quotes-generator/server && npm pack . && cd ../../../../../
@@ -69,7 +69,7 @@ npm run nx -- g @kaufman-bot/schematics:application bot --bot-name=Adam
 npm i --force
 npm install --save --no-cache ../../integrations/app/lib/core/server/kaufman-bot-core-server-0.0.0.tgz --force
 npm install --save --no-cache ../../integrations/app/lib/debug-messages/server/kaufman-bot-debug-messages-server-0.0.0.tgz --force
-npm install --save --no-cache ../../integrations/app/lib/language-swither/server/kaufman-bot-language-swither-server-0.0.0.tgz --force
+npm install --save --no-cache ../../integrations/app/lib/language-switcher/server/kaufman-bot-language-switcher-server-0.0.0.tgz --force
 npm install --save --no-cache ../../integrations/app/lib/short-commands/server/kaufman-bot-short-commands-server-0.0.0.tgz --force
 npm install --save --no-cache ../../integrations/app/lib/html-scraper/server/kaufman-bot-html-scraper-server-0.0.0.tgz --force
 npm install --save --no-cache ../../integrations/app/lib/currency-converter/server/kaufman-bot-currency-converter-server-0.0.0.tgz --force

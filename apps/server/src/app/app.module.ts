@@ -20,7 +20,7 @@ import {
   FirstMeetingModule,
 } from '@kaufman-bot/first-meeting-server';
 import { JokesGeneratorModule } from '@kaufman-bot/jokes-generator-server';
-import { LanguageSwitherModule } from '@kaufman-bot/language-swither-server';
+import { LanguageSwitcherModule } from '@kaufman-bot/language-switcher-server';
 import { PrismaClientModule } from '@kaufman-bot/prisma-server';
 import { QuotesGeneratorModule } from '@kaufman-bot/quotes-generator-server';
 import {
@@ -147,7 +147,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       inject: [ShortCommandsToolsService],
     }),
 
-    LanguageSwitherModule.forRoot(),
+    LanguageSwitcherModule.forRoot(),
     CurrencyConverterModule.forRoot(),
     FactsGeneratorModule.forRoot(),
     QuotesGeneratorModule.forRoot(),

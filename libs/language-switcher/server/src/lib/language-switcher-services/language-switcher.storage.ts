@@ -1,11 +1,11 @@
-export const LANGUAGE_SWITHER_STORAGE = 'LANGUAGE_SWITHER_STORAGE';
+export const LANGUAGE_SWITCHER_STORAGE = 'LANGUAGE_SWITCHER_STORAGE';
 
-export type LanguageSwitherStorageProvider = Pick<
-  LanguageSwitherStorage,
+export type LanguageSwitcherStorageProvider = Pick<
+  LanguageSwitcherStorage,
   'getLanguageOfUser' | 'setLanguageOfUser'
 >;
 
-export class LanguageSwitherStorage {
+export class LanguageSwitcherStorage {
   private readonly languageOfUsers: Record<string, string> = {};
 
   async getLanguageOfUser(userId: string): Promise<string | null> {

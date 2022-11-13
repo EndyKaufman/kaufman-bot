@@ -1,6 +1,6 @@
 import { getText } from 'class-validator-multi-lang';
 
-export const LanguageSwitherCommandsEnum = {
+export const LanguageSwitcherCommandsEnum = {
   set: getText('set'),
   change: getText('change'),
   ['quick change']: getText('quick change'),

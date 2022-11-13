@@ -49,8 +49,8 @@
       "@kaufman-bot/jokes-generator-server": [
         "libs/jokes-generator/server/src/index.ts"
       ],
-      "@kaufman-bot/language-swither-server": [
-        "libs/language-swither/server/src/index.ts"
+      "@kaufman-bot/language-switcher-server": [
+        "libs/language-switcher/server/src/index.ts"
       ],
       "@kaufman-bot/prisma-server": ["libs/prisma/server/src/index.ts"],
       "@kaufman-bot/quotes-generator-server": [

@@ -170,7 +170,7 @@ export class ScraperService
           textArrayItem.toUpperCase();
       });
     }
-    const repalcedUri = render(this.scraperConfig.uri, replaceVariables);
+    const replacedUri = render(this.scraperConfig.uri, replaceVariables);
 
     const headers = this.scraperConfig.headers || [
       {
@@ -210,7 +210,7 @@ export class ScraperService
     });
 
     try {
-      const response = await axiosInstance.get(repalcedUri, {
+      const response = await axiosInstance.get(replacedUri, {
         headers: this.botCommandsToolsService.getRandomItem(headers),
       });
       const $ = cheerio.load(String(response.data));
@@ -232,7 +232,7 @@ export class ScraperService
         this.logger.debug(
           JSON.stringify({
             scraperConfig: this.scraperConfig,
-            repalcedUri,
+            replacedUri,
             data: response.data,
             enc,
             selectors: this.scraperConfig.contentSelector,

@@ -5,9 +5,9 @@ import {
   BotCommandsToolsService,
 } from '@kaufman-bot/core-server';
 import {
-  LanguageSwitherStorage,
-  LANGUAGE_SWITHER_STORAGE,
-} from '@kaufman-bot/language-swither-server';
+  LanguageSwitcherStorage,
+  LANGUAGE_SWITCHER_STORAGE,
+} from '@kaufman-bot/language-switcher-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
@@ -22,8 +22,8 @@ import { BotInGroupsToolsService } from './bot-in-groups-tools.service';
 export class BotInGroupsProcessorService {
   private logger = new Logger(BotInGroupsProcessorService.name);
 
-  @CustomInject(LANGUAGE_SWITHER_STORAGE)
-  private readonly languageSwitherStorage!: LanguageSwitherStorage;
+  @CustomInject(LANGUAGE_SWITCHER_STORAGE)
+  private readonly languageSwitcherStorage!: LanguageSwitcherStorage;
 
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
@@ -56,7 +56,7 @@ export class BotInGroupsProcessorService {
       return;
     }
 
-    const dbLocale = await this.languageSwitherStorage.getLanguageOfUser(
+    const dbLocale = await this.languageSwitcherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');

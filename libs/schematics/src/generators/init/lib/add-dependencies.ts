@@ -22,7 +22,7 @@ export function addDependencies(tree: Tree): GeneratorCallback {
       '@kaufman-bot/bot-in-groups-server': kaufmanBotVersion,
       '@kaufman-bot/core-server': kaufmanBotVersion,
       '@kaufman-bot/debug-messages-server': kaufmanBotVersion,
-      '@kaufman-bot/language-swither-server': kaufmanBotVersion,
+      '@kaufman-bot/language-switcher-server': kaufmanBotVersion,
       '@kaufman-bot/short-commands-server': kaufmanBotVersion,
       '@kaufman-bot/html-scraper-server': kaufmanBotVersion,
       '@kaufman-bot/facts-generator-server': kaufmanBotVersion,

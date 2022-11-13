@@ -1,10 +1,10 @@
-import { LanguageSwitherStorageProvider } from '@kaufman-bot/language-swither-server';
+import { LanguageSwitcherStorageProvider } from '@kaufman-bot/language-switcher-server';
 import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class PrismaLanguageSwitherStorage
-  implements LanguageSwitherStorageProvider
+export class PrismaLanguageSwitcherStorage
+  implements LanguageSwitcherStorageProvider
 {
   private readonly languageOfUsers: Record<string, string> = {};
 

@@ -24,8 +24,8 @@ msgstr "help"
 msgid "lang"
 msgstr "lang"
 
-msgid "Language swither"
-msgstr "Language swither"
+msgid "Language switcher"
+msgstr "Language switcher"
 
 msgid "locale"
 msgstr "locale"
