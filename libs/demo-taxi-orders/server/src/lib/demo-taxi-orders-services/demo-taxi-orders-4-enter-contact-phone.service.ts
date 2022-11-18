@@ -25,14 +25,13 @@ export class DemoTaxiOrders4EnterContactPhoneService {
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const renderedData =
       msg.callbackQueryData === NavigationButtons.Prev
-        ? this.demoTaxiOrdersRenderService.render(locale, {
+        ? this.demoTaxiOrdersRenderService.render(msg.locale, {
             ...msg.context,
             currentStep: DemoTaxiOrdersSteps.CountOfPassengers,
           })
-        : this.demoTaxiOrdersRenderService.render(locale, {
+        : this.demoTaxiOrdersRenderService.render(msg.locale, {
             ...msg.context,
             currentStep: DemoTaxiOrdersSteps.Complete,
             contact: msg.contact,
@@ -44,7 +43,7 @@ export class DemoTaxiOrders4EnterContactPhoneService {
         await ctx.api.editMessageText(
           this.botCommandsToolsService.getChatId(msg),
           +renderedData.context.stateMessageId,
-          this.demoTaxiOrdersRenderService.render(locale, {
+          this.demoTaxiOrdersRenderService.render(msg.locale, {
             currentStep: DemoTaxiOrdersSteps.ContactPhone,
           }).text,
           {}

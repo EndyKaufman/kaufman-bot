@@ -3,6 +3,7 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsService,
   BotCommandsToolsService,
+  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import {
   LanguageSwitcherStorage,
@@ -38,12 +39,13 @@ export class BotInGroupsProcessorService {
       return await this.botCommandsService.process(ctx, defaultHandler);
     }
 
-    let msg: BotCommandsProviderActionMsg = ctx.message!;
+    let msg = ctx.message! as BotCommandsProviderActionMsg;
     if (!msg && ctx.callbackQuery) {
       msg = {
         message: ctx.message,
         callbackQueryData: ctx.callbackQuery.data,
         ...ctx.callbackQuery.message!,
+        locale: DEFAULT_LOCALE,
       };
     }
 
@@ -59,7 +61,10 @@ export class BotInGroupsProcessorService {
     const dbLocale = await this.languageSwitcherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
-    const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');
+    const detectedLocale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LOCALE
+    );
     const locale = dbLocale || detectedLocale;
 
     const botName = this.botInGroupsConfig.botNames[locale][0];

@@ -46,24 +46,22 @@ export class <%= className %>Service implements BotCommandsProvider {
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
     const spyWord = this.<%= propertyName %>Config.spyWords.find((spyWord) =>
-      this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
+      this.commandToolsService.checkCommands(msg.text, [spyWord], msg.locale)
     );
     if (spyWord) {
       if (
         this.commandToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.commandToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.<%= propertyName %>Config.title,
             descriptions: this.<%= propertyName %>Config.descriptions,
             usage: this.<%= propertyName %>Config.usage,
@@ -72,7 +70,7 @@ export class <%= className %>Service implements BotCommandsProvider {
         };
       }
 
-      const processedMsg = await this.process(msg, locale);
+      const processedMsg = await this.process(msg);
 
       if (typeof processedMsg === 'string') {
         return {
@@ -93,17 +91,17 @@ export class <%= className %>Service implements BotCommandsProvider {
 
   private async process<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, locale: string) {
+  >(msg: TMsg) {
     if (
       this.commandToolsService.checkCommands(
         msg.text,
         [getText('ping')],
-        locale
+        msg.locale
       )
     ) {
       return this.translatesService.translate(
           getText('pong'),
-          locale
+          msg.locale
       );
     }
     return null;

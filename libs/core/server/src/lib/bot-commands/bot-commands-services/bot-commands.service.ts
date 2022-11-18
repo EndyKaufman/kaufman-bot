@@ -7,7 +7,10 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import { DEFAULT_MAX_RECURSIVE_DEPTH } from '../bot-commands-constants/bot-commands.constants';
+import {
+  DEFAULT_LOCALE,
+  DEFAULT_MAX_RECURSIVE_DEPTH,
+} from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
@@ -26,9 +29,7 @@ import { OnContextBotCommands } from '../bot-commands-types/on-context-bot-comma
 import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()
-export class BotCommandsService implements BotCommandsProvider {
-  handlerId = BotCommandsService.name;
-
+export class BotCommandsService {
   private logger = new Logger(BotCommandsService.name);
 
   @CustomInject(BOT_COMMANDS_STORAGE)
@@ -65,12 +66,14 @@ export class BotCommandsService implements BotCommandsProvider {
   }
 
   async process(ctx: Context, defaultHandler?: () => Promise<unknown>) {
-    let msg: BotCommandsProviderActionMsg = ctx.message!;
+    let msg: BotCommandsProviderActionMsg =
+      ctx.message! as BotCommandsProviderActionMsg;
     if (!msg && ctx.callbackQuery) {
       msg = {
         message: ctx.message,
         ...ctx.callbackQuery.message!,
         callbackQueryData: ctx.callbackQuery.data,
+        locale: DEFAULT_LOCALE,
       };
     }
     if (!msg) {
@@ -99,7 +102,7 @@ export class BotCommandsService implements BotCommandsProvider {
         (this.botCommandsConfig?.maxRecursiveDepth ||
           DEFAULT_MAX_RECURSIVE_DEPTH)
     ) {
-      const result = await this.onMessage(msg, ctx, defaultHandler);
+      const result = await this.processHooks(msg, ctx, defaultHandler);
 
       if (result?.type === 'message') {
         msg = result.message;
@@ -159,7 +162,7 @@ export class BotCommandsService implements BotCommandsProvider {
     }
   }
 
-  async onHelp<TMsg extends BotCommandsProviderActionMsg>(
+  private async processHelpHook<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
     ctx: BotCommandsProviderActionContext
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
@@ -198,18 +201,23 @@ export class BotCommandsService implements BotCommandsProvider {
     };
   }
 
-  async onMessage<TMsg extends BotCommandsProviderActionMsg>(
+  private async processHooks<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
     ctx: BotCommandsProviderActionContext,
     defaultHandler?: () => Promise<unknown>
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     let result: BotCommandsProviderActionResultType<TMsg> = null;
+    let locale = this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    msg.locale = locale;
 
-    await this.checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplaedNumericState<TMsg>(
+    await this.checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplayNumericState<TMsg>(
       msg
     );
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
+
+    locale = this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    msg.locale = locale;
 
     if (!msg?.handlerStop) {
       result = await this.processOnMessage(result, msg, ctx);
@@ -231,7 +239,7 @@ export class BotCommandsService implements BotCommandsProvider {
         msg.from?.language_code
       )
     ) {
-      return this.onHelp(msg, ctx);
+      return this.processHelpHook(msg, ctx);
     }
 
     if (
@@ -249,7 +257,7 @@ export class BotCommandsService implements BotCommandsProvider {
           this.botCommandsToolsService.getRandomItem(
             this.botCommandsConfig.botMeetingInformation
               ? this.botCommandsConfig.botMeetingInformation[
-                  msg.from?.language_code || 'en'
+                  msg.from?.language_code || DEFAULT_LOCALE
                 ]
               : [
                   getText(`Hello! I'm Robot 😉`),
@@ -275,7 +283,7 @@ export class BotCommandsService implements BotCommandsProvider {
     return afterBotCommand.result;
   }
 
-  private async checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplaedNumericState<
+  private async checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplayNumericState<
     TMsg extends BotCommandsProviderActionMsg
   >(msg: TMsg) {
     const chatId = this.botCommandsToolsService.getChatId(msg);
@@ -312,7 +320,7 @@ export class BotCommandsService implements BotCommandsProvider {
     }
   }
 
-  async processOnBeforeBotCommands<TMsg extends BotCommandsProviderActionMsg>(
+  private async processOnBeforeBotCommands<TMsg extends BotCommandsProviderActionMsg>(
     msg: TMsg,
     ctx?: BotCommandsProviderActionContext
   ): Promise<TMsg> {
@@ -333,7 +341,7 @@ export class BotCommandsService implements BotCommandsProvider {
     return msg;
   }
 
-  async processOnAfterBotCommands<TMsg extends BotCommandsProviderActionMsg>(
+  private async processOnAfterBotCommands<TMsg extends BotCommandsProviderActionMsg>(
     result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg,
     ctx?: BotCommandsProviderActionContext,

@@ -4,6 +4,7 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
+  DEFAULT_LOCALE,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -41,7 +42,7 @@ export class ShortCommandsService
     }
     if (msg?.text) {
       msg.text = this.shortCommandsToolsService.updateTextWithShortCommands(
-        this.botCommandsToolsService.getLocale(msg, 'en'),
+        msg.locale,
         msg.text
       );
     }
@@ -60,24 +61,24 @@ export class ShortCommandsService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    const spyWord = this.shortCommandsConfig.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
-    if (spyWord) {
+    if (
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.shortCommandsConfig.spyWords,
+      })
+    ) {
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.shortCommandsConfig.title,
             descriptions: this.shortCommandsConfig.descriptions,
             usage: this.shortCommandsConfig.usage,
@@ -90,28 +91,29 @@ export class ShortCommandsService
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.state],
-          locale
+          msg.locale
         )
       ) {
         const detectedLang =
           Object.keys(this.shortCommandsConfig.commands).filter(
             (langCode) =>
-              this.shortCommandsConfig.commands[langCode] && langCode === locale
-          )[0] || 'en';
+              this.shortCommandsConfig.commands[langCode] &&
+              langCode === msg.locale
+          )[0] || DEFAULT_LOCALE;
         const commands = this.shortCommandsConfig.commands[detectedLang] || {};
         const aliases = Object.keys(commands);
 
         const markdown = [
           `__${this.translatesService.translate(
             getText('List of short commands:'),
-            locale
+            msg.locale
           )}__`,
           ...aliases.map((alias) =>
-            locale
+            msg.locale
               ? [
                   `${this.translatesService.translate(
                     getText('aliases'),
-                    locale
+                    msg.locale
                   )}: ${alias
                     .split('|')
                     .map(
@@ -121,7 +123,7 @@ export class ShortCommandsService
                     .join(', ')}`,
                   `${this.translatesService.translate(
                     getText('command'),
-                    locale
+                    msg.locale
                   )}: _${this.botCommandsToolsService.prepareHelpString(
                     commands[alias]
                   )}_\n`,

@@ -30,7 +30,6 @@ export class AskGenderStepContextService {
   async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx: Context }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
@@ -43,11 +42,11 @@ export class AskGenderStepContextService {
               state.messagesMetadata.AskGenderResponse.text
             } (${this.translatesService.translate(
               getText('Your answer'),
-              locale
+              msg.locale
             )}: ${this.translatesService.translate(
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               state.gender!,
-              locale
+              msg.locale
             )})`
           : state.messagesMetadata.AskGenderResponse
       );
@@ -86,13 +85,11 @@ export class AskGenderStepContextService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
     const text = this.translatesService.translate(
       getText(`What is your gender?`),
-      locale
+      msg.locale
     );
-    const lastname = this.commonService.prepareText(msg.text || '', locale);
+    const lastname = this.commonService.prepareText(msg.text || '', msg.locale);
 
     return {
       type: 'text',
@@ -106,15 +103,18 @@ export class AskGenderStepContextService {
       custom: {
         reply_markup: new InlineKeyboard()
           .text(
-            '🚹' + this.translatesService.translate(getText('Male'), locale),
+            '🚹' +
+              this.translatesService.translate(getText('Male'), msg.locale),
             'male'
           )
           .text(
-            '🚺' + this.translatesService.translate(getText('Female'), locale),
+            '🚺' +
+              this.translatesService.translate(getText('Female'), msg.locale),
             'female'
           )
           .text(
-            '❌' + this.translatesService.translate(getText('Cancel'), locale),
+            '❌' +
+              this.translatesService.translate(getText('Cancel'), msg.locale),
             'exit'
           ),
       },

@@ -37,14 +37,13 @@ export class AskFirstnameStepService {
   async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx: Context }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
     const firstname =
       (msg.text &&
         !msg.callbackQueryData &&
-        this.commonService.prepareText(msg.text, locale)) ||
+        this.commonService.prepareText(msg.text, msg.locale)) ||
       'Unknown';
 
     if (state?.messagesMetadata?.AskFirstnameResponse) {
@@ -56,7 +55,7 @@ export class AskFirstnameStepService {
               state.messagesMetadata.AskFirstnameResponse.text
             } (${this.translatesService.translate(
               getText('Your answer'),
-              locale
+              msg.locale
             )}: ${firstname})`
           : state.messagesMetadata.AskFirstnameResponse
       );
@@ -66,17 +65,19 @@ export class AskFirstnameStepService {
   async is<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
     return (
-      this.commonService.checkSpyWords({ msg }) &&
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.config.spyWords,
+      }) &&
       !state &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [BotCommandsEnum.start],
-        locale
+        msg.locale
       )
     );
   }
@@ -84,8 +85,7 @@ export class AskFirstnameStepService {
   async do<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const text = this.getHelloText(locale);
+    const text = this.getHelloText(msg.locale);
     await this.storage.pathState({
       userId: this.botCommandsToolsService.getChatId(msg),
       state: {
@@ -119,8 +119,7 @@ export class AskFirstnameStepService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const text = this.getHelloText(locale);
+    const text = this.getHelloText(msg.locale);
     return {
       type: 'text',
       text,
@@ -129,11 +128,13 @@ export class AskFirstnameStepService {
       custom: {
         reply_markup: new InlineKeyboard()
           .text(
-            '➡️' + this.translatesService.translate(getText('Next'), locale),
+            '➡️' +
+              this.translatesService.translate(getText('Next'), msg.locale),
             'next'
           )
           .text(
-            '❌' + this.translatesService.translate(getText('Cancel'), locale),
+            '❌' +
+              this.translatesService.translate(getText('Cancel'), msg.locale),
             'exit'
           ),
       },

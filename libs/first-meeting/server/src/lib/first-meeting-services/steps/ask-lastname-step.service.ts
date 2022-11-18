@@ -30,14 +30,13 @@ export class AskLastnameStepContextService {
   async editMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg, ctx }: { msg: TMsg; ctx: Context }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
     const lastname =
       (msg.text &&
         !msg.callbackQueryData &&
-        this.commonService.prepareText(msg.text, locale)) ||
+        this.commonService.prepareText(msg.text, msg.locale)) ||
       'Unknown';
     if (state?.messagesMetadata?.AskLastnameResponse) {
       await ctx.api.editMessageText(
@@ -48,7 +47,7 @@ export class AskLastnameStepContextService {
               state.messagesMetadata.AskLastnameResponse.text
             } (${this.translatesService.translate(
               getText('Your answer'),
-              locale
+              msg.locale
             )}: ${lastname})`
           : state.messagesMetadata.AskLastnameResponse
       );
@@ -87,16 +86,14 @@ export class AskLastnameStepContextService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
     const text = this.translatesService.translate(
       getText(`What is your last name?`),
-      locale
+      msg.locale
     );
     const firstname =
       (msg.text &&
         !msg.callbackQueryData &&
-        this.commonService.prepareText(msg.text, locale)) ||
+        this.commonService.prepareText(msg.text, msg.locale)) ||
       'Unknown';
 
     return {
@@ -111,11 +108,13 @@ export class AskLastnameStepContextService {
       custom: {
         reply_markup: new InlineKeyboard()
           .text(
-            '➡️' + this.translatesService.translate(getText('Next'), locale),
+            '➡️' +
+              this.translatesService.translate(getText('Next'), msg.locale),
             'next'
           )
           .text(
-            '❌' + this.translatesService.translate(getText('Cancel'), locale),
+            '❌' +
+              this.translatesService.translate(getText('Cancel'), msg.locale),
             'exit'
           ),
       },

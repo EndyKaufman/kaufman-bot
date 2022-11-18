@@ -31,16 +31,15 @@ export class DemoTaxiOrders5CompleteService {
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const renderedData =
       msg.callbackQueryData === NavigationButtons.Prev
-        ? this.demoTaxiOrdersRenderService.render(locale, {
+        ? this.demoTaxiOrdersRenderService.render(msg.locale, {
             ...msg.context,
             stateMessageId:
               this.botCommandsToolsService.getContextMessageId(msg),
             currentStep: DemoTaxiOrdersSteps.ContactPhone,
           })
-        : this.demoTaxiOrdersRenderService.render(locale, {
+        : this.demoTaxiOrdersRenderService.render(msg.locale, {
             ...msg.context,
             currentStep: DemoTaxiOrdersSteps.End,
           });

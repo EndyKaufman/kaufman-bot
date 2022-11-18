@@ -3,9 +3,10 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
+import { DEFAULT_LOCALE } from '../bot-commands-constants/bot-commands.constants';
+import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import { BotCommandsProvider } from '../bot-commands-types/bot-commands-provider.interface';
-import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsToolsService } from './bot-commands-tools.service';
 
 @Injectable()
@@ -31,7 +32,7 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
       this.botCommandsToolsService.checkCommands(
         msg.text,
         ['botinfo', 'bot', 'info'],
-        'en'
+        DEFAULT_LOCALE
       )
     ) {
       if (

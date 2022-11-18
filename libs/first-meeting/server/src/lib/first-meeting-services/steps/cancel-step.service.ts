@@ -25,7 +25,6 @@ export class CancelStepContextService {
   ) {}
 
   async is({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return (
       this.commonService.isContextProcess({ msg }) &&
       this.botCommandsToolsService.checkCommands(
@@ -37,7 +36,7 @@ export class CancelStepContextService {
           getText('stop'),
           getText('end'),
         ],
-        locale
+        msg.locale
       )
     );
   }
@@ -62,12 +61,11 @@ export class CancelStepContextService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return {
       type: 'text',
       text: this.translatesService.translate(
         getText(`{{close}} Meeting canceled`),
-        locale,
+        msg.locale,
         { close: '❌' }
       ),
       message: msg,

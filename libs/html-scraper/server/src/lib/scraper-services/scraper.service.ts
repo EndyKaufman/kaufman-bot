@@ -38,12 +38,11 @@ export class ScraperService
   async onContextBotCommands<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [getText('more'), getText('next')],
-        locale
+        msg.locale
       )
     ) {
       msg.text = `${BotCommandsEnum.get} ${this.scraperConfig.name}`;
@@ -79,26 +78,26 @@ export class ScraperService
     ctx: Context,
     loggerContext?: string
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    const spyWord = this.scraperConfig.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
+    const spyWord = this.botCommandsToolsService.checkSpyWords({
+      msg,
+      spyWords: this.scraperConfig.spyWords,
+    });
     if (spyWord) {
-      if (!locale) {
+      if (!msg.locale) {
         throw new Error(`locale not set`);
       }
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.scraperConfig.title,
             contextUsage: this.scraperConfig.contextUsage,
             descriptions: this.scraperConfig.descriptions,
@@ -115,10 +114,10 @@ export class ScraperService
           BotCommandsEnum.help,
           ...(this.scraperConfig.removeWords || []),
         ],
-        locale
+        msg.locale
       );
       const replayMessage = await this.scrap(
-        locale,
+        msg.locale,
         preparedText,
         loggerContext
       );

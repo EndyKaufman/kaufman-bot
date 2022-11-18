@@ -9,30 +9,37 @@ import { getText } from 'class-validator-multi-lang';
 import { CustomInject } from 'nestjs-custom-injector';
 import { TranslatesService } from 'nestjs-translates';
 import {
+  FirstMeetingConfig,
+  FIRST_MEETING_CONFIG,
+} from '../../first-meeting-config/first-meeting.config';
+import {
   FirstMeetingStorage,
   FIRST_MEETING_STORAGE,
 } from '../first-meeting.storage';
-import { CommonService } from './common.service';
 
 @Injectable()
 export class ResetStepService {
   @CustomInject(FIRST_MEETING_STORAGE)
   private readonly storage!: FirstMeetingStorage;
 
+  @CustomInject(FIRST_MEETING_CONFIG)
+  private readonly config!: FirstMeetingConfig;
+
   constructor(
-    private readonly commonService: CommonService,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly translatesService: TranslatesService
   ) {}
 
   async is({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return (
-      this.commonService.checkSpyWords({ msg }) &&
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.config.spyWords,
+      }) &&
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [BotCommandsEnum.reset],
-        locale
+        msg.locale
       )
     );
   }
@@ -50,7 +57,6 @@ export class ResetStepService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return {
       type: 'text',
       text: this.translatesService.translate(
@@ -58,7 +64,7 @@ export class ResetStepService {
           getText('Your meeting information has been deleted {{unamused}}'),
           getText('I forgot about your existence {{worried}}'),
         ]),
-        locale,
+        msg.locale,
         {
           unamused: '😒',
           worried: '😟',
