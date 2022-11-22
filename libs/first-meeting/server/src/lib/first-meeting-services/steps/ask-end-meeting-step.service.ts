@@ -42,7 +42,6 @@ export class EndMeetingStepContextService {
 
   async do({ msg }: { msg: BotCommandsProviderActionMsg }) {
     const context: Partial<FirstMeeting> = msg.context!;
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const text = msg.callbackQueryData || msg.text;
     const state: Partial<FirstMeeting> = {
       ...context,
@@ -50,9 +49,9 @@ export class EndMeetingStepContextService {
       gender:
         text &&
         this.botCommandsToolsService.checkCommands(
-          this.commonService.prepareText(text, locale),
+          this.commonService.prepareText(text, msg.locale),
           [getText('female'), getText('fm'), getText('f')],
-          locale
+          msg.locale
         )
           ? 'Female'
           : 'Male',
@@ -71,7 +70,6 @@ export class EndMeetingStepContextService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
@@ -87,18 +85,21 @@ export class EndMeetingStepContextService {
           ),
           getText(`Nice to meet you, {{firstname}} {{vulcan}}`),
         ]),
-        locale,
+        msg.locale,
         {
           vulcan: '🖖',
           ...state,
-          meetGender: this.commonService.mapGenderToMeetGender(state, locale),
+          meetGender: this.commonService.mapGenderToMeetGender(
+            state,
+            msg.locale
+          ),
           firstname: this.botCommandsToolsService.capitalizeFirstLetter(
             state.firstname,
-            locale
+            msg.locale
           ),
           lastname: this.botCommandsToolsService.capitalizeFirstLetter(
             state.lastname,
-            locale
+            msg.locale
           ),
         }
       ),

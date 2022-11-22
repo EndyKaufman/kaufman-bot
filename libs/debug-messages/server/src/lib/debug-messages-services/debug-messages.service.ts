@@ -88,24 +88,24 @@ export class DebugMessagesService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    const spyWord = this.debugMessagesConfig.spyWords.find((spyWord) =>
-      this.commandToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
-    if (spyWord) {
+    if (
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.debugMessagesConfig.spyWords,
+      })
+    ) {
       if (
         this.commandToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.commandToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.debugMessagesConfig.title,
             descriptions: this.debugMessagesConfig.descriptions,
             usage: this.debugMessagesConfig.usage,
@@ -114,7 +114,7 @@ export class DebugMessagesService
         };
       }
 
-      const processedMsg = await this.process(msg, locale);
+      const processedMsg = await this.process(msg);
 
       if (typeof processedMsg === 'string') {
         return {
@@ -135,7 +135,7 @@ export class DebugMessagesService
 
   private async process<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, locale: string) {
+  >(msg: TMsg) {
     const debugMode = await this.debugMessagesStorage.getDebugModeOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
@@ -143,7 +143,7 @@ export class DebugMessagesService
       this.commandToolsService.checkCommands(
         msg.text,
         [DebugMessagesCommandsEnum.on],
-        locale
+        msg.locale
       )
     ) {
       if (!debugMode) {
@@ -153,17 +153,17 @@ export class DebugMessagesService
         );
         return this.translatesService.translate(
           getText(`debug enabled`),
-          locale,
+          msg.locale,
           {
-            locale,
+            locale: msg.locale,
           }
         );
       } else {
         return this.translatesService.translate(
           getText(`debug already enabled`),
-          locale,
+          msg.locale,
           {
-            locale,
+            locale: msg.locale,
           }
         );
       }
@@ -172,7 +172,7 @@ export class DebugMessagesService
       this.commandToolsService.checkCommands(
         msg.text,
         [DebugMessagesCommandsEnum.off],
-        locale
+        msg.locale
       )
     ) {
       if (debugMode) {
@@ -182,17 +182,17 @@ export class DebugMessagesService
         );
         return this.translatesService.translate(
           getText(`debug disabled`),
-          locale,
+          msg.locale,
           {
-            locale,
+            locale: msg.locale,
           }
         );
       } else {
         return this.translatesService.translate(
           getText(`debug already disabled`),
-          locale,
+          msg.locale,
           {
-            locale,
+            locale: msg.locale,
           }
         );
       }
@@ -201,16 +201,16 @@ export class DebugMessagesService
       this.commandToolsService.checkCommands(
         msg.text,
         [BotCommandsEnum.state],
-        locale
+        msg.locale
       )
     ) {
       return this.translatesService.translate(
         getText(`debug: {{debugMode}}`),
-        locale,
+        msg.locale,
         {
           debugMode: debugMode
-            ? this.translatesService.translate(getText('enabled'), locale)
-            : this.translatesService.translate(getText('disabled'), locale),
+            ? this.translatesService.translate(getText('enabled'), msg.locale)
+            : this.translatesService.translate(getText('disabled'), msg.locale),
         }
       );
     }

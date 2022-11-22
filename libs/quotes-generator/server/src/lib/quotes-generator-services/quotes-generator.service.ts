@@ -47,13 +47,11 @@ export class QuotesGeneratorService
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [...Object.keys(BotCommandsEnum)],
-        locale
+        msg.locale
       )
     ) {
       const result = await this.scraperService.onMessage(

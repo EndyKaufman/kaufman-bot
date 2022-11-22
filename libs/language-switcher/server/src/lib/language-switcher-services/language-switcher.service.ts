@@ -4,6 +4,7 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
+  DEFAULT_LOCALE,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -45,7 +46,10 @@ export class LanguageSwitcherService
     const dbLocale = await this.languageSwitcherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
-    const detectedLocale = this.botCommandsToolsService.getLocale(msg, 'en');
+    const detectedLocale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LOCALE
+    );
     if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
         await this.languageSwitcherStorage.setLanguageOfUser(
@@ -83,10 +87,11 @@ export class LanguageSwitcherService
     const locale =
       (await this.languageSwitcherStorage.getLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg)
-      )) || this.botCommandsToolsService.getLocale(msg, 'en');
-    const spyWord = this.languageSwitcherConfig.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
+      )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    const spyWord = this.botCommandsToolsService.checkSpyWords({
+      msg,
+      spyWords: this.languageSwitcherConfig.spyWords,
+    });
     if (spyWord) {
       if (
         this.botCommandsToolsService.checkCommands(
@@ -159,7 +164,7 @@ export class LanguageSwitcherService
         const currentLocale =
           (await this.languageSwitcherStorage.getLanguageOfUser(
             this.botCommandsToolsService.getChatId(msg)
-          )) || this.botCommandsToolsService.getLocale(msg, 'en');
+          )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
         return this.translatesService.translate(
           getText(
             `locale "{{locale}}" not founded, current locale: "{{currentLocale}}"`

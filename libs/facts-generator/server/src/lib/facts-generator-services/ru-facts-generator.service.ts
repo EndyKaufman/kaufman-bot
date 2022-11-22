@@ -36,9 +36,7 @@ export class RuFactsGeneratorService
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx: Context) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    if (!locale?.includes(RUSSIAN_LANGUAGE)) {
+    if (!msg.locale.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
     return await this.scraperService.onHelp(
@@ -54,16 +52,14 @@ export class RuFactsGeneratorService
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    if (!locale?.includes(RUSSIAN_LANGUAGE)) {
+    if (!msg.locale.includes(RUSSIAN_LANGUAGE)) {
       return null;
     }
     if (
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [...Object.keys(BotCommandsEnum)],
-        locale
+        msg.locale
       )
     ) {
       const result = await this.scraperService.onMessage(

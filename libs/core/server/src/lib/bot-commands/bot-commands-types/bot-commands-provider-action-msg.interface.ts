@@ -15,4 +15,6 @@ export type BotCommandsProviderActionMsg<
     context?: TLocalContext;
     message?: Message;
     callbackQueryData?: string;
-  }>;
+  }> & {
+    locale: string;
+  };

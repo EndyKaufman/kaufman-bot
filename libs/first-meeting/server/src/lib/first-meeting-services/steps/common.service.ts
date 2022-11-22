@@ -66,24 +66,16 @@ export class CommonService {
 
   isContextProcess({ msg }: { msg: BotCommandsProviderActionMsg }) {
     const context: Partial<FirstMeeting> = msg.context!;
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     return (
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [this.config.name],
-        locale
+        msg.locale
       ) || Object.keys(context).length > 0
     );
   }
 
   async isDisable({ msg }: { msg: BotCommandsProviderActionMsg }) {
     return msg?.globalContext?.[DISABLE_FIRST_MEETING_COMMANDS];
-  }
-
-  checkSpyWords({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    return this.config.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
   }
 }

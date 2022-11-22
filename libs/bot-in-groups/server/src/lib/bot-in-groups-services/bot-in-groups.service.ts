@@ -35,18 +35,17 @@ export class BotInGroupsService
     if (!this.botCommandsToolsService.isGroupMessage(msg)) {
       return msg;
     }
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     if (!this.botCommandsToolsService.isMineMessage(msg)) {
       if (
         this.botInGroupsToolsService.checkPartialContainBotNamesInMessage(
           msg.text,
-          locale
+          msg.locale
         )
       ) {
         msg.text = msg.text
           ? this.botInGroupsToolsService.removePartialAllBotNamesFormMessage(
               msg.text,
-              locale
+              msg.locale
             )
           : undefined;
         if (
@@ -67,10 +66,7 @@ export class BotInGroupsService
     if (
       msg.start ||
       this.botCommandsToolsService.checkCommands(
-        this.botInGroupsToolsService.removeAllBotNamesFormMessage<TMsg>(
-          msg,
-          locale
-        ),
+        this.botInGroupsToolsService.removeAllBotNamesFormMessage<TMsg>(msg),
         [BotCommandsEnum.start]
       )
     ) {
@@ -94,24 +90,24 @@ export class BotInGroupsService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    const spyWord = this.botInGroupsConfig.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
-    if (spyWord) {
+    if (
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.botInGroupsConfig.spyWords,
+      })
+    ) {
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.botInGroupsConfig.title,
             descriptions: this.botInGroupsConfig.descriptions,
             usage: this.botInGroupsConfig.usage,
@@ -123,7 +119,7 @@ export class BotInGroupsService
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.meet],
-          locale
+          msg.locale
         )
       ) {
         return {
@@ -132,7 +128,7 @@ export class BotInGroupsService
           markdown: this.botCommandsToolsService.prepareHelpString(
             this.botCommandsToolsService.getRandomItem(
               this.botInGroupsConfig.botMeetingInformation
-                ? this.botInGroupsConfig.botMeetingInformation[locale]
+                ? this.botInGroupsConfig.botMeetingInformation[msg.locale]
                 : [
                     getText(`Hello! I'm Robot 😉`),
                     getText('Hello!'),

@@ -27,7 +27,6 @@ export class HelloStepService {
   async is<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >({ msg }: { msg: TMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
@@ -36,7 +35,7 @@ export class HelloStepService {
       this.botCommandsToolsService.checkCommands(
         msg.text,
         [getText('hi'), getText('hello'), getText('hey')],
-        locale
+        msg.locale
       )
     );
   }
@@ -48,7 +47,6 @@ export class HelloStepService {
   }: {
     msg: TMsg;
   }): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
     const state = await this.storage.getState(
       this.botCommandsToolsService.getChatId(msg)
     );
@@ -67,20 +65,23 @@ export class HelloStepService {
             getText(`I'm glad to see you {{firstname}} {{wink}}`),
             getText(`Hi {{firstname}} {{vulcan}}`),
           ]),
-          locale,
+          msg.locale,
           {
             vulcan: '🖖',
             handsplayed: '🖐',
             wink: '😉',
             ...state,
-            meetGender: this.commonService.mapGenderToMeetGender(state, locale),
+            meetGender: this.commonService.mapGenderToMeetGender(
+              state,
+              msg.locale
+            ),
             firstname: this.botCommandsToolsService.capitalizeFirstLetter(
               state.firstname,
-              locale
+              msg.locale
             ),
             lastname: this.botCommandsToolsService.capitalizeFirstLetter(
               state.lastname,
-              locale
+              msg.locale
             ),
           }
         )

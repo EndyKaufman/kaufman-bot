@@ -96,24 +96,23 @@ export class DialogflowService
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
-    const spyWord = this.dialogflowConfig.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
+    const spyWord = this.botCommandsToolsService.checkSpyWords({
+      msg,
+      spyWords: this.dialogflowConfig.spyWords,
+    });
     if (spyWord) {
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.dialogflowConfig.title,
             descriptions: this.dialogflowConfig.descriptions,
             usage: this.dialogflowConfig.usage,
@@ -125,10 +124,10 @@ export class DialogflowService
         const preparedText = this.botCommandsToolsService.clearCommands(
           msg.text,
           [spyWord],
-          locale
+          msg.locale
         );
 
-        const processedMsg = await this.process(msg, ctx, locale, preparedText);
+        const processedMsg = await this.process(msg, ctx, preparedText);
 
         if (typeof processedMsg === 'string') {
           return {
@@ -150,7 +149,7 @@ export class DialogflowService
 
   private async process<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, ctx, locale: string, text: string) {
+  >(msg: TMsg, ctx: Context, text: string) {
     const ts = +new Date();
     const current = await this.dialogflowStorage.getUserSession({
       userId: this.botCommandsToolsService.getChatId(msg),
@@ -168,7 +167,7 @@ export class DialogflowService
       queryInput: {
         text: {
           text: text,
-          languageCode: locale,
+          languageCode: msg.locale,
         },
       },
     };

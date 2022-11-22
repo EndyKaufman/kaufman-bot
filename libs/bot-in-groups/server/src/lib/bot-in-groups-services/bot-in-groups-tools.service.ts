@@ -1,6 +1,7 @@
 import {
   BotCommandsProviderActionMsg,
   BotCommandsToolsService,
+  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
 import {
@@ -18,14 +19,14 @@ export class BotInGroupsToolsService {
 
   removeAllBotNamesFormMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
-  >(msg: TMsg, locale: string): string | undefined {
+  >(msg: TMsg): string | undefined {
     return this.botCommandsToolsService.clearCommands(
       msg.text?.split(' ').join('').trim(),
       [
-        ...this.botInGroupsConfig.botNames[locale],
-        ...this.botInGroupsConfig.botNames['en'],
+        ...this.botInGroupsConfig.botNames[msg.locale],
+        ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
       ],
-      locale
+      msg.locale
     );
   }
 
@@ -37,7 +38,7 @@ export class BotInGroupsToolsService {
       text,
       [
         ...this.botInGroupsConfig.botNames[locale],
-        ...this.botInGroupsConfig.botNames['en'],
+        ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
       ],
       locale
     );
@@ -49,7 +50,7 @@ export class BotInGroupsToolsService {
   ) {
     return this.botCommandsToolsService.checkCommands(text || '', [
       ...this.botInGroupsConfig.botNames[locale],
-      ...this.botInGroupsConfig.botNames['en'],
+      ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
     ]);
   }
 }

@@ -3,6 +3,7 @@ import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
 import {
   BotCommandsModule,
   BotCommandsProviderActionMsg,
+  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
@@ -79,7 +80,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
-        locales: ['en', 'ru'],
+        locales: [DEFAULT_LOCALE, 'ru'],
       })
     ),
     DebugMessagesModule.forRoot(),
@@ -91,13 +92,17 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
       botMeetingInformation: {
-        en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+        [DEFAULT_LOCALE]: [
+          `Hello! I'm ${BOT_NAMES[0]} 😉`,
+          'Hello!',
+          'Hello 🖖',
+        ],
         ru: [`Привет! я ${BOT_NAMES_RU[0]} 😉`, `Привет!`, 'Привет 🖖'],
       },
     }),
     ShortCommandsModule.forRoot({
       commands: {
-        en: {
+        [DEFAULT_LOCALE]: {
           '*joke*': `get jokes`,
           '*quote*|*thought*|*wisdom*': 'get quotes',
           '*fact*|history': 'get facts',
@@ -131,11 +136,15 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           [DISABLE_DEMO_TAXI_ORDERS_COMMANDS]: true,
         },
         botNames: {
-          en: BOT_NAMES,
+          [DEFAULT_LOCALE]: BOT_NAMES,
           ru: BOT_NAMES_RU,
         },
         botMeetingInformation: {
-          en: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+          [DEFAULT_LOCALE]: [
+            `Hello! I'm ${BOT_NAMES[0]} 😉`,
+            'Hello!',
+            'Hello 🖖',
+          ],
           ru: [`Привет! я ${BOT_NAMES_RU[0]} 😉`, `Привет!`, 'Привет 🖖'],
         },
         transformMessageText: (locale: string, messageText: string) =>
@@ -153,7 +162,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
     FirstMeetingModule.forRoot({
-      botName: { en: BOT_NAMES[0], ru: BOT_NAMES_RU[0] },
+      botName: { [DEFAULT_LOCALE]: BOT_NAMES[0], ru: BOT_NAMES_RU[0] },
     }),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),
@@ -167,7 +176,26 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
         const admins = env.get('TELEGRAM_BOT_ADMINS').default('').asArray(',');
         for (let index = 0; index < admins.length; index++) {
           const admin = admins[index];
-          await ctx.api.sendMessage(admin, message);
+          let chat = String(ctx.chat?.id);
+          if (
+            ctx.chat?.type === 'channel' ||
+            ctx.chat?.type === 'private' ||
+            ctx.chat?.type === 'supergroup'
+          ) {
+            chat = `@${ctx.chat?.username}`;
+          }
+          if (ctx.chat?.type === 'group') {
+            chat = `${ctx.chat?.title} (${ctx.chat?.id})`;
+          }
+          await ctx.api.sendMessage(
+            admin,
+            [
+              `Chat: ${chat}`,
+              `Message id: ${msg.message_id}`,
+              '',
+              message,
+            ].join('\n')
+          );
         }
       },
     }),

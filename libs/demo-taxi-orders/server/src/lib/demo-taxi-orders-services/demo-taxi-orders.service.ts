@@ -7,7 +7,6 @@ import {
   OnContextBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
-import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
 import {
   DemoTaxiOrdersConfig,
@@ -56,18 +55,17 @@ export class DemoTaxiOrdersService
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS]) {
+    if (!this.commandsIsActive(msg)) {
       return null;
     }
 
     let currentStep = msg.context?.currentStep;
 
-    if (currentStep === DemoTaxiOrdersSteps.End) {
+    if (!currentStep || currentStep === DemoTaxiOrdersSteps.End) {
       return null;
     }
 
     if (
-      currentStep &&
       Object.keys(DemoTaxiOrdersSteps).includes(currentStep) &&
       msg.callbackQueryData === NavigationButtons.Cancel
     ) {
@@ -120,21 +118,24 @@ export class DemoTaxiOrdersService
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (this.checkSpyWords({ msg })) {
-      const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-
+    if (
+      this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.config.spyWords,
+      })
+    ) {
       if (
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
-          locale
+          msg.locale
         )
       ) {
         return {
           type: 'markdown',
           message: msg,
           markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
-            locale,
+            locale: msg.locale,
             name: this.config.title,
             descriptions: this.config.descriptions,
             usage: this.config.usage,
@@ -144,11 +145,11 @@ export class DemoTaxiOrdersService
       }
 
       if (
-        !msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS] &&
+        this.commandsIsActive(msg) &&
         this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.start, BotCommandsEnum.get],
-          locale
+          msg.locale
         )
       ) {
         const currentStep =
@@ -157,7 +158,7 @@ export class DemoTaxiOrdersService
           return {
             newState: true,
             type: 'text',
-            ...this.demoTaxiOrdersRenderService.render(locale, {
+            ...this.demoTaxiOrdersRenderService.render(msg.locale, {
               ...msg.context,
               currentStep: DemoTaxiOrdersSteps.Direction,
             }),
@@ -169,6 +170,12 @@ export class DemoTaxiOrdersService
     return null;
   }
 
+  private commandsIsActive<
+    TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
+  >(msg: TMsg) {
+    return !msg?.globalContext?.[DISABLE_DEMO_TAXI_ORDERS_COMMANDS];
+  }
+
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg<DemoTaxiLocalContext> = BotCommandsProviderActionMsg<DemoTaxiLocalContext>
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
@@ -176,12 +183,5 @@ export class DemoTaxiOrdersService
       ...msg,
       text: `${this.config.name} ${BotCommandsEnum.help}`,
     });
-  }
-
-  checkSpyWords({ msg }: { msg: BotCommandsProviderActionMsg }) {
-    const locale = this.botCommandsToolsService.getLocale(msg, 'en');
-    return this.config.spyWords.find((spyWord) =>
-      this.botCommandsToolsService.checkCommands(msg.text, [spyWord], locale)
-    );
   }
 }
