@@ -29,4 +29,9 @@ export interface BotCommandsStorageProvider<
     messageId: string,
     state: Partial<StorageItem<TMessage>>
   ): Promise<void>;
+  changeMessageId(
+    userId: string,
+    oldMessageId: string,
+    newMessageId: string
+  ): Promise<void>;
 }

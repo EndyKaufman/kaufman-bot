@@ -17,6 +17,27 @@ export class BotCommandsInMemoryStorage<
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
+  async changeMessageId(
+    userId: string,
+    oldMessageId: string,
+    newMessageId: string
+  ): Promise<void> {
+    Object.keys(this.storage).forEach((key) => {
+      if (this.storage[key]?.usedMessageIds.includes(oldMessageId)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.storage[key]!.usedMessageIds = (
+          this.storage[key]?.usedMessageIds || []
+        ).map((usedMessageId) =>
+          usedMessageId === oldMessageId ? newMessageId : usedMessageId
+        );
+      }
+      if (key.startsWith(`${userId}:${oldMessageId}`, 0)) {
+        this.storage[`${userId}:${newMessageId}`] = this.storage[key];
+        delete this.storage[key];
+      }
+    });
+  }
+
   async getStateByUsedMessageId(
     userId: string,
     usedMessageId: string

@@ -46,7 +46,10 @@ export class LanguageSwitcherService
     const dbLocale = await this.languageSwitcherStorage.getLanguageOfUser(
       this.botCommandsToolsService.getChatId(msg)
     );
-    const detectedLocale = this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    const detectedLocale = this.botCommandsToolsService.getLocale(
+      msg,
+      DEFAULT_LOCALE
+    );
     if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
         await this.languageSwitcherStorage.setLanguageOfUser(

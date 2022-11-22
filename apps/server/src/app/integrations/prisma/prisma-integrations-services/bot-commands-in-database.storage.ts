@@ -30,6 +30,42 @@ export class BotCommandsInDatabaseStorage<
     }
   }
 
+  async changeMessageId(
+    userId: string,
+    oldMessageId: string,
+    newMessageId: string
+  ): Promise<void> {
+    const user = await this.getOrCreateUser(userId);
+    const states = await this.prismaClientService.state.findMany({
+      where: {
+        userId: user.id,
+        OR: [
+          { messageId: oldMessageId },
+          { usedMessageIds: { has: oldMessageId } },
+        ],
+      },
+    });
+    for (let index = 0; index < states.length; index++) {
+      const state = states[index];
+      if (state.messageId === oldMessageId) {
+        await this.prismaClientService.state.update({
+          data: { messageId: newMessageId },
+          where: { id: state.id },
+        });
+      }
+      if (state.usedMessageIds.includes(oldMessageId)) {
+        await this.prismaClientService.state.update({
+          data: {
+            usedMessageIds: (state.usedMessageIds || []).map((usedMessageId) =>
+              usedMessageId === oldMessageId ? newMessageId : usedMessageId
+            ),
+          },
+          where: { id: state.id },
+        });
+      }
+    }
+  }
+
   async getStateByUsedMessageId(
     userId: string,
     usedMessageId: string

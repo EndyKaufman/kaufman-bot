@@ -30,7 +30,6 @@ export class <%= className %>Service implements BotCommandsProvider {
     @Inject(<%= constantName %>_CONFIG)
     private readonly <%= propertyName %>Config: <%= className %>Config,
     private readonly translatesService: TranslatesService,
-    private readonly commandToolsService: BotCommandsToolsService,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -46,12 +45,12 @@ export class <%= className %>Service implements BotCommandsProvider {
   async onMessage<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    const spyWord = this.<%= propertyName %>Config.spyWords.find((spyWord) =>
-      this.commandToolsService.checkCommands(msg.text, [spyWord], msg.locale)
-    );
-    if (spyWord) {
+    if (this.botCommandsToolsService.checkSpyWords({
+        msg,
+        spyWords: this.<%= propertyName %>Config.spyWords,
+    })) {
       if (
-        this.commandToolsService.checkCommands(
+        this.botCommandsToolsService.checkCommands(
           msg.text,
           [BotCommandsEnum.help],
           msg.locale
@@ -60,7 +59,7 @@ export class <%= className %>Service implements BotCommandsProvider {
         return {
           type: 'markdown',
           message: msg,
-          markdown: this.commandToolsService.generateHelpMessage(msg, {
+          markdown: this.botCommandsToolsService.generateHelpMessage(msg, {
             locale: msg.locale,
             name: this.<%= propertyName %>Config.title,
             descriptions: this.<%= propertyName %>Config.descriptions,
@@ -93,7 +92,7 @@ export class <%= className %>Service implements BotCommandsProvider {
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg) {
     if (
-      this.commandToolsService.checkCommands(
+      this.botCommandsToolsService.checkCommands(
         msg.text,
         [getText('ping')],
         msg.locale

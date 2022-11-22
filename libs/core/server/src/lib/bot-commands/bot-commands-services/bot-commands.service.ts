@@ -211,7 +211,8 @@ export class BotCommandsService {
     msg.locale = locale;
 
     await this.checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplayNumericState<TMsg>(
-      msg
+      msg,
+      ctx
     );
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
@@ -285,11 +286,14 @@ export class BotCommandsService {
 
   private async checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplayNumericState<
     TMsg extends BotCommandsProviderActionMsg
-  >(msg: TMsg) {
+  >(msg: TMsg, ctx: BotCommandsProviderActionContext) {
     const chatId = this.botCommandsToolsService.getChatId(msg);
     const messageId =
       this.botCommandsToolsService.geConstantLatestMessageId(msg);
-    const replyMessageId = this.botCommandsToolsService.getReplyMessageId(msg);
+    const replyMessageId = String(
+      ctx?.callbackQuery?.message?.message_id ||
+        this.botCommandsToolsService.getReplyMessageId(msg)
+    );
 
     const currentState = await this.botCommandsStorage.getState(
       chatId,
@@ -320,10 +324,9 @@ export class BotCommandsService {
     }
   }
 
-  private async processOnBeforeBotCommands<TMsg extends BotCommandsProviderActionMsg>(
-    msg: TMsg,
-    ctx?: BotCommandsProviderActionContext
-  ): Promise<TMsg> {
+  private async processOnBeforeBotCommands<
+    TMsg extends BotCommandsProviderActionMsg
+  >(msg: TMsg, ctx?: BotCommandsProviderActionContext): Promise<TMsg> {
     const len = this.botCommandsProviders.length;
     for (let i = 0; i < len; i++) {
       const botCommandsProvider = this.botCommandsProviders[i];
@@ -341,7 +344,9 @@ export class BotCommandsService {
     return msg;
   }
 
-  private async processOnAfterBotCommands<TMsg extends BotCommandsProviderActionMsg>(
+  private async processOnAfterBotCommands<
+    TMsg extends BotCommandsProviderActionMsg
+  >(
     result: BotCommandsProviderActionResultType<TMsg>,
     msg: TMsg,
     ctx?: BotCommandsProviderActionContext,
@@ -401,6 +406,7 @@ export class BotCommandsService {
     if (!msg) {
       return result;
     }
+
     const chatId = this.botCommandsToolsService.getChatId(msg);
     const messageId =
       this.botCommandsToolsService.geConstantLatestMessageId(msg);
