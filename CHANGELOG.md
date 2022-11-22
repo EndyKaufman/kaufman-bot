@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.2.2...v3.3.0) (2022-11-22)
+
+### Features
+
+- add support work with multi states in one moments ([5aa8e89](https://github.com/EndyKaufman/kaufman-bot/commit/5aa8e892e23f78ce33a4bcadd085e1cd756e22d9))
+- append locale values to msg argument in onBeforeBotCommands, onMessage, onContextBotCommands, onHelp, onAfterBotCommands args, move all duplicated checkSpyWords to BotCommandsToolsService ([6ea9f08](https://github.com/EndyKaufman/kaufman-bot/commit/6ea9f08638e64f0d1d02c6dbb78061df79243902))
+- **core:** add changeMessageId BotCommandsStorageProvider ([bfa6244](https://github.com/EndyKaufman/kaufman-bot/commit/bfa6244109636cf398e5f21e9e5a3383baa28d7f))
+
 ### [3.2.2](https://github.com/EndyKaufman/kaufman-bot/compare/v3.2.1...v3.2.2) (2022-11-13)
 
 ### Bug Fixes
