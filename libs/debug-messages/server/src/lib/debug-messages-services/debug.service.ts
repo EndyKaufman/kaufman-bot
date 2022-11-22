@@ -1,7 +1,7 @@
 import { BotCommandsProviderActionMsg } from '@kaufman-bot/core-server';
 import { Injectable, Logger } from '@nestjs/common';
 
-const DEBUG_MODE = 'debugMode';
+export const DEBUG_MODE = 'debugMode';
 
 @Injectable()
 export class DebugService {

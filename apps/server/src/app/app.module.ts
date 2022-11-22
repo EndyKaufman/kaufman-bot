@@ -176,7 +176,26 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
         const admins = env.get('TELEGRAM_BOT_ADMINS').default('').asArray(',');
         for (let index = 0; index < admins.length; index++) {
           const admin = admins[index];
-          await ctx.api.sendMessage(admin, message);
+          let chat = String(ctx.chat?.id);
+          if (
+            ctx.chat?.type === 'channel' ||
+            ctx.chat?.type === 'private' ||
+            ctx.chat?.type === 'supergroup'
+          ) {
+            chat = `@${ctx.chat?.username}`;
+          }
+          if (ctx.chat?.type === 'group') {
+            chat = `${ctx.chat?.title} (${ctx.chat?.id})`;
+          }
+          await ctx.api.sendMessage(
+            admin,
+            [
+              `Chat: ${chat}`,
+              `Message id: ${msg.message_id}`,
+              '',
+              message,
+            ].join('\n')
+          );
         }
       },
     }),

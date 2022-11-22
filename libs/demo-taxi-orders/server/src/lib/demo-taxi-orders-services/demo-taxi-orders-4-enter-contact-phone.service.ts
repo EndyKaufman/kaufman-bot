@@ -50,11 +50,23 @@ export class DemoTaxiOrders4EnterContactPhoneService {
         );
       }
       if (msg.callbackQueryData !== NavigationButtons.Prev) {
-        await ctx.api.sendMessage(
+        const message = await ctx.api.sendMessage(
           this.botCommandsToolsService.getChatId(msg),
           renderedData.text,
           renderedData.custom
         );
+        const stateMessageId = String(message.message_id);
+        return {
+          type: 'message',
+          message: {
+            ...msg,
+            ...message,
+          },
+          context: {
+            ...renderedData.context,
+            stateMessageId,
+          },
+        };
       }
     } else {
       await ctx.api.editMessageText(
