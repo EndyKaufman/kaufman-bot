@@ -41,7 +41,7 @@
     "@nestjs/schematics": "9.0.3",
     "nx": "15.0.13"
   },
-  "version": "3.3.0",
+  "version": "3.4.0",
   "i18n": [
     {
       "scope": "schematics",
