@@ -74,6 +74,7 @@ export class BotCommandsService {
         ...ctx.callbackQuery.message!,
         callbackQueryData: ctx.callbackQuery.data,
         locale: DEFAULT_LOCALE,
+        isRecursive: false,
       };
     }
     if (!msg) {
@@ -118,7 +119,11 @@ export class BotCommandsService {
       const replyResultMessageId =
         this.botCommandsToolsService.getReplyMessageId(msg);
 
-      if (result?.type === 'markdown' || result?.type === 'text') {
+      if (
+        result?.type === 'html' ||
+        result?.type === 'markdown' ||
+        result?.type === 'text'
+      ) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let replyResult: any;
 
@@ -128,6 +133,14 @@ export class BotCommandsService {
             ...result.custom,
           });
         }
+
+        if (result?.type === 'html') {
+          replyResult = await ctx.reply(result.html, {
+            parse_mode: 'HTML',
+            ...result.custom,
+          });
+        }
+
         if (result?.type === 'text') {
           replyResult = await ctx.reply(result.text, {
             ...result.custom,
@@ -155,8 +168,10 @@ export class BotCommandsService {
       }
 
       if (result?.type !== 'stop' && result?.recursive) {
+        msg.isRecursive = true;
         recursiveDepth++;
       } else {
+        msg.isRecursive = false;
         recursiveDepth = 0;
       }
     }
@@ -182,7 +197,6 @@ export class BotCommandsService {
         },
         ctx
       );
-
       if (result !== null && result.type === 'text') {
         allResults.push(result.text);
         allContext = { ...allContext, ...(result.context || {}) };
