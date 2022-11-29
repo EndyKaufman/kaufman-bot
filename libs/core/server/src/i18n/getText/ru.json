@@ -8,9 +8,9 @@
   "system": "система",
   "user": "пользователь",
   "group": "группа",
-  "Hello 🖖": "",
-  "Hello!": "",
-  "Hello! I'm Robot 😉": "",
-  "meet": "",
-  "start": ""
+  "Hello 🖖": "Привет 🖖",
+  "Hello!": "Привет!",
+  "Hello! I'm Robot 😉": "Привет! Я Робот",
+  "meet": "знакомство",
+  "start": "начать"
 }

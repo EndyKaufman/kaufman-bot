@@ -10,7 +10,10 @@
         "tsConfig": "libs/currency-converter/server/tsconfig.lib.json",
         "packageJson": "libs/currency-converter/server/package.json",
         "main": "libs/currency-converter/server/src/index.ts",
-        "assets": ["libs/currency-converter/server/*.md"],
+        "assets": [
+          "libs/currency-converter/server/*.md",
+          "libs/currency-converter/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

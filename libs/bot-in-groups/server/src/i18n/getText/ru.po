@@ -26,10 +26,10 @@ msgid "meet"
 msgstr "знакомство"
 
 msgid "Hello 🖖"
-msgstr ""
+msgstr "Привет 🖖"
 
 msgid "Hello!"
-msgstr ""
+msgstr "Привет!"
 
 msgid "Hello! I'm Robot 😉"
-msgstr ""
+msgstr "Привет! Я Робот"

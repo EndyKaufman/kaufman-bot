@@ -1,6 +1,7 @@
 import { LanguageSwitcherStorageProvider } from '@kaufman-bot/language-switcher-server';
 import { PrismaClientService } from '@kaufman-bot/prisma-server';
 import { Injectable } from '@nestjs/common';
+import { TranslatesStorage } from 'nestjs-translates';
 
 @Injectable()
 export class PrismaLanguageSwitcherStorage
@@ -8,7 +9,10 @@ export class PrismaLanguageSwitcherStorage
 {
   private readonly languageOfUsers: Record<string, string> = {};
 
-  constructor(private readonly prismaClientService: PrismaClientService) {}
+  constructor(
+    private readonly prismaClientService: PrismaClientService,
+    private readonly translatesStorage: TranslatesStorage
+  ) {}
 
   async getLanguageOfUser(userId: string): Promise<string | null> {
     const currentLanguageCode = this.languageOfUsers[userId];
@@ -20,7 +24,10 @@ export class PrismaLanguageSwitcherStorage
         await this.prismaClientService.user.findFirstOrThrow({
           where: { telegramId: userId },
         });
-      this.languageOfUsers[userId] = currentLanguageCodeFromDatabase.langCode;
+      this.languageOfUsers[userId] =
+        currentLanguageCodeFromDatabase.langCode ||
+        this.translatesStorage.defaultLocale;
+
       return this.languageOfUsers[userId];
     } catch (error) {
       return null;

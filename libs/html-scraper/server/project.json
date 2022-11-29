@@ -10,7 +10,10 @@
         "tsConfig": "libs/html-scraper/server/tsconfig.lib.json",
         "packageJson": "libs/html-scraper/server/package.json",
         "main": "libs/html-scraper/server/src/index.ts",
-        "assets": ["libs/html-scraper/server/*.md"],
+        "assets": [
+          "libs/html-scraper/server/*.md",
+          "libs/html-scraper/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

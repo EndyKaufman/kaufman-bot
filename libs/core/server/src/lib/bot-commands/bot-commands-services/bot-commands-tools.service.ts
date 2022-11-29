@@ -9,10 +9,7 @@ import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import {
-  DEFAULT_LOCALE,
-  LATEST_MESSAGE_ID,
-} from '../bot-commands-constants/bot-commands.constants';
+import { LATEST_MESSAGE_ID } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsCategory } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import {
@@ -370,7 +367,7 @@ export class BotCommandsToolsService {
     msg: BotCommandsProviderActionMsg;
     spyWords: string[];
   }) {
-    const locale = this.getLocale(msg, DEFAULT_LOCALE);
+    const locale = this.getLocale(msg, this.translatesStorage.defaultLocale);
     return spyWords.find((spyWord) =>
       this.checkCommands(msg.text, [spyWord], locale)
     );

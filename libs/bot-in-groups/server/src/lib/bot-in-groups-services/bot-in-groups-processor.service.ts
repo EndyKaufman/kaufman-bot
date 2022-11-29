@@ -3,7 +3,6 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsService,
   BotCommandsToolsService,
-  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import {
   LanguageSwitcherStorage,
@@ -13,6 +12,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
+import { TranslatesStorage } from 'nestjs-translates';
 import {
   BotInGroupsConfig,
   BOT_IN_GROUPS_CONFIG,
@@ -31,6 +31,7 @@ export class BotInGroupsProcessorService {
     private readonly botInGroupsConfig: BotInGroupsConfig,
     private readonly botCommandsToolsService: BotCommandsToolsService,
     private readonly botCommandsService: BotCommandsService,
+    private readonly translatesStorage: TranslatesStorage,
     private readonly botInGroupsToolsService: BotInGroupsToolsService
   ) {}
 
@@ -45,7 +46,7 @@ export class BotInGroupsProcessorService {
         message: ctx.message,
         callbackQueryData: ctx.callbackQuery.data,
         ...ctx.callbackQuery.message!,
-        locale: DEFAULT_LOCALE,
+        locale: this.translatesStorage.defaultLocale,
       };
     }
 
@@ -63,7 +64,7 @@ export class BotInGroupsProcessorService {
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(
       msg,
-      DEFAULT_LOCALE
+      this.translatesStorage.defaultLocale
     );
     const locale = dbLocale || detectedLocale;
 

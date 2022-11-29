@@ -10,7 +10,10 @@
         "tsConfig": "libs/facts-generator/server/tsconfig.lib.json",
         "packageJson": "libs/facts-generator/server/package.json",
         "main": "libs/facts-generator/server/src/index.ts",
-        "assets": ["libs/facts-generator/server/*.md"],
+        "assets": [
+          "libs/facts-generator/server/*.md",
+          "libs/facts-generator/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

@@ -1,6 +1,6 @@
 import { InjectBot, NestjsGrammyModule } from '@grammyjs/nestjs';
 import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
-import { BotCommandsModule, DEFAULT_LOCALE } from '@kaufman-bot/core-server';
+import { BotCommandsModule } from '@kaufman-bot/core-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
 import { FactsGeneratorModule } from '@kaufman-bot/facts-generator-server';
 import { LanguageSwitcherModule } from '@kaufman-bot/language-switcher-server';
@@ -15,6 +15,7 @@ import { Bot, Context, webhookCallback } from 'grammy';
 import {
   getDefaultTranslatesModuleOptions,
   TranslatesModule,
+  TRANSLATES_DEFAULT_LOCALE,
 } from 'nestjs-translates';
 import { join } from 'path';
 import { AppService } from './app.service';
@@ -47,7 +48,7 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
-        locales: [DEFAULT_LOCALE],
+        locales: [TRANSLATES_DEFAULT_LOCALE],
       })
     ),
     DebugMessagesModule.forRoot(),
@@ -57,12 +58,12 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
       botMeetingInformation: {
-        [DEFAULT_LOCALE]: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+        [TRANSLATES_DEFAULT_LOCALE]: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
       },
     }),
     ShortCommandsModule.forRoot({
       commands: {
-        [DEFAULT_LOCALE]: {
+        [TRANSLATES_DEFAULT_LOCALE]: {
           '*fact*|history': 'get facts',
           '*what you can do*|faq': 'help',
           'disable debug': 'debug off',
@@ -75,10 +76,10 @@ const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
         [DISABLE_SHORT_COMMANDS__BEFORE_HOOK]: true,
       },
       botNames: {
-        [DEFAULT_LOCALE]: BOT_NAMES,
+        [TRANSLATES_DEFAULT_LOCALE]: BOT_NAMES,
       },
       botMeetingInformation: {
-        [DEFAULT_LOCALE]: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
+        [TRANSLATES_DEFAULT_LOCALE]: [`Hello! I'm ${BOT_NAMES[0]} 😉`, 'Hello!', 'Hello 🖖'],
       },
     }),
     LanguageSwitcherModule.forRoot(),

@@ -3,7 +3,6 @@ import { BotInGroupsModule } from '@kaufman-bot/bot-in-groups-server';
 import {
   BotCommandsModule,
   BotCommandsProviderActionMsg,
-  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import { CurrencyConverterModule } from '@kaufman-bot/currency-converter-server';
 import { DebugMessagesModule } from '@kaufman-bot/debug-messages-server';
@@ -37,6 +36,7 @@ import { CustomInjectorModule } from 'nestjs-custom-injector';
 import {
   getDefaultTranslatesModuleOptions,
   TranslatesModule,
+  TRANSLATES_DEFAULT_LOCALE,
 } from 'nestjs-translates';
 import { join } from 'path';
 import { AppService } from './app.service';
@@ -80,7 +80,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           join(__dirname, 'assets', 'i18n', 'class-validator-messages'),
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
-        locales: [DEFAULT_LOCALE, 'ru'],
+        locales: [TRANSLATES_DEFAULT_LOCALE, 'ru'],
       })
     ),
     DebugMessagesModule.forRoot(),
@@ -92,7 +92,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       date: env.get('DEPLOY_DATE').default('').asString(),
       version: env.get('DEPLOY_VERSION').default('').asString(),
       botMeetingInformation: {
-        [DEFAULT_LOCALE]: [
+        [TRANSLATES_DEFAULT_LOCALE]: [
           `Hello! I'm ${BOT_NAMES[0]} 😉`,
           'Hello!',
           'Hello 🖖',
@@ -102,7 +102,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     }),
     ShortCommandsModule.forRoot({
       commands: {
-        [DEFAULT_LOCALE]: {
+        [TRANSLATES_DEFAULT_LOCALE]: {
           '*joke*': `get jokes`,
           '*quote*|*thought*|*wisdom*': 'get quotes',
           '*fact*|history': 'get facts',
@@ -136,11 +136,11 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
           [DISABLE_DEMO_TAXI_ORDERS_COMMANDS]: true,
         },
         botNames: {
-          [DEFAULT_LOCALE]: BOT_NAMES,
+          [TRANSLATES_DEFAULT_LOCALE]: BOT_NAMES,
           ru: BOT_NAMES_RU,
         },
         botMeetingInformation: {
-          [DEFAULT_LOCALE]: [
+          [TRANSLATES_DEFAULT_LOCALE]: [
             `Hello! I'm ${BOT_NAMES[0]} 😉`,
             'Hello!',
             'Hello 🖖',
@@ -162,7 +162,10 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
     QuotesGeneratorModule.forRoot(),
     JokesGeneratorModule.forRoot(),
     FirstMeetingModule.forRoot({
-      botName: { [DEFAULT_LOCALE]: BOT_NAMES[0], ru: BOT_NAMES_RU[0] },
+      botName: {
+        [TRANSLATES_DEFAULT_LOCALE]: BOT_NAMES[0],
+        ru: BOT_NAMES_RU[0],
+      },
     }),
     DialogflowModule.forRoot({
       projectId: env.get('DIALOGFLOW_PROJECT_ID').required().asString(),

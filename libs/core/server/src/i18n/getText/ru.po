@@ -35,16 +35,16 @@ msgid "group"
 msgstr "группа"
 
 msgid "Hello 🖖"
-msgstr ""
+msgstr "Привет 🖖"
 
 msgid "Hello!"
-msgstr ""
+msgstr "Привет!"
 
 msgid "Hello! I'm Robot 😉"
-msgstr ""
+msgstr "Привет! Я Робот"
 
 msgid "meet"
-msgstr ""
+msgstr "знакомство"
 
 msgid "start"
-msgstr ""
+msgstr "начать"

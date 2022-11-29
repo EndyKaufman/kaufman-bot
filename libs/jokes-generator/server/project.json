@@ -10,7 +10,10 @@
         "tsConfig": "libs/jokes-generator/server/tsconfig.lib.json",
         "packageJson": "libs/jokes-generator/server/package.json",
         "main": "libs/jokes-generator/server/src/index.ts",
-        "assets": ["libs/jokes-generator/server/*.md"],
+        "assets": [
+          "libs/jokes-generator/server/*.md",
+          "libs/jokes-generator/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

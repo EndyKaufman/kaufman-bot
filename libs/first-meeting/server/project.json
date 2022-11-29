@@ -10,7 +10,10 @@
         "tsConfig": "libs/first-meeting/server/tsconfig.lib.json",
         "packageJson": "libs/first-meeting/server/package.json",
         "main": "libs/first-meeting/server/src/index.ts",
-        "assets": ["libs/first-meeting/server/*.md"],
+        "assets": [
+          "libs/first-meeting/server/*.md",
+          "libs/first-meeting/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

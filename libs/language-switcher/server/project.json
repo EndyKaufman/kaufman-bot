@@ -10,7 +10,10 @@
         "tsConfig": "libs/language-switcher/server/tsconfig.lib.json",
         "packageJson": "libs/language-switcher/server/package.json",
         "main": "libs/language-switcher/server/src/index.ts",
-        "assets": ["libs/language-switcher/server/*.md"],
+        "assets": [
+          "libs/language-switcher/server/*.md",
+          "libs/language-switcher/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

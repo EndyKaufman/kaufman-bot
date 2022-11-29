@@ -4,7 +4,6 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
-  DEFAULT_LOCALE,
   OnBeforeBotCommands,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -48,7 +47,7 @@ export class LanguageSwitcherService
     );
     const detectedLocale = this.botCommandsToolsService.getLocale(
       msg,
-      DEFAULT_LOCALE
+      this.translatesStorage.defaultLocale
     );
     if (this.botCommandsToolsService.getChatId(msg)) {
       if (!dbLocale) {
@@ -87,7 +86,11 @@ export class LanguageSwitcherService
     const locale =
       (await this.languageSwitcherStorage.getLanguageOfUser(
         this.botCommandsToolsService.getChatId(msg)
-      )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+      )) ||
+      this.botCommandsToolsService.getLocale(
+        msg,
+        this.translatesStorage.defaultLocale
+      );
     const spyWord = this.botCommandsToolsService.checkSpyWords({
       msg,
       spyWords: this.languageSwitcherConfig.spyWords,
@@ -164,7 +167,11 @@ export class LanguageSwitcherService
         const currentLocale =
           (await this.languageSwitcherStorage.getLanguageOfUser(
             this.botCommandsToolsService.getChatId(msg)
-          )) || this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+          )) ||
+          this.botCommandsToolsService.getLocale(
+            msg,
+            this.translatesStorage.defaultLocale
+          );
         return this.translatesService.translate(
           getText(
             `locale "{{locale}}" not founded, current locale: "{{currentLocale}}"`
