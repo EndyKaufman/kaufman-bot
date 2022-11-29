@@ -129,7 +129,7 @@
     "nx": "15.0.13",
     "prettier": "2.7.1",
     "prisma": "^4.5.0",
-    "rucken": "^4.4.4",
+    "rucken": "^4.4.6",
     "standard-version": "^9.5.0",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",

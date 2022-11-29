@@ -16,6 +16,11 @@
             "glob": "**/*.json",
             "input": "./libs/facts-generator/server/src/i18n/getText/",
             "output": "i18n"
+          },
+          {
+            "glob": "**/*.pgsql",
+            "input": "./libs/facts-generator/server/src/migrations/",
+            "output": "migrations"
           }
         ],
         "updateBuildableProjectDepsInPackageJson": false,

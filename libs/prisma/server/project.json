@@ -16,6 +16,11 @@
             "glob": "**/*.json",
             "input": "./libs/prisma/server/src/i18n/getText/",
             "output": "i18n"
+          },
+          {
+            "glob": "**/*.pgsql",
+            "input": "./libs/prisma/server/src/migrations/",
+            "output": "migrations"
           }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
