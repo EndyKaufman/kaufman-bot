@@ -10,7 +10,7 @@
         "tsConfig": "libs/prisma/server/tsconfig.lib.json",
         "packageJson": "libs/prisma/server/package.json",
         "main": "libs/prisma/server/src/index.ts",
-        "assets": ["libs/prisma/server/*.md"],
+        "assets": ["libs/prisma/server/*.md", "libs/prisma/server/src/i18n/**"],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

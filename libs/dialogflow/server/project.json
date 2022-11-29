@@ -10,7 +10,10 @@
         "tsConfig": "libs/dialogflow/server/tsconfig.lib.json",
         "packageJson": "libs/dialogflow/server/package.json",
         "main": "libs/dialogflow/server/src/index.ts",
-        "assets": ["libs/dialogflow/server/*.md"],
+        "assets": [
+          "libs/dialogflow/server/*.md",
+          "libs/dialogflow/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

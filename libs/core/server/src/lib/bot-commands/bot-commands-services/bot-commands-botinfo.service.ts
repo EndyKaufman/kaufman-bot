@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { TranslatesStorage } from 'nestjs-translates';
 import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import { DEFAULT_LOCALE } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
 import { BotCommandsProvider } from '../bot-commands-types/bot-commands-provider.interface';
@@ -16,7 +16,8 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
   constructor(
     @Inject(BOT_COMMANDS_CONFIG)
     private readonly botCommandsConfig: BotCommandsConfig,
-    private readonly botCommandsToolsService: BotCommandsToolsService
+    private readonly botCommandsToolsService: BotCommandsToolsService,
+    private readonly translatesStorage: TranslatesStorage
   ) {}
 
   async onHelp() {
@@ -32,7 +33,7 @@ export class BotCommandsBotinfoService implements BotCommandsProvider {
       this.botCommandsToolsService.checkCommands(
         msg.text,
         ['botinfo', 'bot', 'info'],
-        DEFAULT_LOCALE
+        this.translatesStorage.defaultLocale
       )
     ) {
       if (

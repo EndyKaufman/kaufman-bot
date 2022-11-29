@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.4.0...v3.5.0) (2022-11-29)
+
+### Features
+
+- added usage locale from nestjs-translates for detect default locale, added assets to builded libs ([de26c97](https://github.com/EndyKaufman/kaufman-bot/commit/de26c97f4f40aee39d7a171386c4c795f5af4345))
+
 ## [3.4.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.3.0...v3.4.0) (2022-11-28)
 
 ### Features

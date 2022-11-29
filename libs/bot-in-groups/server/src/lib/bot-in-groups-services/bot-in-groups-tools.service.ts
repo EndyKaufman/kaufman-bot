@@ -1,9 +1,9 @@
 import {
   BotCommandsProviderActionMsg,
   BotCommandsToolsService,
-  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
+import { TranslatesStorage } from 'nestjs-translates';
 import {
   BotInGroupsConfig,
   BOT_IN_GROUPS_CONFIG,
@@ -14,6 +14,7 @@ export class BotInGroupsToolsService {
   constructor(
     @Inject(BOT_IN_GROUPS_CONFIG)
     private readonly botInGroupsConfig: BotInGroupsConfig,
+    private readonly translatesStorage: TranslatesStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -24,7 +25,9 @@ export class BotInGroupsToolsService {
       msg.text?.split(' ').join('').trim(),
       [
         ...this.botInGroupsConfig.botNames[msg.locale],
-        ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
+        ...this.botInGroupsConfig.botNames[
+          this.translatesStorage.defaultLocale
+        ],
       ],
       msg.locale
     );
@@ -38,7 +41,9 @@ export class BotInGroupsToolsService {
       text,
       [
         ...this.botInGroupsConfig.botNames[locale],
-        ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
+        ...this.botInGroupsConfig.botNames[
+          this.translatesStorage.defaultLocale
+        ],
       ],
       locale
     );
@@ -50,7 +55,7 @@ export class BotInGroupsToolsService {
   ) {
     return this.botCommandsToolsService.checkCommands(text || '', [
       ...this.botInGroupsConfig.botNames[locale],
-      ...this.botInGroupsConfig.botNames[DEFAULT_LOCALE],
+      ...this.botInGroupsConfig.botNames[this.translatesStorage.defaultLocale],
     ]);
   }
 }

@@ -4,12 +4,12 @@ import {
   BotCommandsProviderActionMsg,
   BotCommandsProviderActionResultType,
   BotCommandsToolsService,
-  DEFAULT_LOCALE,
   OnContextBotCommands,
 } from '@kaufman-bot/core-server';
 import { ScraperService } from '@kaufman-bot/html-scraper-server';
 import { Injectable } from '@nestjs/common';
 import { Context } from 'grammy';
+import { TranslatesStorage } from 'nestjs-translates';
 
 @Injectable()
 export class JokesGeneratorService
@@ -19,6 +19,7 @@ export class JokesGeneratorService
 
   constructor(
     private readonly scraperService: ScraperService,
+    private readonly translatesStorage: TranslatesStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -35,7 +36,7 @@ export class JokesGeneratorService
   async onHelp<
     TMsg extends BotCommandsProviderActionMsg = BotCommandsProviderActionMsg
   >(msg: TMsg, ctx: Context) {
-    if (!msg.locale.includes(DEFAULT_LOCALE)) {
+    if (!msg.locale.includes(this.translatesStorage.defaultLocale)) {
       return null;
     }
     return await this.scraperService.onHelp(
@@ -51,7 +52,7 @@ export class JokesGeneratorService
     msg: TMsg,
     ctx: Context
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
-    if (!msg.locale.includes(DEFAULT_LOCALE)) {
+    if (!msg.locale.includes(this.translatesStorage.defaultLocale)) {
       return null;
     }
     if (

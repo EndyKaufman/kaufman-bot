@@ -10,9 +10,12 @@
         "tsConfig": "libs/bot-in-groups/server/tsconfig.lib.json",
         "packageJson": "libs/bot-in-groups/server/package.json",
         "main": "libs/bot-in-groups/server/src/index.ts",
-        "assets": ["libs/bot-in-groups/server/*.md"],
-        "deleteOutputPath": true,
-        "updateBuildableProjectDepsInPackageJson": false
+        "assets": [
+          "libs/bot-in-groups/server/*.md",
+          "libs/core/server/src/i18n/**"
+        ],
+        "updateBuildableProjectDepsInPackageJson": false,
+        "deleteOutputPath": true
       }
     },
     "lint": {

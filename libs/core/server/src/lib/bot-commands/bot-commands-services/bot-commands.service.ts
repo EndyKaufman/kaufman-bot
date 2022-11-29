@@ -3,14 +3,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
 import { Context } from 'grammy';
 import { CustomInject } from 'nestjs-custom-injector';
+import { TranslatesStorage } from 'nestjs-translates';
 import {
   BotCommandsConfig,
   BOT_COMMANDS_CONFIG,
 } from '../bot-commands-config/bot-commands.config';
-import {
-  DEFAULT_LOCALE,
-  DEFAULT_MAX_RECURSIVE_DEPTH,
-} from '../bot-commands-constants/bot-commands.constants';
+import { DEFAULT_MAX_RECURSIVE_DEPTH } from '../bot-commands-constants/bot-commands.constants';
 import { BotCommandsEnum } from '../bot-commands-types/bot-commands-enum';
 import { BotCommandsProviderActionMsg } from '../bot-commands-types/bot-commands-provider-action-msg.interface';
 import { BotCommandsProviderActionResultType } from '../bot-commands-types/bot-commands-provider-action-result-type.interface';
@@ -58,6 +56,7 @@ export class BotCommandsService {
   private botCommandsConfig!: BotCommandsConfig;
 
   constructor(
+    private readonly translatesStorage: TranslatesStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -73,7 +72,7 @@ export class BotCommandsService {
         message: ctx.message,
         ...ctx.callbackQuery.message!,
         callbackQueryData: ctx.callbackQuery.data,
-        locale: DEFAULT_LOCALE,
+        locale: this.translatesStorage.defaultLocale,
         isRecursive: false,
       };
     }
@@ -221,7 +220,10 @@ export class BotCommandsService {
     defaultHandler?: () => Promise<unknown>
   ): Promise<BotCommandsProviderActionResultType<TMsg>> {
     let result: BotCommandsProviderActionResultType<TMsg> = null;
-    let locale = this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    let locale = this.botCommandsToolsService.getLocale(
+      msg,
+      this.translatesStorage.defaultLocale
+    );
     msg.locale = locale;
 
     await this.checkMessageToReplayAndSaveLatestAsNumericStateAndSetLatestToReplayNumericState<TMsg>(
@@ -231,7 +233,10 @@ export class BotCommandsService {
 
     msg = await this.processOnBeforeBotCommands(msg, ctx);
 
-    locale = this.botCommandsToolsService.getLocale(msg, DEFAULT_LOCALE);
+    locale = this.botCommandsToolsService.getLocale(
+      msg,
+      this.translatesStorage.defaultLocale
+    );
     msg.locale = locale;
 
     if (!msg?.handlerStop) {
@@ -272,7 +277,8 @@ export class BotCommandsService {
           this.botCommandsToolsService.getRandomItem(
             this.botCommandsConfig.botMeetingInformation
               ? this.botCommandsConfig.botMeetingInformation[
-                  msg.from?.language_code || DEFAULT_LOCALE
+                  msg.from?.language_code ||
+                    this.translatesStorage.defaultLocale
                 ]
               : [
                   getText(`Hello! I'm Robot 😉`),

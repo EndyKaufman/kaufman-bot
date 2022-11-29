@@ -10,7 +10,7 @@
         "tsConfig": "libs/core/server/tsconfig.lib.json",
         "packageJson": "libs/core/server/package.json",
         "main": "libs/core/server/src/index.ts",
-        "assets": ["libs/core/server/*.md"],
+        "assets": ["libs/core/server/*.md", "libs/core/server/src/i18n/**"],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

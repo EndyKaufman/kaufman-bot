@@ -10,7 +10,10 @@
         "tsConfig": "libs/debug-messages/server/tsconfig.lib.json",
         "packageJson": "libs/debug-messages/server/package.json",
         "main": "libs/debug-messages/server/src/index.ts",
-        "assets": ["libs/debug-messages/server/*.md"],
+        "assets": [
+          "libs/debug-messages/server/*.md",
+          "libs/debug-messages/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

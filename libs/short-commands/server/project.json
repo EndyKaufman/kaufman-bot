@@ -10,7 +10,10 @@
         "tsConfig": "libs/short-commands/server/tsconfig.lib.json",
         "packageJson": "libs/short-commands/server/package.json",
         "main": "libs/short-commands/server/src/index.ts",
-        "assets": ["libs/short-commands/server/*.md"],
+        "assets": [
+          "libs/short-commands/server/*.md",
+          "libs/short-commands/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

@@ -10,7 +10,10 @@
         "tsConfig": "libs/quotes-generator/server/tsconfig.lib.json",
         "packageJson": "libs/quotes-generator/server/package.json",
         "main": "libs/quotes-generator/server/src/index.ts",
-        "assets": ["libs/quotes-generator/server/*.md"],
+        "assets": [
+          "libs/quotes-generator/server/*.md",
+          "libs/quotes-generator/server/src/i18n/**"
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

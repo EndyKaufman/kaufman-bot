@@ -2,11 +2,10 @@ import {
   BotCommandsToolsGenerateHelpMessageOptions,
   BotCommandsToolsInterceptor,
   BotCommandsToolsService,
-  DEFAULT_LOCALE,
 } from '@kaufman-bot/core-server';
 import { Inject, Injectable } from '@nestjs/common';
 import { getText } from 'class-validator-multi-lang';
-import { TranslatesService } from 'nestjs-translates';
+import { TranslatesService, TranslatesStorage } from 'nestjs-translates';
 import {
   ShortCommandsConfig,
   SHORT_COMMANDS_CONFIG,
@@ -19,6 +18,7 @@ export class ShortCommandsBotCommandsToolsInterceptor
     @Inject(SHORT_COMMANDS_CONFIG)
     private readonly shortCommandsConfig: ShortCommandsConfig,
     private readonly translatesService: TranslatesService,
+    private readonly translatesStorage: TranslatesStorage,
     private readonly botCommandsToolsService: BotCommandsToolsService
   ) {}
 
@@ -30,7 +30,7 @@ export class ShortCommandsBotCommandsToolsInterceptor
         (langCode) =>
           this.shortCommandsConfig.commands[langCode] &&
           langCode === options.locale
-      )[0] || DEFAULT_LOCALE;
+      )[0] || this.translatesStorage.defaultLocale;
     const commands = this.shortCommandsConfig.commands[detectedLang] || {};
     const aliases = Object.keys(commands);
 
