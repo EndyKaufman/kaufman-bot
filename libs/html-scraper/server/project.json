@@ -12,7 +12,11 @@
         "main": "libs/html-scraper/server/src/index.ts",
         "assets": [
           "libs/html-scraper/server/*.md",
-          "libs/html-scraper/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/html-scraper/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

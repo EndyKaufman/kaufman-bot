@@ -12,7 +12,11 @@
         "main": "libs/facts-generator/server/src/index.ts",
         "assets": [
           "libs/facts-generator/server/*.md",
-          "libs/facts-generator/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/facts-generator/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

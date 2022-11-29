@@ -12,7 +12,11 @@
         "main": "libs/dialogflow/server/src/index.ts",
         "assets": [
           "libs/dialogflow/server/*.md",
-          "libs/dialogflow/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/dialogflow/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

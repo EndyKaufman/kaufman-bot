@@ -12,7 +12,11 @@
         "main": "libs/debug-messages/server/src/index.ts",
         "assets": [
           "libs/debug-messages/server/*.md",
-          "libs/debug-messages/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/debug-messages/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

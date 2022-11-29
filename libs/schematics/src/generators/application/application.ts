@@ -10,6 +10,7 @@ import {
   toNodeApplicationGeneratorOptions,
   updateTsConfig,
 } from './lib';
+import { updateProject } from './lib/update-project';
 import type { ApplicationGeneratorOptions } from './schema';
 
 export async function applicationGenerator(
@@ -29,6 +30,7 @@ export async function applicationGenerator(
   );
   createFiles(tree, options);
   updateTsConfig(tree, options);
+  updateProject(tree, options);
 
   if (!options.skipFormat) {
     await formatFiles(tree);

@@ -81,6 +81,7 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
         ],
         vendorLocalePaths: [join(__dirname, 'assets', 'i18n')],
         locales: [TRANSLATES_DEFAULT_LOCALE, 'ru'],
+        defaultLocale: 'ru',
       })
     ),
     DebugMessagesModule.forRoot(),
