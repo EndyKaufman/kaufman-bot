@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.1](https://github.com/EndyKaufman/kaufman-bot/compare/v3.5.0...v3.5.1) (2022-11-29)
+
+### Bug Fixes
+
+- update i18 paths in libs, added correct work with translations to schematics project ([73ea9eb](https://github.com/EndyKaufman/kaufman-bot/commit/73ea9ebd941c260dafce7a3be6c4636bc2e41dcd))
+
 ## [3.5.0](https://github.com/EndyKaufman/kaufman-bot/compare/v3.4.0...v3.5.0) (2022-11-29)
 
 ### Features

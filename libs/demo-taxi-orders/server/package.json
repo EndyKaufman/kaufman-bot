@@ -1,48 +1,48 @@
 {
-    "name": "@kaufman-bot/demo-taxi-orders-server",
-    "description": "Demo taxi orders commands",
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "keywords": [
-        "kaufman-bot",
-        "nx",
-        "nests",
-        "telegram",
-        "taxi",
-        "demo"
-    ],
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-    },
-    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-    },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "readme": "README.md",
-    "i18n": [
-        {
-            "scope": "demo-taxi-orders-server",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "demo-taxi-orders-server-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        }
-    ],
-    "version": "3.5.0",
-    "peerDependencies": {
-        "@nestjs/common": "9.2.0",
-        "nestjs-custom-injector": "^2.2.3",
-        "nestjs-translates": "^1.1.0",
-        "class-validator-multi-lang": "^0.130.201"
+  "name": "@kaufman-bot/demo-taxi-orders-server",
+  "description": "Demo taxi orders commands",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "kaufman-bot",
+    "nx",
+    "nests",
+    "telegram",
+    "taxi",
+    "demo"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
     }
+  ],
+  "readme": "README.md",
+  "i18n": [
+    {
+      "scope": "demo-taxi-orders-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    },
+    {
+      "scope": "demo-taxi-orders-server-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    }
+  ],
+  "version": "3.5.1",
+  "peerDependencies": {
+    "@nestjs/common": "9.2.0",
+    "nestjs-custom-injector": "^2.2.3",
+    "nestjs-translates": "^1.1.0",
+    "class-validator-multi-lang": "^0.130.201"
+  }
 }

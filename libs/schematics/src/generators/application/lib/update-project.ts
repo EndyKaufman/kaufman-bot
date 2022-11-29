@@ -41,8 +41,7 @@ export function updateProject(tree: Tree, options: NormalizedOptions): void {
         },
         {
           glob: '**/*.json',
-          input:
-            './node_modules/@kaufman-bot/language-switcher-server/i18n/',
+          input: './node_modules/@kaufman-bot/language-switcher-server/i18n/',
           output: './assets/i18n/language-switcher-server/',
         },
         {

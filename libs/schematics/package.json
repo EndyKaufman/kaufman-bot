@@ -1,52 +1,52 @@
 {
-    "name": "@kaufman-bot/schematics",
-    "description": "The Nx Plugin for Nest that contains executors and generators for allowing your workspace to create KaufmanBot APIs.",
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "keywords": [
-        "Monorepo",
-        "Node",
-        "Nest",
-        "CLI",
-        "kaufman-bot",
-        "nx",
-        "schematics",
-        "nests",
-        "telegram"
-    ],
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-    },
-    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-    },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "readme": "README.md",
-    "main": "./index.js",
-    "typings": "./index.d.ts",
-    "schematics": "./generators.json",
-    "dependencies": {
-        "@nrwl/devkit": "15.0.13",
-        "@nrwl/linter": "15.0.13",
-        "@nrwl/node": "15.0.13",
-        "@nrwl/js": "15.0.13",
-        "@nrwl/jest": "15.0.13",
-        "@nestjs/schematics": "9.0.3",
-        "nx": "15.0.13"
-    },
-    "version": "3.5.0",
-    "i18n": [
-        {
-            "scope": "schematics",
-            "path": "src/i18n",
-            "strategy": "join"
-        }
-    ]
+  "name": "@kaufman-bot/schematics",
+  "description": "The Nx Plugin for Nest that contains executors and generators for allowing your workspace to create KaufmanBot APIs.",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "Monorepo",
+    "Node",
+    "Nest",
+    "CLI",
+    "kaufman-bot",
+    "nx",
+    "schematics",
+    "nests",
+    "telegram"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
+  "readme": "README.md",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
+  "schematics": "./generators.json",
+  "dependencies": {
+    "@nrwl/devkit": "15.0.13",
+    "@nrwl/linter": "15.0.13",
+    "@nrwl/node": "15.0.13",
+    "@nrwl/js": "15.0.13",
+    "@nrwl/jest": "15.0.13",
+    "@nestjs/schematics": "9.0.3",
+    "nx": "15.0.13"
+  },
+  "version": "3.5.1",
+  "i18n": [
+    {
+      "scope": "schematics",
+      "path": "src/i18n",
+      "strategy": "join"
+    }
+  ]
 }

@@ -1,53 +1,53 @@
 {
-    "name": "@kaufman-bot/html-scraper-server",
-    "description": "Html scraper commands and tools",
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "keywords": [
-        "kaufman-bot",
-        "nx",
-        "nests",
-        "telegram",
-        "html-scraper"
-    ],
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
-    },
-    "homepage": "https://github.com/EndyKaufman/kaufman-bot",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
-    },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "readme": "README.md",
-    "i18n": [
-        {
-            "scope": "html-scraper-server",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "html-scraper-server-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        }
-    ],
-    "version": "3.5.0",
-    "peerDependencies": {
-        "@nestjs/common": "9.2.0",
-        "nestjs-translates": "^1.1.0",
-        "class-validator-multi-lang": "^0.130.201",
-        "axios": "^1.1.3",
-        "charset": "^1.0.1",
-        "cheerio": "^1.0.0-rc.12",
-        "encoding": "^0.1.13",
-        "html-to-text": "^8.2.1",
-        "jschardet": "^3.0.0",
-        "mustache": "^4.2.0"
+  "name": "@kaufman-bot/html-scraper-server",
+  "description": "Html scraper commands and tools",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "keywords": [
+    "kaufman-bot",
+    "nx",
+    "nests",
+    "telegram",
+    "html-scraper"
+  ],
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/kaufman-bot/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/kaufman-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/kaufman-bot.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
     }
+  ],
+  "readme": "README.md",
+  "i18n": [
+    {
+      "scope": "html-scraper-server",
+      "path": "src/i18n",
+      "strategy": "join"
+    },
+    {
+      "scope": "html-scraper-server-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    }
+  ],
+  "version": "3.5.1",
+  "peerDependencies": {
+    "@nestjs/common": "9.2.0",
+    "nestjs-translates": "^1.1.0",
+    "class-validator-multi-lang": "^0.130.201",
+    "axios": "^1.1.3",
+    "charset": "^1.0.1",
+    "cheerio": "^1.0.0-rc.12",
+    "encoding": "^0.1.13",
+    "html-to-text": "^8.2.1",
+    "jschardet": "^3.0.0",
+    "mustache": "^4.2.0"
+  }
 }
