@@ -19,7 +19,7 @@ module.exports = {
     url: `jdbc:postgresql://${HOST}/${DATABASE}`,
     schemas: SCHEMAS || SCHEMA,
     defaultSchema: SCHEMA,
-    locations: `filesystem:migrations`,
+    locations: [`filesystem:libs`, `filesystem:migrations`],
     user: USERNAME,
     password: PASSWORD,
     table: '__migrations',

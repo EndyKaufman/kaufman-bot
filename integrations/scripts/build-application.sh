@@ -1,4 +1,5 @@
 #!/bin/bash
+export KAUFMAN_BOT_VERSION="*"
 rm -rf ./dist
 
 npm run nx -- run-many --target=build --all --skip-nx-cache

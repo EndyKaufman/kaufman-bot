@@ -19,7 +19,7 @@
           },
           {
             "glob": "**/*.pgsql",
-            "input": "./migrations/",
+            "input": "./libs/core/server/src/migrations/",
             "output": "migrations"
           }
         ],
