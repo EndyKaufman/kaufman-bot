@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.2](https://github.com/EndyKaufman/kaufman-bot/compare/v3.5.1...v3.5.2) (2022-11-29)
+
+### Bug Fixes
+
+- move migrations to libs, added last version of libs on generate code with schematics ([34843be](https://github.com/EndyKaufman/kaufman-bot/commit/34843be39431b7760f8137b3266438c637217c56))
+
 ### [3.5.1](https://github.com/EndyKaufman/kaufman-bot/compare/v3.5.0...v3.5.1) (2022-11-29)
 
 ### Bug Fixes
