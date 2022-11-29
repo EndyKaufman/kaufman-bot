@@ -12,7 +12,11 @@
         "main": "libs/quotes-generator/server/src/index.ts",
         "assets": [
           "libs/quotes-generator/server/*.md",
-          "libs/quotes-generator/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/quotes-generator/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

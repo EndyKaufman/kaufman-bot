@@ -10,7 +10,19 @@
         "tsConfig": "libs/core/server/tsconfig.lib.json",
         "packageJson": "libs/core/server/package.json",
         "main": "libs/core/server/src/index.ts",
-        "assets": ["libs/core/server/*.md", "libs/core/server/src/i18n/**"],
+        "assets": [
+          "libs/core/server/*.md",
+          {
+            "glob": "**/*.json",
+            "input": "./libs/core/server/src/i18n/getText/",
+            "output": "i18n"
+          },
+          {
+            "glob": "**/*.pgsql",
+            "input": "./migrations/",
+            "output": "migrations"
+          }
+        ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
       }

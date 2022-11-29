@@ -12,7 +12,11 @@
         "main": "libs/jokes-generator/server/src/index.ts",
         "assets": [
           "libs/jokes-generator/server/*.md",
-          "libs/jokes-generator/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/jokes-generator/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true

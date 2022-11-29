@@ -12,7 +12,11 @@
         "main": "libs/first-meeting/server/src/index.ts",
         "assets": [
           "libs/first-meeting/server/*.md",
-          "libs/first-meeting/server/src/i18n/**"
+          {
+            "glob": "**/*.json",
+            "input": "./libs/first-meeting/server/src/i18n/getText/",
+            "output": "i18n"
+          }
         ],
         "updateBuildableProjectDepsInPackageJson": false,
         "deleteOutputPath": true
