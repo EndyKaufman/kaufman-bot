@@ -185,9 +185,9 @@ export class BotCommandsInDatabaseStorage<
           messageId,
           handlerId: state.handlerId,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          request: state.request as any,
+          request: (state.request || {}) as any,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          response: state.response as any,
+          response: (state.request || {}) as any,
           context: {
             ...(state?.context || {}),
           },
