@@ -139,7 +139,7 @@
     "@google-cloud/dialogflow": "^5.2.1",
     "@grammyjs/nestjs": "^0.3.3",
     "@nestjs/common": "9.2.0",
-    "@nestjs/core": "9.2.0",
+    "@nestjs/core": "11.1.18",
     "@nestjs/platform-express": "9.2.0",
     "@nestjs/serve-static": "^3.0.0",
     "@prisma/client": "^4.5.0",
