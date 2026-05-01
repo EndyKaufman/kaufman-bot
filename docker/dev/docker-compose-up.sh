@@ -1,10 +1,11 @@
 #!/bin/bash
+set -e
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
 docker volume create --name=kaufman-bot-postgres-volume --label=kaufman-bot-postgres-volume
 # Start only database
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
 # Wait ready datatbase
 until docker exec -it $(docker ps -aqf "name=kaufman-bot-postgres") pg_isready -U postgres; do
     echo "Waiting for postgres..."
@@ -21,4 +22,4 @@ export POSTGRES_HOST=kaufman-bot-postgres
 # Update all egnerated files
 npm run generate
 # Start all services
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d

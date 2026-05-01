@@ -3921,8 +3921,8 @@ https://docs.docker.com/compose/install/#install-compose
 ```sh
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker-compose --version
+sudo ln -s /usr/local/bin/docker compose /usr/bin/docker-compose
+docker compose --version
 ```
 
 ## Prepare common files
@@ -3995,7 +3995,7 @@ _docker/dev/docker-compose-up.sh_
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d
 ```
 
 ### Add down script file
@@ -4007,7 +4007,7 @@ _docker/dev/docker-compose-down.sh_
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
-docker-compose -f ./docker/dev/docker-compose.yml down
+docker compose -f ./docker/dev/docker-compose.yml down
 ```
 
 ## Create production infrastructure
@@ -4053,7 +4053,7 @@ _docker/prod/docker-compose-up.sh_
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
-docker-compose -f ./docker/prod/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/prod/docker-compose.yml --compatibility up -d
 ```
 
 ### Add down script file
@@ -4065,7 +4065,7 @@ _docker/prod/docker-compose-down.sh_
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
-docker-compose -f ./docker/prod/docker-compose.yml down
+docker compose -f ./docker/prod/docker-compose.yml down
 ```
 
 ## Run and test from telegram
@@ -4098,10 +4098,10 @@ ea93db120ed3   kaufman-bot-server   0.34%     304.4MiB / 13.57GiB   2.19%     3.
 
 ### Show all logs of containers
 
-> docker-compose -f ./docker/dev/docker-compose.yml logs
+> docker compose -f ./docker/dev/docker-compose.yml logs
 
 ```sh
-endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ docker-compose  -f ./docker/dev/docker-compose.yml logs
+endy@endy-virtual-machine:~/Projects/current/kaufman-bot$ docker compose  -f ./docker/dev/docker-compose.yml logs
 Attaching to kaufman-bot-server
 kaufman-bot-server    |
 kaufman-bot-server    | > kaufman-bot@0.0.0 serve
@@ -4263,7 +4263,7 @@ _docker/dev/docker-compose-up.sh_
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
 docker volume create --name=kaufman-bot-postgres-volume --label=kaufman-bot-postgres-volume
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d
 ```
 
 ### Add second down script with drop volume
@@ -4275,7 +4275,7 @@ _docker/dev/docker-compose-clean-down.sh_
 #export UID=$(id -u)
 #export GID=$(id -g)
 export CURRENT_UID=$(id -u):$(id -g)
-docker-compose -f ./docker/dev/docker-compose.yml down
+docker compose -f ./docker/dev/docker-compose.yml down
 docker volume rm kaufman-bot-postgres-volume --force
 ```
 
@@ -4752,7 +4752,7 @@ _docker/dev/docker-compose-up.sh_
 export CURRENT_UID=$(id -u):$(id -g)
 docker volume create --name=kaufman-bot-postgres-volume --label=kaufman-bot-postgres-volume
 # Start only database
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
 # Wait ready datatbase
 until docker exec -it $(docker ps -aqf "name=kaufman-bot-postgres") pg_isready -U postgres; do
     echo "Waiting for postgres..."
@@ -4765,7 +4765,7 @@ npm run rucken -- postgres
 # Run migrate database for specific database
 export DATABASE_URL=$SERVER_POSTGRES_URL && npm run migrate
 # Start all services
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d
 ```
 
 For prod infra, we do the same thing only in other folders
@@ -5804,7 +5804,7 @@ _docker/dev/docker-compose-up.sh_
 export CURRENT_UID=$(id -u):$(id -g)
 docker volume create --name=kaufman-bot-postgres-volume --label=kaufman-bot-postgres-volume
 # Start only database
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d kaufman-bot-postgres
 # Wait ready datatbase
 until docker exec -it $(docker ps -aqf "name=kaufman-bot-postgres") pg_isready -U postgres; do
     echo "Waiting for postgres..."
@@ -5821,7 +5821,7 @@ export POSTGRES_HOST=kaufman-bot-postgres
 # Update all egnerated files
 npm run generate
 # Start all services
-docker-compose -f ./docker/dev/docker-compose.yml --compatibility up -d
+docker compose -f ./docker/dev/docker-compose.yml --compatibility up -d
 
 ```
 

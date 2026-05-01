@@ -41,6 +41,7 @@ import {
 import { join } from 'path';
 import { AppService } from './app.service';
 import { PrismaIntegrationsModule } from './integrations/prisma/prisma-integrations.module';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 const TELEGRAM_BOT_WEB_HOOKS_DOMAIN = env
   .get('TELEGRAM_BOT_WEB_HOOKS_DOMAIN')
@@ -51,6 +52,7 @@ const TELEGRAM_BOT_WEB_HOOKS_PATH = env
 
 const BOT_NAMES = env.get('BOT_NAMES').required().asArray();
 const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
+const BOT_HTTP_PROXY = env.get('BOT_HTTP_PROXY').asString();
 
 @Module({
   imports: [
@@ -62,9 +64,20 @@ const BOT_NAMES_RU = env.get('BOT_NAMES_RU').required().asArray();
       token: env.get('TELEGRAM_BOT_TOKEN').required().asString(),
       ...(TELEGRAM_BOT_WEB_HOOKS_DOMAIN && TELEGRAM_BOT_WEB_HOOKS_PATH
         ? {
-            useWebhook: true,
-          }
+          useWebhook: true,
+        }
         : {}),
+      ...(BOT_HTTP_PROXY ? {
+        options: {
+          client: {
+            baseFetchConfig: {
+              agent: new HttpsProxyAgent(
+                BOT_HTTP_PROXY
+              )
+            },
+          },
+        },
+      } : {})
     }),
     PrismaClientModule.forRoot({
       databaseUrl: env.get('SERVER_POSTGRES_URL').required().asString(),
@@ -210,7 +223,7 @@ export class AppModule implements NestModule {
   constructor(
     @InjectBot()
     private readonly bot: Bot<Context>
-  ) {}
+  ) { }
 
   configure(consumer: MiddlewareConsumer) {
     const webhook = env.get('TELEGRAM_BOT_WEB_HOOKS_PATH').asString();

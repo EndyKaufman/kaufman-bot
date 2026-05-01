@@ -123,7 +123,8 @@ export class BotInGroupsProcessorService {
       ctx = new Context(
         {
           ...ctx.update,
-          message: msg,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          message: msg as any,
         },
         ctx.api,
         ctx.me

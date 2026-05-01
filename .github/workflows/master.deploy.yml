@@ -49,6 +49,7 @@ jobs:
           dokku config:set --no-restart kaufman-bot DEPLOY_VERSION=$DEPLOY_VERSION
           dokku config:set --no-restart kaufman-bot BOT_NAMES=${{secrets.BOT_NAMES}}
           dokku config:set --no-restart kaufman-bot BOT_NAMES_RU=${{secrets.BOT_NAMES_RU}}
+          dokku config:set --no-restart kaufman-bot BOT_HTTP_PROXY=${{secrets.BOT_HTTP_PROXY}}
 
   deploy:
     needs: [migrate]
